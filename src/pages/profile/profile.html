@@ -1,0 +1,196 @@
+<!--
+  Generated template for the ProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>PROFILE</ion-title>
+
+    <ion-buttons end *ngIf="showEditBtn">
+      <button ion-button icon-only clear (click)="onSubmit(!edit)">
+        <ion-icon [name]="edit ? 'checkmark' : 'create'"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="profile && !edit">
+    <ion-card class="blurred-title-card">
+      <!-- <div class="card-image" [style.background-image]="'url(' + profile.profile + ')'"></div> -->
+
+      <div class="card-title-background">
+        <span [style.background-image]="'url(' + profile.profile + ')'"></span>
+      </div>
+      <div class="item-md" style="justify-content: center; display: flex; background: transparent;">
+        <ion-avatar>
+          <img [src]="profile.profile" style="width:8em;height:8em;">
+        </ion-avatar>
+      </div>
+    </ion-card>
+    <ion-card text-center>
+      <ion-card-content>
+        <p *ngIf="profile.name" style="font-size: 2rem;">
+          <b>{{profile.name ? profile.name : ''}}</b>
+        </p>
+        <p *ngIf="profile.designation">
+          <b>{{profile.designation ? profile.designation : ''}}</b>
+        </p>
+        <p *ngIf="profile.department">
+          <b>{{profile.department ? profile.department : ''}}</b>
+        </p>
+        <hr style="width: 50%"/>
+        <p *ngIf="profile.location">
+          <ion-icon name="pin"></ion-icon>
+          {{profile.location ? profile.location : ''}}
+        </p>
+        <p *ngIf="profile.mobile">
+          <ion-icon name="phone-portrait"></ion-icon>
+          {{profile.mobile ? profile.mobile:''}}
+        </p>
+        <p *ngIf="profile.extension">
+          <ion-icon name="call"></ion-icon>
+          {{profile.extension ? profile.extension : ''}}
+        </p>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+           About Me
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="profile.about_me" >
+        {{profile.about_me}}
+      </ion-card-content>
+      <ion-card-content *ngIf="!profile.about_me">
+        Details Not Updated
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Experience
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="profile.experience" >
+        {{profile.experience}}
+      </ion-card-content>
+      <ion-card-content *ngIf="!profile.experience">
+        Details Not Updated
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Skill Set
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="profile.skill_set.length > 0" >
+        <ion-tags-input
+          [(ngModel)]="profile.skill_set"
+          [mode]="'ios'"
+          [readonly]="true">
+        </ion-tags-input>
+      </ion-card-content>
+      <ion-card-content *ngIf="profile.skill_set.length === 0">
+        Details Not Updated
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Learning and Development
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="profile.learning_and_development" >
+        {{profile.learning_and_development}}
+      </ion-card-content>
+      <ion-card-content *ngIf="!profile.learning_and_development" >
+        Details Not Updated
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="edit_profile && edit">
+      <!-- <div class="item item-block item-md" style="justify-content: center;">
+        <ion-avatar item-start>
+          <img [src]="edit_profile.profile" style="width:120px;height:120px;">
+        </ion-avatar>
+      </div> -->
+      <ion-card class="blurred-title-card" (click)="editImage()">
+        <div class="card-title-background">
+          <span [style.background-image]="'url(' + edit_profile.profile + ')'"></span>
+        </div>
+        <div class="item-md" style="justify-content: center; display: flex; background: transparent;">
+          <ion-avatar>
+            <img [src]="edit_profile.profile" style="width:8em;height:8em;">
+          </ion-avatar>
+          <ion-icon name="create"></ion-icon>
+        </div>
+      </ion-card>
+      <ion-list padding>
+        <ion-item>
+          <ion-label for="name" stacked>Name</ion-label>
+          <ion-input type="text" name="name" [(ngModel)]="edit_profile.name" autocomplete="on" autocorrect="on" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label for="department" stacked>Department</ion-label>
+          <ion-input type="text" name="department" [(ngModel)]="edit_profile.department"  autocomplete="on" autocorrect="on" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label for="designation" stacked>Designation</ion-label>
+          <ion-input type="text" name="designation" [(ngModel)]="edit_profile.designation"  autocomplete="on" autocorrect="on" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label for="mobile" stacked>Mobile</ion-label>
+          <ion-input type="tel" name="mobile" [(ngModel)]="edit_profile.mobile"  autocomplete="on" autocorrect="on" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label for="extension" stacked>Extension Number</ion-label>
+          <ion-input type="tel" name="extension" [(ngModel)]="edit_profile.extension"  autocomplete="on" autocorrect="on" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label for="location" stacked>Location</ion-label>
+          <ion-input type="text" name="location" [(ngModel)]="edit_profile.location"  autocomplete="on" autocorrect="on" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label for="about_me" stacked>About Me</ion-label>
+          <ion-textarea autoresize name="about_me" [(ngModel)]="edit_profile.about_me"  autocomplete="on" autocorrect="on" required></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label for="experience" stacked>Experience</ion-label>
+          <ion-textarea autoresize name="experience" [(ngModel)]="edit_profile.experience"  autocomplete="on" autocorrect="on" required></ion-textarea>
+        </ion-item>
+        <ion-label class="item-md" style="color: #999;" stacked>Skill Set</ion-label>
+
+        <ion-tags-input style="margin-left: 16px;"
+            [(ngModel)]="edit_profile.skill_set"
+            [once]="'true'"
+            [mode]="'ios'"
+            [placeholder]="'Add Skills'"
+            [canBackspaceRemove]="true"
+            [canEnterAdd]="true"
+            [readonly]="false">
+          </ion-tags-input>
+        <ion-item>
+          <ion-label for="learning_and_development" stacked>Learning and Development</ion-label>
+          <ion-textarea autoresize name="learning_and_development" [(ngModel)]="edit_profile.learning_and_development"  autocomplete="on" autocorrect="on" required></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-buttons text-center>
+            <button ion-button block round color="primary" (click)="onSubmit(!edit)">{{edit? "Update" : "Edit"}}</button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,104 @@
+page-profile {
+    .text-input[disabled] {
+      opacity: 0.68;
+    }
+    .ion-tags-input .iti-tag{
+      font-size: 1.5rem;
+    }
+
+    .card-title-md {
+      font-size: 2.4rem;
+    }
+
+    .card-md p{
+      font-size: 1.6rem;
+    }
+
+    .item-md > ion-avatar > img {
+      border: 4px solid gray;
+      margin-top: 2em;
+      margin-bottom: 1em;
+    }
+
+    ion-card.blurred-title-card {
+      width: 100%;
+      margin: 0px;
+      margin-bottom: 10px;
+      position: relative;
+      
+      ion-icon{
+        position: absolute;
+        right: 0.5em;
+        bottom: 0.5em;
+        color: white;
+        padding: 0.3em;
+        border-radius: 0.3em;
+        background: gray;
+        width: 2em;
+        height: 1.5em;
+        text-align: center;
+      }
+
+      .card-image {
+        width: 100%;
+        height: 14em;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .card-title-background,
+      .card-title {
+        position: absolute;
+        width: 100%;
+        height: 14em;
+        bottom: 0;
+        left: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+      .card-title-background span {
+        position: absolute;
+        width: 100%;
+        height: 14em;
+        bottom: 0;
+        left: 0;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+      }
+      .card-title {
+        padding: 10px;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-align-content: stretch;
+        -ms-flex-line-pack: stretch;
+        align-content: stretch;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        p {
+          line-height: 100%;
+          font-size: 1em;
+          font-weight: normal;
+          width: 100%;
+          color: #fff !important;
+        }
+      }
+    }
+
+}

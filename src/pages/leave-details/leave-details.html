@@ -1,0 +1,77 @@
+<!--
+  Generated template for the LeaveDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>LeaveDetails</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div padding>
+    <ion-segment [(ngModel)]="lts">
+      <ion-segment-button value="lt" >
+        Leaves Taken
+      </ion-segment-button>
+      <ion-segment-button value="hlds">
+        Holidays
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="lts">
+    <div *ngSwitchCase="'hlds'">
+    <ion-list *ngIf="holidays.length > 0">
+      <ion-item *ngFor="let holiday of holidays">
+        <ion-grid>
+          <ion-row class="holiday-item">
+            <ion-col col-3><div class="day">{{holiday.day}}</div>
+              <div>{{holiday.month}}</div></ion-col>
+            <ion-col col-6 offset-3><h2>{{holiday.holiday_reason}}</h2>
+
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+
+      </ion-item>
+    </ion-list>
+    <ion-item *ngIf="holidays.length === 0" text-center>
+      No Holidays to be Shown
+    </ion-item>
+    </div>
+    <div *ngSwitchCase="'lt'">
+      <ion-list *ngIf="leaves.length > 0">
+        <ion-card *ngFor="let leave of leaves">
+          <ion-card-header>
+            <h3 class="text-left">{{leave.Leave_Code}} for {{leave.Leave_Period}} <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge></h3>
+
+          </ion-card-header>
+          <ion-card-content>
+
+            <ion-row class="text-left">
+              From: <span class="bold-text">{{leave.From_Date}}</span>
+            </ion-row>
+            <ion-row class="text-left">
+              To: <span class="bold-text">{{leave.To_Date}}</span>
+            </ion-row>
+            <ion-row class="text-left">
+              Reason: <span class="bold-text">{{leave.Leave_Reason}}</span>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+
+
+      </ion-list>
+      <ion-item *ngIf="leaves.length === 0" text-center>
+        No Leaves to be Shown
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,64 @@
+<!-- <ion-header>
+  <ion-navbar>
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button> -->
+   <!-- <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-content padding>
+  <div class="logo">
+    <img src="assets/img/appicon.png" alt="Ionic logo">
+    <br>
+    <div>
+      <br>
+      <h4>Welcome to Empower...</h4>
+      <h6>Your Digital Workspace...</h6>
+    </div>
+  </div>
+
+  <div class="helptext">
+    Please enter your username and password and click on login
+  </div>
+  <form #loginForm="ngForm" novalidate>
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label stacked floating color="primary">Employee ID/Email</ion-label>
+        <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" 
+        autocomplete=“true” spellcheck=“true” (change)="this.login.password = '';" autocapitalize="off"
+          required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>
+        Employee ID or Email is required
+      </p>
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Password</ion-label>
+        <ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+        Password is required
+      </p>
+    </ion-list>
+
+    <ion-row responsive-sm>
+      <ion-col>
+        <button ion-button round (click)="onLogin(loginForm)" type="submit" block>Login</button>
+      </ion-col>
+      <!-- <ion-col>
+        <button ion-button (click)="onSignup()" color="light" block>Signup</button>
+      </ion-col> -->
+    </ion-row>
+    <ion-row responsive-sm>
+      <ion-col text-center>
+        <button ion-button round clear (click)="forgotPassword()">
+          Forgot password?
+        </button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>

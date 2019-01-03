@@ -1,0 +1,40 @@
+<!-- Generated template for the CommentComponent component -->
+<div>
+  <div class="message-wrap" *ngIf="rootItem" >
+
+    <div *ngFor="let comment of rootItem.comments" class="message" [class.left]="comment.comment_by !== user.id" [class.right]="comment.comment_by === user.id">
+      <img class="user-img" [src]="comment.profile_pic ? comment.profile_pic : 'https://intranetstaging.herokuapp.com/assets/user_pic_missing.png'"
+        alt="" src="">
+      <ion-spinner name="dots" *ngIf="comment.status === 'pending'"></ion-spinner>
+      <label *ngIf="comment.status === 'failed'" class='status liked'>Failed</label>
+      <div class="msg-detail">
+        <!-- <div class="msg-info">
+          <p>{{comment.user}}</p>
+        </div> -->
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <div [class]="comment.comment_by === user.id ? 'msg-info-right':'msg-info-left'">
+            <p>{{comment.user}}</p>
+          </div>
+          <p class="line-breaker " [innerHTML]='comment.content'></p>
+          <div [class]="comment.comment_by === user.id ? 'msg-info-right-time':'msg-info-left-time'">
+            <p>{{comment.comment_time}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="input-wrap" keyboard-attach [style.height]="'55px'">
+      <!-- <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">
+            <ion-icon name="md-happy"></ion-icon>
+          </button> -->
+    
+      <ion-textarea name="comment_input" #comment_input placeholder="Type your comment" [(ngModel)]="editorComment" (focusin)="onFocus()"></ion-textarea>
+    
+      <button ion-button clear icon-only item-right (click)="sendComment()">
+        <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,123 @@
+<!--
+  Generated template for the IdeaShowPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{Idea ? Idea.uuid : ''}}
+    </ion-title>
+    <ion-buttons end *ngIf="Idea" >
+      <button ion-button icon-only clear (click)="tagUsers()" *ngIf="Idea.can_tag">
+        <ion-icon name="pricetag"></ion-icon>
+      </button>
+      <button ion-button icon-only clear (click)="allocateUsers()" *ngIf="Idea.Can_allocate && userTagged.length > 0">
+        <ion-icon [name]="Idea.allocated_users.length > 0 ? 'git-compare' : 'git-network'"></ion-icon>
+      </button>
+      <button ion-button icon-only clear (click)="comment()" *ngIf="Idea.can_comment">
+        <ion-icon name='chatbubbles'></ion-icon>
+        {{Idea.comments.length}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <div class="idea_state_header_{{Idea ? Idea.state : ''}}"></div>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="Idea">
+    <div *ngIf="isAllocating">
+      <tag-input 
+        [(ngModel)]="Idea.allocated_users" 
+        [identifyBy]="'id'" 
+        [displayBy]="'name'" 
+        [onlyFromAutocomplete]="true"
+        [placeholder]="'Type User name'"
+        [secondaryPlaceholder]="'Search User'"
+        [clearOnBlur]="true"
+        [maxItems]="Idea.allocation_limit"
+        (onAdd)="onAddAllocation($event)"
+        (onRemove)="onRemoveAllocation($event)"
+        [onRemoving]="onRemovingAllocation">
+        <tag-input-dropdown 
+          [showDropdownIfEmpty]="true" 
+          [identifyBy]="'id'" 
+          [displayBy]="'name'" 
+          [focusFirstElement]="true"
+          [minimumTextLength]="0"
+          [autocompleteItems]="userTagged">
+          <ng-template let-item="item" let-index="index">
+            {{ item.name }}
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+      <button ion-button full (click)="submitAllocation()">{{viewAllocated.length > 0 ? 'Re-allocate' : 'Allocate'}}</button>
+      <hr/>
+    </div>
+    <div *ngIf="isTagging">
+      <tag-input 
+        #tagsInput
+        [(ngModel)]="Idea.tagged_users"
+        [identifyBy]="'id'"
+        [displayBy]="'name'"
+        [onlyFromAutocomplete]="true"
+        [placeholder]="'Type New User Name'"
+        [onTextChangeDebounce]="500"
+        [secondaryPlaceholder]="'Search User'"
+        [clearOnBlur]="true"
+        (onAdd)="onAdd($event)"
+        (onRemove)="onRemove($event)">
+          <tag-input-dropdown 
+            [showDropdownIfEmpty]="true"
+            [identifyBy]="'id'"
+            [focusFirstElement]="true"
+            [displayBy]="'name'"
+            [minimumTextLength]="1"
+            [autocompleteObservable]="getTags">
+            <ng-template let-item="item" let-index="index">
+              {{ item.name }}
+            </ng-template>
+          </tag-input-dropdown>
+      </tag-input>
+      <button ion-button full (click)="submitTags()">Submit Tags</button>
+      <hr/>
+    </div>
+    <ion-card>
+      <ion-card-header>
+        <ion-badge class="pull-right">{{Idea.state}}</ion-badge>
+        <ion-title>
+          {{Idea.title}}
+        </ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngIf='viewAllocated.length > 0' text-wrap>
+            Allocated:
+            <ion-tags-input [(ngModel)]="viewAllocated" [readonly]="true"></ion-tags-input>
+            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="'id'" [displayBy]="'name'" [hideForm]="true" [removable]="false"></tag-input> -->
+          </ion-item>
+          <ion-item *ngIf='viewTags.length > 0' text-wrap>
+            Tags:
+            <ion-tags-input [(ngModel)]="viewTags" [readonly]="true"></ion-tags-input>
+            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="'id'" [displayBy]="'name'" [hideForm]="true" [removable]="false"></tag-input> -->
+          </ion-item>
+          <ion-item text-wrap>
+            Details:
+            <div [innerHtml]="Idea.content"></div>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-list>
+      <ion-item *ngFor="let attach of Idea.attachment">
+        <img src="{{attach.url}}" *ngIf="attach.file_type === 'image'" alt="{{attach.file_name}}" width="300"/>
+        <a href="{{attach.url}}" *ngIf="attach.file_type !== 'image'" padding>{{attach.file_name}}</a>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

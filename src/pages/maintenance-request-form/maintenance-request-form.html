@@ -1,0 +1,141 @@
+<!--
+  Generated template for the MaintenanceRequestFormPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <!-- <ion-title>New Facility Request</ion-title> -->
+
+    <ion-title>Add New Beneficialy</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form #form="ngForm"  >
+    <ion-list>
+
+
+        <ion-item>
+            <ion-label stacked floating color="primary">Code</ion-label>
+           <ion-input name="code" type="text" [(ngModel)]="Addbeneficialy.code" required></ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label stacked floating color="primary">serveryer Id</ion-label>
+           <ion-input name="user_id" type="text" [(ngModel)]="Addbeneficialy.user_id" required></ion-input>
+         </ion-item>
+        <ion-item>
+            <ion-label stacked floating color="primary">Firstname</ion-label>
+           <ion-input name="firstname" type="text" [(ngModel)]="Addbeneficialy.firstname" required></ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label stacked floating color="primary">Middlename</ion-label>
+           <ion-input name="middlename" type="text" [(ngModel)]="Addbeneficialy.middlename" required></ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label stacked floating color="primary">Lastname</ion-label>
+           <ion-input name="lastname" type="text" [(ngModel)]="Addbeneficialy.lastname" required></ion-input>
+         </ion-item>
+          <ion-item> 
+          <ion-label stacked floating color="primary">Age</ion-label>
+          <ion-input name="age" type="text" [(ngModel)]="Addbeneficialy.age" required></ion-input>
+      </ion-item>
+
+
+
+      <ion-list  radio-group [(ngModel)]="Addbeneficialy.gender" name="gender" >
+        <ion-list-header><strong>Gender</strong></ion-list-header>
+          <ion-item >
+              <ion-label>Male</ion-label>
+              <ion-radio value="Male"></ion-radio>
+          </ion-item>
+          <ion-item >
+              <ion-label>FeMale</ion-label>
+              <ion-radio value="FeMale"></ion-radio>
+          </ion-item>
+          <ion-item >
+              <ion-label>Other</ion-label>
+              <ion-radio value="other"></ion-radio>
+          </ion-item>
+      </ion-list>
+
+
+
+
+
+    <ion-item> 
+          <ion-label stacked floating color="primary">Borth Date</ion-label>
+          <ion-datetime  name="date_of_birth"  displayFormat="MM/DD/YYYY"  [(ngModel)]="Addbeneficialy.date_of_birth" ></ion-datetime>
+      </ion-item>
+      <ion-item> 
+          <ion-label stacked floating color="primary">House hold ID  </ion-label>
+          <ion-input name="household_id" type="text" [(ngModel)]="Addbeneficialy.household_id" required></ion-input>
+      </ion-item>
+      <ion-item> 
+          <ion-label stacked floating color="primary">Village ID</ion-label>
+          <ion-input name="village_id" type="text" [(ngModel)]="Addbeneficialy.village_id" required></ion-input>
+      </ion-item>
+      <ion-item> 
+          <ion-label stacked floating color="primary">Family Hade Id</ion-label>
+          <ion-input name="family_head_id" type="text" [(ngModel)]="Addbeneficialy.family_head_id" required></ion-input>
+      </ion-item>
+      <ion-item> 
+          <ion-label stacked floating color="primary">Contact Number</ion-label>
+          <ion-input name="contact_number" type="text" [(ngModel)]="Addbeneficialy.contact_number" required></ion-input>
+      </ion-item>
+      <ion-item> 
+          <ion-label stacked floating color="primary"> Whatsapp Number</ion-label>
+          <ion-input name="whatsapp_number" type="text" [(ngModel)]="Addbeneficialy.whatsapp_number" required></ion-input>
+      </ion-item>
+      <ion-item> 
+        <ion-label stacked floating color="primary">Relation With Family had  </ion-label>
+        <ion-input name="family_head_relation" type="text" [(ngModel)]="Addbeneficialy.family_head_relation" required></ion-input>
+    </ion-item>
+    </ion-list>
+    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit 
+      </button>  
+  
+  </form>
+</ion-content>
+
+
+
+
+
+
+<!-- <ion-content padding>
+  <form #form="ngForm">
+    <ion-item>
+      <ion-label color="primary" stacked>Assets</ion-label>
+      <ion-select [(ngModel)]="maintenanceRequest.maintenanceasset_id" name="maintenanceasset_id"
+                  placeholder="Select Asset"
+                  required interface="popover"><button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request
+    </button>
+        <ion-option value={{asset.uid}} *ngFor="let asset of assets">{{asset.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Location</ion-label>
+      <ion-select  [(ngModel)]="maintenanceRequest.location" name="location">
+        <ion-option *ngFor="let l of locations" [value]="l">{{l}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+
+
+    <ion-item>
+      <ion-label color="primary" stacked>Details</ion-label>
+      <ion-textarea autoresize [(ngModel)]="maintenanceRequest.detail" name="detail" required minLength="1"></ion-textarea>
+    </ion-item>
+
+    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request
+    </button>
+  </form>
+</ion-content> -->
+
+
+
+
+

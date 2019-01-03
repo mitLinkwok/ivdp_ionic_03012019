@@ -1,0 +1,127 @@
+{
+  "name": "Empower",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/get_attendance",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/get_attendance"
+    },
+    {
+      "path": "/all_service_requests",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/all_service_requests"
+    },
+    {
+      "path": "/create_service_request",
+      "proxyUrl": "http://127.0.0.1:3000/api/v1/create_service_request"
+    },
+    {
+      "path": "/all_ideas",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/all_ideas"
+    },
+    {
+      "path": "/create_idea",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/create_idea"
+    },
+    {
+      "path": "/all_grievances",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/all_grievances"
+    },
+    {
+      "path": "/create_grievance",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/create_grievance"
+    },
+    {
+      "path": "/all_grievance_categories",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/all_grievance_categories"
+    },
+    {
+      "path": "/get_holiday_list",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/get_holiday_list"
+    },
+    {
+      "path": "/upload_image",
+      "proxyUrl": "http://127.0.0.1:3000/api/upload_image"
+    },
+    {
+      "path": "/get_idea",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/get_idea"
+    },
+    {
+      "path": "/get_service_request",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/get_service_request"
+    },
+    {
+      "path": "/get_static_pages",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/get_static_pages"
+    },
+    {
+      "path": "/all_notification",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/all_notification"
+    },
+    {
+      "path": "/get_articles",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/get_articles"
+    },
+    {
+      "path": "/get_article",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/get_article"
+    },
+    {
+      "path": "/set_firebase_token_mobile",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/set_firebase_token_mobile"
+    },
+    {
+      "path": "/delete_token",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/delete_token"
+    },
+    {
+      "path": "/users/login",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/users/login"
+    },
+    {
+      "path": "/users/forgot_password",
+      "proxyUrl": "http://intranetstaging.herokuapp.com/api/v1/users/forgot_password"
+    },
+    {
+      "path": "/leave_application_records",
+      "proxyUrl": "https://system-x.herokuapp.com/api/leave_application_records"
+    },
+    {
+      "path": "/pending_leave_application",
+      "proxyUrl": "https://system-x.herokuapp.com/api/pending_leave_application"
+    },
+    {
+      "path": "/leave_approval",
+      "proxyUrl": "https://system-x.herokuapp.com/api/leave_approval"
+    },
+    {
+      "path": "/leave_application_details",
+      "proxyUrl": "https://system-x.herokuapp.com/api/leave_application_details"
+    },
+    {
+      "path": "/leave_records_type",
+      "proxyUrl": "https://system-x.herokuapp.com/api/leave_records_type"
+    },
+    {
+      "path": "/check_scheme",
+      "proxyUrl": "https://system-x.herokuapp.com/api/check_scheme"
+    },
+    {
+      "path": "/get_half_leave_records",
+      "proxyUrl": "https://system-x.herokuapp.com/api/get_half_leave_records"
+    },
+    {
+      "path": "/leave_application",
+      "proxyUrl": "https://system-x.herokuapp.com/api/leave_application"
+    },
+    {
+      "path": "/change_service_request_state",
+      "proxyUrl": "http://127.0.0.1:3000/api/v1/change_service_request_state"
+    }
+  ],
+  "id": "353659e3",
+  "app_id": ""
+}

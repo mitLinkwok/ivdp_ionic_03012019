@@ -1,0 +1,168 @@
+<ion-header>
+  <ion-navbar no-border-bottom>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Leaves</ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="segment" (ionChange)="updateLeaves(false,true)">
+      <ion-segment-button value="all">
+        All
+      </ion-segment-button>
+      <ion-segment-button value="pending">
+        Pending Approvals
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <ion-toolbar no-border-top>
+    <ion-searchbar color="primary" [(ngModel)]="queryText" (ionInput)="updateLeaves(false,false)" placeholder="Search">
+    </ion-searchbar>
+    <ion-buttons end>
+      <button ion-button icon-only [disabled]="leaves.length === 0" (click)="presentFilter()">
+        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list #LeavesList [hidden]="shownLeaves === 0" *ngIf="segment === 'all'">
+
+    <ion-item-group *ngFor="let leave of leaves" [hidden]="leave.hide">
+
+      <ion-item-divider sticky>
+        <ion-label>
+          {{leave.From_Date}}
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-item-sliding #slidingItem [attr.leavetype]="leave.Leave_Name | lowercase" [hidden]="leave.hide">
+
+        <button ion-item (click)="goToLeaveDetail(leave)">
+            <!-- <h3>{{leave.Leave_Name}}</h3><br>
+            <h3>{{leave.Leave_Reason}}</h3>
+          <p>
+            {{leave.From_Date}} &mdash; {{leave.To_Date}}: {{leave.AppStatus}}
+          </p> -->
+
+          <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge>
+          <h3 class="text-left" text-wrap>
+            <span class="bold-text">{{leave.Leave_Name}}</span> for <span class="bold-text">{{leave.Leave_Period}} Day{{leave.Leave_Period > 1?'s':''}}</span>
+          </h3>
+          <h3>&nbsp;</h3>
+          <ion-row class="text-left">
+            From:&nbsp;
+            <span class="bold-text">{{leave.From_Date}}</span>
+          </ion-row>
+          <ion-row class="text-left">
+            To:&nbsp;
+            <span class="bold-text">{{leave.To_Date}}</span>
+          </ion-row>
+          <ion-row class="text-left" text-wrap>
+            Reason:&nbsp;
+            <span class="bold-text">{{leave.Leave_Reason}}</span>
+          </ion-row>
+          
+        </button>
+
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="cancelLeave(slidingItem, leave)" *ngIf="segment === 'all'">
+            Cancel
+          </button>
+        </ion-item-options>
+
+      </ion-item-sliding>
+
+    </ion-item-group>
+
+  </ion-list>
+
+  <ion-list #LeavesList [hidden]="shownLeaves === 0" *ngIf="segment === 'pending'">
+  
+    <ion-item-group *ngFor="let leave of leaves" [hidden]="leave.hide">
+  
+      <ion-item-divider sticky>
+        <ion-label>
+          {{leave.From_Date}}
+        </ion-label>
+      </ion-item-divider>
+  
+      <ion-item-sliding #slidingItem [attr.leavetype]="leave.Leave_Name | lowercase" [hidden]="leave.hide">
+  
+        <button ion-item (click)="goToLeaveDetail(leave)">
+            <!-- <h3>{{leave.Emp_Full_Name}} Applied for {{leave.Leave_Name}}</h3><br>
+            <h3>{{leave.Leave_Reason}}</h3>
+          <p>
+            {{leave.From_Date}} &mdash; {{leave.To_Date}}: {{leave.AppStatus}}
+          </p> -->
+          <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge>
+          <h3 class="text-left" text-wrap>
+            <span class="bold-text">{{leave.Emp_Full_Name}}</span> Applied <span class="bold-text">{{leave.Leave_Name}}</span> for
+            <span class="bold-text">{{leave.Leave_Period}} Day{{leave.Leave_Period > 1?'s':''}}</span>
+          </h3>
+          <h3>&nbsp;</h3>
+          <ion-row class="text-left">
+            From:&nbsp;
+            <span class="bold-text">{{leave.From_Date}}</span>
+          </ion-row>
+          <ion-row class="text-left">
+            To:&nbsp;
+            <span class="bold-text">{{leave.To_Date}}</span>
+          </ion-row>
+          <ion-row class="text-left" text-wrap>
+            Reason:&nbsp;
+            <span class="bold-text">{{leave.Leave_Reason}}</span>
+          </ion-row>
+        </button>
+  
+        <ion-item-options side="right">
+          <button ion-button color="secondary" (click)="leaveApproval(slidingItem, leave, 'Approval','Approve','A')" *ngIf="segment === 'pending'">
+            Approve
+          </button>
+        </ion-item-options>
+
+        <ion-item-options side="left">
+          <button ion-button color="danger" (click)="leaveApproval(slidingItem, leave, 'Rejection','Reject','R')" *ngIf="segment === 'pending'">
+            Reject
+          </button>
+        </ion-item-options>
+  
+      </ion-item-sliding>
+  
+    </ion-item-group>
+  
+  </ion-list>
+
+  <ion-list-header [hidden]="shownLeaves > 0">
+    No Leaves Found
+  </ion-list-header>
+
+  <ion-fab bottom right #fab>
+    <button ion-fab (click)="goToNewLeave()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <!-- <ion-fab-list side="top">
+      <button ion-fab color="vimeo" (click)="openSocial('Vimeo', fab)">
+        <ion-icon name="logo-vimeo"></ion-icon>
+      </button>
+      <button ion-fab color="google" (click)="openSocial('Google+', fab)">
+        <ion-icon name="logo-googleplus"></ion-icon>
+      </button>
+      <button ion-fab color="twitter" (click)="openSocial('Twitter', fab)">
+        <ion-icon name="logo-twitter"></ion-icon>
+      </button>
+      <button ion-fab color="facebook" (click)="openSocial('Facebook', fab)">
+        <ion-icon name="logo-facebook"></ion-icon>
+      </button>
+    </ion-fab-list> -->
+  </ion-fab>
+
+
+</ion-content>

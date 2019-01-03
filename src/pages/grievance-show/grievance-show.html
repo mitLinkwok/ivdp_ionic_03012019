@@ -1,0 +1,123 @@
+<!--
+  Generated template for the GrievanceShowPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{Grievance ? Grievance.uuid : ''}}
+    </ion-title>
+    <ion-buttons end *ngIf="Grievance" >
+      <button ion-button icon-only clear (click)="allocateUsers()" *ngIf="Grievance.Can_allocate">
+        <ion-icon [name]="Grievance.allocated_users.length > 0 ? 'git-compare' : 'git-network'"></ion-icon>
+      </button>
+      <button ion-button icon-only clear (click)="comment()" *ngIf="Grievance.can_comment">
+        <ion-icon name='chatbubbles'></ion-icon>
+        {{Grievance.comments.length}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <div class="gr_state_header_{{Grievance ? Grievance.state : ''}}"></div>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="Grievance">
+    <div *ngIf="isAllocating">
+      <tag-input 
+        [(ngModel)]="Grievance.allocated_users" 
+        [identifyBy]="'id'" 
+        [displayBy]="'name'" 
+        [onlyFromAutocomplete]="true" 
+        [placeholder]="'Type User name'"
+        [secondaryPlaceholder]="'Search User'" 
+        [clearOnBlur]="true" 
+        [onTextChangeDebounce]="500"
+        [maxItems]="Grievance.allocation_limit" 
+        (onAdd)="onAddAllocation($event)"
+        (onRemove)="onRemoveAllocation($event)"
+        [onRemoving]="onRemovingAllocation">
+        <tag-input-dropdown 
+          [showDropdownIfEmpty]="true" 
+          [identifyBy]="'id'" 
+          [displayBy]="'name'" 
+          [focusFirstElement]="true"
+          [minimumTextLength]="1"
+          [autocompleteObservable]="getAllocationUsers">
+          <ng-template let-item="item" let-index="index">
+            {{ item.name }}
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+      <button ion-button full (click)="submitAllocation()">{{viewAllocated.length > 0 ? 'Re-allocate' : 'Allocate'}}</button>
+      <hr/>
+    </div>
+    <ion-card>
+      <ion-card-header>
+        <ion-badge class="pull-right">{{Grievance.state}}</ion-badge>
+        <ion-title>
+        {{Grievance.title}}
+        </ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item text-wrap>
+            Category: {{Grievance.grievance_category}}
+          </ion-item>
+          <ion-item text-wrap>
+            Type: {{Grievance.grievance_type}}
+          </ion-item>
+          <ion-item *ngIf='viewAllocated.length > 0' text-wrap>
+            Allocated:
+            <ion-tags-input [(ngModel)]="viewAllocated" [readonly]="true"></ion-tags-input>
+            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="'id'" [displayBy]="'name'" [hideForm]="true" [removable]="false"></tag-input> -->
+          </ion-item>
+          <ion-item text-wrap>
+            Details:
+            <div [innerHtml]="Grievance.content">
+              <!--{{idea.content}}-->
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+
+    </ion-card>
+
+    <ion-list>
+      <ion-item *ngFor="let attach of Grievance.attachment">
+        <img src="{{attach.url}}" *ngIf="attach.file_type === 'image'" alt="{{attach.file_name}}" width="300" />
+        <a href="{{attach.url}}" *ngIf="attach.file_type !== 'image'" padding>{{attach.file_name}}</a>
+      </ion-item>
+    </ion-list>
+
+    <hr>
+  </div>
+  <timeline endIcon="call" *ngIf="items" >
+    <timeline-item *ngFor="let item of items">
+      <timeline-time [time]="item.time"></timeline-time>
+      <ion-icon [name]="item.icon"></ion-icon>
+      <ion-card>
+
+        <ion-card-header>
+          {{item.title}}
+        </ion-card-header>
+        <ion-card-content>
+          {{item.subtitle}}
+        </ion-card-content>
+        <hr>
+        <ion-card-content>
+          {{item.content}}
+        </ion-card-content>
+      </ion-card>
+    </timeline-item>
+
+  </timeline>
+
+
+</ion-content>

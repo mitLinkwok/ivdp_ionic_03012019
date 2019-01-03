@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Leave Application</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="leaveDetails">
+    <h1>LEAVE FROM {{leaveDetails.FromDate}} FOR {{leaveDetails.Leave_Period}} DAYS</h1>
+    <ion-grid class="border">
+      <ion-row>
+        <ion-col col-6><strong>Status</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.Application_Status === 'A'?'Approved':leaveDetails.Application_Status === 'R'?'Rejected':'Pending'}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6><strong>Type</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.Leave_Name}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6><strong>From</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.FromDate}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6><strong>To</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.ToDate}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6><strong>No. of Day(s)</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.Leave_Period}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6><strong>Reporting Manager</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.Senior_Emp_Name}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6><strong>Reason</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.Leave_Reason}}</ion-col>
+      </ion-row>
+      <ion-row *ngIf='leaveDetails.Approval_Rejection_Comment'>
+        <ion-col col-6><strong>Approver Comments</strong></ion-col>
+        <ion-col col-6>{{leaveDetails.Approval_Rejection_Comment}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="!leaveDetails">
+    <h4>Please wait loading...</h4>
+  </div>
+</ion-content>
+<ion-footer no-shadow>
+  <ion-buttons position="bottom">
+    <div *ngIf='segment === "all"'>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <button ion-button color="danger" round hidden="true" icon-left (click)="cancelLeave()" block>
+              <ion-icon name="close"></ion-icon>
+              Cancel
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div *ngIf='segment === "pending"'>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <button ion-button color="danger" round icon-left (click)="leaveApproval('Rejection','Reject','R')" block>
+              <ion-icon name="close"></ion-icon>
+              Reject
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button color="secondary" round icon-left (click)="leaveApproval('Approval','Approve','A')" block>
+              <ion-icon name="checkmark"></ion-icon>
+              Approve
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-buttons>
+</ion-footer>
+

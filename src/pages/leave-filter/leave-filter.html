@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="help()">
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+      <button ion-button (click)="dismiss()">Cancel</button>
+    </ion-buttons>
+
+    <ion-title>
+      Filter Leaves
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="applyFilters()" strong>Done</button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="outer-content">
+
+  <ion-list>
+    <ion-list-header>Status of Leaves</ion-list-header>
+  
+    <ion-item *ngFor="let leavestatus of leaveStatues" [attr.leavestatus]="leavestatus.name | lowercase">
+      <span item-start class="dot"></span>
+      <ion-label>{{leavestatus.name}}</ion-label>
+      <ion-toggle [(ngModel)]="leavestatus.isChecked" color="secondary"></ion-toggle>
+    </ion-item>
+  
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>Types of Leaves</ion-list-header>
+
+    <ion-item *ngFor="let leavetype of leaveTypes" [attr.leavetype]="leavetype.name | lowercase">
+      <span item-start class="dot"></span>
+      <ion-label>{{leavetype.name}}</ion-label>
+      <ion-toggle [(ngModel)]="leavetype.isChecked" color="secondary"></ion-toggle>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+    <button ion-item (click)="resetFilters()" detail-none class="reset-filters">
+      Reset All Filters
+    </button>
+  </ion-list>
+
+</ion-content>

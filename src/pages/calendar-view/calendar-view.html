@@ -1,0 +1,72 @@
+<!--
+  Generated template for the CalendarViewPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+  <ion-header>
+
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Attendance</ion-title>
+    </ion-navbar>
+
+  </ion-header>
+
+
+
+
+<ion-content padding>
+
+  <ion-fab right bottom (click)="goToLeaveDetailsPage()">
+    <button ion-fab color="light"><ion-icon name="cog"></ion-icon></button>
+  </ion-fab>
+  <ion-calendar #calendar [holidays]="holidaysList" [attendance]="attendanceList" (onMonthSelect)="onMonthSelect($event)" (onDaySelect)="onDaySelect($event)"></ion-calendar>
+  <ion-buttons text-center>
+    <!-- <button ion-button (click)="calendar.toNextDay()">Next</button> -->
+    <button ion-button (click)="calendar.today()" clear>Today</button>
+    <!-- <button ion-button (click)="calendar.toPreviousDay()">Previous</button> -->
+  </ion-buttons>
+
+  <ion-card (swipe)="swipeEvent($event,calendar)">
+    <div *ngIf="isSelectedDayHoliday">
+      <ion-card-header>
+        <h3 class="text-left">{{calendar.getSelectedDateString()}}
+          <ion-badge class="pull-right" color="danger">Holiday</ion-badge>
+        </h3>
+      </ion-card-header>
+      <ion-card-content>
+        <span class="bold-text">{{calendar.getHolidayReason()}}</span>
+      </ion-card-content>
+    </div>
+    <div *ngIf="!isSelectedDayHoliday && attendance">
+      <ion-card-header>
+        <h3 class="text-left">{{attendance.for_date}}
+          <ion-badge class="pull-right">{{attendance.present}}</ion-badge>
+        </h3>
+      </ion-card-header>
+      <ion-card-content>
+      
+        <ion-row *ngIf="attendance.in_time" >
+          <p>In Time:
+            <span class="bold-text">{{attendance.in_time}}</span>
+          </p>
+        </ion-row>
+        <ion-row *ngIf="attendance.out_time">
+          <p>Out Time:
+            <span class="bold-text">{{attendance.out_time}}</span>
+          </p>
+        </ion-row>
+        <ion-row *ngIf="attendance.working_hours" >
+          <p>Working hours:
+            <span class="bold-text">{{attendance.working_hours}}</span>
+          </p>
+        </ion-row>
+
+      </ion-card-content>
+    </div>
+  </ion-card>
+</ion-content>

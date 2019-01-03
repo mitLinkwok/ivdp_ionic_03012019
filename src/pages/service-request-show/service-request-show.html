@@ -1,0 +1,73 @@
+<!--
+  Generated template for the ServiceRequestShowPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{serviceRequest ? serviceRequest.uid : ''}}
+    </ion-title>
+  </ion-navbar>
+  <div class="sr_state_header_{{serviceRequest ? serviceRequest.state : ''}}">
+
+  </div>
+
+</ion-header>
+
+<ion-content padding>
+
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="serviceRequest">
+   <ion-card>
+    <ion-card-header>
+      <ion-badge class="pull-right">{{serviceRequest.state}}</ion-badge>
+      <ion-title>
+        {{serviceRequest.category}}
+      </ion-title>
+    </ion-card-header>
+    <ion-card-content> 
+      <!-- Category: {{serviceRequest.category}}<br/> -->
+     Details: {{serviceRequest.detail}}
+    </ion-card-content>
+    <div *ngIf="show_buttons">
+      <button  ion-button color="secondary" (click)="change_state('closed')">Close</button>
+      <button float-right ion-button color="danger" (click)="change_state('reopen')">Reopen</button>
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let attach of serviceRequest.attachment">
+        <img src="{{attach.url}}" *ngIf="attach.file_type === 'image'" alt="{{attach.file_name}}" width="300" />
+        <a href="{{attach.url}}" *ngIf="attach.file_type !== 'image'" padding>{{attach.file_name}}</a>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+
+  <hr>
+  </div>
+  <timeline endIcon="call" *ngIf="items">
+    <timeline-item *ngFor="let item of items">
+      <timeline-time [time]="item.time"></timeline-time>
+      <ion-icon [name]="item.icon"></ion-icon>
+      <ion-card>
+
+        <ion-card-header>
+          {{item.title}}
+        </ion-card-header>
+        <ion-card-content>
+
+          {{item.subtitle}}
+        </ion-card-content>
+        <hr>
+        <ion-card-content>
+          {{item.content}}
+        </ion-card-content>
+      </ion-card>
+    </timeline-item>
+
+  </timeline>
+</ion-content>

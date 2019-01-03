@@ -1,0 +1,66 @@
+<!--
+  Generated template for the GuestRoomRequestPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Guest House Requests</ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-refresher (ionRefresh)="refreshGuestRoomRequestList($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-card
+      *ngFor="let guestRoomRequest of guestRoomRequests | search : {term:queryText,fields:['uid','address','number_of_guest', 'check_in', 'check_out', 'detail']}"
+      (click)="goToGuestRoomRequest(guestRoomRequest.uid)">
+      <div class="{{'guest_room_request_state_sidebar_'+guestRoomRequest.state}}">
+        <ion-card-header>
+          {{guestRoomRequest.uid}}
+          <span class="pull-right sr-age">{{guestRoomRequest.age}}</span>
+        </ion-card-header>
+
+        <ion-card-content>
+          <p>Address: <strong>{{guestRoomRequest.address}}</strong></p>
+          <p>Number of Guest: <strong>{{guestRoomRequest.number_of_guest}}</strong></p>
+          <p>Check In: <strong>{{guestRoomRequest.check_in}}</strong></p>
+          <p>Check Out: <strong>{{guestRoomRequest.check_out}}</strong></p>
+        </ion-card-content>
+
+        <ion-row *ngIf="guestRoomRequest.approved">
+          <ion-col>
+            <div class="pull-right">
+              <p>Approved By: <strong>{{guestRoomRequest.approver}}</strong></p>
+              <p>Approved At: <strong>{{guestRoomRequest.approved_at}}</strong></p>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-badge class="pull-right">{{guestRoomRequest.state}}</ion-badge>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-card>
+  </ion-list>
+
+  <ion-fab right bottom>
+    <button ion-fab (click)="goToGuestRoomRequestForm()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

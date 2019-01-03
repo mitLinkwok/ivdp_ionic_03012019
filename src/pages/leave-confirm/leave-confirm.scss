@@ -1,0 +1,23 @@
+page-leave-confirm {
+    ion-modal {
+      background-color: rgba(0, 0, 0, 0.5);
+      ion-content.content {
+        top: 10%;
+        left: 10%;
+        width: 80%;
+        height: 80%;
+        border-radius: 20px;
+        .scroll-content {
+          border-radius: 20px;
+        }
+      }
+    }
+}
+
+.row-even{
+    background-color: #FFF;
+}
+
+.row-odd{
+    background-color: #F6F6F6;
+}

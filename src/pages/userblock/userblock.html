@@ -1,0 +1,28 @@
+<!--
+  Generated template for the UserblockPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar hideBackButton="true">
+    <ion-title>
+      <img src="assets/img/appicon.png" height="30" alt="Empower">
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content center text-center padding>
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <h4>Profile incomplete..!!</h4>
+
+  <h5>
+    <!-- It looks like you are offline! Please check your network connection and try again. -->
+    <p>Please complete your profile on website and refresh.</p>
+  </h5>
+</ion-content>

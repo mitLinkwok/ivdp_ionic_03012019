@@ -1,0 +1,488 @@
+// http://ionicframework.com/docs/theming/
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+//Star Rating
+@function _buildIcon($icon) {
+  $icon: '<svg xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              width="24" height="24">
+              #{$icon}
+              </svg>';
+  @return $icon;
+}
+
+@function icon($color, $stroke-color: transparent, $stroke-width: 0, $css: '') {
+  $star: '<path fill="#{$color}"
+                stroke="#{$stroke-color}"
+                stroke-width="#{$stroke-width}"
+                d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>';
+  $icon: _buildIcon($star);
+  @return url('data:image/svg+xml;utf8,#{$icon}');
+}
+
+.pull-right {
+  float: right;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.hidden {
+  display: none;
+}
+
+ion-card-content.wrap {
+  display: block;
+  display: -webkit-box;
+  max-height: 40px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+ion-card-content.wrap-body {
+  display: block;
+  display: -webkit-box;
+  max-height: 28px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item[no-lines].bottom-border {
+  border-bottom: 1px solid #ddd;
+
+}
+
+.version {
+  font-size: 1.3rem;
+  font-weight: 100;
+}
+
+.liked {
+  color: red !important;
+}
+
+//Title fonts
+@font-face {
+  font-family: 'ZonaProBold';
+  src: url('../assets/fonts/ZonaPro-Bold.otf') format('opentype')
+}
+
+.toolbar-title-ios {
+  font-family: "ZonaProBold" !important;
+}
+
+.toolbar-title-md {
+  font-family: "ZonaProBold" !important;
+}
+
+.toolbar-title-wp {
+  font-family: "ZonaProBold" !important;
+}
+
+//Star Rating
+.alert-button-no-rating {
+  width: 39% !important;
+  .button-inner {
+    justify-content: center !important;
+  }
+}
+
+.alertstar {
+  .alert-head {
+    text-align: start;
+    padding: 24px 24px 0px;
+  }
+  .alert-title {
+    font-size: 20px !important;
+  }
+  .stars {
+    width: 50px;
+    height: 50px;
+    padding: 20px;
+    margin: 0 !important;
+    background-image: icon('#f0ad4e');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 1px -2px;
+    color: white !important;
+  }
+  .alert-button-group {
+    padding: 0;
+    margin-top: 10px;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  border-radius: 12px;
+  .alert-wrapper {
+    border-radius: 12px;
+  }
+}
+
+//Override for idea suggestion list font size
+.ng2-menu-item[_ngcontent-c6] {
+  font-size: 1.6em !important;
+}
+
+.ng2-menu-item[_ngcontent-c5] {
+  font-size: 1.6em !important;
+}
+
+.progress-bar[_ngcontent-c0],
+.progress-bar[_ngcontent-c0]:before {
+  height: 5px !important;
+}
+
+// tag-input-form.ng-tns-c0-0 {
+//   width: 100%;
+// }
+
+// Idea Status Colors
+$ideaPendingState: Pending;
+$ideaAllocatedState: Allocated;
+$ideaApprovedState: Approved;
+$ideaRejectedState: Rejected;
+$ideaClosedState: Closed;
+
+$ideaPendingColor: #FFDB4F;
+$ideaAllocatedColor: #3747FF;
+$ideaApprovedColor: #24BF61;
+$ideaRejectedColor: #EF0033;
+$ideaClosedColor: #24BF61;
+$ideaUndefinedColor: grey;
+
+.idea_state_sidebar_#{$ideaPendingState} {
+  border-left: 10px solid $ideaPendingColor;
+}
+
+.idea_state_header_#{$ideaPendingState} {
+  border-top: 10px solid $ideaPendingColor !important;
+}
+
+.idea_state_header_#{$ideaAllocatedState} {
+  border-top: 10px solid $ideaAllocatedColor !important;
+}
+
+.idea_state_sidebar_#{$ideaAllocatedState} {
+  border-left: 10px solid $ideaAllocatedColor;
+}
+
+.idea_state_header_#{$ideaApprovedState} {
+  border-top: 10px solid $ideaApprovedColor !important;
+}
+
+.idea_state_sidebar_#{$ideaApprovedState} {
+  border-left: 10px solid $ideaApprovedColor;
+}
+
+.idea_state_header_#{$ideaRejectedState} {
+  border-top: 10px solid $ideaRejectedColor !important;
+}
+
+.idea_state_sidebar_#{$ideaRejectedState} {
+  border-left: 10px solid $ideaRejectedColor;
+}
+
+.idea_state_header_#{$ideaClosedState} {
+  border-top: 10px solid $ideaClosedColor !important;
+}
+
+.idea_state_sidebar_#{$ideaClosedState} {
+  border-left: 10px solid $ideaClosedColor;
+}
+
+.idea_state_sidebar_undefined {
+  border-left: 10px solid $ideaUndefinedColor;
+}
+
+.idea_state_header_undefined {
+  border-top: 10px solid $ideaUndefinedColor !important;
+}
+
+.idea_state_sidebar_ {
+  border-left: 10px solid $ideaUndefinedColor;
+}
+
+.idea_state_header_ {
+  border-top: 10px solid $ideaUndefinedColor !important;
+}
+
+.inline {
+  display: inline;
+}
+
+// Grievance Status Colors
+
+$grPendingState: Pending;
+$grAllocatedState: Allocated;
+$grApprovedState: Approved;
+$grRejectedState: Rejected;
+$grClosedState: Closed;
+
+$grPendingColor: #FFDB4F;
+$grAllocatedColor: #3747FF;
+$grApprovedColor: #24BF61;
+$grRejectedColor: #EF0033;
+$grClosedColor: #24BF61;
+$grUndefinedColor: grey;
+
+.gr_state_sidebar_#{$grPendingState} {
+  border-left: 10px solid $grPendingColor;
+}
+
+.gr_state_header_#{$grPendingState} {
+  border-top: 10px solid $grPendingColor !important;
+}
+
+.gr_state_header_#{$grAllocatedState} {
+  border-top: 10px solid $grAllocatedColor !important;
+}
+
+.gr_state_sidebar_#{$grAllocatedState} {
+  border-left: 10px solid $grAllocatedColor;
+}
+
+.gr_state_header_#{$grApprovedState} {
+  border-top: 10px solid $grApprovedColor !important;
+}
+
+.gr_state_sidebar_#{$grApprovedState} {
+  border-left: 10px solid $grApprovedColor;
+}
+
+.gr_state_header_#{$grRejectedState} {
+  border-top: 10px solid $grRejectedColor !important;
+}
+
+.gr_state_sidebar_#{$grRejectedState} {
+  border-left: 10px solid $grRejectedColor;
+}
+
+.gr_state_header_#{$grClosedState} {
+  border-top: 10px solid $grClosedColor !important;
+}
+
+.gr_state_sidebar_#{$grClosedState} {
+  border-left: 10px solid $grClosedColor;
+}
+
+.gr_state_sidebar_undefined {
+  border-left: 10px solid $grUndefinedColor;
+}
+
+.gr_state_header_undefined {
+  border-top: 10px solid $grUndefinedColor !important;
+}
+
+.gr_state_sidebar_ {
+  border-left: 10px solid $grUndefinedColor;
+}
+
+.gr_state_header_ {
+  border-top: 10px solid $grUndefinedColor !important;
+}
+
+// Service Request Status Colors
+
+$srPendingState: Pending;
+$srAllocatedState: Allocated;
+$srResolvedState: Resolved;
+$srCompletedState: Completed;
+$srClosedState: Closed;
+
+$srPendingColor: #FFDB4F;
+$srAllocatedColor: #3747FF;
+$srResolvedColor: #61267D;
+$srCompletedColor: #000000;
+$srClosedColor: #24BF61;
+$srUndefinedColor: grey;
+
+.sr-age {
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+.sr_state_sidebar_#{$srPendingState} {
+  border-left: 10px solid $srPendingColor;
+}
+
+.sr_state_header_#{$srPendingState} {
+  border-top: 10px solid $srPendingColor !important;
+}
+
+.sr_state_sidebar_#{$srAllocatedState} {
+  border-left: 10px solid $srAllocatedColor;
+}
+
+.sr_state_header_#{$srAllocatedState} {
+  border-top: 10px solid $srAllocatedColor !important;
+}
+
+.sr_state_sidebar_#{$srResolvedState} {
+  border-left: 10px solid $srResolvedColor;
+}
+
+.sr_state_header_#{$srResolvedState} {
+  border-top: 10px solid $srResolvedColor !important;
+}
+
+.sr_state_sidebar_#{$srCompletedState} {
+  border-left: 10px solid $srCompletedColor;
+}
+
+.sr_state_header_#{$srCompletedState} {
+  border-top: 10px solid $srCompletedColor !important;
+}
+
+.sr_state_sidebar_#{$srClosedState} {
+  border-left: 10px solid $srClosedColor;
+}
+
+.sr_state_header_#{$srClosedState} {
+  border-top: 10px solid $srClosedColor !important;
+}
+
+.sr_state_sidebar_undefined {
+  border-left: 10px solid $srUndefinedColor;
+}
+
+.sr_state_header_undefined {
+  border-top: 10px solid $srUndefinedColor !important;
+}
+
+.sr_state_sidebar_ {
+  border-left: 10px solid $srUndefinedColor;
+}
+
+.sr_state_header_ {
+  border-top: 10px solid $srUndefinedColor !important;
+}
+
+$guestLunchPendingState: Pending;
+$guestLunchAcceptedState: Accepted;
+
+$guestLunchPendingColor: #FFDB4F;
+$guestLunchAcceptedColor: #24BF61;
+
+.guest_lunch_state_sidebar_#{$guestLunchPendingState} {
+  border-left: 10px solid $guestLunchPendingColor;
+}
+
+.guest_lunch_state_sidebar_#{$guestLunchAcceptedState} {
+  border-left: 10px solid $guestLunchAcceptedColor;
+}
+
+$visitingCardPendingState: Pending;
+$visitingCardApprovedState: Approved;
+
+$visitingCardPendingColor: #FFDB4F;
+$visitingCardApprovedColor: #24BF61;
+
+.visiting_card_state_sidebar_#{$visitingCardPendingState} {
+  border-left: 10px solid $visitingCardPendingColor;
+}
+
+.visiting_card_state_sidebar_#{$visitingCardApprovedState} {
+  border-left: 10px solid $visitingCardApprovedColor;
+}
+
+$stationeryRequestPendingState: Pending;
+$stationeryRequestClosedState: Closed;
+
+$stationeryRequestPendingColor: #FFDB4F;
+$stationeryRequestClosedColor: #24BF61;
+
+.stationery_request_state_sidebar_#{$stationeryRequestPendingState} {
+  border-left: 10px solid $stationeryRequestPendingColor;
+}
+
+.stationery_request_state_sidebar_#{$stationeryRequestClosedState} {
+  border-left: 10px solid $stationeryRequestClosedColor;
+}
+
+$accessCardRequestPendingState: Pending;
+$accessCardRequestApprovedState: Approved;
+$accessCardRequestClosedState: Closed;
+
+$accessCardRequestPendingColor: #FFDB4F;
+$accessCardRequestApprovedColor: #24BF61;
+$accessCardRequestClosedColor: grey;
+
+.access_card_state_sidebar_#{$accessCardRequestPendingState} {
+  border-left: 10px solid $accessCardRequestPendingColor;
+}
+
+.access_card_state_sidebar_#{$accessCardRequestApprovedState} {
+  border-left: 10px solid $accessCardRequestApprovedColor;
+}
+
+.access_card_state_sidebar_#{$accessCardRequestClosedState} {
+  border-left: 10px solid $accessCardRequestClosedColor;
+}
+
+$maintenanceRequestPendingState: Pending;
+$maintenanceRequestApprovedState: Approved;
+
+$maintenanceRequestPendingColor: #FFDB4F;
+$maintenanceRequestApprovedColor: #24BF61;
+
+.maintenance_request_state_sidebar_#{$maintenanceRequestPendingState} {
+  border-left: 10px solid $maintenanceRequestPendingColor;
+}
+
+.maintenance_request_state_sidebar_#{$maintenanceRequestApprovedState} {
+  border-left: 10px solid $maintenanceRequestApprovedColor;
+}
+
+$guestRoomRequestPendingState: Pending;
+$guestRoomRequestApprovedState: Approved;
+$guestRoomRequestCancelledState: Cancelled;
+
+$guestRoomRequestPendingColor: #FFDB4F;
+$guestRoomRequestApprovedColor: #24BF61;
+$guestRoomRequestCancelledColor: grey;
+
+.guest_room_request_state_sidebar_#{$guestRoomRequestPendingState} {
+  border-left: 10px solid $guestRoomRequestPendingColor;
+}
+
+.guest_room_request_state_sidebar_#{$guestRoomRequestApprovedState} {
+  border-left: 10px solid $guestRoomRequestApprovedColor;
+}
+
+.guest_room_request_state_sidebar_#{$guestRoomRequestCancelledState} {
+  border-left: 10px solid $guestRoomRequestCancelledColor;
+}
+
+.guest_room_request_state_header_#{$guestRoomRequestPendingState} {
+  border-top: 10px solid $guestRoomRequestPendingColor !important;
+}
+
+.guest_room_request_state_header_#{$guestRoomRequestApprovedState} {
+  border-top: 10px solid $guestRoomRequestApprovedColor !important;
+}
+
+.guest_room_request_state_header_#{$guestRoomRequestCancelledState} {
+  border-top: 10px solid $guestRoomRequestCancelledColor !important;
+}

@@ -1,0 +1,57 @@
+<!--
+  Generated template for the ArticleIndexPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Articles</ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content >
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngIf="articles.length > 0"> 
+  <ion-card *ngFor="let article of articles | search : {term:queryText,fields:['title','snippet']} | sort: {property: field, order: order}"
+  (click)="goToArticle(article.id)" [ngStyle]="{'background-color': article.background_color}">
+      <!--<ion-card>-->
+      <ion-card-header>
+      <span class="bold-text" [ngStyle]="{'color': article.font_color}">
+          {{article.title}}
+        </span>
+      </ion-card-header>
+      <ion-card-content class="wrap-body" *ngIf="article.show_content" [ngStyle]="{'color': article.font_color}">
+        <div [innerHtml]="article.snippet | safeHtml">
+          <!--{{idea.content}}-->
+        </div>
+
+      </ion-card-content>
+      <ion-item [ngStyle]="{'color': article.font_color, 'background-color': article.background_color}">
+        <h5 *ngIf="article.creator" [ngStyle]="{'color': article.font_color}">Created By: {{article.creator}}</h5>
+        <ion-badge item-end *ngIf="article.published_on">{{article.published_on}}</ion-badge>
+      </ion-item>
+      <!--</ion-card>-->
+
+    </ion-card>
+  </ion-list>
+
+  <ion-item *ngIf="articles.length === 0" text-center>
+    No Articles to be Shown
+  </ion-item>
+
+
+</ion-content>
+
+

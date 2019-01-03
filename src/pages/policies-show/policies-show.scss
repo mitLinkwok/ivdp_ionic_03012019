@@ -1,0 +1,15 @@
+page-policies-show {
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  table{
+    width:100%;
+  }
+  td{
+    padding:2px;
+  }
+  th{
+    background-color: #488aff;
+  }
+}

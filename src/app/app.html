@@ -1,0 +1,130 @@
+<!-- <ion-split-pane> -->
+
+<ion-menu id="loggedInMenu" [content]="content">
+
+  <!-- <ion-header>
+    <ion-toolbar>
+      <ion-title>EmPower</ion-title>
+      <ion-title>{{username}}</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
+
+  <ion-content class="outer-content">
+    <ion-item menuClose (click)="openProfile()">
+      <ion-avatar item-start>
+        <img src="{{userprofile}}" style="width:5em; height:5em; border:3px solid gray;">
+      </ion-avatar>
+      <ion-title>{{username}}</ion-title>
+    </ion-item>
+
+    <ion-list>
+      <button ion-item menuClose *ngFor="let p of loggedInPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{p.title}}
+        <ion-badge item-end color="light" *ngIf="p.countName && getCount(p.countName) > 0">{{getCount(p.countName)}}
+        </ion-badge>
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header style="margin-bottom: 0;">
+        My Voice
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of myVoicePages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header style="margin-bottom: 0;">
+        IT
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of itPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header style="margin-bottom: 0;">
+        HR
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of hrPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header style="margin-bottom: 0;">
+        Company
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of companyPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header style="margin-bottom: 0;">
+        Services
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of servicesPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header style="margin-bottom: 0;">
+        Account
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of loggedOutPages" (click)="openPage(p)">
+        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header style="margin-bottom: 0;">
+        About the App
+      </ion-list-header>
+      <ion-title left>
+        <h6 class="version">Version: {{applicationVersion}}</h6>
+        <h6 class="version">Server: {{appGlobal.server}}</h6>
+        <h6 class="version">Powered by: Deepak Cybit Pvt. Ltd.</h6>
+      </ion-title>
+    </ion-list>
+  </ion-content>
+
+  <!-- <ion-footer>
+    <ion-title left>
+      <h6 class="version">Version: {{applicationVersion}}</h6>
+      <h6 class="version">Powered By: Deepak Cybit Pvt. Ltd.</h6>
+    </ion-title>
+  </ion-footer> -->
+
+</ion-menu>
+
+<!-- </ion-split-pane> -->
+
+<!-- <ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu> -->
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false" main name="MyApp"></ion-nav>

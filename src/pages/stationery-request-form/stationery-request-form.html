@@ -1,0 +1,46 @@
+<!--
+  Generated template for the StationeryRequestFormPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>New Stationery Request</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form #form="ngForm">
+
+    <ion-item>
+      <ion-label>Location</ion-label>
+      <ion-select #location  [(ngModel)]="stationeryRequest.location" name="location" (ionChange)="getStationeryList(location.value)" >
+        <ion-option *ngFor="let l of locations" [value]="l">{{l}}</ion-option>
+
+
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>Stationery Item</ion-label>
+      <ion-select [(ngModel)]="stationeryRequest.stationery_id" name="stationery_id" placeholder="Select Stationery"
+                  required interface="popover">
+        <ion-option value={{stationery.uid}} *ngFor="let stationery of stationeries">{{stationery.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary">Required Quantity</ion-label>
+      <ion-input [(ngModel)]="stationeryRequest.requested_quantity" name="requested_quantity" min="1" max="50" step="1" pattern="([1-90])+" required></ion-input>
+    </ion-item>
+<ion-item>
+      <ion-label color="primary">Details</ion-label>
+      <ion-textarea autoresize [(ngModel)]="stationeryRequest.details" name="details" ></ion-textarea>
+    </ion-item>
+
+
+    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Stationery Request
+    </button>
+  </form>
+</ion-content>

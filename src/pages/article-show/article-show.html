@@ -1,0 +1,55 @@
+<!--
+  Generated template for the ArticleShowPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Article</ion-title>
+    <ion-buttons end *ngIf="article" >
+      <button ion-button icon-only clear (click)="like()">
+        <ion-icon [name]="article.liked_by_me ? 'heart' : 'heart-outline'" isActive="true" [class.liked]="article.liked_by_me"></ion-icon>
+        {{article.likes}}
+      </button>
+      <button ion-button icon-only clear (click)="comment()" *ngIf="article.can_comment">
+        <ion-icon name='chatbubbles' isActive="true"></ion-icon>
+        {{article.comments.length}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="article">
+    <div *ngIf="article.showHeader">
+      <h1>{{article.title}}</h1>
+      <hr>
+    </div>
+    <ion-slides *ngIf="article.courasel_attachments.length > 0" [autoplay]="5000" [pager]="true" [loop]="true" style="height: auto;">
+      <ion-slide *ngFor="let slide of article.courasel_attachments">
+        <img [src]="slide.url">
+      </ion-slide>
+    </ion-slides>
+    <hr *ngIf="article.courasel_attachments.length > 0" >
+    <div [innerHtml]="article.content | safeHtml">
+      <!--{{idea.content}}-->
+    </div>
+    <div *ngIf="article.showFooter">
+      <hr>
+      <h5 *ngIf="article.date">Created on: {{article.date}}</h5>
+      <h5 *ngIf="article.creator">Created by: {{article.creator}}</h5>
+    </div>
+  </div>
+  <hr>
+  <!-- <comment [rootItem]="article" [user]="user"></comment> -->
+</ion-content>

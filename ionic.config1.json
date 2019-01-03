@@ -1,0 +1,61 @@
+{
+  "name": "test",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/get_attendance",
+      "proxyUrl": "http://127.0.0.1:8080/api/v1/attendances/get_attendance"
+    },
+    {
+      "path": "/get_service_requests",
+      "proxyUrl": "http://127.0.0.1:8080/api/v1/all_service_requests"
+    },
+    {
+      "path": "/create_service_request",
+      "proxyUrl": "http://localhost:8080/api/v1/create_service_request"
+    },
+    {
+      "path": "/all_ideas",
+      "proxyUrl": "http://localhost/api/v1/all_ideas"
+    },
+    {
+      "path": "/new_idea",
+      "proxyUrl": "http://localhost:8080/api/v1/create_idea"
+    },
+    {
+      "path": "/all_grievances",
+      "proxyUrl": "http://localhost:8080/api/v1/all_grievances"
+    },
+    {
+      "path": "/new_grievance",
+      "proxyUrl": "http://localhost:8080/api/v1/create_grievance"
+    },
+    {
+      "path": "/all_grievance_categories",
+      "proxyUrl": "http://localhost:8080/api/v1/all_grievance_categories"
+    },
+    {
+      "path": "/get_holiday_list",
+      "proxyUrl": "http://localhost:8080/api/v1/get_holiday_list"
+    },
+    {
+      "path": "/leave_records",
+      "proxyUrl": "https://system-x.herokuapp.com/api/leave_application_records"
+    },
+    {
+      "path": "/upload_image",
+      "proxyUrl": "http://127.0.0.1:8080/api/upload_image"
+    },
+    {
+      "path": "/get_idea",
+      "proxyUrl": "http://127.0.0.1:8080/api/v1/get_idea"
+    },
+    {
+      "path": "/get_service_request",
+      "proxyUrl": "http://127.0.0.1:8080/api/v1/get_service_request"
+    }
+  ]
+}

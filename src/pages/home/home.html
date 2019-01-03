@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <img src="assets/img/appicon.png" height="30" alt="Empower">
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="notifications.length > 0">
+    <ion-item-sliding #item *ngFor="let notification of notifications | sort: {property: field, order: order}">
+      <ion-item no-lines class="bottom-border"
+                (click)="goToPage(notification.associated_item_id, notification.associated_item_type)"
+                [ngStyle]="{'background-color': notification.background_color}">
+        <ion-avatar item-start>
+          <img src="{{notification.profile}}" style="border:2px solid gray;width:3.5em;height:3.5em;">
+        </ion-avatar>
+
+        <ion-card-header [ngStyle]="{'font-weight': bold, 'color': notification.font_color}">
+          {{notification.title}}
+        </ion-card-header>
+
+        <ion-card-content [ngStyle]="{'text-align':left, 'color': notification.font_color}">
+          {{notification.message}}
+        </ion-card-content>
+      </ion-item>
+
+      <ion-item-options side="left">
+        <button ion-button (click)="onSnooze(item,notification)">Snooze</button>
+      </ion-item-options>
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="onDismiss(item,notification)">Dismiss</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-item no-lines class="bottom-border" *ngIf="notifications.length === 0" text-center>
+    No Notifications Available
+  </ion-item>
+</ion-content>

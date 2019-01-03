@@ -1,0 +1,72 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Leave Application</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #leaveApplicationForm="ngForm" novalidate>
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label fixed color="primary">Leave</ion-label>
+        <ion-select [(ngModel)]="leaveApplication.leaveType" name="leaveType" placeholder="Select Type" (ionChange)="checkScheme()" required interface="popover">
+          <ion-option value={{leavetype.Leave_ID}} *ngFor="let leavetype of leave_types">{{leavetype.Leave_Name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <div>
+        <ion-item>
+          <ion-label fixed color="primary">From Date</ion-label>
+          <ion-datetime [(ngModel)]="leaveApplication.formDate" [disabled]="checkSchemeStatus !== true" (ionBlur)="clearFields()" placeholder="From Date" name="formDate" displayFormat="DD/MM/YYYY" min="2017" max="3000" required></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed color="primary">No. of Days</ion-label>
+          <ion-input [(ngModel)]="leaveApplication.period" [disabled]="checkSchemeStatus !== true" (ionBlur)="processPeriod()" placeholder="No. of Days" name="period" type="number" pattern="([0-9])+(.5)*" required>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed color="primary">To Date</ion-label>
+          <ion-input [(ngModel)]="leaveApplication.toDate" name="toDate" placeholder="To Date" type="text" [disabled]="true"></ion-input>
+        </ion-item>
+        <div *ngIf="!enableHalfLeave">
+          <ion-item>
+            <ion-label fixed color="primary">Leave Type</ion-label>
+            <ion-select [(ngModel)]="leaveApplication.assignAs" name="assignAs" [disabled]="checkSchemeStatus !== true" required interface="popover">
+              <ion-option value="Full Day">Full Day</ion-option>
+            </ion-select>
+          </ion-item>
+        </div>
+        <div *ngIf="enableHalfLeave">
+          <ion-item>
+            <ion-label fixed color="primary">Leave Type</ion-label>
+            <ion-select [(ngModel)]="leaveApplication.assignAs" name="assignAs" required interface="popover">
+              <ion-option value="First Half">First Half</ion-option>
+              <ion-option value="Second Half">Second Half</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label fixed color="primary">Half Leave Date</ion-label>
+            <ion-select [(ngModel)]="leaveApplication.halfLeaveDate" name="halfLeaveDate" required interface="popover">
+              <ion-option value={{halfLeaveDates}} *ngFor="let halfLeaveDates of halfLeaveRecords">{{halfLeaveDates}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </div>
+        <ion-item>
+          <ion-label fixed color="primary">Comment</ion-label>
+          <ion-textarea [(ngModel)]="leaveApplication.comment"
+            name="comment" 
+            placeholder="Enter leave reason"
+            [disabled]="checkSchemeStatus !== true" 
+            autocomplete="on" autocorrect="on" rows="5" required>
+          </ion-textarea>
+        </ion-item>
+      </div>
+    </ion-list>
+
+    <div padding>
+      <button ion-button (click)="onLeaveApplication(leaveApplicationForm)" [disabled]="!leaveApplicationForm.valid" type="submit" block round>Apply</button>
+    </div>
+  </form>
+</ion-content>

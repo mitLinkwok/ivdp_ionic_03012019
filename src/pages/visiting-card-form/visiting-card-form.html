@@ -1,0 +1,57 @@
+<!--
+  Generated template for the VisitingCardFormPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>New Visiting Card Request</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form #form="ngForm">
+    <ion-item>
+      <ion-label color="primary" stacked>Company Name</ion-label>
+      <ion-input type="text" [(ngModel)]="visitingCard.company_name" name="company_name" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Company Address</ion-label>
+      <ion-textarea autoresize [(ngModel)]="visitingCard.company_address" name="company_address"
+                    readonly></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="visitingCard.name" name="name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Designation</ion-label>
+      <ion-input type="text" [(ngModel)]="visitingCard.designation" name="designation" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Email</ion-label>
+      <ion-input type="text" [(ngModel)]="visitingCard.email" name="email" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Mobile Number</ion-label>
+      <ion-input type="text" [(ngModel)]="visitingCard.mobile_no" name="mobile_no" pattern="^\\d{10}$" minlength="10"
+                 maxlength="10" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Landline</ion-label>
+      <ion-input type="text" [(ngModel)]="visitingCard.landline" name="landline" pattern="^\\d{1,15}$" minlength="1"
+                 maxlength="15" required></ion-input>
+    </ion-item>
+
+    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Visiting Card Request
+    </button>
+  </form>
+</ion-content>
