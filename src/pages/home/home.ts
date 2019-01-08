@@ -48,7 +48,7 @@ export class HomePage {
     public databse:DatabaseProvider  //  public sqlProvider:DatabaseProvider
     ) {
       //this.sqlProvider=this.sqlstorage;
-      // sqlservice.createDB();
+       databse.createDataBase();
     
 
   }

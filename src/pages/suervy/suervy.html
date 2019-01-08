@@ -19,6 +19,8 @@
   <hr>
   <ion-input type="text" placeholder="Test Placeholder" [(ngModel)]="answer.value"></ion-input>
   <hr>
-  <button ion-button (click)="goToNext('a')" >Next</button>
+  <button ion-button *ngIf="is_last == 1" (click)="goToNext('a')" >Submit</button>
+  
+  <button ion-button  *ngIf="is_last == 0" (click)="goToNext('a')" >Next</button>
   <button ion-button (click)="goToPrev('a')">Previous</button>
 </ion-content>

@@ -29,6 +29,7 @@ export class MaintenanceRequestFormPage {
   assets: any = [];
   locations: any = [];
   SurveyorID : string;
+  responsData: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -156,8 +157,11 @@ export class MaintenanceRequestFormPage {
     this.dataSetterService.createMaintenanceRequest(data).subscribe((data: any) => {
       console.log("Create Maintenance Response", data);
       loading.dismiss();
+     
 
       if (data.success) {
+        this.responsData=data.data;
+        console.log("@@@@@$5555"+this.responsData);
         const toast = this.toastCtrl.create({
           message: data.message,
           duration: 3000

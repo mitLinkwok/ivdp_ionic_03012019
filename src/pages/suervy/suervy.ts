@@ -20,7 +20,7 @@ export class SuervyPage {
   key:string;
   answer:any;
   qindex:number;
-
+  is_last:number = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public storage: Storage,public appGlobal: AppGlobalProvider) {
       this.qindex = navParams.get("qindex");
@@ -47,7 +47,8 @@ export class SuervyPage {
   
     if(this.qindex == this.appGlobal.questionsList.length - 1)
     {
-      alert("Last Question");
+      this.is_last =1;
+      // alert("Last Question");
       console.log(this.appGlobal.answers)
       return
     }

@@ -163,9 +163,21 @@ sendNotificationToken() {
   // Maintenance Request
   createMaintenanceRequest(data) {
     try{
-    console.log("########################################"+ data);
-    debugger;
-    return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions());
+    
+   
+    return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions()).subscribe(data => {
+     
+     console.log("@@@@@respons"+data);
+      
+    }, err => {
+      console.log("error!")
+      console.log(Object.keys(err));
+   
+      
+     
+    
+    });
+
   }catch (ErrorHandler ){
     console.log("#####################",ErrorHandler)
     

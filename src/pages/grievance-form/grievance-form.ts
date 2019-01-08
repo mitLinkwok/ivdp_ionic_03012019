@@ -1,10 +1,11 @@
 import { Vibration } from '@ionic-native/vibration';
 import { AppGlobalProvider } from './../../providers/app-global/app-global';
 import { NgForm } from '@angular/forms';
-import { Camera, CameraOptions} from '@ionic-native/camera';
+import { Platform } from 'ionic-angular';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ToastController, LoadingController } from 'ionic-angular';
-import {DataSetterProvider} from "../../providers/data-setter/data-setter";
+import { DataSetterProvider } from "../../providers/data-setter/data-setter";
 import { DataGetterServiceProvider } from '../../providers/data-getter-service/data-getter-service';
 
 
@@ -21,44 +22,46 @@ import { DataGetterServiceProvider } from '../../providers/data-getter-service/d
   templateUrl: 'grievance-form.html',
 })
 export class GrievanceFormPage {
-  grievance={
-    title:"",
-    content:"",
-    idea_type:"idea",
-    grievance_type:"",
-    category:''
+  grievance = {
+    title: "",
+    content: "",
+    idea_type: "idea",
+    grievance_type: "",
+    category: ''
   }
   imageURI: any;
   imageFileName: any;
-  grievance_categories :any
-  public grievanceTypes :any
+  grievance_categories: any
+  public grievanceTypes: any
   AddKyc: any = []
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public dataSetterService: DataSetterProvider,
     public dataGetterService: DataGetterServiceProvider,
-    public events:Events,
-    public toastCtrl:ToastController,
+    public events: Events,
+    public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public appGlobal: AppGlobalProvider,
     private camera: Camera,
+    public platform: Platform,
     public vibration: Vibration) {
-      this.initMaintenanceRequest();
+    this.initMaintenanceRequest();
 
-    }
+  }
 
-    initMaintenanceRequest(){
-      this.AddKyc={
-        kyc_person_id:'',
-        kyc_person_type:'',
-        kyc_name:'',
-        kyc_detail:'',
-        kyc_number:'',
-        kyc_file:'',
-        user_id:''
-      };
-    
-      }
+  initMaintenanceRequest() {
+    this.AddKyc = {
+      kyc_person_id: '',
+      kyc_person_type: '',
+      kyc_name: '',
+      kyc_detail: '',
+      kyc_number: '',
+      kyc_file: '',
+      user_id: ''
+    };
+
+  }
 
   loadGrievanceCategories(ref) {
     let loading = this.loadingCtrl.create({
@@ -95,7 +98,7 @@ export class GrievanceFormPage {
         if (ref != null) {
           ref.complete();
         }
-        
+
       });
   }
 
@@ -103,7 +106,7 @@ export class GrievanceFormPage {
     this.loadGrievanceCategories(null);
   }
 
-  submitSR(d){
+  submitSR(d) {
     d["kyc_file"] = this.imageURI
 
     console.log("Create Grievance Request", d);
@@ -152,19 +155,26 @@ export class GrievanceFormPage {
 
   getImageFromCamera() {
     const options: CameraOptions = {
-      quality: 60,
+      quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: this.camera.PictureSourceType.CAMERA,
       cameraDirection: 0,
       correctOrientation: true,
-      saveToPhotoAlbum: true,
+      saveToPhotoAlbum: true
 
     };
-    this.camera.getPicture(options).then((imageData) => {
-      this.imageURI = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      console.log(err);
-      // this.presentToast(err);
+    this.platform.ready().then(() => {
+      if (this.platform.is('cordova')) {
+        this.camera.getPicture(options).then((imageData) => {
+          console.log("@@@@@@@@" + imageData);
+          this.imageURI = 'data:image/jpeg;base64,' + imageData;
+
+          alert(this.imageURI);
+        }, (err) => {
+          console.log(err);
+          // this.presentToast(err);
+        });
+      }
     });
   }
 
@@ -173,7 +183,7 @@ export class GrievanceFormPage {
       quality: 60,
       destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      correctOrientation: true,
+      correctOrientation: true
     };
 
     this.camera.getPicture(options).then((imageData) => {
@@ -184,7 +194,7 @@ export class GrievanceFormPage {
     });
   }
 
-  logForm(form: NgForm){
+  logForm(form: NgForm) {
     this.submitSR(form.value);
     // this.navCtrl.push(GrievancePage);
   }
@@ -192,5 +202,17 @@ export class GrievanceFormPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad GrievanceFormPage');
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
