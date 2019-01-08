@@ -1,6 +1,117 @@
 webpackJsonp([0],{
 
-/***/ 114:
+/***/ 100:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StationeryRequestPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stationery_request_form_stationery_request_form__ = __webpack_require__(162);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the StationeryRequestPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var StationeryRequestPage = /** @class */ (function () {
+    function StationeryRequestPage(navCtrl, navParams, dataGetterService, loadingCtrl, events, toastCtrl, appGlobal) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.dataGetterService = dataGetterService;
+        this.loadingCtrl = loadingCtrl;
+        this.events = events;
+        this.toastCtrl = toastCtrl;
+        this.appGlobal = appGlobal;
+        this.stationeryRequests = [];
+        this.queryText = '';
+        this.events.subscribe('reload:stationery-request', function (isNotification, id) {
+            _this.refreshStationeryRequestList(null);
+        });
+    }
+    StationeryRequestPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad StationeryRequestPage');
+    };
+    StationeryRequestPage.prototype.ionViewDidEnter = function () {
+        this.loadStationeryRequests(null);
+    };
+    StationeryRequestPage.prototype.refreshStationeryRequestList = function (reference) {
+        this.loadStationeryRequests(reference);
+    };
+    StationeryRequestPage.prototype.loadStationeryRequests = function (reference) {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        if (reference === null) {
+            loading.present();
+        }
+        this.dataGetterService.getAllStationeryRequests().subscribe(function (data) {
+            console.log("Stationery Requests Loaded", data);
+            if (data.success) {
+                _this.stationeryRequests = data.stationery_requests;
+            }
+            else {
+                _this.stationeryRequests = [];
+            }
+            loading.dismiss();
+            if (reference != null) {
+                reference.complete();
+            }
+        }, function (error) {
+            console.log(error);
+            _this.stationeryRequests = [];
+            var toast = _this.toastCtrl.create({
+                message: _this.appGlobal.ServerError,
+                duration: 3000
+            });
+            toast.present();
+            loading.dismiss();
+            if (reference != null) {
+                reference.complete();
+            }
+        });
+    };
+    StationeryRequestPage.prototype.goToStationeryRequestForm = function () {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__stationery_request_form_stationery_request_form__["a" /* StationeryRequestFormPage */]);
+    };
+    StationeryRequestPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-stationery-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/stationery-request/stationery-request.html"*/'<!--\n  Generated template for the StationeryRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Stationery Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshStationeryRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let stationeryRequest of stationeryRequests | search : {term:queryText,fields:[\'uid\',\'stationery\',\'requested_quantity\']}">\n      <div class="{{\'stationery_request_state_sidebar_\'+stationeryRequest.state}}">\n        <ion-card-header>\n          {{stationeryRequest.uid}}\n          <span class="pull-right sr-age">{{stationeryRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Stationery: <strong>{{stationeryRequest.stationery}}</strong></p>\n          <p>Requested Quantity: <strong>{{stationeryRequest.requested_quantity}}</strong></p>\n        </ion-card-content>\n\n        <ion-row *ngIf="stationeryRequest.closed">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{stationeryRequest.closer}}</strong></p>\n              <p>Closed At: <strong>{{stationeryRequest.closed_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{stationeryRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToStationeryRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/stationery-request/stationery-request.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["s" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__["a" /* AppGlobalProvider */]])
+    ], StationeryRequestPage);
+    return StationeryRequestPage;
+}());
+
+//# sourceMappingURL=stationery-request.js.map
+
+/***/ }),
+
+/***/ 116:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -89,7 +200,7 @@ var UserblockPage = /** @class */ (function () {
     };
     UserblockPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
-            selector: 'page-userblock',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/userblock/userblock.html"*/'<!--\n  Generated template for the UserblockPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton="true">\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="Empower">\n    </ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content center text-center padding>\n  <ion-refresher (ionRefresh)="refresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <h4>Profile incomplete..!!</h4>\n\n  <h5>\n    <!-- It looks like you are offline! Please check your network connection and try again. -->\n    <p>Please complete your profile on website and refresh.</p>\n  </h5>\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/userblock/userblock.html"*/,
+            selector: 'page-userblock',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/userblock/userblock.html"*/'<!--\n  Generated template for the UserblockPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton="true">\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="Empower">\n    </ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content center text-center padding>\n  <ion-refresher (ionRefresh)="refresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <h4>Profile incomplete..!!</h4>\n\n  <h5>\n    <!-- It looks like you are offline! Please check your network connection and try again. -->\n    <p>Please complete your profile on website and refresh.</p>\n  </h5>\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/userblock/userblock.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["q" /* NavParams */],
@@ -105,7 +216,7 @@ var UserblockPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 142:
+/***/ 143:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -199,7 +310,7 @@ var AccessCardRequestFormPage = /** @class */ (function () {
     };
     AccessCardRequestFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-access-card-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/access-card-request-form/access-card-request-form.html"*/'<!--\n  Generated template for the AccessCardRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Access Card Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Remarks</ion-label>\n      <ion-textarea autoresize [(ngModel)]="accessCardRequest.justification" name="justification" required></ion-textarea>\n    </ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create ID/Access Card Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/access-card-request-form/access-card-request-form.html"*/,
+            selector: 'page-access-card-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/access-card-request-form/access-card-request-form.html"*/'<!--\n  Generated template for the AccessCardRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Access Card Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Remarks</ion-label>\n      <ion-textarea autoresize [(ngModel)]="accessCardRequest.justification" name="justification" required></ion-textarea>\n    </ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create ID/Access Card Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/access-card-request-form/access-card-request-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -217,7 +328,7 @@ var AccessCardRequestFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 143:
+/***/ 144:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -315,7 +426,7 @@ var ArticleIndexPage = /** @class */ (function () {
         console.log('ionViewDidLoad ArticleIndexPage');
     };
     ArticleIndexPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/article-index/article-index.html"*/'<!--\n  Generated template for the ArticleIndexPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Articles</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content >\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-list *ngIf="articles.length > 0"> \n  <ion-card *ngFor="let article of articles | search : {term:queryText,fields:[\'title\',\'snippet\']} | sort: {property: field, order: order}"\n  (click)="goToArticle(article.id)" [ngStyle]="{\'background-color\': article.background_color}">\n      <!--<ion-card>-->\n      <ion-card-header>\n      <span class="bold-text" [ngStyle]="{\'color\': article.font_color}">\n          {{article.title}}\n        </span>\n      </ion-card-header>\n      <ion-card-content class="wrap-body" *ngIf="article.show_content" [ngStyle]="{\'color\': article.font_color}">\n        <div [innerHtml]="article.snippet | safeHtml">\n          <!--{{idea.content}}-->\n        </div>\n\n      </ion-card-content>\n      <ion-item [ngStyle]="{\'color\': article.font_color, \'background-color\': article.background_color}">\n        <h5 *ngIf="article.creator" [ngStyle]="{\'color\': article.font_color}">Created By: {{article.creator}}</h5>\n        <ion-badge item-end *ngIf="article.published_on">{{article.published_on}}</ion-badge>\n      </ion-item>\n      <!--</ion-card>-->\n\n    </ion-card>\n  </ion-list>\n\n  <ion-item *ngIf="articles.length === 0" text-center>\n    No Articles to be Shown\n  </ion-item>\n\n\n</ion-content>\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/article-index/article-index.html"*/,
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/article-index/article-index.html"*/'<!--\n  Generated template for the ArticleIndexPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Articles</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content >\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-list *ngIf="articles.length > 0"> \n  <ion-card *ngFor="let article of articles | search : {term:queryText,fields:[\'title\',\'snippet\']} | sort: {property: field, order: order}"\n  (click)="goToArticle(article.id)" [ngStyle]="{\'background-color\': article.background_color}">\n      <!--<ion-card>-->\n      <ion-card-header>\n      <span class="bold-text" [ngStyle]="{\'color\': article.font_color}">\n          {{article.title}}\n        </span>\n      </ion-card-header>\n      <ion-card-content class="wrap-body" *ngIf="article.show_content" [ngStyle]="{\'color\': article.font_color}">\n        <div [innerHtml]="article.snippet | safeHtml">\n          <!--{{idea.content}}-->\n        </div>\n\n      </ion-card-content>\n      <ion-item [ngStyle]="{\'color\': article.font_color, \'background-color\': article.background_color}">\n        <h5 *ngIf="article.creator" [ngStyle]="{\'color\': article.font_color}">Created By: {{article.creator}}</h5>\n        <ion-badge item-end *ngIf="article.published_on">{{article.published_on}}</ion-badge>\n      </ion-item>\n      <!--</ion-card>-->\n\n    </ion-card>\n  </ion-list>\n\n  <ion-item *ngIf="articles.length === 0" text-center>\n    No Articles to be Shown\n  </ion-item>\n\n\n</ion-content>\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/article-index/article-index.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_loading_loading_controller__["a" /* LoadingController */],
@@ -329,7 +440,7 @@ var ArticleIndexPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 144:
+/***/ 145:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -338,9 +449,9 @@ var ArticleIndexPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_toast_toast_controller__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_http__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_http__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__leave_details_leave_details__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__leave_details_leave_details__ = __webpack_require__(146);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -620,7 +731,7 @@ var CalendarViewPage = /** @class */ (function () {
     };
     CalendarViewPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-calendar-view',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/calendar-view/calendar-view.html"*/'<!--\n  Generated template for the CalendarViewPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n  <ion-header>\n\n    <ion-navbar>\n      <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n      </button>\n      <ion-title>Attendance</ion-title>\n    </ion-navbar>\n\n  </ion-header>\n\n\n\n\n<ion-content padding>\n\n  <ion-fab right bottom (click)="goToLeaveDetailsPage()">\n    <button ion-fab color="light"><ion-icon name="cog"></ion-icon></button>\n  </ion-fab>\n  <ion-calendar #calendar [holidays]="holidaysList" [attendance]="attendanceList" (onMonthSelect)="onMonthSelect($event)" (onDaySelect)="onDaySelect($event)"></ion-calendar>\n  <ion-buttons text-center>\n    <!-- <button ion-button (click)="calendar.toNextDay()">Next</button> -->\n    <button ion-button (click)="calendar.today()" clear>Today</button>\n    <!-- <button ion-button (click)="calendar.toPreviousDay()">Previous</button> -->\n  </ion-buttons>\n\n  <ion-card (swipe)="swipeEvent($event,calendar)">\n    <div *ngIf="isSelectedDayHoliday">\n      <ion-card-header>\n        <h3 class="text-left">{{calendar.getSelectedDateString()}}\n          <ion-badge class="pull-right" color="danger">Holiday</ion-badge>\n        </h3>\n      </ion-card-header>\n      <ion-card-content>\n        <span class="bold-text">{{calendar.getHolidayReason()}}</span>\n      </ion-card-content>\n    </div>\n    <div *ngIf="!isSelectedDayHoliday && attendance">\n      <ion-card-header>\n        <h3 class="text-left">{{attendance.for_date}}\n          <ion-badge class="pull-right">{{attendance.present}}</ion-badge>\n        </h3>\n      </ion-card-header>\n      <ion-card-content>\n      \n        <ion-row *ngIf="attendance.in_time" >\n          <p>In Time:\n            <span class="bold-text">{{attendance.in_time}}</span>\n          </p>\n        </ion-row>\n        <ion-row *ngIf="attendance.out_time">\n          <p>Out Time:\n            <span class="bold-text">{{attendance.out_time}}</span>\n          </p>\n        </ion-row>\n        <ion-row *ngIf="attendance.working_hours" >\n          <p>Working hours:\n            <span class="bold-text">{{attendance.working_hours}}</span>\n          </p>\n        </ion-row>\n\n      </ion-card-content>\n    </div>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/calendar-view/calendar-view.html"*/,
+            selector: 'page-calendar-view',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/calendar-view/calendar-view.html"*/'<!--\n  Generated template for the CalendarViewPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n  <ion-header>\n\n    <ion-navbar>\n      <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n      </button>\n      <ion-title>Attendance</ion-title>\n    </ion-navbar>\n\n  </ion-header>\n\n\n\n\n<ion-content padding>\n\n  <ion-fab right bottom (click)="goToLeaveDetailsPage()">\n    <button ion-fab color="light"><ion-icon name="cog"></ion-icon></button>\n  </ion-fab>\n  <ion-calendar #calendar [holidays]="holidaysList" [attendance]="attendanceList" (onMonthSelect)="onMonthSelect($event)" (onDaySelect)="onDaySelect($event)"></ion-calendar>\n  <ion-buttons text-center>\n    <!-- <button ion-button (click)="calendar.toNextDay()">Next</button> -->\n    <button ion-button (click)="calendar.today()" clear>Today</button>\n    <!-- <button ion-button (click)="calendar.toPreviousDay()">Previous</button> -->\n  </ion-buttons>\n\n  <ion-card (swipe)="swipeEvent($event,calendar)">\n    <div *ngIf="isSelectedDayHoliday">\n      <ion-card-header>\n        <h3 class="text-left">{{calendar.getSelectedDateString()}}\n          <ion-badge class="pull-right" color="danger">Holiday</ion-badge>\n        </h3>\n      </ion-card-header>\n      <ion-card-content>\n        <span class="bold-text">{{calendar.getHolidayReason()}}</span>\n      </ion-card-content>\n    </div>\n    <div *ngIf="!isSelectedDayHoliday && attendance">\n      <ion-card-header>\n        <h3 class="text-left">{{attendance.for_date}}\n          <ion-badge class="pull-right">{{attendance.present}}</ion-badge>\n        </h3>\n      </ion-card-header>\n      <ion-card-content>\n      \n        <ion-row *ngIf="attendance.in_time" >\n          <p>In Time:\n            <span class="bold-text">{{attendance.in_time}}</span>\n          </p>\n        </ion-row>\n        <ion-row *ngIf="attendance.out_time">\n          <p>Out Time:\n            <span class="bold-text">{{attendance.out_time}}</span>\n          </p>\n        </ion-row>\n        <ion-row *ngIf="attendance.working_hours" >\n          <p>Working hours:\n            <span class="bold-text">{{attendance.working_hours}}</span>\n          </p>\n        </ion-row>\n\n      </ion-card-content>\n    </div>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/calendar-view/calendar-view.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_5__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */],
@@ -634,7 +745,7 @@ var CalendarViewPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 145:
+/***/ 146:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -770,7 +881,7 @@ var LeaveDetailsPage = /** @class */ (function () {
     };
     LeaveDetailsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-leave-details',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-details/leave-details.html"*/'<!--\n  Generated template for the LeaveDetailsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>LeaveDetails</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n  <div padding>\n    <ion-segment [(ngModel)]="lts">\n      <ion-segment-button value="lt" >\n        Leaves Taken\n      </ion-segment-button>\n      <ion-segment-button value="hlds">\n        Holidays\n      </ion-segment-button>\n    </ion-segment>\n  </div>\n\n  <div [ngSwitch]="lts">\n    <div *ngSwitchCase="\'hlds\'">\n    <ion-list *ngIf="holidays.length > 0">\n      <ion-item *ngFor="let holiday of holidays">\n        <ion-grid>\n          <ion-row class="holiday-item">\n            <ion-col col-3><div class="day">{{holiday.day}}</div>\n              <div>{{holiday.month}}</div></ion-col>\n            <ion-col col-6 offset-3><h2>{{holiday.holiday_reason}}</h2>\n\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n\n\n      </ion-item>\n    </ion-list>\n    <ion-item *ngIf="holidays.length === 0" text-center>\n      No Holidays to be Shown\n    </ion-item>\n    </div>\n    <div *ngSwitchCase="\'lt\'">\n      <ion-list *ngIf="leaves.length > 0">\n        <ion-card *ngFor="let leave of leaves">\n          <ion-card-header>\n            <h3 class="text-left">{{leave.Leave_Code}} for {{leave.Leave_Period}} <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge></h3>\n\n          </ion-card-header>\n          <ion-card-content>\n\n            <ion-row class="text-left">\n              From: <span class="bold-text">{{leave.From_Date}}</span>\n            </ion-row>\n            <ion-row class="text-left">\n              To: <span class="bold-text">{{leave.To_Date}}</span>\n            </ion-row>\n            <ion-row class="text-left">\n              Reason: <span class="bold-text">{{leave.Leave_Reason}}</span>\n            </ion-row>\n          </ion-card-content>\n        </ion-card>\n\n\n\n      </ion-list>\n      <ion-item *ngIf="leaves.length === 0" text-center>\n        No Leaves to be Shown\n      </ion-item>\n    </div>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-details/leave-details.html"*/,
+            selector: 'page-leave-details',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-details/leave-details.html"*/'<!--\n  Generated template for the LeaveDetailsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>LeaveDetails</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n  <div padding>\n    <ion-segment [(ngModel)]="lts">\n      <ion-segment-button value="lt" >\n        Leaves Taken\n      </ion-segment-button>\n      <ion-segment-button value="hlds">\n        Holidays\n      </ion-segment-button>\n    </ion-segment>\n  </div>\n\n  <div [ngSwitch]="lts">\n    <div *ngSwitchCase="\'hlds\'">\n    <ion-list *ngIf="holidays.length > 0">\n      <ion-item *ngFor="let holiday of holidays">\n        <ion-grid>\n          <ion-row class="holiday-item">\n            <ion-col col-3><div class="day">{{holiday.day}}</div>\n              <div>{{holiday.month}}</div></ion-col>\n            <ion-col col-6 offset-3><h2>{{holiday.holiday_reason}}</h2>\n\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n\n\n      </ion-item>\n    </ion-list>\n    <ion-item *ngIf="holidays.length === 0" text-center>\n      No Holidays to be Shown\n    </ion-item>\n    </div>\n    <div *ngSwitchCase="\'lt\'">\n      <ion-list *ngIf="leaves.length > 0">\n        <ion-card *ngFor="let leave of leaves">\n          <ion-card-header>\n            <h3 class="text-left">{{leave.Leave_Code}} for {{leave.Leave_Period}} <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge></h3>\n\n          </ion-card-header>\n          <ion-card-content>\n\n            <ion-row class="text-left">\n              From: <span class="bold-text">{{leave.From_Date}}</span>\n            </ion-row>\n            <ion-row class="text-left">\n              To: <span class="bold-text">{{leave.To_Date}}</span>\n            </ion-row>\n            <ion-row class="text-left">\n              Reason: <span class="bold-text">{{leave.Leave_Reason}}</span>\n            </ion-row>\n          </ion-card-content>\n        </ion-card>\n\n\n\n      </ion-list>\n      <ion-item *ngIf="leaves.length === 0" text-center>\n        No Leaves to be Shown\n      </ion-item>\n    </div>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-details/leave-details.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */],
@@ -784,7 +895,7 @@ var LeaveDetailsPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 146:
+/***/ 147:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -930,7 +1041,7 @@ var CanteenFacilityPage = /** @class */ (function () {
     };
     CanteenFacilityPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-canteen-facility',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/canteen-facility/canteen-facility.html"*/'<!--\n  Generated template for the CanteenFacilityPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Canteen Facility</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<!--<ion-content padding>-->\n<!-- <ion-list no-border *ngFor="let date of dates">-->\n\n<!--    <ion-list-header>-->\n<!--      {{formatDate(date)}}-->\n<!--    </ion-list-header>-->\n\n<!--    <ion-item *ngFor="let category of categories">-->\n<!--    	 <ion-toggle checked="{{getLockedDataBoolean(category[1],customFormatDate(date))}}" (ionChange)="registerCanteenFacility($event,category[1]+\'_\'+customFormatDate(date))"  disabled="{{getDisabledDataBoolean(category[1],customFormatDate(date))}}"  ></ion-toggle>-->\n<!--      <ion-label>-->\n<!--        {{category[0]}}-->\n<!--      </ion-label>-->\n<!--      <ion-icon name=\'pizza\' item-start></ion-icon>-->\n\n<!--    </ion-item>-->\n\n<!--  </ion-list>-->\n\n\n\n<!--</ion-content>-->\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/canteen-facility/canteen-facility.html"*/,
+            selector: 'page-canteen-facility',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/canteen-facility/canteen-facility.html"*/'<!--\n  Generated template for the CanteenFacilityPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Canteen Facility</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<!--<ion-content padding>-->\n<!-- <ion-list no-border *ngFor="let date of dates">-->\n\n<!--    <ion-list-header>-->\n<!--      {{formatDate(date)}}-->\n<!--    </ion-list-header>-->\n\n<!--    <ion-item *ngFor="let category of categories">-->\n<!--    	 <ion-toggle checked="{{getLockedDataBoolean(category[1],customFormatDate(date))}}" (ionChange)="registerCanteenFacility($event,category[1]+\'_\'+customFormatDate(date))"  disabled="{{getDisabledDataBoolean(category[1],customFormatDate(date))}}"  ></ion-toggle>-->\n<!--      <ion-label>-->\n<!--        {{category[0]}}-->\n<!--      </ion-label>-->\n<!--      <ion-icon name=\'pizza\' item-start></ion-icon>-->\n\n<!--    </ion-item>-->\n\n<!--  </ion-list>-->\n\n\n\n<!--</ion-content>-->\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/canteen-facility/canteen-facility.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */], __WEBPACK_IMPORTED_MODULE_1__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ToastController */], __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */]])
     ], CanteenFacilityPage);
@@ -941,7 +1052,7 @@ var CanteenFacilityPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 147:
+/***/ 148:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1024,7 +1135,7 @@ var DirectoryPage = /** @class */ (function () {
     ], DirectoryPage.prototype, "nav", void 0);
     DirectoryPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-directory',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/directory/directory.html"*/'<!--\n  Generated template for the DirectoryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Directory</ion-title>\n  </ion-navbar>\n  <ion-toolbar>\n    <ion-searchbar\n      [(ngModel)]="searchQuery"\n      [debounce]="1000"\n      [placeholder]="\'Search Employee\'"\n      [autocorrect]="\'on\'"\n      [animated]="true"\n      [autocomplete]="\'on\'"\n      (ionInput)="onInput($event)"\n      (ionClear)="onClear($event)">\n    </ion-searchbar>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content>\n  <div class="search-spinner" *ngIf="isSearching">\n    <div class="search-spinner-background"></div>\n    <ion-spinner></ion-spinner>\n  </div>\n  <ion-list *ngIf="searchedUsers.length > 0">\n    <ion-item no-lines text-wrap class="bottom-border" *ngFor="let user of searchedUsers">\n      <ion-grid>\n        <ion-row class="user-item" (click)="openUserProfile(user.id)">\n          <ion-col col-3>\n            <ion-avatar item-start>\n              <img src="{{user.profile}}" style="width: 5em;height: 5em;border: 2px solid gray;max-width: fit-content;"/>\n            </ion-avatar>\n          </ion-col>\n          <ion-col col-9 text-left>\n            <div>{{user.employee_id}}</div>\n            <div>{{user.name}}</div>\n            <h2>{{user.email}}</h2>\n            <h2>{{user.designation}}</h2>\n            <h2>{{user.location}}</h2>\n            <h2>{{user.mobile? \'Mob: \'+user.mobile : \'\'}}</h2>\n            <h2>{{user.extension? \'Ext: \'+user.extension : \'\'}}</h2>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n  </ion-list>\n\n  <ion-list *ngIf="searchedUsers.length === 0" text-center>\n    <ion-item *ngIf="searchQuery === \'\'" text-wrap>\n      <h3>\n        To search employee details, use above search bar.\n      </h3>\n    </ion-item>\n    <ion-item *ngIf="searchQuery !== \'\' && !isSearching" text-wrap>\n      <h3>\n        User not found, Please search with another term.\n      </h3>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/directory/directory.html"*/,
+            selector: 'page-directory',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/directory/directory.html"*/'<!--\n  Generated template for the DirectoryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Directory</ion-title>\n  </ion-navbar>\n  <ion-toolbar>\n    <ion-searchbar\n      [(ngModel)]="searchQuery"\n      [debounce]="1000"\n      [placeholder]="\'Search Employee\'"\n      [autocorrect]="\'on\'"\n      [animated]="true"\n      [autocomplete]="\'on\'"\n      (ionInput)="onInput($event)"\n      (ionClear)="onClear($event)">\n    </ion-searchbar>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content>\n  <div class="search-spinner" *ngIf="isSearching">\n    <div class="search-spinner-background"></div>\n    <ion-spinner></ion-spinner>\n  </div>\n  <ion-list *ngIf="searchedUsers.length > 0">\n    <ion-item no-lines text-wrap class="bottom-border" *ngFor="let user of searchedUsers">\n      <ion-grid>\n        <ion-row class="user-item" (click)="openUserProfile(user.id)">\n          <ion-col col-3>\n            <ion-avatar item-start>\n              <img src="{{user.profile}}" style="width: 5em;height: 5em;border: 2px solid gray;max-width: fit-content;"/>\n            </ion-avatar>\n          </ion-col>\n          <ion-col col-9 text-left>\n            <div>{{user.employee_id}}</div>\n            <div>{{user.name}}</div>\n            <h2>{{user.email}}</h2>\n            <h2>{{user.designation}}</h2>\n            <h2>{{user.location}}</h2>\n            <h2>{{user.mobile? \'Mob: \'+user.mobile : \'\'}}</h2>\n            <h2>{{user.extension? \'Ext: \'+user.extension : \'\'}}</h2>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n  </ion-list>\n\n  <ion-list *ngIf="searchedUsers.length === 0" text-center>\n    <ion-item *ngIf="searchQuery === \'\'" text-wrap>\n      <h3>\n        To search employee details, use above search bar.\n      </h3>\n    </ion-item>\n    <ion-item *ngIf="searchQuery !== \'\' && !isSearching" text-wrap>\n      <h3>\n        User not found, Please search with another term.\n      </h3>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/directory/directory.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_0__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */]])
@@ -1033,182 +1144,6 @@ var DirectoryPage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=directory.js.map
-
-/***/ }),
-
-/***/ 148:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrievancePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__grievance_filter_grievance_filter__ = __webpack_require__(384);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__grievance_form_grievance_form__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-/**
- * Generated class for the GrievancePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var GrievancePage = /** @class */ (function () {
-    function GrievancePage(navCtrl, navParams, dataGetterService, loadingCtrl, events, modalCtrl, toastCtrl, appGlobal) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.dataGetterService = dataGetterService;
-        this.loadingCtrl = loadingCtrl;
-        this.events = events;
-        this.modalCtrl = modalCtrl;
-        this.toastCtrl = toastCtrl;
-        this.appGlobal = appGlobal;
-        this.grievance_m = [];
-        this.queryText = '';
-        this.grievanceWhoseList = [];
-        this.excludeWhoseGrievances = ["mine"];
-        this.descending = false;
-        this.order = -1;
-        this.field = 'updated_at';
-        this.events.subscribe('reload:grievance', function () {
-            _this.refreshSRList(null);
-        });
-    }
-    GrievancePage.prototype.sort = function () {
-        this.descending = !this.descending;
-        this.order = this.descending ? 1 : -1;
-    };
-    GrievancePage.prototype.loadGrievances = function (ref) {
-        var _this = this;
-        var loading = this.loadingCtrl.create({
-            content: 'Please wait...'
-        });
-        if (ref === null) {
-            loading.present();
-        }
-        this.dataGetterService.getGrievances()
-            .subscribe(function (data) {
-            console.log("kyc Loaded", data);
-            var a = true;
-            if (data.success || a) {
-                _this.grievance_m = data.data;
-                // this.grievance_m = data.grievances;
-                _this.grievances = data.grievances;
-                // this.grievanceWhoseList = _.uniq(this.grievances.map(grievance => grievance.whose)).sort();
-                // this.updateGrievances();
-            }
-            else {
-                // this.grievance_m = [];
-                _this.grievance_m = [];
-                // this.grievanceWhoseList = [];
-                _this.updateGrievances();
-            }
-            loading.dismiss();
-            if (ref != null) {
-                ref.complete();
-            }
-        }, function (err) {
-            console.log(err);
-            _this.grievance_m = [];
-            _this.grievances = [];
-            // this.grievanceWhoseList = [];
-            _this.updateGrievances();
-            var toast = _this.toastCtrl.create({
-                message: _this.appGlobal.ServerError,
-                duration: 3000
-            });
-            toast.present();
-            loading.dismiss();
-            if (ref != null) {
-                ref.complete();
-            }
-        });
-    };
-    GrievancePage.prototype.ionViewDidEnter = function () {
-        this.loadGrievances(null);
-    };
-    GrievancePage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad GrievancePage');
-    };
-    GrievancePage.prototype.refreshSRList = function (ev) {
-        this.loadGrievances(ev);
-    };
-    GrievancePage.prototype.goToSRForm = function () {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__grievance_form_grievance_form__["a" /* GrievanceFormPage */]);
-    };
-    GrievancePage.prototype.goToGrievance = function (id) {
-        console.log("@@click" + id);
-        // this.navCtrl.push(GrievanceShowPage,{
-        //   id:id,
-        // });
-    };
-    GrievancePage.prototype.presentFilter = function () {
-        var _this = this;
-        var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_1__grievance_filter_grievance_filter__["a" /* GrievanceFilterPage */], { excludeWhoseGrievances: this.excludeWhoseGrievances, grievanceWhoseList: this.grievanceWhoseList });
-        modal.present();
-        modal.onWillDismiss(function (grievanceWhose) {
-            if (grievanceWhose) {
-                _this.excludeWhoseGrievances = grievanceWhose;
-            }
-            _this.updateGrievances();
-        });
-    };
-    GrievancePage.prototype.updateGrievances = function () {
-        var _this = this;
-        this.grievance_m.shownGrievances = 0;
-        this.grievance_m.forEach(function (grievance) {
-            _this.filterGrievances(grievance, _this.excludeWhoseGrievances);
-            if (!grievance.hide) {
-                _this.grievance_m.shownGrievances++;
-            }
-        });
-        console.log("Final Showing", this.grievance_m);
-    };
-    GrievancePage.prototype.filterGrievances = function (grievance, excludeWhoseGrievances) {
-        var excludeWhoseGrievance = false;
-        if (excludeWhoseGrievances.indexOf(grievance.whose) !== -1) {
-            excludeWhoseGrievance = true;
-        }
-        grievance.hide = !(excludeWhoseGrievance);
-    };
-    GrievancePage.prototype.getLastActivity = function (updated_at) {
-        return __WEBPACK_IMPORTED_MODULE_6_moment__(updated_at).format("MMMM DD,YYYY hh:mm A");
-    };
-    GrievancePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-grievance',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance/grievance.html"*/'<!--\n  Generated template for the GrievancePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Kyc</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n    <ion-buttons end>\n      <button ion-button icon-only [disabled]="grievance_m.length === 0" (click)="presentFilter()">\n        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshSRList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n\n  <!-- <ion-list *ngIf="grievance_m.shownGrievances > 0"> -->\n      <ion-list>\n          <ion-card *ngFor="let grievance of grievance_m | search : {term:queryText,fields:[\'id\',\'kyc_number\',\'state\']} | sort: {property: field, order: order}" (click)="goToGrievance(grievance.id)" [hidden]="grievance.hide">\n            <div class="{{\'gr_state_sidebar_\'+ grievance.state}}">\n      \n            <!--<ion-card>-->\n            <ion-card-header>\n             \n              {{grievance.kyc_name}}\n              <span class="pull-right sr-age"> {{grievance.kyc_person_id}}</span>\n      \n            </ion-card-header>\n            <ion-card-content>\n                <p>Kyc Person Type:  <strong>{{grievance.kyc_person_type}}</strong></p>\n                <p>Kyc Details:      <strong>{{grievance.kyc_detail}}</strong></p>\n                <p>Kyc Number:       <strong>{{grievance.kyc_number}}</strong></p>\n                <p >Kyc File:        <strong> {{grievance.kyc_file}}</strong></p>\n               \n      \n            </ion-card-content>\n            <ion-row *ngIf="grievance_m.updated_at">\n              <ion-col>\n                <ion-note class="pull-right" style="color:black;">\n                  Last Activity: <b>{{getLastActivity(grievance_m.updated_at)}}</b>\n                </ion-note>\n              </ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col>\n                <ion-badge class="pull-right">{{grievance_m.state}}</ion-badge>\n              </ion-col>\n            </ion-row>\n           \n            </div>\n          </ion-card>\n        </ion-list>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    <!-- <ion-list>\n    <ion-card *ngFor="let grievance of grievance_m | search : {term:queryText,fields:[\'uid\',\'content\',\'state\']} | sort: {property: field, order: order}" (click)="goToGrievance(grievance.uid)" [hidden]="grievance.hide">\n      <div class="{{\'gr_state_sidebar_\'+grievance.state}}">\n\n     \n      <ion-card-header>\n        {{grievance_m.kyc_person_id}}\n        <span class="pull-right sr-age">{{grievance_m.kyc_name}}</span>\n\n      </ion-card-header>\n      <ion-card-content>\n        <div [innerHtml]="\'<div>\'+grievance.content.substring(0,150)+\'....</div>\'">\n       \n        </div>\n     \n      </ion-card-content>\n      <ion-row *ngIf="grievance.updated_at">\n        <ion-col>\n          <ion-note class="pull-right" style="color:black;">\n            Last Activity: <b>{{getLastActivity(grievance.updated_at)}}</b>\n          </ion-note>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-badge class="pull-right">{{grievance.state}}</ion-badge>\n        </ion-col>\n      </ion-row>\n     \n      </div>\n    </ion-card>\n  </ion-list> -->\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToSRForm()"><ion-icon name="add"></ion-icon></button>\n  </ion-fab>\n\n  <ion-item *ngIf="grievance_m.shownGrievances === 0" text-center>\n    No Grievance to be Shown\n  </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance/grievance.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["n" /* ModalController */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__["a" /* AppGlobalProvider */]])
-    ], GrievancePage);
-    return GrievancePage;
-}());
-
-//# sourceMappingURL=grievance.js.map
 
 /***/ }),
 
@@ -1399,7 +1334,7 @@ var GrievanceFormPage = /** @class */ (function () {
     };
     GrievanceFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
-            selector: 'page-grievance-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance-form/grievance-form.html"*/'<!--\n  Generated template for the GrievanceFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Add kyc</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n    <form #form="ngForm"  >\n        <ion-list>\n    \n    \n            <ion-item>\n                <ion-label stacked floating color="primary">kyc Person ID</ion-label>\n               <ion-input name="kyc_person_id" type="text" [(ngModel)]="AddKyc.kyc_person_id" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">User ID</ion-label>\n               <ion-input name="user_id" type="text" [(ngModel)]="AddKyc.user_id" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">Person Type</ion-label>\n               <ion-input name="kyc_person_type" type="text" [(ngModel)]="AddKyc.kyc_person_type" required></ion-input>\n             </ion-item>\n            <ion-item>\n                <ion-label stacked floating color="primary">Document Name</ion-label>\n               <ion-input name="kyc_name" type="text" [(ngModel)]="AddKyc.kyc_name" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">Document Details</ion-label>\n               <ion-input name="kyc_detail" type="text" [(ngModel)]="AddKyc.kyc_detail" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">Document Number</ion-label>\n               <ion-input name="kyc_number" type="text" [(ngModel)]="AddKyc.kyc_number" required></ion-input>\n             </ion-item>\n             <!-- <ion-item>\n                <ion-label stacked floating color="primary">Document Image</ion-label>\n                <ion-input  type="text"  ></ion-input> -->\n            <!-- </ion-item>  -->\n         </ion-list>\n         <ion-label stacked floating color="primary">Document Image</ion-label>\n       \n         <ion-item *ngIf="imageURI" name="kyc_file" [(ngModel)]="AddKyc.kyc_file" required >\n           \n            <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />\n          </ion-item>\n          <ion-buttons>\n            <ion-grid>\n              <ion-row>\n                <ion-col>\n                  <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n                </ion-col>\n                <ion-col>\n                  <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n          </ion-buttons>\n    \n         \n\n\n        <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit </button>  \n      \n      </form>\n    </ion-content>\n\n\n\n\n\n\n\n\n\n\n\n\n  <!-- <form  #form="ngForm">\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" [(ngModel)]="grievance.title" name="title" placeholder="Enter title of your grievance" required></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label>Grievance Type</ion-label>\n        <ion-select [(ngModel)]="grievance.grievance_type" name="grievance_type" required interface="popover">\n          <ion-option value="Individual Grievance">Individual Grievance</ion-option>\n          <ion-option value="Group Grievance">Group Grievance</ion-option>\n          <ion-option value="Policy Issue">Policy Issue</ion-option>\n        </ion-select>\n      </ion-item>\n    <!-- </ion-list> -->\n    <!-- <ion-list> -->\n      <!-- <ion-item>\n        <ion-label>Category</ion-label>\n          <ion-select [(ngModel)]="grievance.category" name="category" required interface="popover">\n            <ion-option value={{grievance_category.uuid}}  *ngFor="let grievance_category of grievance_categories" >{{grievance_category.name}}</ion-option>\n            <!--<ion-option value="Group Grievance">Group Grievance</ion-option>-->\n            <!--<ion-option value="Policy Issue">Policy Issue</ion-option>-->\n          <!-- </ion-select>\n      </ion-item>\n      <ion-item>\n        <ion-textarea [(ngModel)]="grievance.content" name="content" rows="5" placeholder="Enter Description" required></ion-textarea>\n      </ion-item>\n    </ion-list>\n    <ion-item *ngIf="imageURI">\n      <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />\n    </ion-item>\n    <ion-buttons>\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-buttons>\n    <button ion-button type="submit" [disabled]="!form.valid" (click)="logForm(form)" block>Add Grievance</button>\n  </form> --> \n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance-form/grievance-form.html"*/,
+            selector: 'page-grievance-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance-form/grievance-form.html"*/'<!--\n  Generated template for the GrievanceFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Add kyc</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n \n<!-- <ion-content padding> -->\n\n    <!-- <form #form="ngForm"  >         <ion-list>\n    \n    \n            <ion-item>\n                <ion-label stacked floating color="primary">kyc Person ID</ion-label>\n               <ion-input name="kyc_person_id" type="text" [(ngModel)]="AddKyc.kyc_person_id" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">User ID</ion-label>\n               <ion-input name="user_id" type="text" [(ngModel)]="AddKyc.user_id" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">Person Type</ion-label>\n               <ion-input name="kyc_person_type" type="text" [(ngModel)]="AddKyc.kyc_person_type" required></ion-input>\n             </ion-item>\n            <ion-item>\n                <ion-label stacked floating color="primary">Document Name</ion-label>\n               <ion-input name="kyc_name" type="text" [(ngModel)]="AddKyc.kyc_name" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">Document Details</ion-label>\n               <ion-input name="kyc_detail" type="text" [(ngModel)]="AddKyc.kyc_detail" required></ion-input>\n             </ion-item>\n             <ion-item>\n                <ion-label stacked floating color="primary">Document Number</ion-label>\n               <ion-input name="kyc_number" type="text" [(ngModel)]="AddKyc.kyc_number" required></ion-input>\n             </ion-item>\n              <ion-item>\n                <ion-label stacked floating color="primary">Document Image</ion-label>\n                <ion-input  type="text"  ></ion-input>\n           </ion-item> \n        </ion-list>\n         <ion-label stacked floating color="primary">Document Image</ion-label>\n       \n         <ion-item *ngIf="imageURI" name="kyc_file" [(ngModel)]="AddKyc.kyc_file" required >\n           \n            <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />\n          </ion-item> \n              <ion-item *ngIf="imageURI">\n            <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />\n          </ion-item> ionic cordova plugin add cordova-sqlite-storage\n -->\n\n          <!--<ion-buttons>\n            <ion-grid>\n              <ion-row>\n                <ion-col>\n                  <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n                </ion-col>\n                <ion-col>\n                  <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n          </ion-buttons>\n\n    \n         \n\n\n        <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit </button>  \n      \n      </form>\n    </ion-content> -->\n\n\n\n\n\n\n\n\n\n\n\n<ion-content padding>\n  <form  #form="ngForm">\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" [(ngModel)]="grievance.title" name="title" placeholder="Enter title of your grievance" required></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label>Grievance Type</ion-label>\n        <ion-select [(ngModel)]="grievance.grievance_type" name="grievance_type" required interface="popover">\n          <ion-option value="Individual Grievance">Individual Grievance</ion-option>\n          <ion-option value="Group Grievance">Group Grievance</ion-option>\n          <ion-option value="Policy Issue">Policy Issue</ion-option>\n        </ion-select>\n      </ion-item>\n    </ion-list>\n    <ion-list>\n    <ion-item>\n        <ion-label>Category</ion-label>\n          <ion-select [(ngModel)]="grievance.category" name="category" required interface="popover">\n            <ion-option value={{grievance_category.uuid}}  *ngFor="let grievance_category of grievance_categories" >{{grievance_category.name}}</ion-option>\n            <ion-option value="Group Grievance">Group Grievance</ion-option>-->\n        <ion-option value="Policy Issue">Policy Issue</ion-option>-->\n      </ion-select>\n      </ion-item>\n      <ion-item>\n        <ion-textarea [(ngModel)]="grievance.content" name="content" rows="5" placeholder="Enter Description" required></ion-textarea>\n      </ion-item>\n    </ion-list>\n    <ion-item *ngIf="imageURI">\n      <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />\n    </ion-item>\n    <ion-buttons>\n      <ion-grid>\n        <ion-row> \n         <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-buttons>\n    <button ion-button type="submit" [disabled]="!form.valid" (click)="logForm(form)" block>Add Grievance</button> \n  </form>  \n </ion-content> \n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance-form/grievance-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["q" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
@@ -1425,7 +1360,7 @@ var GrievanceFormPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DataSetterProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_loading_loading_controller__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_data_ts__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_global_app_global__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(2);
@@ -1619,7 +1554,7 @@ var DataSetterProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 150:
+/***/ 155:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1908,7 +1843,7 @@ var GuestLunchFormPage = /** @class */ (function () {
     };
     GuestLunchFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-guest-lunch-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-lunch-form/guest-lunch-form.html"*/'<!--\n  Generated template for the GuestLunchFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Guest Lunch Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label fixed color="primary">No. of Guests</ion-label>\n      <ion-input type="number"  text-right  [(ngModel)]="guestLunch.no_of_people" name="no_of_people"\n                 placeholder="Enter No. of Guests" min="1" max="50" step="1" pattern="(0*)([1-9])+(0*)" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Date of Lunch</ion-label>\n      <ion-datetime [(ngModel)]="guestLunch.date_of_lunch" name="date_of_lunch" displayFormat="DDDD MMM DD, YYYY"\n                    min="{{minDate}}" placeholder="Select Date" required (ionChange)="performValidation(\'date\')"></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Location</ion-label>\n      <ion-select  [(ngModel)]="guestLunch.lunch_location" name="lunch_location" (ionChange)="performValidation(\'loc\')">\n        <ion-option *ngFor="let l of lunchLocations" [value]="l">{{l}}</ion-option>\n\n\n      </ion-select>\n    </ion-item>\n\n   <ion-item *ngIf="displayCategories">\n      <ion-label>Category</ion-label>\n      <ion-select  [(ngModel)]="guestLunch.lunch_category" name="lunch_category">\n\n        <ion-option *ngFor="let category of listedCategories" [value]="category[1]" >{{category[0]}}</ion-option>\n\n\n      </ion-select>\n    </ion-item>\n\n\n  <ion-item *ngFor="let t of lunchTypes" >\n      <ion-label>{{t[0]}}</ion-label>\n      <ion-input type="number" text-right [(ngModel)]="guestLunch[t[1]]" name="{{t[1]}}" min="0" max="50" step="1" pattern="([0-9])+" required aria-placeholder="Enter number">\n      </ion-input>\n    </ion-item>\n\n\n<ion-item>\n  <ion-textarea [(ngModel)]="guestLunch.remarks" name="remarks"\n             placeholder="Enter remarks if any" ></ion-textarea>\n\n</ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Guest Lunch Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-lunch-form/guest-lunch-form.html"*/,
+            selector: 'page-guest-lunch-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-lunch-form/guest-lunch-form.html"*/'<!--\n  Generated template for the GuestLunchFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Guest Lunch Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label fixed color="primary">No. of Guests</ion-label>\n      <ion-input type="number"  text-right  [(ngModel)]="guestLunch.no_of_people" name="no_of_people"\n                 placeholder="Enter No. of Guests" min="1" max="50" step="1" pattern="(0*)([1-9])+(0*)" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Date of Lunch</ion-label>\n      <ion-datetime [(ngModel)]="guestLunch.date_of_lunch" name="date_of_lunch" displayFormat="DDDD MMM DD, YYYY"\n                    min="{{minDate}}" placeholder="Select Date" required (ionChange)="performValidation(\'date\')"></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Location</ion-label>\n      <ion-select  [(ngModel)]="guestLunch.lunch_location" name="lunch_location" (ionChange)="performValidation(\'loc\')">\n        <ion-option *ngFor="let l of lunchLocations" [value]="l">{{l}}</ion-option>\n\n\n      </ion-select>\n    </ion-item>\n\n   <ion-item *ngIf="displayCategories">\n      <ion-label>Category</ion-label>\n      <ion-select  [(ngModel)]="guestLunch.lunch_category" name="lunch_category">\n\n        <ion-option *ngFor="let category of listedCategories" [value]="category[1]" >{{category[0]}}</ion-option>\n\n\n      </ion-select>\n    </ion-item>\n\n\n  <ion-item *ngFor="let t of lunchTypes" >\n      <ion-label>{{t[0]}}</ion-label>\n      <ion-input type="number" text-right [(ngModel)]="guestLunch[t[1]]" name="{{t[1]}}" min="0" max="50" step="1" pattern="([0-9])+" required aria-placeholder="Enter number">\n      </ion-input>\n    </ion-item>\n\n\n<ion-item>\n  <ion-textarea [(ngModel)]="guestLunch.remarks" name="remarks"\n             placeholder="Enter remarks if any" ></ion-textarea>\n\n</ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Guest Lunch Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-lunch-form/guest-lunch-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -1927,7 +1862,183 @@ var GuestLunchFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 151:
+/***/ 156:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrievancePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__grievance_filter_grievance_filter__ = __webpack_require__(385);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__grievance_form_grievance_form__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+/**
+ * Generated class for the GrievancePage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var GrievancePage = /** @class */ (function () {
+    function GrievancePage(navCtrl, navParams, dataGetterService, loadingCtrl, events, modalCtrl, toastCtrl, appGlobal) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.dataGetterService = dataGetterService;
+        this.loadingCtrl = loadingCtrl;
+        this.events = events;
+        this.modalCtrl = modalCtrl;
+        this.toastCtrl = toastCtrl;
+        this.appGlobal = appGlobal;
+        this.grievance_m = [];
+        this.queryText = '';
+        this.grievanceWhoseList = [];
+        this.excludeWhoseGrievances = ["mine"];
+        this.descending = false;
+        this.order = -1;
+        this.field = 'updated_at';
+        this.events.subscribe('reload:grievance', function () {
+            _this.refreshSRList(null);
+        });
+    }
+    GrievancePage.prototype.sort = function () {
+        this.descending = !this.descending;
+        this.order = this.descending ? 1 : -1;
+    };
+    GrievancePage.prototype.loadGrievances = function (ref) {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        if (ref === null) {
+            loading.present();
+        }
+        this.dataGetterService.getGrievances()
+            .subscribe(function (data) {
+            console.log("kyc Loaded", data);
+            var a = true;
+            if (data.success || a) {
+                _this.grievance_m = data.data;
+                // this.grievance_m = data.grievances;
+                _this.grievances = data.grievances;
+                // this.grievanceWhoseList = _.uniq(this.grievances.map(grievance => grievance.whose)).sort();
+                // this.updateGrievances();
+            }
+            else {
+                // this.grievance_m = [];
+                _this.grievance_m = [];
+                // this.grievanceWhoseList = [];
+                _this.updateGrievances();
+            }
+            loading.dismiss();
+            if (ref != null) {
+                ref.complete();
+            }
+        }, function (err) {
+            console.log(err);
+            _this.grievance_m = [];
+            _this.grievances = [];
+            // this.grievanceWhoseList = [];
+            _this.updateGrievances();
+            var toast = _this.toastCtrl.create({
+                message: _this.appGlobal.ServerError,
+                duration: 3000
+            });
+            toast.present();
+            loading.dismiss();
+            if (ref != null) {
+                ref.complete();
+            }
+        });
+    };
+    GrievancePage.prototype.ionViewDidEnter = function () {
+        this.loadGrievances(null);
+    };
+    GrievancePage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad GrievancePage');
+    };
+    GrievancePage.prototype.refreshSRList = function (ev) {
+        this.loadGrievances(ev);
+    };
+    GrievancePage.prototype.goToSRForm = function () {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__grievance_form_grievance_form__["a" /* GrievanceFormPage */]);
+    };
+    GrievancePage.prototype.goToGrievance = function (id) {
+        console.log("@@click" + id);
+        // this.navCtrl.push(GrievanceShowPage,{
+        //   id:id,
+        // });
+    };
+    GrievancePage.prototype.presentFilter = function () {
+        var _this = this;
+        var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_1__grievance_filter_grievance_filter__["a" /* GrievanceFilterPage */], { excludeWhoseGrievances: this.excludeWhoseGrievances, grievanceWhoseList: this.grievanceWhoseList });
+        modal.present();
+        modal.onWillDismiss(function (grievanceWhose) {
+            if (grievanceWhose) {
+                _this.excludeWhoseGrievances = grievanceWhose;
+            }
+            _this.updateGrievances();
+        });
+    };
+    GrievancePage.prototype.updateGrievances = function () {
+        var _this = this;
+        this.grievance_m.shownGrievances = 0;
+        this.grievance_m.forEach(function (grievance) {
+            _this.filterGrievances(grievance, _this.excludeWhoseGrievances);
+            if (!grievance.hide) {
+                _this.grievance_m.shownGrievances++;
+            }
+        });
+        console.log("Final Showing", this.grievance_m);
+    };
+    GrievancePage.prototype.filterGrievances = function (grievance, excludeWhoseGrievances) {
+        var excludeWhoseGrievance = false;
+        if (excludeWhoseGrievances.indexOf(grievance.whose) !== -1) {
+            excludeWhoseGrievance = true;
+        }
+        grievance.hide = !(excludeWhoseGrievance);
+    };
+    GrievancePage.prototype.getLastActivity = function (updated_at) {
+        return __WEBPACK_IMPORTED_MODULE_6_moment__(updated_at).format("MMMM DD,YYYY hh:mm A");
+    };
+    GrievancePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
+            selector: 'page-grievance',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance/grievance.html"*/'<!--\n  Generated template for the GrievancePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Kyc</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n    <ion-buttons end>\n      <button ion-button icon-only [disabled]="grievance_m.length === 0" (click)="presentFilter()">\n        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshSRList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n\n  <!-- <ion-list *ngIf="grievance_m.shownGrievances > 0"> -->\n      <ion-list>\n          <ion-card *ngFor="let grievance of grievance_m | search : {term:queryText,fields:[\'id\',\'kyc_number\',\'state\']} | sort: {property: field, order: order}" (click)="goToGrievance(grievance.id)" [hidden]="grievance.hide">\n            <div class="{{\'gr_state_sidebar_\'+ grievance.state}}">\n      \n            <!--<ion-card>-->\n            <ion-card-header>\n             \n              {{grievance.kyc_name}}\n              <span class="pull-right sr-age"> {{grievance.kyc_person_id}}</span>\n      \n            </ion-card-header>\n            <ion-card-content>\n                <p>Kyc Person Type:  <strong>{{grievance.kyc_person_type}}</strong></p>\n                <p>Kyc Details:      <strong>{{grievance.kyc_detail}}</strong></p>\n                <p>Kyc Number:       <strong>{{grievance.kyc_number}}</strong></p>\n                <p >Kyc File:        <strong> {{grievance.kyc_file}}</strong></p>\n               \n      \n            </ion-card-content>\n            <ion-row *ngIf="grievance_m.updated_at">\n              <ion-col>\n                <ion-note class="pull-right" style="color:black;">\n                  Last Activity: <b>{{getLastActivity(grievance_m.updated_at)}}</b>\n                </ion-note>\n              </ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col>\n                <ion-badge class="pull-right">{{grievance_m.state}}</ion-badge>\n              </ion-col>\n            </ion-row>\n           \n            </div>\n          </ion-card>\n        </ion-list>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    <!-- <ion-list>\n    <ion-card *ngFor="let grievance of grievance_m | search : {term:queryText,fields:[\'uid\',\'content\',\'state\']} | sort: {property: field, order: order}" (click)="goToGrievance(grievance.uid)" [hidden]="grievance.hide">\n      <div class="{{\'gr_state_sidebar_\'+grievance.state}}">\n\n     \n      <ion-card-header>\n        {{grievance_m.kyc_person_id}}\n        <span class="pull-right sr-age">{{grievance_m.kyc_name}}</span>\n\n      </ion-card-header>\n      <ion-card-content>\n        <div [innerHtml]="\'<div>\'+grievance.content.substring(0,150)+\'....</div>\'">\n       \n        </div>\n     \n      </ion-card-content>\n      <ion-row *ngIf="grievance.updated_at">\n        <ion-col>\n          <ion-note class="pull-right" style="color:black;">\n            Last Activity: <b>{{getLastActivity(grievance.updated_at)}}</b>\n          </ion-note>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-badge class="pull-right">{{grievance.state}}</ion-badge>\n        </ion-col>\n      </ion-row>\n     \n      </div>\n    </ion-card>\n  </ion-list> -->\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToSRForm()"><ion-icon name="add"></ion-icon></button>\n  </ion-fab>\n\n  <ion-item *ngIf="grievance_m.shownGrievances === 0" text-center>\n    No Grievance to be Shown\n  </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance/grievance.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["n" /* ModalController */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__["a" /* AppGlobalProvider */]])
+    ], GrievancePage);
+    return GrievancePage;
+}());
+
+//# sourceMappingURL=grievance.js.map
+
+/***/ }),
+
+/***/ 157:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2080,7 +2191,7 @@ var GuestRoomRequestFormPage = /** @class */ (function () {
     };
     GuestRoomRequestFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-guest-room-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-room-request-form/guest-room-request-form.html"*/'<!--\n  Generated template for the GuestRoomRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Guest House Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Address</ion-label>\n      <ion-select [(ngModel)]="guestRoomRequest.address" name="address" placeholder="Select Address"\n                  required interface="popover">\n        <ion-option value={{room.uid}} *ngFor="let room of rooms">{{room.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Check In</ion-label>\n      <ion-datetime [(ngModel)]="guestRoomRequest.check_in" name="check_in" displayFormat="DDDD MMM DD, YYYY HH:mm"\n                    min="{{minDate}}" placeholder="Select Date & Time" required></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Check Out</ion-label>\n      <ion-datetime [(ngModel)]="guestRoomRequest.check_out" name="check_out" displayFormat="DDDD MMM DD, YYYY HH:mm"\n                    min="{{guestRoomRequest.check_in}}" placeholder="Select Date & Time" required></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary">Number of Guests</ion-label>\n      <ion-input type="number" [(ngModel)]="guestRoomRequest.number_of_guest" name="number_of_guest"\n                 min="1" placeholder="Select Number of Guests" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Single Lady</ion-label>\n      <ion-checkbox [(ngModel)]="guestRoomRequest.single_lady" name="single_lady"></ion-checkbox>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Single Room</ion-label>\n      <ion-checkbox [(ngModel)]="guestRoomRequest.single_bed" name="single_bed"></ion-checkbox>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-label color="primary" stacked>Details</ion-label>\n      <ion-textarea autoresize [(ngModel)]="guestRoomRequest.detail" name="detail"></ion-textarea>\n    </ion-item>\n\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Guest House Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-room-request-form/guest-room-request-form.html"*/,
+            selector: 'page-guest-room-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-room-request-form/guest-room-request-form.html"*/'<!--\n  Generated template for the GuestRoomRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Guest House Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Address</ion-label>\n      <ion-select [(ngModel)]="guestRoomRequest.address" name="address" placeholder="Select Address"\n                  required interface="popover">\n        <ion-option value={{room.uid}} *ngFor="let room of rooms">{{room.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Check In</ion-label>\n      <ion-datetime [(ngModel)]="guestRoomRequest.check_in" name="check_in" displayFormat="DDDD MMM DD, YYYY HH:mm"\n                    min="{{minDate}}" placeholder="Select Date & Time" required></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Check Out</ion-label>\n      <ion-datetime [(ngModel)]="guestRoomRequest.check_out" name="check_out" displayFormat="DDDD MMM DD, YYYY HH:mm"\n                    min="{{guestRoomRequest.check_in}}" placeholder="Select Date & Time" required></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary">Number of Guests</ion-label>\n      <ion-input type="number" [(ngModel)]="guestRoomRequest.number_of_guest" name="number_of_guest"\n                 min="1" placeholder="Select Number of Guests" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Single Lady</ion-label>\n      <ion-checkbox [(ngModel)]="guestRoomRequest.single_lady" name="single_lady"></ion-checkbox>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Single Room</ion-label>\n      <ion-checkbox [(ngModel)]="guestRoomRequest.single_bed" name="single_bed"></ion-checkbox>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-label color="primary" stacked>Details</ion-label>\n      <ion-textarea autoresize [(ngModel)]="guestRoomRequest.detail" name="detail"></ion-textarea>\n    </ion-item>\n\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Guest House Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-room-request-form/guest-room-request-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -2099,7 +2210,7 @@ var GuestRoomRequestFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 157:
+/***/ 158:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2108,8 +2219,8 @@ var GuestRoomRequestFormPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__guest_room_request_form_guest_room_request_form__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__guest_room_request_show_guest_room_request_show__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__guest_room_request_form_guest_room_request_form__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__guest_room_request_show_guest_room_request_show__ = __webpack_require__(71);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2199,7 +2310,7 @@ var GuestRoomRequestPage = /** @class */ (function () {
     };
     GuestRoomRequestPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-guest-room-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-room-request/guest-room-request.html"*/'<!--\n  Generated template for the GuestRoomRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Guest House Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshGuestRoomRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let guestRoomRequest of guestRoomRequests | search : {term:queryText,fields:[\'uid\',\'address\',\'number_of_guest\', \'check_in\', \'check_out\', \'detail\']}"\n      (click)="goToGuestRoomRequest(guestRoomRequest.uid)">\n      <div class="{{\'guest_room_request_state_sidebar_\'+guestRoomRequest.state}}">\n        <ion-card-header>\n          {{guestRoomRequest.uid}}\n          <span class="pull-right sr-age">{{guestRoomRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Address: <strong>{{guestRoomRequest.address}}</strong></p>\n          <p>Number of Guest: <strong>{{guestRoomRequest.number_of_guest}}</strong></p>\n          <p>Check In: <strong>{{guestRoomRequest.check_in}}</strong></p>\n          <p>Check Out: <strong>{{guestRoomRequest.check_out}}</strong></p>\n        </ion-card-content>\n\n        <ion-row *ngIf="guestRoomRequest.approved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{guestRoomRequest.approver}}</strong></p>\n              <p>Approved At: <strong>{{guestRoomRequest.approved_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{guestRoomRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToGuestRoomRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-room-request/guest-room-request.html"*/,
+            selector: 'page-guest-room-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-room-request/guest-room-request.html"*/'<!--\n  Generated template for the GuestRoomRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Guest House Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshGuestRoomRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let guestRoomRequest of guestRoomRequests | search : {term:queryText,fields:[\'uid\',\'address\',\'number_of_guest\', \'check_in\', \'check_out\', \'detail\']}"\n      (click)="goToGuestRoomRequest(guestRoomRequest.uid)">\n      <div class="{{\'guest_room_request_state_sidebar_\'+guestRoomRequest.state}}">\n        <ion-card-header>\n          {{guestRoomRequest.uid}}\n          <span class="pull-right sr-age">{{guestRoomRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Address: <strong>{{guestRoomRequest.address}}</strong></p>\n          <p>Number of Guest: <strong>{{guestRoomRequest.number_of_guest}}</strong></p>\n          <p>Check In: <strong>{{guestRoomRequest.check_in}}</strong></p>\n          <p>Check Out: <strong>{{guestRoomRequest.check_out}}</strong></p>\n        </ion-card-content>\n\n        <ion-row *ngIf="guestRoomRequest.approved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{guestRoomRequest.approver}}</strong></p>\n              <p>Approved At: <strong>{{guestRoomRequest.approved_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{guestRoomRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToGuestRoomRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-room-request/guest-room-request.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -2216,7 +2327,7 @@ var GuestRoomRequestPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 158:
+/***/ 159:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2278,7 +2389,7 @@ var IntroPage = /** @class */ (function () {
     };
     IntroPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-intro',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/intro/intro.html"*/'<ion-content>\n  <ion-slides pager="false" parallax="true" padding>\n\n    <ion-slide *ngFor="let item of introContent">\n      <h2>{{item.title}}</h2>\n      <img src="{{item.image}}" alt="{{item.image}}">\n      <h4>\n        <div [innerHtml]="item.content"></div>\n      </h4>\n    </ion-slide>\n\n\n    <ion-slide>\n      <img src="assets/img/appicon.png">\n      <h1>Get started now!</h1>\n      <button ion-button outline small (click)="navHome()">\n        Start using the app\n      </button>\n    </ion-slide>\n\n  </ion-slides>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/intro/intro.html"*/
+            selector: 'page-intro',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/intro/intro.html"*/'<ion-content>\n  <ion-slides pager="false" parallax="true" padding>\n\n    <ion-slide *ngFor="let item of introContent">\n      <h2>{{item.title}}</h2>\n      <img src="{{item.image}}" alt="{{item.image}}">\n      <h4>\n        <div [innerHtml]="item.content"></div>\n      </h4>\n    </ion-slide>\n\n\n    <ion-slide>\n      <img src="assets/img/appicon.png">\n      <h1>Get started now!</h1>\n      <button ion-button outline small (click)="navHome()">\n        Start using the app\n      </button>\n    </ion-slide>\n\n  </ion-slides>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/intro/intro.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */]])
     ], IntroPage);
@@ -2289,7 +2400,7 @@ var IntroPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 159:
+/***/ 160:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2441,7 +2552,7 @@ var VisitingCardFormPage = /** @class */ (function () {
     };
     VisitingCardFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-visiting-card-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/visiting-card-form/visiting-card-form.html"*/'<!--\n  Generated template for the VisitingCardFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Visiting Card Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Company Name</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.company_name" name="company_name" readonly></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Company Address</ion-label>\n      <ion-textarea autoresize [(ngModel)]="visitingCard.company_address" name="company_address"\n                    readonly></ion-textarea>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Name</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.name" name="name" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Designation</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.designation" name="designation" readonly></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Email</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.email" name="email" readonly></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Mobile Number</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.mobile_no" name="mobile_no" pattern="^\\d{10}$" minlength="10"\n                 maxlength="10" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Landline</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.landline" name="landline" pattern="^\\d{1,15}$" minlength="1"\n                 maxlength="15" required></ion-input>\n    </ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Visiting Card Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/visiting-card-form/visiting-card-form.html"*/,
+            selector: 'page-visiting-card-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/visiting-card-form/visiting-card-form.html"*/'<!--\n  Generated template for the VisitingCardFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Visiting Card Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Company Name</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.company_name" name="company_name" readonly></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Company Address</ion-label>\n      <ion-textarea autoresize [(ngModel)]="visitingCard.company_address" name="company_address"\n                    readonly></ion-textarea>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Name</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.name" name="name" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Designation</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.designation" name="designation" readonly></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Email</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.email" name="email" readonly></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Mobile Number</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.mobile_no" name="mobile_no" pattern="^\\d{10}$" minlength="10"\n                 maxlength="10" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary" stacked>Landline</ion-label>\n      <ion-input type="text" [(ngModel)]="visitingCard.landline" name="landline" pattern="^\\d{1,15}$" minlength="1"\n                 maxlength="15" required></ion-input>\n    </ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Visiting Card Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/visiting-card-form/visiting-card-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -2461,7 +2572,7 @@ var VisitingCardFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 160:
+/***/ 161:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2650,7 +2761,7 @@ var MaintenanceRequestFormPage = /** @class */ (function () {
     };
     MaintenanceRequestFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-maintenance-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/maintenance-request-form/maintenance-request-form.html"*/'<!--\n  Generated template for the MaintenanceRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <!-- <ion-title>New Facility Request</ion-title> -->\n\n    <ion-title>Add New Beneficialy</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <form #form="ngForm"  >\n    <ion-list>\n\n\n        <ion-item>\n            <ion-label stacked floating color="primary">Code</ion-label>\n           <ion-input name="code" type="text" [(ngModel)]="Addbeneficialy.code" required></ion-input>\n         </ion-item>\n         <ion-item>\n            <ion-label stacked floating color="primary">serveryer Id</ion-label>\n           <ion-input name="user_id" type="text" [(ngModel)]="Addbeneficialy.user_id" required></ion-input>\n         </ion-item>\n        <ion-item>\n            <ion-label stacked floating color="primary">Firstname</ion-label>\n           <ion-input name="firstname" type="text" [(ngModel)]="Addbeneficialy.firstname" required></ion-input>\n         </ion-item>\n         <ion-item>\n            <ion-label stacked floating color="primary">Middlename</ion-label>\n           <ion-input name="middlename" type="text" [(ngModel)]="Addbeneficialy.middlename" required></ion-input>\n         </ion-item>\n         <ion-item>\n            <ion-label stacked floating color="primary">Lastname</ion-label>\n           <ion-input name="lastname" type="text" [(ngModel)]="Addbeneficialy.lastname" required></ion-input>\n         </ion-item>\n          <ion-item> \n          <ion-label stacked floating color="primary">Age</ion-label>\n          <ion-input name="age" type="text" [(ngModel)]="Addbeneficialy.age" required></ion-input>\n      </ion-item>\n\n\n\n      <ion-list  radio-group [(ngModel)]="Addbeneficialy.gender" name="gender" >\n        <ion-list-header><strong>Gender</strong></ion-list-header>\n          <ion-item >\n              <ion-label>Male</ion-label>\n              <ion-radio value="Male"></ion-radio>\n          </ion-item>\n          <ion-item >\n              <ion-label>FeMale</ion-label>\n              <ion-radio value="FeMale"></ion-radio>\n          </ion-item>\n          <ion-item >\n              <ion-label>Other</ion-label>\n              <ion-radio value="other"></ion-radio>\n          </ion-item>\n      </ion-list>\n\n\n\n\n\n    <ion-item> \n          <ion-label stacked floating color="primary">Borth Date</ion-label>\n          <ion-datetime  name="date_of_birth"  displayFormat="MM/DD/YYYY"  [(ngModel)]="Addbeneficialy.date_of_birth" ></ion-datetime>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">House hold ID  </ion-label>\n          <ion-input name="household_id" type="text" [(ngModel)]="Addbeneficialy.household_id" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">Village ID</ion-label>\n          <ion-input name="village_id" type="text" [(ngModel)]="Addbeneficialy.village_id" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">Family Hade Id</ion-label>\n          <ion-input name="family_head_id" type="text" [(ngModel)]="Addbeneficialy.family_head_id" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">Contact Number</ion-label>\n          <ion-input name="contact_number" type="text" [(ngModel)]="Addbeneficialy.contact_number" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary"> Whatsapp Number</ion-label>\n          <ion-input name="whatsapp_number" type="text" [(ngModel)]="Addbeneficialy.whatsapp_number" required></ion-input>\n      </ion-item>\n      <ion-item> \n        <ion-label stacked floating color="primary">Relation With Family had  </ion-label>\n        <ion-input name="family_head_relation" type="text" [(ngModel)]="Addbeneficialy.family_head_relation" required></ion-input>\n    </ion-item>\n    </ion-list>\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit \n      </button>  \n  \n  </form>\n</ion-content>\n\n\n\n\n\n\n<!-- <ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Assets</ion-label>\n      <ion-select [(ngModel)]="maintenanceRequest.maintenanceasset_id" name="maintenanceasset_id"\n                  placeholder="Select Asset"\n                  required interface="popover"><button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request\n    </button>\n        <ion-option value={{asset.uid}} *ngFor="let asset of assets">{{asset.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Location</ion-label>\n      <ion-select  [(ngModel)]="maintenanceRequest.location" name="location">\n        <ion-option *ngFor="let l of locations" [value]="l">{{l}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n\n\n    <ion-item>\n      <ion-label color="primary" stacked>Details</ion-label>\n      <ion-textarea autoresize [(ngModel)]="maintenanceRequest.detail" name="detail" required minLength="1"></ion-textarea>\n    </ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request\n    </button>\n  </form>\n</ion-content> -->\n\n\n\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/maintenance-request-form/maintenance-request-form.html"*/,
+            selector: 'page-maintenance-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/maintenance-request-form/maintenance-request-form.html"*/'<!--\n  Generated template for the MaintenanceRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <!-- <ion-title>New Facility Request</ion-title> -->\n\n    <ion-title>Add New Beneficialy</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <form #form="ngForm"  >\n    <ion-list>\n\n\n        <ion-item>\n            <ion-label stacked floating color="primary">Code</ion-label>\n           <ion-input name="code" type="text" [(ngModel)]="Addbeneficialy.code" required></ion-input>\n         </ion-item>\n         <ion-item>\n            <ion-label stacked floating color="primary">serveryer Id</ion-label>\n           <ion-input name="user_id" type="text" [(ngModel)]="Addbeneficialy.user_id" required></ion-input>\n         </ion-item>\n        <ion-item>\n            <ion-label stacked floating color="primary">Firstname</ion-label>\n           <ion-input name="firstname" type="text" [(ngModel)]="Addbeneficialy.firstname" required></ion-input>\n         </ion-item>\n         <ion-item>\n            <ion-label stacked floating color="primary">Middlename</ion-label>\n           <ion-input name="middlename" type="text" [(ngModel)]="Addbeneficialy.middlename" required></ion-input>\n         </ion-item>\n         <ion-item>\n            <ion-label stacked floating color="primary">Lastname</ion-label>\n           <ion-input name="lastname" type="text" [(ngModel)]="Addbeneficialy.lastname" required></ion-input>\n         </ion-item>\n          <ion-item> \n          <ion-label stacked floating color="primary">Age</ion-label>\n          <ion-input name="age" type="text" [(ngModel)]="Addbeneficialy.age" required></ion-input>\n      </ion-item>\n\n\n\n      <ion-list  radio-group [(ngModel)]="Addbeneficialy.gender" name="gender" >\n        <ion-list-header><strong>Gender</strong></ion-list-header>\n          <ion-item >\n              <ion-label>Male</ion-label>\n              <ion-radio value="Male"></ion-radio>\n          </ion-item>\n          <ion-item >\n              <ion-label>FeMale</ion-label>\n              <ion-radio value="FeMale"></ion-radio>\n          </ion-item>\n          <ion-item >\n              <ion-label>Other</ion-label>\n              <ion-radio value="other"></ion-radio>\n          </ion-item>\n      </ion-list>\n\n\n\n\n\n    <ion-item> \n          <ion-label stacked floating color="primary">Borth Date</ion-label>\n          <ion-datetime  name="date_of_birth"  displayFormat="MM/DD/YYYY"  [(ngModel)]="Addbeneficialy.date_of_birth" ></ion-datetime>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">House hold ID  </ion-label>\n          <ion-input name="household_id" type="text" [(ngModel)]="Addbeneficialy.household_id" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">Village ID</ion-label>\n          <ion-input name="village_id" type="text" [(ngModel)]="Addbeneficialy.village_id" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">Family Hade Id</ion-label>\n          <ion-input name="family_head_id" type="text" [(ngModel)]="Addbeneficialy.family_head_id" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary">Contact Number</ion-label>\n          <ion-input name="contact_number" type="text" [(ngModel)]="Addbeneficialy.contact_number" required></ion-input>\n      </ion-item>\n      <ion-item> \n          <ion-label stacked floating color="primary"> Whatsapp Number</ion-label>\n          <ion-input name="whatsapp_number" type="text" [(ngModel)]="Addbeneficialy.whatsapp_number" required></ion-input>\n      </ion-item>\n      <ion-item> \n        <ion-label stacked floating color="primary">Relation With Family had  </ion-label>\n        <ion-input name="family_head_relation" type="text" [(ngModel)]="Addbeneficialy.family_head_relation" required></ion-input>\n    </ion-item>\n    </ion-list>\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit \n      </button>  \n  \n  </form>\n</ion-content>\n\n\n\n\n\n\n<!-- <ion-content padding>\n  <form #form="ngForm">\n    <ion-item>\n      <ion-label color="primary" stacked>Assets</ion-label>\n      <ion-select [(ngModel)]="maintenanceRequest.maintenanceasset_id" name="maintenanceasset_id"\n                  placeholder="Select Asset"\n                  required interface="popover"><button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request\n    </button>\n        <ion-option value={{asset.uid}} *ngFor="let asset of assets">{{asset.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Location</ion-label>\n      <ion-select  [(ngModel)]="maintenanceRequest.location" name="location">\n        <ion-option *ngFor="let l of locations" [value]="l">{{l}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n\n\n    <ion-item>\n      <ion-label color="primary" stacked>Details</ion-label>\n      <ion-textarea autoresize [(ngModel)]="maintenanceRequest.detail" name="detail" required minLength="1"></ion-textarea>\n    </ion-item>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request\n    </button>\n  </form>\n</ion-content> -->\n\n\n\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/maintenance-request-form/maintenance-request-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -2669,7 +2780,7 @@ var MaintenanceRequestFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 161:
+/***/ 162:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2853,7 +2964,7 @@ var StationeryRequestFormPage = /** @class */ (function () {
     };
     StationeryRequestFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-stationery-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/stationery-request-form/stationery-request-form.html"*/'<!--\n  Generated template for the StationeryRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Stationery Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n\n    <ion-item>\n      <ion-label>Location</ion-label>\n      <ion-select #location  [(ngModel)]="stationeryRequest.location" name="location" (ionChange)="getStationeryList(location.value)" >\n        <ion-option *ngFor="let l of locations" [value]="l">{{l}}</ion-option>\n\n\n      </ion-select>\n    </ion-item>\n    <ion-item>\n      <ion-label color="primary" stacked>Stationery Item</ion-label>\n      <ion-select [(ngModel)]="stationeryRequest.stationery_id" name="stationery_id" placeholder="Select Stationery"\n                  required interface="popover">\n        <ion-option value={{stationery.uid}} *ngFor="let stationery of stationeries">{{stationery.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary">Required Quantity</ion-label>\n      <ion-input [(ngModel)]="stationeryRequest.requested_quantity" name="requested_quantity" min="1" max="50" step="1" pattern="([1-90])+" required></ion-input>\n    </ion-item>\n<ion-item>\n      <ion-label color="primary">Details</ion-label>\n      <ion-textarea autoresize [(ngModel)]="stationeryRequest.details" name="details" ></ion-textarea>\n    </ion-item>\n\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Stationery Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/stationery-request-form/stationery-request-form.html"*/,
+            selector: 'page-stationery-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/stationery-request-form/stationery-request-form.html"*/'<!--\n  Generated template for the StationeryRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>New Stationery Request</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n\n    <ion-item>\n      <ion-label>Location</ion-label>\n      <ion-select #location  [(ngModel)]="stationeryRequest.location" name="location" (ionChange)="getStationeryList(location.value)" >\n        <ion-option *ngFor="let l of locations" [value]="l">{{l}}</ion-option>\n\n\n      </ion-select>\n    </ion-item>\n    <ion-item>\n      <ion-label color="primary" stacked>Stationery Item</ion-label>\n      <ion-select [(ngModel)]="stationeryRequest.stationery_id" name="stationery_id" placeholder="Select Stationery"\n                  required interface="popover">\n        <ion-option value={{stationery.uid}} *ngFor="let stationery of stationeries">{{stationery.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label color="primary">Required Quantity</ion-label>\n      <ion-input [(ngModel)]="stationeryRequest.requested_quantity" name="requested_quantity" min="1" max="50" step="1" pattern="([1-90])+" required></ion-input>\n    </ion-item>\n<ion-item>\n      <ion-label color="primary">Details</ion-label>\n      <ion-textarea autoresize [(ngModel)]="stationeryRequest.details" name="details" ></ion-textarea>\n    </ion-item>\n\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Stationery Request\n    </button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/stationery-request-form/stationery-request-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -2872,7 +2983,7 @@ var StationeryRequestFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 162:
+/***/ 163:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3005,7 +3116,7 @@ var IdeaFormPage = /** @class */ (function () {
     };
     IdeaFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-idea-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea-form/idea-form.html"*/'<!--\n  Generated template for the IdeaFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>New Idea</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n  <form  #form="ngForm">\n    <ion-item>\n      <ion-input type="text" [(ngModel)]="idea.title" name="title" placeholder="Enter title of your idea" required></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-textarea [(ngModel)]="idea.content" name="content" rows="5" placeholder="Enter details" required></ion-textarea>\n    </ion-item>\n    <!--<ion-list>-->\n      <!--<ion-item>-->\n        <!--<ion-label>Category</ion-label>-->\n        <!--<ion-select [(ngModel)]="idea.category" name="category" required>-->\n          <!--<ion-option value="INTRANET">Intarnet</ion-option>-->\n          <!--<ion-option value="ERP & Other Applications">ERP & Other Applications</ion-option>-->\n          <!--<ion-option value="Infrastructure">Infrastructure</ion-option>-->\n\n        <!--</ion-select>-->\n      <!--</ion-item>-->\n    <!--</ion-list>-->\n\n      <!--<h4>Image Preview</h4>-->\n      <ion-item *ngIf="imageURI">\n        <img src="{{imageURI}}"  alt="Ionic File" width="300"/>\n      </ion-item>\n\n    <ion-buttons>\n      <!-- <p>{{imageURI}}</p> -->\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-buttons>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Add Idea</button>\n  </form>\n\n\n</ion-content>\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea-form/idea-form.html"*/,
+            selector: 'page-idea-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea-form/idea-form.html"*/'<!--\n  Generated template for the IdeaFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>New Idea</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n  <form  #form="ngForm">\n    <ion-item>\n      <ion-input type="text" [(ngModel)]="idea.title" name="title" placeholder="Enter title of your idea" required></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-textarea [(ngModel)]="idea.content" name="content" rows="5" placeholder="Enter details" required></ion-textarea>\n    </ion-item>\n    <!--<ion-list>-->\n      <!--<ion-item>-->\n        <!--<ion-label>Category</ion-label>-->\n        <!--<ion-select [(ngModel)]="idea.category" name="category" required>-->\n          <!--<ion-option value="INTRANET">Intarnet</ion-option>-->\n          <!--<ion-option value="ERP & Other Applications">ERP & Other Applications</ion-option>-->\n          <!--<ion-option value="Infrastructure">Infrastructure</ion-option>-->\n\n        <!--</ion-select>-->\n      <!--</ion-item>-->\n    <!--</ion-list>-->\n\n      <!--<h4>Image Preview</h4>-->\n      <ion-item *ngIf="imageURI">\n        <img src="{{imageURI}}"  alt="Ionic File" width="300"/>\n      </ion-item>\n\n    <ion-buttons>\n      <!-- <p>{{imageURI}}</p> -->\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-buttons>\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Add Idea</button>\n  </form>\n\n\n</ion-content>\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea-form/idea-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */],
@@ -3024,7 +3135,7 @@ var IdeaFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 163:
+/***/ 164:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3151,7 +3262,7 @@ var LeaveDetailPage = /** @class */ (function () {
     };
     LeaveDetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-leave-detail',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-detail/leave-detail.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Leave Application</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <div *ngIf="leaveDetails">\n    <h1>LEAVE FROM {{leaveDetails.FromDate}} FOR {{leaveDetails.Leave_Period}} DAYS</h1>\n    <ion-grid class="border">\n      <ion-row>\n        <ion-col col-6><strong>Status</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Application_Status === \'A\'?\'Approved\':leaveDetails.Application_Status === \'R\'?\'Rejected\':\'Pending\'}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>Type</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Leave_Name}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>From</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.FromDate}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>To</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.ToDate}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>No. of Day(s)</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Leave_Period}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>Reporting Manager</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Senior_Emp_Name}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>Reason</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Leave_Reason}}</ion-col>\n      </ion-row>\n      <ion-row *ngIf=\'leaveDetails.Approval_Rejection_Comment\'>\n        <ion-col col-6><strong>Approver Comments</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Approval_Rejection_Comment}}</ion-col>\n      </ion-row>\n    </ion-grid>\n  </div>\n  <div *ngIf="!leaveDetails">\n    <h4>Please wait loading...</h4>\n  </div>\n</ion-content>\n<ion-footer no-shadow>\n  <ion-buttons position="bottom">\n    <div *ngIf=\'segment === "all"\'>\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="danger" round hidden="true" icon-left (click)="cancelLeave()" block>\n              <ion-icon name="close"></ion-icon>\n              Cancel\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </div>\n    <div *ngIf=\'segment === "pending"\'>\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="danger" round icon-left (click)="leaveApproval(\'Rejection\',\'Reject\',\'R\')" block>\n              <ion-icon name="close"></ion-icon>\n              Reject\n            </button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round icon-left (click)="leaveApproval(\'Approval\',\'Approve\',\'A\')" block>\n              <ion-icon name="checkmark"></ion-icon>\n              Approve\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </div>\n  </ion-buttons>\n</ion-footer>\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-detail/leave-detail.html"*/,
+            selector: 'page-leave-detail',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-detail/leave-detail.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Leave Application</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <div *ngIf="leaveDetails">\n    <h1>LEAVE FROM {{leaveDetails.FromDate}} FOR {{leaveDetails.Leave_Period}} DAYS</h1>\n    <ion-grid class="border">\n      <ion-row>\n        <ion-col col-6><strong>Status</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Application_Status === \'A\'?\'Approved\':leaveDetails.Application_Status === \'R\'?\'Rejected\':\'Pending\'}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>Type</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Leave_Name}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>From</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.FromDate}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>To</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.ToDate}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>No. of Day(s)</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Leave_Period}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>Reporting Manager</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Senior_Emp_Name}}</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col col-6><strong>Reason</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Leave_Reason}}</ion-col>\n      </ion-row>\n      <ion-row *ngIf=\'leaveDetails.Approval_Rejection_Comment\'>\n        <ion-col col-6><strong>Approver Comments</strong></ion-col>\n        <ion-col col-6>{{leaveDetails.Approval_Rejection_Comment}}</ion-col>\n      </ion-row>\n    </ion-grid>\n  </div>\n  <div *ngIf="!leaveDetails">\n    <h4>Please wait loading...</h4>\n  </div>\n</ion-content>\n<ion-footer no-shadow>\n  <ion-buttons position="bottom">\n    <div *ngIf=\'segment === "all"\'>\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="danger" round hidden="true" icon-left (click)="cancelLeave()" block>\n              <ion-icon name="close"></ion-icon>\n              Cancel\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </div>\n    <div *ngIf=\'segment === "pending"\'>\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="danger" round icon-left (click)="leaveApproval(\'Rejection\',\'Reject\',\'R\')" block>\n              <ion-icon name="close"></ion-icon>\n              Reject\n            </button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round icon-left (click)="leaveApproval(\'Approval\',\'Approve\',\'A\')" block>\n              <ion-icon name="checkmark"></ion-icon>\n              Approve\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </div>\n  </ion-buttons>\n</ion-footer>\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-detail/leave-detail.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */],
@@ -3167,7 +3278,7 @@ var LeaveDetailPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 164:
+/***/ 165:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3252,7 +3363,7 @@ var LeaveFilterPage = /** @class */ (function () {
     };
     LeaveFilterPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-leave-filter',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-filter/leave-filter.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="help()">\n        <ion-icon name="information-circle"></ion-icon>\n      </button>\n      <button ion-button (click)="dismiss()">Cancel</button>\n    </ion-buttons>\n\n    <ion-title>\n      Filter Leaves\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="applyFilters()" strong>Done</button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content class="outer-content">\n\n  <ion-list>\n    <ion-list-header>Status of Leaves</ion-list-header>\n  \n    <ion-item *ngFor="let leavestatus of leaveStatues" [attr.leavestatus]="leavestatus.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label>{{leavestatus.name}}</ion-label>\n      <ion-toggle [(ngModel)]="leavestatus.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n  \n  </ion-list>\n\n  <ion-list>\n    <ion-list-header>Types of Leaves</ion-list-header>\n\n    <ion-item *ngFor="let leavetype of leaveTypes" [attr.leavetype]="leavetype.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label>{{leavetype.name}}</ion-label>\n      <ion-toggle [(ngModel)]="leavetype.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list>\n    <button ion-item (click)="resetFilters()" detail-none class="reset-filters">\n      Reset All Filters\n    </button>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-filter/leave-filter.html"*/,
+            selector: 'page-leave-filter',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-filter/leave-filter.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="help()">\n        <ion-icon name="information-circle"></ion-icon>\n      </button>\n      <button ion-button (click)="dismiss()">Cancel</button>\n    </ion-buttons>\n\n    <ion-title>\n      Filter Leaves\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="applyFilters()" strong>Done</button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content class="outer-content">\n\n  <ion-list>\n    <ion-list-header>Status of Leaves</ion-list-header>\n  \n    <ion-item *ngFor="let leavestatus of leaveStatues" [attr.leavestatus]="leavestatus.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label>{{leavestatus.name}}</ion-label>\n      <ion-toggle [(ngModel)]="leavestatus.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n  \n  </ion-list>\n\n  <ion-list>\n    <ion-list-header>Types of Leaves</ion-list-header>\n\n    <ion-item *ngFor="let leavetype of leaveTypes" [attr.leavetype]="leavetype.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label>{{leavetype.name}}</ion-label>\n      <ion-toggle [(ngModel)]="leavetype.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list>\n    <button ion-item (click)="resetFilters()" detail-none class="reset-filters">\n      Reset All Filters\n    </button>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-filter/leave-filter.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["t" /* ViewController */], __WEBPACK_IMPORTED_MODULE_1__providers_leave_data_leave_data__["a" /* LeaveDataProvider */],
             __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__["a" /* AlertController */]])
@@ -3264,12 +3375,12 @@ var LeaveFilterPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 165:
+/***/ 166:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LeaveNewPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__leave_confirm_leave_confirm__ = __webpack_require__(418);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__leave_confirm_leave_confirm__ = __webpack_require__(423);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_alert_alert_controller__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
@@ -3497,7 +3608,7 @@ var LeaveNewPage = /** @class */ (function () {
     };
     LeaveNewPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-leave-new',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-new/leave-new.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Leave Application</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form #leaveApplicationForm="ngForm" novalidate>\n    <ion-list no-lines>\n      <ion-item>\n        <ion-label fixed color="primary">Leave</ion-label>\n        <ion-select [(ngModel)]="leaveApplication.leaveType" name="leaveType" placeholder="Select Type" (ionChange)="checkScheme()" required interface="popover">\n          <ion-option value={{leavetype.Leave_ID}} *ngFor="let leavetype of leave_types">{{leavetype.Leave_Name}}</ion-option>\n        </ion-select>\n      </ion-item>\n      <div>\n        <ion-item>\n          <ion-label fixed color="primary">From Date</ion-label>\n          <ion-datetime [(ngModel)]="leaveApplication.formDate" [disabled]="checkSchemeStatus !== true" (ionBlur)="clearFields()" placeholder="From Date" name="formDate" displayFormat="DD/MM/YYYY" min="2017" max="3000" required></ion-datetime>\n        </ion-item>\n        <ion-item>\n          <ion-label fixed color="primary">No. of Days</ion-label>\n          <ion-input [(ngModel)]="leaveApplication.period" [disabled]="checkSchemeStatus !== true" (ionBlur)="processPeriod()" placeholder="No. of Days" name="period" type="number" pattern="([0-9])+(.5)*" required>\n          </ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label fixed color="primary">To Date</ion-label>\n          <ion-input [(ngModel)]="leaveApplication.toDate" name="toDate" placeholder="To Date" type="text" [disabled]="true"></ion-input>\n        </ion-item>\n        <div *ngIf="!enableHalfLeave">\n          <ion-item>\n            <ion-label fixed color="primary">Leave Type</ion-label>\n            <ion-select [(ngModel)]="leaveApplication.assignAs" name="assignAs" [disabled]="checkSchemeStatus !== true" required interface="popover">\n              <ion-option value="Full Day">Full Day</ion-option>\n            </ion-select>\n          </ion-item>\n        </div>\n        <div *ngIf="enableHalfLeave">\n          <ion-item>\n            <ion-label fixed color="primary">Leave Type</ion-label>\n            <ion-select [(ngModel)]="leaveApplication.assignAs" name="assignAs" required interface="popover">\n              <ion-option value="First Half">First Half</ion-option>\n              <ion-option value="Second Half">Second Half</ion-option>\n            </ion-select>\n          </ion-item>\n          <ion-item>\n            <ion-label fixed color="primary">Half Leave Date</ion-label>\n            <ion-select [(ngModel)]="leaveApplication.halfLeaveDate" name="halfLeaveDate" required interface="popover">\n              <ion-option value={{halfLeaveDates}} *ngFor="let halfLeaveDates of halfLeaveRecords">{{halfLeaveDates}}</ion-option>\n            </ion-select>\n          </ion-item>\n        </div>\n        <ion-item>\n          <ion-label fixed color="primary">Comment</ion-label>\n          <ion-textarea [(ngModel)]="leaveApplication.comment"\n            name="comment" \n            placeholder="Enter leave reason"\n            [disabled]="checkSchemeStatus !== true" \n            autocomplete="on" autocorrect="on" rows="5" required>\n          </ion-textarea>\n        </ion-item>\n      </div>\n    </ion-list>\n\n    <div padding>\n      <button ion-button (click)="onLeaveApplication(leaveApplicationForm)" [disabled]="!leaveApplicationForm.valid" type="submit" block round>Apply</button>\n    </div>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-new/leave-new.html"*/,
+            selector: 'page-leave-new',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-new/leave-new.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Leave Application</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form #leaveApplicationForm="ngForm" novalidate>\n    <ion-list no-lines>\n      <ion-item>\n        <ion-label fixed color="primary">Leave</ion-label>\n        <ion-select [(ngModel)]="leaveApplication.leaveType" name="leaveType" placeholder="Select Type" (ionChange)="checkScheme()" required interface="popover">\n          <ion-option value={{leavetype.Leave_ID}} *ngFor="let leavetype of leave_types">{{leavetype.Leave_Name}}</ion-option>\n        </ion-select>\n      </ion-item>\n      <div>\n        <ion-item>\n          <ion-label fixed color="primary">From Date</ion-label>\n          <ion-datetime [(ngModel)]="leaveApplication.formDate" [disabled]="checkSchemeStatus !== true" (ionBlur)="clearFields()" placeholder="From Date" name="formDate" displayFormat="DD/MM/YYYY" min="2017" max="3000" required></ion-datetime>\n        </ion-item>\n        <ion-item>\n          <ion-label fixed color="primary">No. of Days</ion-label>\n          <ion-input [(ngModel)]="leaveApplication.period" [disabled]="checkSchemeStatus !== true" (ionBlur)="processPeriod()" placeholder="No. of Days" name="period" type="number" pattern="([0-9])+(.5)*" required>\n          </ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label fixed color="primary">To Date</ion-label>\n          <ion-input [(ngModel)]="leaveApplication.toDate" name="toDate" placeholder="To Date" type="text" [disabled]="true"></ion-input>\n        </ion-item>\n        <div *ngIf="!enableHalfLeave">\n          <ion-item>\n            <ion-label fixed color="primary">Leave Type</ion-label>\n            <ion-select [(ngModel)]="leaveApplication.assignAs" name="assignAs" [disabled]="checkSchemeStatus !== true" required interface="popover">\n              <ion-option value="Full Day">Full Day</ion-option>\n            </ion-select>\n          </ion-item>\n        </div>\n        <div *ngIf="enableHalfLeave">\n          <ion-item>\n            <ion-label fixed color="primary">Leave Type</ion-label>\n            <ion-select [(ngModel)]="leaveApplication.assignAs" name="assignAs" required interface="popover">\n              <ion-option value="First Half">First Half</ion-option>\n              <ion-option value="Second Half">Second Half</ion-option>\n            </ion-select>\n          </ion-item>\n          <ion-item>\n            <ion-label fixed color="primary">Half Leave Date</ion-label>\n            <ion-select [(ngModel)]="leaveApplication.halfLeaveDate" name="halfLeaveDate" required interface="popover">\n              <ion-option value={{halfLeaveDates}} *ngFor="let halfLeaveDates of halfLeaveRecords">{{halfLeaveDates}}</ion-option>\n            </ion-select>\n          </ion-item>\n        </div>\n        <ion-item>\n          <ion-label fixed color="primary">Comment</ion-label>\n          <ion-textarea [(ngModel)]="leaveApplication.comment"\n            name="comment" \n            placeholder="Enter leave reason"\n            [disabled]="checkSchemeStatus !== true" \n            autocomplete="on" autocorrect="on" rows="5" required>\n          </ion-textarea>\n        </ion-item>\n      </div>\n    </ion-list>\n\n    <div padding>\n      <button ion-button (click)="onLeaveApplication(leaveApplicationForm)" [disabled]="!leaveApplicationForm.valid" type="submit" block round>Apply</button>\n    </div>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-new/leave-new.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_4__providers_user_data_ts__["a" /* UserData */],
@@ -3514,18 +3625,18 @@ var LeaveNewPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 166:
+/***/ 167:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LeavesShowPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__leave_new_leave_new__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__leave_detail_leave_detail__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__leave_new_leave_new__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__leave_detail_leave_detail__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_user_data_ts__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_leave_data_leave_data__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__leave_filter_leave_filter__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__leave_filter_leave_filter__ = __webpack_require__(165);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3697,7 +3808,7 @@ var LeavesShowPage = /** @class */ (function () {
     ], LeavesShowPage.prototype, "LeavesList", void 0);
     LeavesShowPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-leaves-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leaves-show/leaves-show.html"*/'<ion-header>\n  <ion-navbar no-border-bottom>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Leaves</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-segment [(ngModel)]="segment" (ionChange)="updateLeaves(false,true)">\n      <ion-segment-button value="all">\n        All\n      </ion-segment-button>\n      <ion-segment-button value="pending">\n        Pending Approvals\n      </ion-segment-button>\n    </ion-segment>\n  </ion-toolbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" (ionInput)="updateLeaves(false,false)" placeholder="Search">\n    </ion-searchbar>\n    <ion-buttons end>\n      <button ion-button icon-only [disabled]="leaves.length === 0" (click)="presentFilter()">\n        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list #LeavesList [hidden]="shownLeaves === 0" *ngIf="segment === \'all\'">\n\n    <ion-item-group *ngFor="let leave of leaves" [hidden]="leave.hide">\n\n      <ion-item-divider sticky>\n        <ion-label>\n          {{leave.From_Date}}\n        </ion-label>\n      </ion-item-divider>\n\n      <ion-item-sliding #slidingItem [attr.leavetype]="leave.Leave_Name | lowercase" [hidden]="leave.hide">\n\n        <button ion-item (click)="goToLeaveDetail(leave)">\n            <!-- <h3>{{leave.Leave_Name}}</h3><br>\n            <h3>{{leave.Leave_Reason}}</h3>\n          <p>\n            {{leave.From_Date}} &mdash; {{leave.To_Date}}: {{leave.AppStatus}}\n          </p> -->\n\n          <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge>\n          <h3 class="text-left" text-wrap>\n            <span class="bold-text">{{leave.Leave_Name}}</span> for <span class="bold-text">{{leave.Leave_Period}} Day{{leave.Leave_Period > 1?\'s\':\'\'}}</span>\n          </h3>\n          <h3>&nbsp;</h3>\n          <ion-row class="text-left">\n            From:&nbsp;\n            <span class="bold-text">{{leave.From_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left">\n            To:&nbsp;\n            <span class="bold-text">{{leave.To_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left" text-wrap>\n            Reason:&nbsp;\n            <span class="bold-text">{{leave.Leave_Reason}}</span>\n          </ion-row>\n          \n        </button>\n\n        <ion-item-options side="right">\n          <button ion-button color="danger" (click)="cancelLeave(slidingItem, leave)" *ngIf="segment === \'all\'">\n            Cancel\n          </button>\n        </ion-item-options>\n\n      </ion-item-sliding>\n\n    </ion-item-group>\n\n  </ion-list>\n\n  <ion-list #LeavesList [hidden]="shownLeaves === 0" *ngIf="segment === \'pending\'">\n  \n    <ion-item-group *ngFor="let leave of leaves" [hidden]="leave.hide">\n  \n      <ion-item-divider sticky>\n        <ion-label>\n          {{leave.From_Date}}\n        </ion-label>\n      </ion-item-divider>\n  \n      <ion-item-sliding #slidingItem [attr.leavetype]="leave.Leave_Name | lowercase" [hidden]="leave.hide">\n  \n        <button ion-item (click)="goToLeaveDetail(leave)">\n            <!-- <h3>{{leave.Emp_Full_Name}} Applied for {{leave.Leave_Name}}</h3><br>\n            <h3>{{leave.Leave_Reason}}</h3>\n          <p>\n            {{leave.From_Date}} &mdash; {{leave.To_Date}}: {{leave.AppStatus}}\n          </p> -->\n          <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge>\n          <h3 class="text-left" text-wrap>\n            <span class="bold-text">{{leave.Emp_Full_Name}}</span> Applied <span class="bold-text">{{leave.Leave_Name}}</span> for\n            <span class="bold-text">{{leave.Leave_Period}} Day{{leave.Leave_Period > 1?\'s\':\'\'}}</span>\n          </h3>\n          <h3>&nbsp;</h3>\n          <ion-row class="text-left">\n            From:&nbsp;\n            <span class="bold-text">{{leave.From_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left">\n            To:&nbsp;\n            <span class="bold-text">{{leave.To_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left" text-wrap>\n            Reason:&nbsp;\n            <span class="bold-text">{{leave.Leave_Reason}}</span>\n          </ion-row>\n        </button>\n  \n        <ion-item-options side="right">\n          <button ion-button color="secondary" (click)="leaveApproval(slidingItem, leave, \'Approval\',\'Approve\',\'A\')" *ngIf="segment === \'pending\'">\n            Approve\n          </button>\n        </ion-item-options>\n\n        <ion-item-options side="left">\n          <button ion-button color="danger" (click)="leaveApproval(slidingItem, leave, \'Rejection\',\'Reject\',\'R\')" *ngIf="segment === \'pending\'">\n            Reject\n          </button>\n        </ion-item-options>\n  \n      </ion-item-sliding>\n  \n    </ion-item-group>\n  \n  </ion-list>\n\n  <ion-list-header [hidden]="shownLeaves > 0">\n    No Leaves Found\n  </ion-list-header>\n\n  <ion-fab bottom right #fab>\n    <button ion-fab (click)="goToNewLeave()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n    <!-- <ion-fab-list side="top">\n      <button ion-fab color="vimeo" (click)="openSocial(\'Vimeo\', fab)">\n        <ion-icon name="logo-vimeo"></ion-icon>\n      </button>\n      <button ion-fab color="google" (click)="openSocial(\'Google+\', fab)">\n        <ion-icon name="logo-googleplus"></ion-icon>\n      </button>\n      <button ion-fab color="twitter" (click)="openSocial(\'Twitter\', fab)">\n        <ion-icon name="logo-twitter"></ion-icon>\n      </button>\n      <button ion-fab color="facebook" (click)="openSocial(\'Facebook\', fab)">\n        <ion-icon name="logo-facebook"></ion-icon>\n      </button>\n    </ion-fab-list> -->\n  </ion-fab>\n\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leaves-show/leaves-show.html"*/,
+            selector: 'page-leaves-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leaves-show/leaves-show.html"*/'<ion-header>\n  <ion-navbar no-border-bottom>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Leaves</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-segment [(ngModel)]="segment" (ionChange)="updateLeaves(false,true)">\n      <ion-segment-button value="all">\n        All\n      </ion-segment-button>\n      <ion-segment-button value="pending">\n        Pending Approvals\n      </ion-segment-button>\n    </ion-segment>\n  </ion-toolbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" (ionInput)="updateLeaves(false,false)" placeholder="Search">\n    </ion-searchbar>\n    <ion-buttons end>\n      <button ion-button icon-only [disabled]="leaves.length === 0" (click)="presentFilter()">\n        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list #LeavesList [hidden]="shownLeaves === 0" *ngIf="segment === \'all\'">\n\n    <ion-item-group *ngFor="let leave of leaves" [hidden]="leave.hide">\n\n      <ion-item-divider sticky>\n        <ion-label>\n          {{leave.From_Date}}\n        </ion-label>\n      </ion-item-divider>\n\n      <ion-item-sliding #slidingItem [attr.leavetype]="leave.Leave_Name | lowercase" [hidden]="leave.hide">\n\n        <button ion-item (click)="goToLeaveDetail(leave)">\n            <!-- <h3>{{leave.Leave_Name}}</h3><br>\n            <h3>{{leave.Leave_Reason}}</h3>\n          <p>\n            {{leave.From_Date}} &mdash; {{leave.To_Date}}: {{leave.AppStatus}}\n          </p> -->\n\n          <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge>\n          <h3 class="text-left" text-wrap>\n            <span class="bold-text">{{leave.Leave_Name}}</span> for <span class="bold-text">{{leave.Leave_Period}} Day{{leave.Leave_Period > 1?\'s\':\'\'}}</span>\n          </h3>\n          <h3>&nbsp;</h3>\n          <ion-row class="text-left">\n            From:&nbsp;\n            <span class="bold-text">{{leave.From_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left">\n            To:&nbsp;\n            <span class="bold-text">{{leave.To_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left" text-wrap>\n            Reason:&nbsp;\n            <span class="bold-text">{{leave.Leave_Reason}}</span>\n          </ion-row>\n          \n        </button>\n\n        <ion-item-options side="right">\n          <button ion-button color="danger" (click)="cancelLeave(slidingItem, leave)" *ngIf="segment === \'all\'">\n            Cancel\n          </button>\n        </ion-item-options>\n\n      </ion-item-sliding>\n\n    </ion-item-group>\n\n  </ion-list>\n\n  <ion-list #LeavesList [hidden]="shownLeaves === 0" *ngIf="segment === \'pending\'">\n  \n    <ion-item-group *ngFor="let leave of leaves" [hidden]="leave.hide">\n  \n      <ion-item-divider sticky>\n        <ion-label>\n          {{leave.From_Date}}\n        </ion-label>\n      </ion-item-divider>\n  \n      <ion-item-sliding #slidingItem [attr.leavetype]="leave.Leave_Name | lowercase" [hidden]="leave.hide">\n  \n        <button ion-item (click)="goToLeaveDetail(leave)">\n            <!-- <h3>{{leave.Emp_Full_Name}} Applied for {{leave.Leave_Name}}</h3><br>\n            <h3>{{leave.Leave_Reason}}</h3>\n          <p>\n            {{leave.From_Date}} &mdash; {{leave.To_Date}}: {{leave.AppStatus}}\n          </p> -->\n          <ion-badge class="pull-right">{{leave.AppStatus}}</ion-badge>\n          <h3 class="text-left" text-wrap>\n            <span class="bold-text">{{leave.Emp_Full_Name}}</span> Applied <span class="bold-text">{{leave.Leave_Name}}</span> for\n            <span class="bold-text">{{leave.Leave_Period}} Day{{leave.Leave_Period > 1?\'s\':\'\'}}</span>\n          </h3>\n          <h3>&nbsp;</h3>\n          <ion-row class="text-left">\n            From:&nbsp;\n            <span class="bold-text">{{leave.From_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left">\n            To:&nbsp;\n            <span class="bold-text">{{leave.To_Date}}</span>\n          </ion-row>\n          <ion-row class="text-left" text-wrap>\n            Reason:&nbsp;\n            <span class="bold-text">{{leave.Leave_Reason}}</span>\n          </ion-row>\n        </button>\n  \n        <ion-item-options side="right">\n          <button ion-button color="secondary" (click)="leaveApproval(slidingItem, leave, \'Approval\',\'Approve\',\'A\')" *ngIf="segment === \'pending\'">\n            Approve\n          </button>\n        </ion-item-options>\n\n        <ion-item-options side="left">\n          <button ion-button color="danger" (click)="leaveApproval(slidingItem, leave, \'Rejection\',\'Reject\',\'R\')" *ngIf="segment === \'pending\'">\n            Reject\n          </button>\n        </ion-item-options>\n  \n      </ion-item-sliding>\n  \n    </ion-item-group>\n  \n  </ion-list>\n\n  <ion-list-header [hidden]="shownLeaves > 0">\n    No Leaves Found\n  </ion-list-header>\n\n  <ion-fab bottom right #fab>\n    <button ion-fab (click)="goToNewLeave()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n    <!-- <ion-fab-list side="top">\n      <button ion-fab color="vimeo" (click)="openSocial(\'Vimeo\', fab)">\n        <ion-icon name="logo-vimeo"></ion-icon>\n      </button>\n      <button ion-fab color="google" (click)="openSocial(\'Google+\', fab)">\n        <ion-icon name="logo-googleplus"></ion-icon>\n      </button>\n      <button ion-fab color="twitter" (click)="openSocial(\'Twitter\', fab)">\n        <ion-icon name="logo-twitter"></ion-icon>\n      </button>\n      <button ion-fab color="facebook" (click)="openSocial(\'Facebook\', fab)">\n        <ion-icon name="logo-facebook"></ion-icon>\n      </button>\n    </ion-fab-list> -->\n  </ion-fab>\n\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leaves-show/leaves-show.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["b" /* AlertController */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["c" /* App */],
@@ -3716,7 +3827,7 @@ var LeavesShowPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 167:
+/***/ 168:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3804,7 +3915,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/login/login.html"*/'<!-- <ion-header>\n  <ion-navbar>\n    <!-- <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button> -->\n   <!-- <ion-title>Login</ion-title>\n  </ion-navbar>\n</ion-header> -->\n\n<ion-content padding>\n  <div class="logo">\n    <img src="assets/img/appicon.png" alt="Ionic logo">\n    <br>\n    <div>\n      <br>\n      <h4>Welcome to Empower...</h4>\n      <h6>Your Digital Workspace...</h6>\n    </div>\n  </div>\n\n  <div class="helptext">\n    Please enter your username and password and click on login\n  </div>\n  <form #loginForm="ngForm" novalidate>\n    <ion-list no-lines>\n      <ion-item>\n        <ion-label stacked floating color="primary">Employee ID/Email</ion-label>\n        <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" \n        autocomplete=“true” spellcheck=“true” (change)="this.login.password = \'\';" autocapitalize="off"\n          required>\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>\n        Employee ID or Email is required\n      </p>\n\n      <ion-item>\n        <ion-label stacked floating color="primary">Password</ion-label>\n        <ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>\n        Password is required\n      </p>\n    </ion-list>\n\n    <ion-row responsive-sm>\n      <ion-col>\n        <button ion-button round (click)="onLogin(loginForm)" type="submit" block>Login</button>\n      </ion-col>\n      <!-- <ion-col>\n        <button ion-button (click)="onSignup()" color="light" block>Signup</button>\n      </ion-col> -->\n    </ion-row>\n    <ion-row responsive-sm>\n      <ion-col text-center>\n        <button ion-button round clear (click)="forgotPassword()">\n          Forgot password?\n        </button>\n      </ion-col>\n    </ion-row>\n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/login/login.html"*/'<!-- <ion-header>\n  <ion-navbar>\n    <!-- <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button> -->\n   <!-- <ion-title>Login</ion-title>\n  </ion-navbar>\n</ion-header> -->\n\n<ion-content padding>\n  <div class="logo">\n    <img src="assets/img/appicon.png" alt="Ionic logo">\n    <br>\n    <div>\n      <br>\n      <h4>Welcome to Empower...</h4>\n      <h6>Your Digital Workspace...</h6>\n    </div>\n  </div>\n\n  <div class="helptext">\n    Please enter your username and password and click on login\n  </div>\n  <form #loginForm="ngForm" novalidate>\n    <ion-list no-lines>\n      <ion-item>\n        <ion-label stacked floating color="primary">Employee ID/Email</ion-label>\n        <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" \n        autocomplete=“true” spellcheck=“true” (change)="this.login.password = \'\';" autocapitalize="off"\n          required>\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>\n        Employee ID or Email is required\n      </p>\n\n      <ion-item>\n        <ion-label stacked floating color="primary">Password</ion-label>\n        <ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>\n        Password is required\n      </p>\n    </ion-list>\n\n    <ion-row responsive-sm>\n      <ion-col>\n        <button ion-button round (click)="onLogin(loginForm)" type="submit" block>Login</button>\n      </ion-col>\n      <!-- <ion-col>\n        <button ion-button (click)="onSignup()" color="light" block>Signup</button>\n      </ion-col> -->\n    </ion-row>\n    <ion-row responsive-sm>\n      <ion-col text-center>\n        <button ion-button round clear (click)="forgotPassword()">\n          Forgot password?\n        </button>\n      </ion-col>\n    </ion-row>\n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_3__providers_user_data_ts__["a" /* UserData */],
@@ -3819,7 +3930,7 @@ var LoginPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 168:
+/***/ 169:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3853,7 +3964,7 @@ var LogoutPage = /** @class */ (function () {
     };
     LogoutPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-logout',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/logout/logout.html"*/'<!--\n  Generated template for the LogoutPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>logout</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/logout/logout.html"*/,
+            selector: 'page-logout',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/logout/logout.html"*/'<!--\n  Generated template for the LogoutPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>logout</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/logout/logout.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */]])
     ], LogoutPage);
@@ -3864,7 +3975,7 @@ var LogoutPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 169:
+/***/ 170:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3959,7 +4070,7 @@ var ParakhDashboardPage = /** @class */ (function () {
     };
     ParakhDashboardPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-parakh-dashboard',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/parakh-dashboard/parakh-dashboard.html"*/'<!--\n  Generated template for the ParakhDashboardPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Parakh Dashboard</ion-title>\n  </ion-navbar>\n  \n    <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshMaintenanceRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:[\'uid\',\'asset\',\'detail\']}">\n      <div class="{{\'maintenance_request_state_sidebar_\'+maintenanceRequest.state}}">\n        <ion-card-header>\n          {{maintenanceRequest.award_type}}\n          <span class="pull-right sr-age">{{maintenanceRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Nominator: <strong>{{maintenanceRequest.nominator}}</strong></p>\n          <p>Values: <strong>{{maintenanceRequest.award_value}}</strong></p>\n          <hr>\n          <p>Justification: <strong>{{maintenanceRequest.justification}}</strong></p>\n        </ion-card-content>\n\n    \n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">Points: {{maintenanceRequest.points}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToMaintenanceRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/parakh-dashboard/parakh-dashboard.html"*/,
+            selector: 'page-parakh-dashboard',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/parakh-dashboard/parakh-dashboard.html"*/'<!--\n  Generated template for the ParakhDashboardPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Parakh Dashboard</ion-title>\n  </ion-navbar>\n  \n    <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshMaintenanceRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:[\'uid\',\'asset\',\'detail\']}">\n      <div class="{{\'maintenance_request_state_sidebar_\'+maintenanceRequest.state}}">\n        <ion-card-header>\n          {{maintenanceRequest.award_type}}\n          <span class="pull-right sr-age">{{maintenanceRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Nominator: <strong>{{maintenanceRequest.nominator}}</strong></p>\n          <p>Values: <strong>{{maintenanceRequest.award_value}}</strong></p>\n          <hr>\n          <p>Justification: <strong>{{maintenanceRequest.justification}}</strong></p>\n        </ion-card-content>\n\n    \n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">Points: {{maintenanceRequest.points}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToMaintenanceRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/parakh-dashboard/parakh-dashboard.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -3976,7 +4087,7 @@ var ParakhDashboardPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 170:
+/***/ 171:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4074,7 +4185,7 @@ var PoliciesShowPage = /** @class */ (function () {
     };
     PoliciesShowPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-policies-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/policies-show/policies-show.html"*/'<!--\n  Generated template for the PoliciesShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{page ? page.page_name : \'\'}}</ion-title>\n  </ion-navbar>\n\n\n</ion-header>\n\n\n<ion-content padding>\n    <ion-grid>\n      <div *ngIf="page" >\n        <div [innerHtml]="page.html_content">\n        </div>\n      </div>\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/policies-show/policies-show.html"*/,
+            selector: 'page-policies-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/policies-show/policies-show.html"*/'<!--\n  Generated template for the PoliciesShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{page ? page.page_name : \'\'}}</ion-title>\n  </ion-navbar>\n\n\n</ion-header>\n\n\n<ion-content padding>\n    <ion-grid>\n      <div *ngIf="page" >\n        <div [innerHtml]="page.html_content">\n        </div>\n      </div>\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/policies-show/policies-show.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */],
@@ -4088,7 +4199,7 @@ var PoliciesShowPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 171:
+/***/ 172:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4097,7 +4208,7 @@ var PoliciesShowPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__policies_show_policies_show__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__policies_show_policies_show__ = __webpack_require__(171);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4178,7 +4289,7 @@ var PoliciesPage = /** @class */ (function () {
     };
     PoliciesPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-policies',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/policies/policies.html"*/'<!--\n  Generated template for the PoliciesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Policies</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list *ngIf="pages.length > 0">\n    <button ion-item *ngFor="let page of pages" (click)="itemTapped(page.id)">\n      {{page.page}}\n    </button>\n  </ion-list>\n  <ion-item *ngIf="pages.length === 0" text-center>\n    No Policies to be Shown\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/policies/policies.html"*/,
+            selector: 'page-policies',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/policies/policies.html"*/'<!--\n  Generated template for the PoliciesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Policies</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list *ngIf="pages.length > 0">\n    <button ion-item *ngFor="let page of pages" (click)="itemTapped(page.id)">\n      {{page.page}}\n    </button>\n  </ion-list>\n  <ion-item *ngIf="pages.length === 0" text-center>\n    No Policies to be Shown\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/policies/policies.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["l" /* LoadingController */],
@@ -4192,7 +4303,7 @@ var PoliciesPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 172:
+/***/ 173:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4205,7 +4316,7 @@ var PoliciesPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_file__ = __webpack_require__(435);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_file__ = __webpack_require__(439);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4378,7 +4489,7 @@ var ServiceRequestFormPage = /** @class */ (function () {
     };
     ServiceRequestFormPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
-            selector: 'page-service-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/service-request-form/service-request-form.html"*/'<!--\n  Generated template for the ServiceRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>New Tech Support Request</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form  #form="ngForm">\n    <ion-item>\n      <ion-textarea [(ngModel)]="service_request.detail" name="detail" rows="5" placeholder="Enter details of the issue" required></ion-textarea>\n    </ion-item>\n        <ion-item>\n          <ion-label>Category</ion-label>\n          <ion-select [(ngModel)]="service_request.category" name="category" required interface="popover">\n            <ion-option value="INTRANET">Intranet</ion-option>\n            <ion-option value="ERP & Other Applications">ERP & Other Applications</ion-option>\n            <ion-option value="Infrastructure">Infrastructure</ion-option>\n\n          </ion-select>\n        </ion-item>\n\n    <!--<h4>Image Preview</h4>-->\n    <ion-item *ngIf="imageURI">\n      <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />\n    </ion-item>\n  <ion-buttons>\n    <ion-grid>\n      <ion-row>\n        <ion-col>\n          <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n        </ion-col>\n        <ion-col>\n          <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </ion-buttons>\n\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Add Service Request</button>\n  </form>\n  \n    <!-- <p>{{imageURI}}</p> -->\n    \n  \n\n\n  <!--<ion-item>-->\n    <!--<button ion-button (click)="uploadFile()">Upload</button>-->\n  <!--</ion-item>-->\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/service-request-form/service-request-form.html"*/,
+            selector: 'page-service-request-form',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/service-request-form/service-request-form.html"*/'<!--\n  Generated template for the ServiceRequestFormPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>New Tech Support Request</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form  #form="ngForm">\n    <ion-item>\n      <ion-textarea [(ngModel)]="service_request.detail" name="detail" rows="5" placeholder="Enter details of the issue" required></ion-textarea>\n    </ion-item>\n        <ion-item>\n          <ion-label>Category</ion-label>\n          <ion-select [(ngModel)]="service_request.category" name="category" required interface="popover">\n            <ion-option value="INTRANET">Intranet</ion-option>\n            <ion-option value="ERP & Other Applications">ERP & Other Applications</ion-option>\n            <ion-option value="Infrastructure">Infrastructure</ion-option>\n\n          </ion-select>\n        </ion-item>\n\n    <!--<h4>Image Preview</h4>-->\n    <ion-item *ngIf="imageURI">\n      <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />\n    </ion-item>\n  <ion-buttons>\n    <ion-grid>\n      <ion-row>\n        <ion-col>\n          <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>\n        </ion-col>\n        <ion-col>\n          <button ion-button color="secondary" round (click)="getImageFromFS()" block>Gallery</button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </ion-buttons>\n\n\n    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Add Service Request</button>\n  </form>\n  \n    <!-- <p>{{imageURI}}</p> -->\n    \n  \n\n\n  <!--<ion-item>-->\n    <!--<button ion-button (click)="uploadFile()">Upload</button>-->\n  <!--</ion-item>-->\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/service-request-form/service-request-form.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__["a" /* DataSetterProvider */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__["a" /* FileTransfer */],
             __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_toast_toast_controller__["a" /* ToastController */],
@@ -4393,7 +4504,7 @@ var ServiceRequestFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 173:
+/***/ 174:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4402,7 +4513,7 @@ var ServiceRequestFormPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__service_request_form_service_request_form__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__service_request_form_service_request_form__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__service_request_show_service_request_show__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
@@ -4516,7 +4627,7 @@ var ServiceRequestPage = /** @class */ (function () {
     };
     ServiceRequestPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-service-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/service-request/service-request.html"*/'<!--\n  Generated template for the ServiceRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n      <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n      </button>\n    <ion-title>Tech Support</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshSRList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-list *ngIf="servicerequests.length > 0">\n    <ion-card *ngFor="let servicerequest of servicerequests | search : {term:queryText,fields:[\'uid\',\'detail\',\'status\']} | sort: {property: field, order: order}" (click)="goToSR(servicerequest.uid)">\n      <div class="{{\'sr_state_sidebar_\'+servicerequest.status}}">\n\n      <!--<ion-card>-->\n        <ion-card-header>\n      {{servicerequest.uid}}\n      <span class="pull-right sr-age">{{servicerequest.age}} ago</span>\n\n      </ion-card-header>\n      <ion-card-content class="wrap">\n        {{servicerequest.detail}}\n      </ion-card-content>\n      <ion-row *ngIf="servicerequest.updated_at">\n        <ion-col>\n          <ion-note class="pull-right" style="color:black;">\n            Last Activity:\n            <b>{{getLastActivity(servicerequest.updated_at)}}</b>\n          </ion-note>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <h5 class="pull-right">Resolver: <b>{{servicerequest.resolver}}</b></h5>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-badge class="pull-right">{{servicerequest.status}}</ion-badge>\n        </ion-col>\n      </ion-row>\n      <!-- <ion-item>\n          <h5 style="margin-top: 0px;">Resolver:{{servicerequest.resolver}}</h5>\n        <ion-badge item-end>{{servicerequest.status}}</ion-badge>\n      </ion-item> -->\n      <!--</ion-card>-->\n\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToSRForm()"><ion-icon name="add"></ion-icon></button>\n  </ion-fab>\n\n  <ion-item *ngIf="servicerequests.length === 0" text-center>\n    No Tech Support Request to be Shown\n  </ion-item>\n\n\n</ion-content>\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/service-request/service-request.html"*/,
+            selector: 'page-service-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/service-request/service-request.html"*/'<!--\n  Generated template for the ServiceRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n      <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n      </button>\n    <ion-title>Tech Support</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshSRList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-list *ngIf="servicerequests.length > 0">\n    <ion-card *ngFor="let servicerequest of servicerequests | search : {term:queryText,fields:[\'uid\',\'detail\',\'status\']} | sort: {property: field, order: order}" (click)="goToSR(servicerequest.uid)">\n      <div class="{{\'sr_state_sidebar_\'+servicerequest.status}}">\n\n      <!--<ion-card>-->\n        <ion-card-header>\n      {{servicerequest.uid}}\n      <span class="pull-right sr-age">{{servicerequest.age}} ago</span>\n\n      </ion-card-header>\n      <ion-card-content class="wrap">\n        {{servicerequest.detail}}\n      </ion-card-content>\n      <ion-row *ngIf="servicerequest.updated_at">\n        <ion-col>\n          <ion-note class="pull-right" style="color:black;">\n            Last Activity:\n            <b>{{getLastActivity(servicerequest.updated_at)}}</b>\n          </ion-note>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <h5 class="pull-right">Resolver: <b>{{servicerequest.resolver}}</b></h5>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-badge class="pull-right">{{servicerequest.status}}</ion-badge>\n        </ion-col>\n      </ion-row>\n      <!-- <ion-item>\n          <h5 style="margin-top: 0px;">Resolver:{{servicerequest.resolver}}</h5>\n        <ion-badge item-end>{{servicerequest.status}}</ion-badge>\n      </ion-item> -->\n      <!--</ion-card>-->\n\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToSRForm()"><ion-icon name="add"></ion-icon></button>\n  </ion-fab>\n\n  <ion-item *ngIf="servicerequests.length === 0" text-center>\n    No Tech Support Request to be Shown\n  </ion-item>\n\n\n</ion-content>\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/service-request/service-request.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* Events */],
@@ -4531,14 +4642,14 @@ var ServiceRequestPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 174:
+/***/ 175:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SuervyPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4583,6 +4694,7 @@ var SuervyPage = /** @class */ (function () {
         this.appGlobal.answers[this.key] = (this.answer);
         if (this.qindex == this.appGlobal.questionsList.length - 1) {
             alert("Last Question");
+            console.log(this.appGlobal.answers);
             return;
         }
         console.log(this.answer);
@@ -4602,12 +4714,12 @@ var SuervyPage = /** @class */ (function () {
         console.log('ionViewDidLoad SuervyPage');
         // this.navCtrl.push(SuervyPage,{qindex: 0});
     };
-    var SuervyPage_1, _a, _b, _c, _d;
+    var SuervyPage_1;
     SuervyPage = SuervyPage_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-suervy',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/suervy/suervy.html"*/'<!--\n  Generated template for the SuervyPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>SuervyPage</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <p>{{question}}</p>\n\n  <hr>\n  <ion-input type="text" placeholder="Test Placeholder" [(ngModel)]="answer.value"></ion-input>\n  <hr>\n  <button ion-button (click)="goToNext(\'a\')" >Next</button>\n  <button ion-button (click)="goToPrev(\'a\')">Previous</button>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/suervy/suervy.html"*/,
+            selector: 'page-suervy',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/suervy/suervy.html"*/'<!--\n  Generated template for the SuervyPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>SuervyPage</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <p>{{question}}</p>\n\n  <hr>\n  <ion-input type="text" placeholder="Test Placeholder" [(ngModel)]="answer.value"></ion-input>\n  <hr>\n  <button ion-button (click)="goToNext(\'a\')" >Next</button>\n  <button ion-button (click)="goToPrev(\'a\')">Previous</button>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/suervy/suervy.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__["a" /* AppGlobalProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__["a" /* AppGlobalProvider */]) === "function" && _d || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */], __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__["a" /* AppGlobalProvider */]])
     ], SuervyPage);
     return SuervyPage;
 }());
@@ -4616,7 +4728,7 @@ var SuervyPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 175:
+/***/ 176:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4626,7 +4738,7 @@ var SuervyPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__suervy_suervy__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__suervy_suervy__ = __webpack_require__(175);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4726,12 +4838,18 @@ var SurveyListPage = /** @class */ (function () {
     SurveyListPage.prototype.StartSurvey = function (ProjectId) {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__suervy_suervy__["a" /* SuervyPage */], { qindex: 0 });
     };
-    var _a, _b, _c, _d, _e, _f, _g, _h;
     SurveyListPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-survey-list',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/survey-list/survey-list.html"*/'<!--\n  Generated template for the SurveyListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Surveys</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshSurveys($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card *ngFor="let survey of surveys" (click)="StartSurvey(survey.project_id)"  >\n      <ion-card-header>{{survey.title}}\n          <span class="pull-right sr-age"><p>Project ID: <strong>{{survey.project_id}}</strong></p></span>\n      </ion-card-header>\n      <ion-card-content>\n          <p>Survey Description:<strong>{{survey.description}}</strong></p>\n          <p>duration_months:<strong>{{survey.duration_months}}</strong></p>\n          <p>start_date:<strong>{{survey.start_date}}</strong></p>\n\n      </ion-card-content>\n    </ion-card>\n  </ion-list>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/survey-list/survey-list.html"*/,
+            selector: 'page-survey-list',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/survey-list/survey-list.html"*/'<!--\n  Generated template for the SurveyListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Surveys</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshSurveys($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card *ngFor="let survey of surveys" (click)="StartSurvey(survey.project_id)"  >\n      <ion-card-header>{{survey.title}}\n          <span class="pull-right sr-age"><p>Project ID: <strong>{{survey.project_id}}</strong></p></span>\n      </ion-card-header>\n      <ion-card-content>\n          <p>Survey Description:<strong>{{survey.description}}</strong></p>\n          <p>duration_months:<strong>{{survey.duration_months}}</strong></p>\n          <p>start_date:<strong>{{survey.start_date}}</strong></p>\n\n      </ion-card-content>\n    </ion-card>\n  </ion-list>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/survey-list/survey-list.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__providers_user_data_ts__["a" /* UserData */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__providers_user_data_ts__["a" /* UserData */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ToastController */]) === "function" && _h || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_0__providers_user_data_ts__["a" /* UserData */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ToastController */]])
     ], SurveyListPage);
     return SurveyListPage;
 }());
@@ -4740,7 +4858,7 @@ var SurveyListPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 205:
+/***/ 206:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -4753,17 +4871,17 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 205;
+webpackEmptyAsyncContext.id = 206;
 
 /***/ }),
 
-/***/ 206:
+/***/ 208:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DirectivesModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__ = __webpack_require__(500);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__ = __webpack_require__(510);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4789,7 +4907,7 @@ var DirectivesModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 208:
+/***/ 210:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4797,7 +4915,7 @@ var DirectivesModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_toast_toast_controller__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_vibration__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_loading_loading_controller__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -4923,10 +5041,10 @@ var LoginServiceProvider = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserData; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__login_service_login_service__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__login_service_login_service__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(97);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5153,156 +5271,156 @@ var UserData = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 251:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"../pages/access-card-request-form/access-card-request-form.module": [
-		252
-	],
-	"../pages/access-card-request/access-card-request.module": [
 		253
 	],
-	"../pages/article-index/article-index.module": [
-		374
+	"../pages/access-card-request/access-card-request.module": [
+		254
 	],
-	"../pages/article-show/article-show.module": [
+	"../pages/article-index/article-index.module": [
 		375
 	],
-	"../pages/calendar-view/calendar-view.module": [
+	"../pages/article-show/article-show.module": [
 		376
 	],
-	"../pages/canteen-facility/canteen-facility.module": [
-		378
+	"../pages/calendar-view/calendar-view.module": [
+		377
 	],
-	"../pages/comments/comments.module": [
+	"../pages/canteen-facility/canteen-facility.module": [
 		379
 	],
-	"../pages/directory/directory.module": [
+	"../pages/comments/comments.module": [
 		380
 	],
+	"../pages/directory/directory.module": [
+		381
+	],
 	"../pages/grievance-filter/grievance-filter.module": [
-		383
+		384
 	],
 	"../pages/grievance-form/grievance-form.module": [
-		448
-	],
-	"../pages/grievance-show/grievance-show.module": [
-		447
-	],
-	"../pages/grievance/grievance.module": [
-		385
-	],
-	"../pages/guest-lunch-form/guest-lunch-form.module": [
 		386
 	],
-	"../pages/guest-lunch/guest-lunch.module": [
+	"../pages/grievance-show/grievance-show.module": [
 		387
 	],
-	"../pages/guest-room-request-form/guest-room-request-form.module": [
-		388
+	"../pages/grievance/grievance.module": [
+		407
 	],
-	"../pages/guest-room-request-show/guest-room-request-show.module": [
-		389
+	"../pages/guest-lunch-form/guest-lunch-form.module": [
+		406
 	],
-	"../pages/guest-room-request/guest-room-request.module": [
+	"../pages/guest-lunch/guest-lunch.module": [
 		408
 	],
-	"../pages/home/home.module": [
+	"../pages/guest-room-request-form/guest-room-request-form.module": [
 		409
 	],
-	"../pages/idea-filter/idea-filter.module": [
+	"../pages/guest-room-request-show/guest-room-request-show.module": [
 		410
 	],
-	"../pages/idea-form/idea-form.module": [
+	"../pages/guest-room-request/guest-room-request.module": [
+		411
+	],
+	"../pages/home/home.module": [
 		412
 	],
-	"../pages/idea-show/idea-show.module": [
-		413
-	],
-	"../pages/idea/idea.module": [
+	"../pages/idea-filter/idea-filter.module": [
 		414
 	],
-	"../pages/intro/intro.module": [
+	"../pages/idea-form/idea-form.module": [
 		416
 	],
-	"../pages/leave-confirm/leave-confirm.module": [
+	"../pages/idea-show/idea-show.module": [
 		417
 	],
-	"../pages/leave-detail/leave-detail.module": [
-		419
+	"../pages/idea/idea.module": [
+		418
 	],
-	"../pages/leave-details/leave-details.module": [
+	"../pages/intro/intro.module": [
 		420
 	],
-	"../pages/leave-filter/leave-filter.module": [
-		421
-	],
-	"../pages/leave-new/leave-new.module": [
+	"../pages/leave-confirm/leave-confirm.module": [
 		422
 	],
-	"../pages/leaves-show/leaves-show.module": [
-		423
+	"../pages/leave-detail/leave-detail.module": [
+		421
 	],
-	"../pages/login/login.module": [
+	"../pages/leave-details/leave-details.module": [
 		424
 	],
-	"../pages/logout/logout.module": [
+	"../pages/leave-filter/leave-filter.module": [
 		425
 	],
-	"../pages/maintenance-request-form/maintenance-request-form.module": [
+	"../pages/leave-new/leave-new.module": [
 		426
 	],
-	"../pages/maintenance-request/maintenance-request.module": [
+	"../pages/leaves-show/leaves-show.module": [
 		427
 	],
-	"../pages/offline/offline.module": [
+	"../pages/login/login.module": [
 		428
 	],
-	"../pages/parakh-dashboard/parakh-dashboard.module": [
+	"../pages/logout/logout.module": [
+		429
+	],
+	"../pages/maintenance-request-form/maintenance-request-form.module": [
 		430
 	],
-	"../pages/policies-show/policies-show.module": [
+	"../pages/maintenance-request/maintenance-request.module": [
 		431
 	],
-	"../pages/policies/policies.module": [
+	"../pages/offline/offline.module": [
 		432
 	],
-	"../pages/profile/profile.module": [
-		433
-	],
-	"../pages/service-request-form/service-request-form.module": [
+	"../pages/parakh-dashboard/parakh-dashboard.module": [
 		434
 	],
-	"../pages/service-request-show/service-request-show.module": [
+	"../pages/policies-show/policies-show.module": [
+		435
+	],
+	"../pages/policies/policies.module": [
 		436
 	],
-	"../pages/service-request/service-request.module": [
+	"../pages/profile/profile.module": [
 		437
 	],
-	"../pages/stationery-request-form/stationery-request-form.module": [
+	"../pages/service-request-form/service-request-form.module": [
 		438
 	],
-	"../pages/stationery-request/stationery-request.module": [
-		439
-	],
-	"../pages/suervy/suervy.module": [
+	"../pages/service-request-show/service-request-show.module": [
 		440
 	],
-	"../pages/survey-list/survey-list.module": [
+	"../pages/service-request/service-request.module": [
 		441
 	],
-	"../pages/tutorial/tutorial.module": [
+	"../pages/stationery-request-form/stationery-request-form.module": [
 		442
 	],
-	"../pages/userblock/userblock.module": [
+	"../pages/stationery-request/stationery-request.module": [
+		443
+	],
+	"../pages/suervy/suervy.module": [
 		444
 	],
-	"../pages/visiting-card-form/visiting-card-form.module": [
+	"../pages/survey-list/survey-list.module": [
 		445
 	],
-	"../pages/visiting-card/visiting-card.module": [
+	"../pages/tutorial/tutorial.module": [
+		447
+	],
+	"../pages/userblock/userblock.module": [
 		446
+	],
+	"../pages/visiting-card-form/visiting-card-form.module": [
+		449
+	],
+	"../pages/visiting-card/visiting-card.module": [
+		450
 	]
 };
 function webpackAsyncContext(req) {
@@ -5316,12 +5434,12 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 251;
+webpackAsyncContext.id = 252;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 252:
+/***/ 253:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5329,7 +5447,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AccessCardRequestFormPageModule", function() { return AccessCardRequestFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__access_card_request_form__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__access_card_request_form__ = __webpack_require__(143);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5359,7 +5477,7 @@ var AccessCardRequestFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 253:
+/***/ 254:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5368,7 +5486,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__access_card_request__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5400,16 +5518,16 @@ var AccessCardRequestPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 26:
+/***/ 27:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PipesModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__search_search__ = __webpack_require__(532);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__safe_safe__ = __webpack_require__(533);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sort_sort__ = __webpack_require__(534);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__search_search__ = __webpack_require__(534);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__safe_safe__ = __webpack_require__(535);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sort_sort__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__ = __webpack_require__(538);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5444,16 +5562,16 @@ var PipesModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 374:
+/***/ 375:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleIndexPageModule", function() { return ArticleIndexPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__article_index__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__article_index__ = __webpack_require__(144);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5485,13 +5603,13 @@ var ArticleIndexPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 375:
+/***/ 376:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleShowPageModule", function() { return ArticleShowPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_components_module__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
@@ -5529,7 +5647,7 @@ var ArticleShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 376:
+/***/ 377:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5537,8 +5655,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CalendarViewPageModule", function() { return CalendarViewPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_view__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic2_calendar_en__ = __webpack_require__(377);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_view__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic2_calendar_en__ = __webpack_require__(378);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5570,7 +5688,7 @@ var CalendarViewPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 378:
+/***/ 379:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5578,7 +5696,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CanteenFacilityPageModule", function() { return CanteenFacilityPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__canteen_facility__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__canteen_facility__ = __webpack_require__(147);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5608,7 +5726,7 @@ var CanteenFacilityPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 379:
+/***/ 380:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5646,7 +5764,7 @@ var CommentsPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 380:
+/***/ 381:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5654,7 +5772,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DirectoryPageModule", function() { return DirectoryPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__directory__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__directory__ = __webpack_require__(148);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5684,7 +5802,7 @@ var DirectoryPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 383:
+/***/ 384:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5692,7 +5810,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceFilterPageModule", function() { return GrievanceFilterPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_filter__ = __webpack_require__(384);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_filter__ = __webpack_require__(385);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5722,7 +5840,7 @@ var GrievanceFilterPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 384:
+/***/ 385:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5782,7 +5900,7 @@ var GrievanceFilterPage = /** @class */ (function () {
     };
     GrievanceFilterPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-grievance-filter',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance-filter/grievance-filter.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-buttons start>\n      <button ion-button (click)="dismiss()">Cancel</button>\n    </ion-buttons>\n\n    <ion-title>\n      Filter Grievance\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="applyFilters()" strong>Done</button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content class="outer-content">\n\n  <ion-list>\n    <ion-list-header>Whose Grievances</ion-list-header>\n\n    <ion-item *ngFor="let whoseGrievance of grievanceWhose" [attr.whoseGrievance]="whoseGrievance.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label text-capitalize>{{whoseGrievance.name}}</ion-label>\n      <ion-toggle [(ngModel)]="whoseGrievance.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list>\n    <button ion-item (click)="resetFilters()" detail-none class="reset-filters">\n      Reset All Filters\n    </button>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance-filter/grievance-filter.html"*/,
+            selector: 'page-grievance-filter',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance-filter/grievance-filter.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-buttons start>\n      <button ion-button (click)="dismiss()">Cancel</button>\n    </ion-buttons>\n\n    <ion-title>\n      Filter Grievance\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="applyFilters()" strong>Done</button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content class="outer-content">\n\n  <ion-list>\n    <ion-list-header>Whose Grievances</ion-list-header>\n\n    <ion-item *ngFor="let whoseGrievance of grievanceWhose" [attr.whoseGrievance]="whoseGrievance.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label text-capitalize>{{whoseGrievance.name}}</ion-label>\n      <ion-toggle [(ngModel)]="whoseGrievance.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list>\n    <button ion-item (click)="resetFilters()" detail-none class="reset-filters">\n      Reset All Filters\n    </button>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance-filter/grievance-filter.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["t" /* ViewController */],
             __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__["a" /* AlertController */]])
@@ -5794,16 +5912,146 @@ var GrievanceFilterPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 385:
+/***/ 386:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceFormPageModule", function() { return GrievanceFormPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_form__ = __webpack_require__(149);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var GrievanceFormPageModule = /** @class */ (function () {
+    function GrievanceFormPageModule() {
+    }
+    GrievanceFormPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__grievance_form__["a" /* GrievanceFormPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__grievance_form__["a" /* GrievanceFormPage */]),
+            ],
+        })
+    ], GrievanceFormPageModule);
+    return GrievanceFormPageModule;
+}());
+
+//# sourceMappingURL=grievance-form.module.js.map
+
+/***/ }),
+
+/***/ 387:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceShowPageModule", function() { return GrievanceShowPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_show__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_components_module__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__(22);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+var GrievanceShowPageModule = /** @class */ (function () {
+    function GrievanceShowPageModule() {
+    }
+    GrievanceShowPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__grievance_show__["a" /* GrievanceShowPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__grievance_show__["a" /* GrievanceShowPage */]),
+                __WEBPACK_IMPORTED_MODULE_3__components_components_module__["a" /* ComponentsModule */],
+                __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__["a" /* IonTagsInputModule */],
+                __WEBPACK_IMPORTED_MODULE_5_ngx_chips__["a" /* TagInputModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["d" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["g" /* ReactiveFormsModule */]
+            ],
+        })
+    ], GrievanceShowPageModule);
+    return GrievanceShowPageModule;
+}());
+
+//# sourceMappingURL=grievance-show.module.js.map
+
+/***/ }),
+
+/***/ 406:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GuestLunchFormPageModule", function() { return GuestLunchFormPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_lunch_form__ = __webpack_require__(155);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var GuestLunchFormPageModule = /** @class */ (function () {
+    function GuestLunchFormPageModule() {
+    }
+    GuestLunchFormPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__guest_lunch_form__["a" /* GuestLunchFormPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__guest_lunch_form__["a" /* GuestLunchFormPage */]),
+            ],
+        })
+    ], GuestLunchFormPageModule);
+    return GuestLunchFormPageModule;
+}());
+
+//# sourceMappingURL=guest-lunch-form.module.js.map
+
+/***/ }),
+
+/***/ 407:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievancePageModule", function() { return GrievancePageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__grievance__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__grievance__ = __webpack_require__(156);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5835,45 +6083,7 @@ var GrievancePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 386:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GuestLunchFormPageModule", function() { return GuestLunchFormPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_lunch_form__ = __webpack_require__(150);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var GuestLunchFormPageModule = /** @class */ (function () {
-    function GuestLunchFormPageModule() {
-    }
-    GuestLunchFormPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__guest_lunch_form__["a" /* GuestLunchFormPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__guest_lunch_form__["a" /* GuestLunchFormPage */]),
-            ],
-        })
-    ], GuestLunchFormPageModule);
-    return GuestLunchFormPageModule;
-}());
-
-//# sourceMappingURL=guest-lunch-form.module.js.map
-
-/***/ }),
-
-/***/ 387:
+/***/ 408:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5881,8 +6091,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GuestLunchPageModule", function() { return GuestLunchPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_lunch__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_lunch__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5914,7 +6124,7 @@ var GuestLunchPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 388:
+/***/ 409:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5922,7 +6132,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GuestRoomRequestFormPageModule", function() { return GuestRoomRequestFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_room_request_form__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_room_request_form__ = __webpack_require__(157);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5952,7 +6162,7 @@ var GuestRoomRequestFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 389:
+/***/ 410:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5960,9 +6170,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GuestRoomRequestShowPageModule", function() { return GuestRoomRequestShowPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_room_request_show__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_tags_input__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_chips__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_room_request_show__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_tags_input__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_chips__ = __webpack_require__(70);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5996,7 +6206,7 @@ var GuestRoomRequestShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 408:
+/***/ 411:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6004,8 +6214,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GuestRoomRequestPageModule", function() { return GuestRoomRequestPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_room_request__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__guest_room_request__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6037,13 +6247,13 @@ var GuestRoomRequestPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 409:
+/***/ 412:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomePageModule", function() { return HomePageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home__ = __webpack_require__(72);
@@ -6078,7 +6288,58 @@ var HomePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 410:
+/***/ 413:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatabaseProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_sqlite__ = __webpack_require__(114);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+/*
+  Generated class for the DatabaseProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var DatabaseProvider = /** @class */ (function () {
+    function DatabaseProvider(http, sqlstorage) {
+        this.http = http;
+        this.sqlstorage = sqlstorage;
+        console.log('Hello DatabaseProvider Provider');
+        this.sqlstorage.create({ name: 'ivdp.db',
+            location: 'default' })
+            .then(function (db) {
+            db.executeSql('create table danceMoves(name VARCHAR(32))', [])
+                .then(function () { return console.log('Executed SQL'); })
+                .catch(function (e) { return console.log(e); });
+        }).catch(function (e) { return console.log(e); });
+    }
+    DatabaseProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */],
+            __WEBPACK_IMPORTED_MODULE_2__ionic_native_sqlite__["a" /* SQLite */]])
+    ], DatabaseProvider);
+    return DatabaseProvider;
+}());
+
+//# sourceMappingURL=database.js.map
+
+/***/ }),
+
+/***/ 414:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6086,7 +6347,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IdeaFilterPageModule", function() { return IdeaFilterPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_filter__ = __webpack_require__(411);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_filter__ = __webpack_require__(415);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6116,7 +6377,7 @@ var IdeaFilterPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 411:
+/***/ 415:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6176,7 +6437,7 @@ var IdeaFilterPage = /** @class */ (function () {
     };
     IdeaFilterPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-idea-filter',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea-filter/idea-filter.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-buttons start>\n      <button ion-button (click)="dismiss()">Cancel</button>\n    </ion-buttons>\n\n    <ion-title>\n      Filter Ideas\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="applyFilters()" strong>Done</button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content class="outer-content">\n\n  <ion-list>\n    <ion-list-header>Whose Ideas</ion-list-header>\n\n    <ion-item *ngFor="let whoseIdea of ideaWhose" [attr.whoseIdea]="whoseIdea.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label text-capitalize>{{whoseIdea.name}}</ion-label>\n      <ion-toggle [(ngModel)]="whoseIdea.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list>\n    <button ion-item (click)="resetFilters()" detail-none class="reset-filters">\n      Reset All Filters\n    </button>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea-filter/idea-filter.html"*/,
+            selector: 'page-idea-filter',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea-filter/idea-filter.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-buttons start>\n      <button ion-button (click)="dismiss()">Cancel</button>\n    </ion-buttons>\n\n    <ion-title>\n      Filter Ideas\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="applyFilters()" strong>Done</button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content class="outer-content">\n\n  <ion-list>\n    <ion-list-header>Whose Ideas</ion-list-header>\n\n    <ion-item *ngFor="let whoseIdea of ideaWhose" [attr.whoseIdea]="whoseIdea.name | lowercase">\n      <span item-start class="dot"></span>\n      <ion-label text-capitalize>{{whoseIdea.name}}</ion-label>\n      <ion-toggle [(ngModel)]="whoseIdea.isChecked" color="secondary"></ion-toggle>\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list>\n    <button ion-item (click)="resetFilters()" detail-none class="reset-filters">\n      Reset All Filters\n    </button>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea-filter/idea-filter.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["t" /* ViewController */],
             __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__["a" /* AlertController */]])
@@ -6188,7 +6449,7 @@ var IdeaFilterPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 412:
+/***/ 416:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6196,7 +6457,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IdeaFormPageModule", function() { return IdeaFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_form__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_form__ = __webpack_require__(163);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6226,7 +6487,7 @@ var IdeaFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 413:
+/***/ 417:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6235,9 +6496,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_show__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_tags_input__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_chips__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_tags_input__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_chips__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_forms__ = __webpack_require__(22);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -6277,16 +6538,16 @@ var IdeaShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 414:
+/***/ 418:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IdeaPageModule", function() { return IdeaPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__idea__ = __webpack_require__(415);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__idea__ = __webpack_require__(419);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6318,18 +6579,18 @@ var IdeaPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 415:
+/***/ 419:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IdeaPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__idea_filter_idea_filter__ = __webpack_require__(411);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__idea_filter_idea_filter__ = __webpack_require__(415);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__idea_show_idea_show__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__idea_form_idea_form__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__idea_form_idea_form__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_moment__ = __webpack_require__(1);
@@ -6480,7 +6741,7 @@ var IdeaPage = /** @class */ (function () {
     };
     IdeaPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-idea',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea/idea.html"*/'<!--\n  Generated template for the IdeaPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Ideas</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n    <ion-buttons end>\n      <button ion-button icon-only [disabled]="ideas_m.length === 0" (click)="presentFilter()">\n        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshSRList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n\n  <ion-list *ngIf="ideas_m.shownIdeas > 0">\n    <ion-card *ngFor="let idea of ideas_m | search : {term:queryText,fields:[\'uid\',\'content\',\'state\']} | sort: {property: field, order: order}" (click)="goToIdea(idea.uid)" [hidden]="idea.hide">\n      <div class="{{\'idea_state_sidebar_\'+idea.state}}">\n      <!--<ion-card>-->\n      <ion-card-header>\n        {{idea.uid}}\n        <span class="pull-right sr-age">{{idea.age}}</span>\n\n      </ion-card-header>\n      <ion-card-content>\n        <div [innerHtml]="\'<div>\'+idea.content.substring(0,150)+\'....</div>\'" class="inline">\n      </div>\n      </ion-card-content>\n      <ion-row *ngIf="idea.updated_at">\n        <ion-col>\n          <ion-note class="pull-right" style="color:black;">\n            Last Activity:\n            <b>{{getLastActivity(idea.updated_at)}}</b>\n          </ion-note>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-badge class="pull-right">{{idea.state}}</ion-badge>\n        </ion-col>\n      </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToSRForm()"><ion-icon name="add"></ion-icon></button>\n  </ion-fab>\n\n  <ion-item *ngIf="ideas_m.shownIdeas === 0" text-center>\n    No Ideas to be Shown\n  </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea/idea.html"*/,
+            selector: 'page-idea',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea/idea.html"*/'<!--\n  Generated template for the IdeaPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Ideas</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">\n    </ion-searchbar>\n    <ion-buttons end>\n      <button ion-button icon-only [disabled]="ideas_m.length === 0" (click)="presentFilter()">\n        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshSRList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n\n  <ion-list *ngIf="ideas_m.shownIdeas > 0">\n    <ion-card *ngFor="let idea of ideas_m | search : {term:queryText,fields:[\'uid\',\'content\',\'state\']} | sort: {property: field, order: order}" (click)="goToIdea(idea.uid)" [hidden]="idea.hide">\n      <div class="{{\'idea_state_sidebar_\'+idea.state}}">\n      <!--<ion-card>-->\n      <ion-card-header>\n        {{idea.uid}}\n        <span class="pull-right sr-age">{{idea.age}}</span>\n\n      </ion-card-header>\n      <ion-card-content>\n        <div [innerHtml]="\'<div>\'+idea.content.substring(0,150)+\'....</div>\'" class="inline">\n      </div>\n      </ion-card-content>\n      <ion-row *ngIf="idea.updated_at">\n        <ion-col>\n          <ion-note class="pull-right" style="color:black;">\n            Last Activity:\n            <b>{{getLastActivity(idea.updated_at)}}</b>\n          </ion-note>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-badge class="pull-right">{{idea.state}}</ion-badge>\n        </ion-col>\n      </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToSRForm()"><ion-icon name="add"></ion-icon></button>\n  </ion-fab>\n\n  <ion-item *ngIf="ideas_m.shownIdeas === 0" text-center>\n    No Ideas to be Shown\n  </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea/idea.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* LoadingController */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["n" /* ModalController */],
@@ -6494,7 +6755,7 @@ var IdeaPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 416:
+/***/ 420:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6502,7 +6763,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IntroPageModule", function() { return IntroPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__intro__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__intro__ = __webpack_require__(159);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6532,7 +6793,45 @@ var IntroPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 417:
+/***/ 421:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LeaveDetailPageModule", function() { return LeaveDetailPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_detail__ = __webpack_require__(164);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var LeaveDetailPageModule = /** @class */ (function () {
+    function LeaveDetailPageModule() {
+    }
+    LeaveDetailPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__leave_detail__["a" /* LeaveDetailPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__leave_detail__["a" /* LeaveDetailPage */]),
+            ],
+        })
+    ], LeaveDetailPageModule);
+    return LeaveDetailPageModule;
+}());
+
+//# sourceMappingURL=leave-detail.module.js.map
+
+/***/ }),
+
+/***/ 422:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6540,7 +6839,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LeaveConfirmPageModule", function() { return LeaveConfirmPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_confirm__ = __webpack_require__(418);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_confirm__ = __webpack_require__(423);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6570,7 +6869,7 @@ var LeaveConfirmPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 418:
+/***/ 423:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6611,7 +6910,7 @@ var LeaveConfirmPage = /** @class */ (function () {
     };
     LeaveConfirmPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-leave-confirm',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-confirm/leave-confirm.html"*/'<!--\n  Generated template for the LeaveConfirmPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<!-- <ion-header>\n\n  <ion-navbar>\n    <ion-title></ion-title>\n  </ion-navbar>\n\n</ion-header> -->\n\n\n<ion-content>\n  <div padding>\n    <h5>Current Application Details</h5>\n    <ion-grid>\n      <ion-row>\n        <ion-col><strong>Applied dates</strong></ion-col>\n        <ion-col><strong>Leave Details</strong></ion-col>\n        <ion-col><strong>Day</strong></ion-col>\n      </ion-row>\n      <ion-row *ngFor=\'let leaveRecords of allHalfLeaveRecords; index as i; odd as isOdd; even as isEven\' [class.row-odd]="isOdd" [class.row-even]="isEven">\n        <ion-col>{{leaveRecords.Applieddates}}</ion-col>\n        <ion-col>{{leaveRecords.leavedetails}}</ion-col>\n        <ion-col>{{leaveRecords.wday}}</ion-col>\n      </ion-row>\n    </ion-grid>\n  </div>\n  <button ion-button full (tap)="cancel()">OK</button>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/leave-confirm/leave-confirm.html"*/,
+            selector: 'page-leave-confirm',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-confirm/leave-confirm.html"*/'<!--\n  Generated template for the LeaveConfirmPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<!-- <ion-header>\n\n  <ion-navbar>\n    <ion-title></ion-title>\n  </ion-navbar>\n\n</ion-header> -->\n\n\n<ion-content>\n  <div padding>\n    <h5>Current Application Details</h5>\n    <ion-grid>\n      <ion-row>\n        <ion-col><strong>Applied dates</strong></ion-col>\n        <ion-col><strong>Leave Details</strong></ion-col>\n        <ion-col><strong>Day</strong></ion-col>\n      </ion-row>\n      <ion-row *ngFor=\'let leaveRecords of allHalfLeaveRecords; index as i; odd as isOdd; even as isEven\' [class.row-odd]="isOdd" [class.row-even]="isEven">\n        <ion-col>{{leaveRecords.Applieddates}}</ion-col>\n        <ion-col>{{leaveRecords.leavedetails}}</ion-col>\n        <ion-col>{{leaveRecords.wday}}</ion-col>\n      </ion-row>\n    </ion-grid>\n  </div>\n  <button ion-button full (tap)="cancel()">OK</button>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/leave-confirm/leave-confirm.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["t" /* ViewController */]])
@@ -6623,45 +6922,7 @@ var LeaveConfirmPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 419:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LeaveDetailPageModule", function() { return LeaveDetailPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_detail__ = __webpack_require__(163);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var LeaveDetailPageModule = /** @class */ (function () {
-    function LeaveDetailPageModule() {
-    }
-    LeaveDetailPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__leave_detail__["a" /* LeaveDetailPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__leave_detail__["a" /* LeaveDetailPage */]),
-            ],
-        })
-    ], LeaveDetailPageModule);
-    return LeaveDetailPageModule;
-}());
-
-//# sourceMappingURL=leave-detail.module.js.map
-
-/***/ }),
-
-/***/ 420:
+/***/ 424:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6669,7 +6930,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LeaveDetailsPageModule", function() { return LeaveDetailsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_details__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_details__ = __webpack_require__(146);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6699,7 +6960,7 @@ var LeaveDetailsPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 421:
+/***/ 425:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6707,7 +6968,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LeaveFilterPageModule", function() { return LeaveFilterPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_filter__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_filter__ = __webpack_require__(165);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6737,7 +6998,7 @@ var LeaveFilterPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 422:
+/***/ 426:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6745,7 +7006,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LeaveNewPageModule", function() { return LeaveNewPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_new__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leave_new__ = __webpack_require__(166);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6775,7 +7036,7 @@ var LeaveNewPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 423:
+/***/ 427:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6783,7 +7044,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LeavesShowPageModule", function() { return LeavesShowPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leaves_show__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__leaves_show__ = __webpack_require__(167);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6813,7 +7074,7 @@ var LeavesShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 424:
+/***/ 428:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6821,7 +7082,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginPageModule", function() { return LoginPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login__ = __webpack_require__(168);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6851,7 +7112,7 @@ var LoginPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 425:
+/***/ 429:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6859,7 +7120,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LogoutPageModule", function() { return LogoutPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logout__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logout__ = __webpack_require__(169);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6889,7 +7150,7 @@ var LogoutPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 426:
+/***/ 430:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6897,7 +7158,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaintenanceRequestFormPageModule", function() { return MaintenanceRequestFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maintenance_request_form__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maintenance_request_form__ = __webpack_require__(161);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6927,7 +7188,7 @@ var MaintenanceRequestFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 427:
+/***/ 431:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6935,8 +7196,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaintenanceRequestPageModule", function() { return MaintenanceRequestPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maintenance_request__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maintenance_request__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6968,7 +7229,7 @@ var MaintenanceRequestPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 428:
+/***/ 432:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6976,7 +7237,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OfflinePageModule", function() { return OfflinePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__offline__ = __webpack_require__(429);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__offline__ = __webpack_require__(433);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7009,7 +7270,7 @@ var OfflinePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 429:
+/***/ 433:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7079,7 +7340,7 @@ var OfflinePage = /** @class */ (function () {
     };
     OfflinePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-offline',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/offline/offline.html"*/'<!--\n  Generated template for the OfflinePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton="true">\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="Empower">\n    </ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content center text-center padding>\n  <ion-refresher (ionRefresh)="refresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <!-- <div class="logo">\n    <img src="assets/img/appicon.png" alt="Empower">\n  </div> -->\n  <h4>You are offline !!</h4>\n\n  <h5>\n <!-- It looks like you are offline! Please check your network connection and try again. -->\n    <p>It seems currently you are offline and we are unable to reach our servers.</p>\n    <p>This being an online application, cannot be used in this state. Please wait while we automatically detect your internet\n      status and take you back to action!</p>\n  </h5>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/offline/offline.html"*/,
+            selector: 'page-offline',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/offline/offline.html"*/'<!--\n  Generated template for the OfflinePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton="true">\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="Empower">\n    </ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content center text-center padding>\n  <ion-refresher (ionRefresh)="refresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <!-- <div class="logo">\n    <img src="assets/img/appicon.png" alt="Empower">\n  </div> -->\n  <h4>You are offline !!</h4>\n\n  <h5>\n <!-- It looks like you are offline! Please check your network connection and try again. -->\n    <p>It seems currently you are offline and we are unable to reach our servers.</p>\n    <p>This being an online application, cannot be used in this state. Please wait while we automatically detect your internet\n      status and take you back to action!</p>\n  </h5>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/offline/offline.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */],
@@ -7095,7 +7356,7 @@ var OfflinePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 430:
+/***/ 434:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7103,8 +7364,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ParakhDashboardPageModule", function() { return ParakhDashboardPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__parakh_dashboard__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__parakh_dashboard__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7136,7 +7397,7 @@ var ParakhDashboardPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 431:
+/***/ 435:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7144,7 +7405,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PoliciesShowPageModule", function() { return PoliciesShowPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__policies_show__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__policies_show__ = __webpack_require__(171);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7174,7 +7435,7 @@ var PoliciesShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 432:
+/***/ 436:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7182,7 +7443,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PoliciesPageModule", function() { return PoliciesPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__policies__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__policies__ = __webpack_require__(172);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7212,19 +7473,19 @@ var PoliciesPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 433:
+/***/ 437:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfilePageModule", function() { return ProfilePageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__ = __webpack_require__(208);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__profile__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__(22);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -7266,7 +7527,7 @@ var ProfilePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 434:
+/***/ 438:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7274,7 +7535,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceRequestFormPageModule", function() { return ServiceRequestFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__service_request_form__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__service_request_form__ = __webpack_require__(173);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7304,7 +7565,7 @@ var ServiceRequestFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 436:
+/***/ 440:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7345,16 +7606,16 @@ var ServiceRequestShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 437:
+/***/ 441:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceRequestPageModule", function() { return ServiceRequestPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__service_request__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__service_request__ = __webpack_require__(174);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7386,7 +7647,7 @@ var ServiceRequestPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 438:
+/***/ 442:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7394,7 +7655,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StationeryRequestFormPageModule", function() { return StationeryRequestFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stationery_request_form__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stationery_request_form__ = __webpack_require__(162);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7424,7 +7685,7 @@ var StationeryRequestFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 439:
+/***/ 443:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7432,8 +7693,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StationeryRequestPageModule", function() { return StationeryRequestPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stationery_request__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stationery_request__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7465,7 +7726,7 @@ var StationeryRequestPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 440:
+/***/ 444:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7473,7 +7734,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SuervyPageModule", function() { return SuervyPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__suervy__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__suervy__ = __webpack_require__(175);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7503,16 +7764,16 @@ var SuervyPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 441:
+/***/ 445:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SurveyListPageModule", function() { return SurveyListPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__survey_list__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__survey_list__ = __webpack_require__(176);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7544,7 +7805,48 @@ var SurveyListPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 442:
+/***/ 446:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserblockPageModule", function() { return UserblockPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__userblock__ = __webpack_require__(116);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var UserblockPageModule = /** @class */ (function () {
+    function UserblockPageModule() {
+    }
+    UserblockPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__userblock__["a" /* UserblockPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__userblock__["a" /* UserblockPage */]),
+            ],
+            entryComponents: [
+                __WEBPACK_IMPORTED_MODULE_2__userblock__["a" /* UserblockPage */],
+            ],
+        })
+    ], UserblockPageModule);
+    return UserblockPageModule;
+}());
+
+//# sourceMappingURL=userblock.module.js.map
+
+/***/ }),
+
+/***/ 447:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7552,7 +7854,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TutorialPageModule", function() { return TutorialPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tutorial__ = __webpack_require__(443);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tutorial__ = __webpack_require__(448);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__ = __webpack_require__(101);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -7588,7 +7890,7 @@ var TutorialPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 443:
+/***/ 448:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7665,7 +7967,7 @@ var TutorialPage = /** @class */ (function () {
     };
     TutorialPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-tutorial',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/tutorial/tutorial.html"*/'<ion-header no-shadow>\n  <ion-navbar>\n    <ion-buttons end *ngIf="showSkip">\n      <button ion-button (click)="startApp()" color="primary">{{ \'TUTORIAL_SKIP_BUTTON\' | translate}}</button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content no-bounce>\n  <ion-slides pager="true" dir="{{dir}}" (ionSlideWillChange)="onSlideChangeStart($event)">\n    <ion-slide *ngFor="let slide of slides">\n      <img [src]="slide.image" class="slide-image" />\n      <h2 class="slide-title" [innerHTML]="slide.title"></h2>\n      <p [innerHTML]="slide.description"></p>\n    </ion-slide>\n    <ion-slide>\n      <img src="assets/img/ica-slidebox-img-4.png" class="slide-image" />\n      <h2 class="slide-title">{{ \'TUTORIAL_SLIDE4_TITLE\' | translate }}</h2>\n      <button ion-button icon-end large clear (click)="startApp()">\n        {{ \'TUTORIAL_CONTINUE_BUTTON\' | translate }}\n        <ion-icon name="arrow-forward"></ion-icon>\n      </button>\n    </ion-slide>\n  </ion-slides>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/tutorial/tutorial.html"*/
+            selector: 'page-tutorial',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/tutorial/tutorial.html"*/'<ion-header no-shadow>\n  <ion-navbar>\n    <ion-buttons end *ngIf="showSkip">\n      <button ion-button (click)="startApp()" color="primary">{{ \'TUTORIAL_SKIP_BUTTON\' | translate}}</button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content no-bounce>\n  <ion-slides pager="true" dir="{{dir}}" (ionSlideWillChange)="onSlideChangeStart($event)">\n    <ion-slide *ngFor="let slide of slides">\n      <img [src]="slide.image" class="slide-image" />\n      <h2 class="slide-title" [innerHTML]="slide.title"></h2>\n      <p [innerHTML]="slide.description"></p>\n    </ion-slide>\n    <ion-slide>\n      <img src="assets/img/ica-slidebox-img-4.png" class="slide-image" />\n      <h2 class="slide-title">{{ \'TUTORIAL_SLIDE4_TITLE\' | translate }}</h2>\n      <button ion-button icon-end large clear (click)="startApp()">\n        {{ \'TUTORIAL_CONTINUE_BUTTON\' | translate }}\n        <ion-icon name="arrow-forward"></ion-icon>\n      </button>\n    </ion-slide>\n  </ion-slides>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/tutorial/tutorial.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* MenuController */], __WEBPACK_IMPORTED_MODULE_2__ngx_translate_core__["c" /* TranslateService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["r" /* Platform */]])
     ], TutorialPage);
@@ -7676,48 +7978,7 @@ var TutorialPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 444:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserblockPageModule", function() { return UserblockPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__userblock__ = __webpack_require__(114);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var UserblockPageModule = /** @class */ (function () {
-    function UserblockPageModule() {
-    }
-    UserblockPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__userblock__["a" /* UserblockPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__userblock__["a" /* UserblockPage */]),
-            ],
-            entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_2__userblock__["a" /* UserblockPage */],
-            ],
-        })
-    ], UserblockPageModule);
-    return UserblockPageModule;
-}());
-
-//# sourceMappingURL=userblock.module.js.map
-
-/***/ }),
-
-/***/ 445:
+/***/ 449:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7725,7 +7986,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VisitingCardFormPageModule", function() { return VisitingCardFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__visiting_card_form__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__visiting_card_form__ = __webpack_require__(160);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7755,7 +8016,7 @@ var VisitingCardFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 446:
+/***/ 450:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7763,8 +8024,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VisitingCardPageModule", function() { return VisitingCardPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__visiting_card__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__visiting_card__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7796,106 +8057,14 @@ var VisitingCardPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 447:
+/***/ 492:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceShowPageModule", function() { return GrievanceShowPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_show__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_components_module__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__(22);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-
-
-
-var GrievanceShowPageModule = /** @class */ (function () {
-    function GrievanceShowPageModule() {
-    }
-    GrievanceShowPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__grievance_show__["a" /* GrievanceShowPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__grievance_show__["a" /* GrievanceShowPage */]),
-                __WEBPACK_IMPORTED_MODULE_3__components_components_module__["a" /* ComponentsModule */],
-                __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__["a" /* IonTagsInputModule */],
-                __WEBPACK_IMPORTED_MODULE_5_ngx_chips__["a" /* TagInputModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["d" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["g" /* ReactiveFormsModule */]
-            ],
-        })
-    ], GrievanceShowPageModule);
-    return GrievanceShowPageModule;
-}());
-
-//# sourceMappingURL=grievance-show.module.js.map
-
-/***/ }),
-
-/***/ 448:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceFormPageModule", function() { return GrievanceFormPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_form__ = __webpack_require__(149);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var GrievanceFormPageModule = /** @class */ (function () {
-    function GrievanceFormPageModule() {
-    }
-    GrievanceFormPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__grievance_form__["a" /* GrievanceFormPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__grievance_form__["a" /* GrievanceFormPage */]),
-            ],
-        })
-    ], GrievanceFormPageModule);
-    return GrievanceFormPageModule;
-}());
-
-//# sourceMappingURL=grievance-form.module.js.map
-
-/***/ }),
-
-/***/ 490:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(491);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(493);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_module__ = __webpack_require__(499);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_module__ = __webpack_require__(501);
 
 
 
@@ -7905,145 +8074,149 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 499:
+/***/ 501:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export createTranslateLoader */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_userblock_userblock__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_directory_directory__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_grievance_filter_grievance_filter_module__ = __webpack_require__(383);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_idea_filter_idea_filter_module__ = __webpack_require__(410);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_survey_list_survey_list_module__ = __webpack_require__(441);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_leave_confirm_leave_confirm_module__ = __webpack_require__(417);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_home_home_module__ = __webpack_require__(409);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_tutorial_tutorial_module__ = __webpack_require__(442);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_service_request_show_service_request_show_module__ = __webpack_require__(436);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_service_request_form_service_request_form_module__ = __webpack_require__(434);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_service_request_service_request_module__ = __webpack_require__(437);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_policies_show_policies_show_module__ = __webpack_require__(431);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_policies_policies_module__ = __webpack_require__(432);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_logout_logout_module__ = __webpack_require__(425);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_login_login_module__ = __webpack_require__(424);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_leaves_show_leaves_show_module__ = __webpack_require__(423);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_leave_new_leave_new_module__ = __webpack_require__(422);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_leave_filter_leave_filter_module__ = __webpack_require__(421);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_leave_details_leave_details_module__ = __webpack_require__(420);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_leave_detail_leave_detail_module__ = __webpack_require__(419);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_idea_form_idea_form_module__ = __webpack_require__(412);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_idea_idea_module__ = __webpack_require__(414);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_grievance_show_grievance_show_module__ = __webpack_require__(447);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_grievance_form_grievance_form_module__ = __webpack_require__(448);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_grievance_grievance_module__ = __webpack_require__(385);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_calendar_view_calendar_view_module__ = __webpack_require__(376);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_article_show_article_show_module__ = __webpack_require__(375);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_components_module__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__pages_article_index_article_index_module__ = __webpack_require__(374);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__pages_offline_offline_module__ = __webpack_require__(428);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__pages_leave_detail_leave_detail__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_leave_filter_leave_filter__ = __webpack_require__(164);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_leaves_show_leaves_show__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_logout_logout__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__angular_platform_browser__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__app_component__ = __webpack_require__(664);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_home_home__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_login_login__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__ionic_native_splash_screen__ = __webpack_require__(488);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__pages_service_request_service_request__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__angular_common_http__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__ngx_translate_core__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__ngx_translate_http_loader__ = __webpack_require__(665);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__ionic_native_in_app_browser__ = __webpack_require__(667);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__pages_calendar_view_calendar_view__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__pages_service_request_form_service_request_form__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__providers_data_setter_data_setter__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__pages_idea_idea__ = __webpack_require__(415);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__pages_idea_form_idea_form__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__pages_grievance_grievance__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__pages_grievance_form_grievance_form__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__pages_service_request_show_service_request_show__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__pages_leave_details_leave_details__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__ionic_native_file_transfer__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__ionic_native_file__ = __webpack_require__(435);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__ionic_native_image_picker__ = __webpack_require__(381);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__ionic_native_crop__ = __webpack_require__(382);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__ionic_native_camera__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__ionic_native_file_path__ = __webpack_require__(668);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__pages_idea_show_idea_show__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__pages_grievance_show_grievance_show__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__providers_user_data_ts__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__ionic_storage__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__providers_login_service_login_service__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__providers_leave_data_leave_data__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__pages_leave_new_leave_new__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__pages_tutorial_tutorial__ = __webpack_require__(443);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__pages_article_index_article_index__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__pages_article_show_article_show__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__pages_policies_policies__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__ionic_native_vibration__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__ionic_native_fcm__ = __webpack_require__(489);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__ionic_native_local_notifications__ = __webpack_require__(486);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__ionic_native_app_version__ = __webpack_require__(487);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__ionic_native_network__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__pages_policies_show_policies_show__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__pages_idea_show_idea_show_module__ = __webpack_require__(413);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_82__pages_survey_list_survey_list__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_83_ionic2_calendar_en__ = __webpack_require__(377);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_84__pages_comments_comments_module__ = __webpack_require__(379);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_85_ionic_tags_input__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_86_ngx_chips__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_87__angular_platform_browser_animations__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__angular_forms__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__pages_directory_directory_module__ = __webpack_require__(380);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_90__pages_userblock_userblock_module__ = __webpack_require__(444);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_91__pages_profile_profile_module__ = __webpack_require__(433);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_92__pages_profile_profile__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_93__pages_guest_lunch_guest_lunch_module__ = __webpack_require__(387);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_94__pages_guest_lunch_guest_lunch__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__pages_guest_lunch_form_guest_lunch_form__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__pages_guest_lunch_form_guest_lunch_form_module__ = __webpack_require__(386);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__pages_visiting_card_visiting_card_module__ = __webpack_require__(446);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__pages_visiting_card_form_visiting_card_form_module__ = __webpack_require__(445);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__pages_visiting_card_visiting_card__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__pages_visiting_card_form_visiting_card_form__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__pages_stationery_request_stationery_request_module__ = __webpack_require__(439);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__pages_stationery_request_form_stationery_request_form_module__ = __webpack_require__(438);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_103__pages_maintenance_request_maintenance_request_module__ = __webpack_require__(427);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__pages_maintenance_request_form_maintenance_request_form_module__ = __webpack_require__(426);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_105__pages_access_card_request_access_card_request_module__ = __webpack_require__(253);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_106__pages_access_card_request_form_access_card_request_form_module__ = __webpack_require__(252);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_107__pages_stationery_request_stationery_request__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_108__pages_stationery_request_form_stationery_request_form__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_109__pages_maintenance_request_maintenance_request__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_110__pages_maintenance_request_form_maintenance_request_form__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_111__pages_access_card_request_access_card_request__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_112__pages_access_card_request_form_access_card_request_form__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_113__pages_guest_room_request_guest_room_request_module__ = __webpack_require__(408);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_114__pages_guest_room_request_form_guest_room_request_form_module__ = __webpack_require__(388);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_115__pages_guest_room_request_show_guest_room_request_show_module__ = __webpack_require__(389);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_116__pages_guest_room_request_guest_room_request__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_117__pages_guest_room_request_form_guest_room_request_form__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_118__pages_guest_room_request_show_guest_room_request_show__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_119__pages_intro_intro__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_120__pages_intro_intro_module__ = __webpack_require__(416);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_121__pages_canteen_facility_canteen_facility_module__ = __webpack_require__(378);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_122__pages_canteen_facility_canteen_facility__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_123__pages_parakh_dashboard_parakh_dashboard__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_124__pages_parakh_dashboard_parakh_dashboard_module__ = __webpack_require__(430);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_125__pages_suervy_suervy__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_126__pages_suervy_suervy_module__ = __webpack_require__(440);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_native_sqlite__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__directives_directives_module__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_userblock_userblock__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_directory_directory__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_grievance_filter_grievance_filter_module__ = __webpack_require__(384);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_idea_filter_idea_filter_module__ = __webpack_require__(414);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_survey_list_survey_list_module__ = __webpack_require__(445);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_leave_confirm_leave_confirm_module__ = __webpack_require__(422);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_home_home_module__ = __webpack_require__(412);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_tutorial_tutorial_module__ = __webpack_require__(447);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_service_request_show_service_request_show_module__ = __webpack_require__(440);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_service_request_form_service_request_form_module__ = __webpack_require__(438);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_service_request_service_request_module__ = __webpack_require__(441);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_policies_show_policies_show_module__ = __webpack_require__(435);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_policies_policies_module__ = __webpack_require__(436);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_logout_logout_module__ = __webpack_require__(429);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_login_login_module__ = __webpack_require__(428);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_leaves_show_leaves_show_module__ = __webpack_require__(427);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_leave_new_leave_new_module__ = __webpack_require__(426);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_leave_filter_leave_filter_module__ = __webpack_require__(425);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_leave_details_leave_details_module__ = __webpack_require__(424);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_leave_detail_leave_detail_module__ = __webpack_require__(421);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_idea_form_idea_form_module__ = __webpack_require__(416);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_idea_idea_module__ = __webpack_require__(418);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_grievance_show_grievance_show_module__ = __webpack_require__(387);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_grievance_form_grievance_form_module__ = __webpack_require__(386);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_grievance_grievance_module__ = __webpack_require__(407);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_calendar_view_calendar_view_module__ = __webpack_require__(377);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_article_show_article_show_module__ = __webpack_require__(376);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_components_module__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__pages_article_index_article_index_module__ = __webpack_require__(375);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__pages_offline_offline_module__ = __webpack_require__(432);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_leave_detail_leave_detail__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_leave_filter_leave_filter__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_leaves_show_leaves_show__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_logout_logout__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__angular_platform_browser__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__app_component__ = __webpack_require__(666);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_home_home__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_login_login__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__ionic_native_splash_screen__ = __webpack_require__(490);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__pages_service_request_service_request__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__angular_common_http__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__ngx_translate_core__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__ngx_translate_http_loader__ = __webpack_require__(667);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__ionic_native_in_app_browser__ = __webpack_require__(669);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__pages_calendar_view_calendar_view__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__pages_service_request_form_service_request_form__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__providers_data_setter_data_setter__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__pages_idea_idea__ = __webpack_require__(419);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__pages_idea_form_idea_form__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__pages_grievance_grievance__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__pages_grievance_form_grievance_form__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__pages_service_request_show_service_request_show__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__pages_leave_details_leave_details__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__ionic_native_file_transfer__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__ionic_native_file__ = __webpack_require__(439);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__ionic_native_image_picker__ = __webpack_require__(382);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__ionic_native_crop__ = __webpack_require__(383);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__ionic_native_camera__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__ionic_native_file_path__ = __webpack_require__(670);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__pages_idea_show_idea_show__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__pages_grievance_show_grievance_show__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__providers_user_data_ts__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__ionic_storage__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__providers_login_service_login_service__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__providers_leave_data_leave_data__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__pages_leave_new_leave_new__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__providers_app_global_app_global__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__pages_tutorial_tutorial__ = __webpack_require__(448);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__pages_article_index_article_index__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__pages_article_show_article_show__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__pages_policies_policies__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__ionic_native_vibration__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__ionic_native_fcm__ = __webpack_require__(491);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__ionic_native_local_notifications__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__ionic_native_app_version__ = __webpack_require__(489);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__ionic_native_network__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__pages_policies_show_policies_show__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_82__pages_idea_show_idea_show_module__ = __webpack_require__(417);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_83__pages_survey_list_survey_list__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_84_ionic2_calendar_en__ = __webpack_require__(378);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_85__pages_comments_comments_module__ = __webpack_require__(380);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_86_ionic_tags_input__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_87_ngx_chips__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__angular_platform_browser_animations__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__angular_forms__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_90__pages_directory_directory_module__ = __webpack_require__(381);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_91__pages_userblock_userblock_module__ = __webpack_require__(446);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_92__pages_profile_profile_module__ = __webpack_require__(437);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_93__pages_profile_profile__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_94__pages_guest_lunch_guest_lunch_module__ = __webpack_require__(408);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__pages_guest_lunch_guest_lunch__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__pages_guest_lunch_form_guest_lunch_form__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__pages_guest_lunch_form_guest_lunch_form_module__ = __webpack_require__(406);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__pages_visiting_card_visiting_card_module__ = __webpack_require__(450);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__pages_visiting_card_form_visiting_card_form_module__ = __webpack_require__(449);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__pages_visiting_card_visiting_card__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__pages_visiting_card_form_visiting_card_form__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__pages_stationery_request_stationery_request_module__ = __webpack_require__(443);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_103__pages_stationery_request_form_stationery_request_form_module__ = __webpack_require__(442);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__pages_maintenance_request_maintenance_request_module__ = __webpack_require__(431);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_105__pages_maintenance_request_form_maintenance_request_form_module__ = __webpack_require__(430);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_106__pages_access_card_request_access_card_request_module__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_107__pages_access_card_request_form_access_card_request_form_module__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_108__pages_stationery_request_stationery_request__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_109__pages_stationery_request_form_stationery_request_form__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_110__pages_maintenance_request_maintenance_request__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_111__pages_maintenance_request_form_maintenance_request_form__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_112__pages_access_card_request_access_card_request__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_113__pages_access_card_request_form_access_card_request_form__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_114__pages_guest_room_request_guest_room_request_module__ = __webpack_require__(411);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_115__pages_guest_room_request_form_guest_room_request_form_module__ = __webpack_require__(409);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_116__pages_guest_room_request_show_guest_room_request_show_module__ = __webpack_require__(410);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_117__pages_guest_room_request_guest_room_request__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_118__pages_guest_room_request_form_guest_room_request_form__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_119__pages_guest_room_request_show_guest_room_request_show__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_120__pages_intro_intro__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_121__pages_intro_intro_module__ = __webpack_require__(420);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_122__pages_canteen_facility_canteen_facility_module__ = __webpack_require__(379);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_123__pages_canteen_facility_canteen_facility__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_124__pages_parakh_dashboard_parakh_dashboard__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_125__pages_parakh_dashboard_parakh_dashboard_module__ = __webpack_require__(434);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_126__pages_suervy_suervy__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_127__pages_suervy_suervy_module__ = __webpack_require__(444);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_128__providers_database_database__ = __webpack_require__(413);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -8175,19 +8348,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 function createTranslateLoader(http) {
-    return new __WEBPACK_IMPORTED_MODULE_45__ngx_translate_http_loader__["a" /* TranslateHttpLoader */](http, './assets/i18n/', '.json');
+    return new __WEBPACK_IMPORTED_MODULE_46__ngx_translate_http_loader__["a" /* TranslateHttpLoader */](http, './assets/i18n/', '.json');
 }
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_36__angular_core__["I" /* NgModule */])({
+        Object(__WEBPACK_IMPORTED_MODULE_37__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_38__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_39__app_component__["a" /* MyApp */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_35__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_37_ionic_angular__["i" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_38__app_component__["a" /* MyApp */], {
+                __WEBPACK_IMPORTED_MODULE_36__angular_platform_browser__["a" /* BrowserModule */],
+                __WEBPACK_IMPORTED_MODULE_38_ionic_angular__["i" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_39__app_component__["a" /* MyApp */], {
                     preloadModules: true,
                     scrollPadding: false,
                     scrollAssist: true,
@@ -8203,8 +8376,10 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/comments/comments.module#CommentsPageModule', name: 'CommentsPage', segment: 'comments', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/directory/directory.module#DirectoryPageModule', name: 'DirectoryPage', segment: 'directory', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/grievance-filter/grievance-filter.module#GrievanceFilterPageModule', name: 'GrievanceFilterPage', segment: 'grievance-filter', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/grievance/grievance.module#GrievancePageModule', name: 'GrievancePage', segment: 'grievance', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/grievance-form/grievance-form.module#GrievanceFormPageModule', name: 'GrievanceFormPage', segment: 'grievance-form', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/grievance-show/grievance-show.module#GrievanceShowPageModule', name: 'GrievanceShowPage', segment: 'grievance-show', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/guest-lunch-form/guest-lunch-form.module#GuestLunchFormPageModule', name: 'GuestLunchFormPage', segment: 'guest-lunch-form', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/grievance/grievance.module#GrievancePageModule', name: 'GrievancePage', segment: 'grievance', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/guest-lunch/guest-lunch.module#GuestLunchPageModule', name: 'GuestLunchPage', segment: 'guest-lunch', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/guest-room-request-form/guest-room-request-form.module#GuestRoomRequestFormPageModule', name: 'GuestRoomRequestFormPage', segment: 'guest-room-request-form', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/guest-room-request-show/guest-room-request-show.module#GuestRoomRequestShowPageModule', name: 'GuestRoomRequestShowPage', segment: 'guest-room-request-show', priority: 'low', defaultHistory: [] },
@@ -8215,8 +8390,8 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/idea-show/idea-show.module#IdeaShowPageModule', name: 'IdeaShowPage', segment: 'idea-show', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/idea/idea.module#IdeaPageModule', name: 'IdeaPage', segment: 'idea', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/intro/intro.module#IntroPageModule', name: 'IntroPage', segment: 'intro', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/leave-confirm/leave-confirm.module#LeaveConfirmPageModule', name: 'LeaveConfirmPage', segment: 'leave-confirm', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/leave-detail/leave-detail.module#LeaveDetailPageModule', name: 'LeaveDetailPage', segment: 'leave-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/leave-confirm/leave-confirm.module#LeaveConfirmPageModule', name: 'LeaveConfirmPage', segment: 'leave-confirm', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/leave-details/leave-details.module#LeaveDetailsPageModule', name: 'LeaveDetailsPage', segment: 'leave-details', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/leave-filter/leave-filter.module#LeaveFilterPageModule', name: 'LeaveFilterPage', segment: 'leave-filter', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/leave-new/leave-new.module#LeaveNewPageModule', name: 'LeaveNewPage', segment: 'leave-new', priority: 'low', defaultHistory: [] },
@@ -8237,170 +8412,170 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/stationery-request/stationery-request.module#StationeryRequestPageModule', name: 'StationeryRequestPage', segment: 'stationery-request', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/suervy/suervy.module#SuervyPageModule', name: 'SuervyPage', segment: 'suervy', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/survey-list/survey-list.module#SurveyListPageModule', name: 'SurveyListPage', segment: 'survey-list', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/tutorial/tutorial.module#TutorialPageModule', name: 'TutorialPage', segment: 'tutorial', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/userblock/userblock.module#UserblockPageModule', name: 'UserblockPage', segment: 'userblock', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/tutorial/tutorial.module#TutorialPageModule', name: 'TutorialPage', segment: 'tutorial', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/visiting-card-form/visiting-card-form.module#VisitingCardFormPageModule', name: 'VisitingCardFormPage', segment: 'visiting-card-form', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/visiting-card/visiting-card.module#VisitingCardPageModule', name: 'VisitingCardPage', segment: 'visiting-card', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/grievance-show/grievance-show.module#GrievanceShowPageModule', name: 'GrievanceShowPage', segment: 'grievance-show', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/grievance-form/grievance-form.module#GrievanceFormPageModule', name: 'GrievanceFormPage', segment: 'grievance-form', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/visiting-card/visiting-card.module#VisitingCardPageModule', name: 'VisitingCardPage', segment: 'visiting-card', priority: 'low', defaultHistory: [] }
                     ]
                 }),
-                __WEBPACK_IMPORTED_MODULE_43__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_44__ngx_translate_core__["b" /* TranslateModule */].forRoot({
+                __WEBPACK_IMPORTED_MODULE_44__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_45__ngx_translate_core__["b" /* TranslateModule */].forRoot({
                     loader: {
-                        provide: __WEBPACK_IMPORTED_MODULE_44__ngx_translate_core__["a" /* TranslateLoader */],
+                        provide: __WEBPACK_IMPORTED_MODULE_45__ngx_translate_core__["a" /* TranslateLoader */],
                         useFactory: (createTranslateLoader),
-                        deps: [__WEBPACK_IMPORTED_MODULE_43__angular_common_http__["a" /* HttpClient */]]
+                        deps: [__WEBPACK_IMPORTED_MODULE_44__angular_common_http__["a" /* HttpClient */]]
                     }
                 }),
-                __WEBPACK_IMPORTED_MODULE_66__ionic_storage__["a" /* IonicStorageModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_30__pages_offline_offline_module__["OfflinePageModule"],
-                __WEBPACK_IMPORTED_MODULE_7__pages_home_home_module__["HomePageModule"],
-                __WEBPACK_IMPORTED_MODULE_28__components_components_module__["a" /* ComponentsModule */],
-                __WEBPACK_IMPORTED_MODULE_83_ionic2_calendar_en__["a" /* CalendarModule */],
-                __WEBPACK_IMPORTED_MODULE_29__pages_article_index_article_index_module__["ArticleIndexPageModule"],
-                __WEBPACK_IMPORTED_MODULE_27__pages_article_show_article_show_module__["ArticleShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_26__pages_calendar_view_calendar_view_module__["CalendarViewPageModule"],
-                __WEBPACK_IMPORTED_MODULE_25__pages_grievance_grievance_module__["GrievancePageModule"],
-                __WEBPACK_IMPORTED_MODULE_24__pages_grievance_form_grievance_form_module__["GrievanceFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_23__pages_grievance_show_grievance_show_module__["GrievanceShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_3__pages_grievance_filter_grievance_filter_module__["GrievanceFilterPageModule"],
-                __WEBPACK_IMPORTED_MODULE_22__pages_idea_idea_module__["IdeaPageModule"],
-                __WEBPACK_IMPORTED_MODULE_21__pages_idea_form_idea_form_module__["IdeaFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_81__pages_idea_show_idea_show_module__["IdeaShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_4__pages_idea_filter_idea_filter_module__["IdeaFilterPageModule"],
-                __WEBPACK_IMPORTED_MODULE_20__pages_leave_detail_leave_detail_module__["LeaveDetailPageModule"],
-                __WEBPACK_IMPORTED_MODULE_19__pages_leave_details_leave_details_module__["LeaveDetailsPageModule"],
-                __WEBPACK_IMPORTED_MODULE_18__pages_leave_filter_leave_filter_module__["LeaveFilterPageModule"],
-                __WEBPACK_IMPORTED_MODULE_17__pages_leave_new_leave_new_module__["LeaveNewPageModule"],
-                __WEBPACK_IMPORTED_MODULE_16__pages_leaves_show_leaves_show_module__["LeavesShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_15__pages_login_login_module__["LoginPageModule"],
-                __WEBPACK_IMPORTED_MODULE_14__pages_logout_logout_module__["LogoutPageModule"],
-                __WEBPACK_IMPORTED_MODULE_30__pages_offline_offline_module__["OfflinePageModule"],
-                __WEBPACK_IMPORTED_MODULE_13__pages_policies_policies_module__["PoliciesPageModule"],
-                __WEBPACK_IMPORTED_MODULE_12__pages_policies_show_policies_show_module__["PoliciesShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_11__pages_service_request_service_request_module__["ServiceRequestPageModule"],
-                __WEBPACK_IMPORTED_MODULE_10__pages_service_request_form_service_request_form_module__["ServiceRequestFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_9__pages_service_request_show_service_request_show_module__["ServiceRequestShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_8__pages_tutorial_tutorial_module__["TutorialPageModule"],
-                __WEBPACK_IMPORTED_MODULE_6__pages_leave_confirm_leave_confirm_module__["LeaveConfirmPageModule"],
-                __WEBPACK_IMPORTED_MODULE_5__pages_survey_list_survey_list_module__["SurveyListPageModule"],
-                __WEBPACK_IMPORTED_MODULE_84__pages_comments_comments_module__["CommentsPageModule"],
-                __WEBPACK_IMPORTED_MODULE_89__pages_directory_directory_module__["DirectoryPageModule"],
-                __WEBPACK_IMPORTED_MODULE_90__pages_userblock_userblock_module__["UserblockPageModule"],
+                __WEBPACK_IMPORTED_MODULE_67__ionic_storage__["a" /* IonicStorageModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_31__pages_offline_offline_module__["OfflinePageModule"],
+                __WEBPACK_IMPORTED_MODULE_8__pages_home_home_module__["HomePageModule"],
+                __WEBPACK_IMPORTED_MODULE_29__components_components_module__["a" /* ComponentsModule */],
+                __WEBPACK_IMPORTED_MODULE_84_ionic2_calendar_en__["a" /* CalendarModule */],
+                __WEBPACK_IMPORTED_MODULE_30__pages_article_index_article_index_module__["ArticleIndexPageModule"],
+                __WEBPACK_IMPORTED_MODULE_28__pages_article_show_article_show_module__["ArticleShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_27__pages_calendar_view_calendar_view_module__["CalendarViewPageModule"],
+                __WEBPACK_IMPORTED_MODULE_26__pages_grievance_grievance_module__["GrievancePageModule"],
+                __WEBPACK_IMPORTED_MODULE_25__pages_grievance_form_grievance_form_module__["GrievanceFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_24__pages_grievance_show_grievance_show_module__["GrievanceShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_4__pages_grievance_filter_grievance_filter_module__["GrievanceFilterPageModule"],
+                __WEBPACK_IMPORTED_MODULE_23__pages_idea_idea_module__["IdeaPageModule"],
+                __WEBPACK_IMPORTED_MODULE_22__pages_idea_form_idea_form_module__["IdeaFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_82__pages_idea_show_idea_show_module__["IdeaShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_5__pages_idea_filter_idea_filter_module__["IdeaFilterPageModule"],
+                __WEBPACK_IMPORTED_MODULE_21__pages_leave_detail_leave_detail_module__["LeaveDetailPageModule"],
+                __WEBPACK_IMPORTED_MODULE_20__pages_leave_details_leave_details_module__["LeaveDetailsPageModule"],
+                __WEBPACK_IMPORTED_MODULE_19__pages_leave_filter_leave_filter_module__["LeaveFilterPageModule"],
+                __WEBPACK_IMPORTED_MODULE_18__pages_leave_new_leave_new_module__["LeaveNewPageModule"],
+                __WEBPACK_IMPORTED_MODULE_17__pages_leaves_show_leaves_show_module__["LeavesShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_16__pages_login_login_module__["LoginPageModule"],
+                __WEBPACK_IMPORTED_MODULE_15__pages_logout_logout_module__["LogoutPageModule"],
+                __WEBPACK_IMPORTED_MODULE_31__pages_offline_offline_module__["OfflinePageModule"],
+                __WEBPACK_IMPORTED_MODULE_14__pages_policies_policies_module__["PoliciesPageModule"],
+                __WEBPACK_IMPORTED_MODULE_13__pages_policies_show_policies_show_module__["PoliciesShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_12__pages_service_request_service_request_module__["ServiceRequestPageModule"],
+                __WEBPACK_IMPORTED_MODULE_11__pages_service_request_form_service_request_form_module__["ServiceRequestFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_10__pages_service_request_show_service_request_show_module__["ServiceRequestShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_9__pages_tutorial_tutorial_module__["TutorialPageModule"],
+                __WEBPACK_IMPORTED_MODULE_7__pages_leave_confirm_leave_confirm_module__["LeaveConfirmPageModule"],
+                __WEBPACK_IMPORTED_MODULE_6__pages_survey_list_survey_list_module__["SurveyListPageModule"],
+                __WEBPACK_IMPORTED_MODULE_85__pages_comments_comments_module__["CommentsPageModule"],
+                __WEBPACK_IMPORTED_MODULE_90__pages_directory_directory_module__["DirectoryPageModule"],
+                __WEBPACK_IMPORTED_MODULE_91__pages_userblock_userblock_module__["UserblockPageModule"],
                 // Guest Lunch Request
-                __WEBPACK_IMPORTED_MODULE_93__pages_guest_lunch_guest_lunch_module__["GuestLunchPageModule"],
-                __WEBPACK_IMPORTED_MODULE_96__pages_guest_lunch_form_guest_lunch_form_module__["GuestLunchFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_121__pages_canteen_facility_canteen_facility_module__["CanteenFacilityPageModule"],
+                __WEBPACK_IMPORTED_MODULE_94__pages_guest_lunch_guest_lunch_module__["GuestLunchPageModule"],
+                __WEBPACK_IMPORTED_MODULE_97__pages_guest_lunch_form_guest_lunch_form_module__["GuestLunchFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_122__pages_canteen_facility_canteen_facility_module__["CanteenFacilityPageModule"],
                 // Visiting Card Request
-                __WEBPACK_IMPORTED_MODULE_97__pages_visiting_card_visiting_card_module__["VisitingCardPageModule"],
-                __WEBPACK_IMPORTED_MODULE_98__pages_visiting_card_form_visiting_card_form_module__["VisitingCardFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_98__pages_visiting_card_visiting_card_module__["VisitingCardPageModule"],
+                __WEBPACK_IMPORTED_MODULE_99__pages_visiting_card_form_visiting_card_form_module__["VisitingCardFormPageModule"],
                 // Stationery Request
-                __WEBPACK_IMPORTED_MODULE_101__pages_stationery_request_stationery_request_module__["StationeryRequestPageModule"],
-                __WEBPACK_IMPORTED_MODULE_102__pages_stationery_request_form_stationery_request_form_module__["StationeryRequestFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_102__pages_stationery_request_stationery_request_module__["StationeryRequestPageModule"],
+                __WEBPACK_IMPORTED_MODULE_103__pages_stationery_request_form_stationery_request_form_module__["StationeryRequestFormPageModule"],
                 // Maintenance Request
-                __WEBPACK_IMPORTED_MODULE_103__pages_maintenance_request_maintenance_request_module__["MaintenanceRequestPageModule"],
-                __WEBPACK_IMPORTED_MODULE_104__pages_maintenance_request_form_maintenance_request_form_module__["MaintenanceRequestFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_104__pages_maintenance_request_maintenance_request_module__["MaintenanceRequestPageModule"],
+                __WEBPACK_IMPORTED_MODULE_105__pages_maintenance_request_form_maintenance_request_form_module__["MaintenanceRequestFormPageModule"],
                 // Access Card Request
-                __WEBPACK_IMPORTED_MODULE_105__pages_access_card_request_access_card_request_module__["AccessCardRequestPageModule"],
-                __WEBPACK_IMPORTED_MODULE_106__pages_access_card_request_form_access_card_request_form_module__["AccessCardRequestFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_106__pages_access_card_request_access_card_request_module__["AccessCardRequestPageModule"],
+                __WEBPACK_IMPORTED_MODULE_107__pages_access_card_request_form_access_card_request_form_module__["AccessCardRequestFormPageModule"],
                 // Guest Room Request
-                __WEBPACK_IMPORTED_MODULE_113__pages_guest_room_request_guest_room_request_module__["GuestRoomRequestPageModule"],
-                __WEBPACK_IMPORTED_MODULE_114__pages_guest_room_request_form_guest_room_request_form_module__["GuestRoomRequestFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_115__pages_guest_room_request_show_guest_room_request_show_module__["GuestRoomRequestShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_85_ionic_tags_input__["a" /* IonTagsInputModule */],
-                __WEBPACK_IMPORTED_MODULE_86_ngx_chips__["a" /* TagInputModule */],
-                __WEBPACK_IMPORTED_MODULE_87__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_88__angular_forms__["d" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_88__angular_forms__["g" /* ReactiveFormsModule */],
-                __WEBPACK_IMPORTED_MODULE_91__pages_profile_profile_module__["ProfilePageModule"],
-                __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__["a" /* DirectivesModule */],
-                __WEBPACK_IMPORTED_MODULE_120__pages_intro_intro_module__["IntroPageModule"],
-                __WEBPACK_IMPORTED_MODULE_124__pages_parakh_dashboard_parakh_dashboard_module__["ParakhDashboardPageModule"],
-                __WEBPACK_IMPORTED_MODULE_126__pages_suervy_suervy_module__["SuervyPageModule"]
+                __WEBPACK_IMPORTED_MODULE_114__pages_guest_room_request_guest_room_request_module__["GuestRoomRequestPageModule"],
+                __WEBPACK_IMPORTED_MODULE_115__pages_guest_room_request_form_guest_room_request_form_module__["GuestRoomRequestFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_116__pages_guest_room_request_show_guest_room_request_show_module__["GuestRoomRequestShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_86_ionic_tags_input__["a" /* IonTagsInputModule */],
+                __WEBPACK_IMPORTED_MODULE_87_ngx_chips__["a" /* TagInputModule */],
+                __WEBPACK_IMPORTED_MODULE_88__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_89__angular_forms__["d" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_89__angular_forms__["g" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_92__pages_profile_profile_module__["ProfilePageModule"],
+                __WEBPACK_IMPORTED_MODULE_1__directives_directives_module__["a" /* DirectivesModule */],
+                __WEBPACK_IMPORTED_MODULE_121__pages_intro_intro_module__["IntroPageModule"],
+                __WEBPACK_IMPORTED_MODULE_125__pages_parakh_dashboard_parakh_dashboard_module__["ParakhDashboardPageModule"],
+                __WEBPACK_IMPORTED_MODULE_127__pages_suervy_suervy_module__["SuervyPageModule"]
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_37_ionic_angular__["g" /* IonicApp */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_38_ionic_angular__["g" /* IonicApp */]],
             entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_38__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_39__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_42__pages_service_request_service_request__["a" /* ServiceRequestPage */],
-                __WEBPACK_IMPORTED_MODULE_47__pages_calendar_view_calendar_view__["a" /* CalendarViewPage */],
-                __WEBPACK_IMPORTED_MODULE_49__pages_service_request_form_service_request_form__["a" /* ServiceRequestFormPage */],
-                __WEBPACK_IMPORTED_MODULE_52__pages_idea_form_idea_form__["a" /* IdeaFormPage */],
-                __WEBPACK_IMPORTED_MODULE_51__pages_idea_idea__["a" /* IdeaPage */],
-                __WEBPACK_IMPORTED_MODULE_53__pages_grievance_grievance__["a" /* GrievancePage */],
-                __WEBPACK_IMPORTED_MODULE_54__pages_grievance_form_grievance_form__["a" /* GrievanceFormPage */],
-                __WEBPACK_IMPORTED_MODULE_49__pages_service_request_form_service_request_form__["a" /* ServiceRequestFormPage */],
-                __WEBPACK_IMPORTED_MODULE_55__pages_service_request_show_service_request_show__["a" /* ServiceRequestShowPage */],
-                __WEBPACK_IMPORTED_MODULE_47__pages_calendar_view_calendar_view__["a" /* CalendarViewPage */],
-                __WEBPACK_IMPORTED_MODULE_56__pages_leave_details_leave_details__["a" /* LeaveDetailsPage */],
-                __WEBPACK_IMPORTED_MODULE_71__pages_tutorial_tutorial__["a" /* TutorialPage */],
-                __WEBPACK_IMPORTED_MODULE_56__pages_leave_details_leave_details__["a" /* LeaveDetailsPage */],
-                __WEBPACK_IMPORTED_MODULE_63__pages_idea_show_idea_show__["a" /* IdeaShowPage */],
-                __WEBPACK_IMPORTED_MODULE_64__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
-                __WEBPACK_IMPORTED_MODULE_74__pages_policies_policies__["a" /* PoliciesPage */],
-                __WEBPACK_IMPORTED_MODULE_80__pages_policies_show_policies_show__["a" /* PoliciesShowPage */],
-                __WEBPACK_IMPORTED_MODULE_40__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_34__pages_logout_logout__["a" /* LogoutPage */],
-                __WEBPACK_IMPORTED_MODULE_33__pages_leaves_show_leaves_show__["a" /* LeavesShowPage */],
-                __WEBPACK_IMPORTED_MODULE_31__pages_leave_detail_leave_detail__["a" /* LeaveDetailPage */],
-                __WEBPACK_IMPORTED_MODULE_32__pages_leave_filter_leave_filter__["a" /* LeaveFilterPage */],
-                __WEBPACK_IMPORTED_MODULE_69__pages_leave_new_leave_new__["a" /* LeaveNewPage */],
-                __WEBPACK_IMPORTED_MODULE_64__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
-                __WEBPACK_IMPORTED_MODULE_72__pages_article_index_article_index__["a" /* ArticleIndexPage */],
-                __WEBPACK_IMPORTED_MODULE_73__pages_article_show_article_show__["a" /* ArticleShowPage */],
-                __WEBPACK_IMPORTED_MODULE_82__pages_survey_list_survey_list__["a" /* SurveyListPage */],
-                __WEBPACK_IMPORTED_MODULE_2__pages_directory_directory__["a" /* DirectoryPage */],
-                __WEBPACK_IMPORTED_MODULE_1__pages_userblock_userblock__["a" /* UserblockPage */],
-                __WEBPACK_IMPORTED_MODULE_92__pages_profile_profile__["a" /* ProfilePage */],
-                __WEBPACK_IMPORTED_MODULE_119__pages_intro_intro__["a" /* IntroPage */],
+                __WEBPACK_IMPORTED_MODULE_39__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_40__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_43__pages_service_request_service_request__["a" /* ServiceRequestPage */],
+                __WEBPACK_IMPORTED_MODULE_48__pages_calendar_view_calendar_view__["a" /* CalendarViewPage */],
+                __WEBPACK_IMPORTED_MODULE_50__pages_service_request_form_service_request_form__["a" /* ServiceRequestFormPage */],
+                __WEBPACK_IMPORTED_MODULE_53__pages_idea_form_idea_form__["a" /* IdeaFormPage */],
+                __WEBPACK_IMPORTED_MODULE_52__pages_idea_idea__["a" /* IdeaPage */],
+                __WEBPACK_IMPORTED_MODULE_54__pages_grievance_grievance__["a" /* GrievancePage */],
+                __WEBPACK_IMPORTED_MODULE_55__pages_grievance_form_grievance_form__["a" /* GrievanceFormPage */],
+                __WEBPACK_IMPORTED_MODULE_50__pages_service_request_form_service_request_form__["a" /* ServiceRequestFormPage */],
+                __WEBPACK_IMPORTED_MODULE_56__pages_service_request_show_service_request_show__["a" /* ServiceRequestShowPage */],
+                __WEBPACK_IMPORTED_MODULE_48__pages_calendar_view_calendar_view__["a" /* CalendarViewPage */],
+                __WEBPACK_IMPORTED_MODULE_57__pages_leave_details_leave_details__["a" /* LeaveDetailsPage */],
+                __WEBPACK_IMPORTED_MODULE_72__pages_tutorial_tutorial__["a" /* TutorialPage */],
+                __WEBPACK_IMPORTED_MODULE_57__pages_leave_details_leave_details__["a" /* LeaveDetailsPage */],
+                __WEBPACK_IMPORTED_MODULE_64__pages_idea_show_idea_show__["a" /* IdeaShowPage */],
+                __WEBPACK_IMPORTED_MODULE_65__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
+                __WEBPACK_IMPORTED_MODULE_75__pages_policies_policies__["a" /* PoliciesPage */],
+                __WEBPACK_IMPORTED_MODULE_81__pages_policies_show_policies_show__["a" /* PoliciesShowPage */],
+                __WEBPACK_IMPORTED_MODULE_41__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_35__pages_logout_logout__["a" /* LogoutPage */],
+                __WEBPACK_IMPORTED_MODULE_34__pages_leaves_show_leaves_show__["a" /* LeavesShowPage */],
+                __WEBPACK_IMPORTED_MODULE_32__pages_leave_detail_leave_detail__["a" /* LeaveDetailPage */],
+                __WEBPACK_IMPORTED_MODULE_33__pages_leave_filter_leave_filter__["a" /* LeaveFilterPage */],
+                __WEBPACK_IMPORTED_MODULE_70__pages_leave_new_leave_new__["a" /* LeaveNewPage */],
+                __WEBPACK_IMPORTED_MODULE_65__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
+                __WEBPACK_IMPORTED_MODULE_73__pages_article_index_article_index__["a" /* ArticleIndexPage */],
+                __WEBPACK_IMPORTED_MODULE_74__pages_article_show_article_show__["a" /* ArticleShowPage */],
+                __WEBPACK_IMPORTED_MODULE_83__pages_survey_list_survey_list__["a" /* SurveyListPage */],
+                __WEBPACK_IMPORTED_MODULE_3__pages_directory_directory__["a" /* DirectoryPage */],
+                __WEBPACK_IMPORTED_MODULE_2__pages_userblock_userblock__["a" /* UserblockPage */],
+                __WEBPACK_IMPORTED_MODULE_93__pages_profile_profile__["a" /* ProfilePage */],
+                __WEBPACK_IMPORTED_MODULE_120__pages_intro_intro__["a" /* IntroPage */],
                 // Guest Lunch Request
-                __WEBPACK_IMPORTED_MODULE_94__pages_guest_lunch_guest_lunch__["a" /* GuestLunchPage */],
-                __WEBPACK_IMPORTED_MODULE_95__pages_guest_lunch_form_guest_lunch_form__["a" /* GuestLunchFormPage */],
+                __WEBPACK_IMPORTED_MODULE_95__pages_guest_lunch_guest_lunch__["a" /* GuestLunchPage */],
+                __WEBPACK_IMPORTED_MODULE_96__pages_guest_lunch_form_guest_lunch_form__["a" /* GuestLunchFormPage */],
                 // Visiting Card Request
-                __WEBPACK_IMPORTED_MODULE_99__pages_visiting_card_visiting_card__["a" /* VisitingCardPage */],
-                __WEBPACK_IMPORTED_MODULE_100__pages_visiting_card_form_visiting_card_form__["a" /* VisitingCardFormPage */],
+                __WEBPACK_IMPORTED_MODULE_100__pages_visiting_card_visiting_card__["a" /* VisitingCardPage */],
+                __WEBPACK_IMPORTED_MODULE_101__pages_visiting_card_form_visiting_card_form__["a" /* VisitingCardFormPage */],
                 // Stationery Request
-                __WEBPACK_IMPORTED_MODULE_107__pages_stationery_request_stationery_request__["a" /* StationeryRequestPage */],
-                __WEBPACK_IMPORTED_MODULE_108__pages_stationery_request_form_stationery_request_form__["a" /* StationeryRequestFormPage */],
+                __WEBPACK_IMPORTED_MODULE_108__pages_stationery_request_stationery_request__["a" /* StationeryRequestPage */],
+                __WEBPACK_IMPORTED_MODULE_109__pages_stationery_request_form_stationery_request_form__["a" /* StationeryRequestFormPage */],
                 // Maintenance Request
-                __WEBPACK_IMPORTED_MODULE_109__pages_maintenance_request_maintenance_request__["a" /* MaintenanceRequestPage */],
-                __WEBPACK_IMPORTED_MODULE_110__pages_maintenance_request_form_maintenance_request_form__["a" /* MaintenanceRequestFormPage */],
+                __WEBPACK_IMPORTED_MODULE_110__pages_maintenance_request_maintenance_request__["a" /* MaintenanceRequestPage */],
+                __WEBPACK_IMPORTED_MODULE_111__pages_maintenance_request_form_maintenance_request_form__["a" /* MaintenanceRequestFormPage */],
                 // Access Card Request
-                __WEBPACK_IMPORTED_MODULE_111__pages_access_card_request_access_card_request__["a" /* AccessCardRequestPage */],
-                __WEBPACK_IMPORTED_MODULE_112__pages_access_card_request_form_access_card_request_form__["a" /* AccessCardRequestFormPage */],
+                __WEBPACK_IMPORTED_MODULE_112__pages_access_card_request_access_card_request__["a" /* AccessCardRequestPage */],
+                __WEBPACK_IMPORTED_MODULE_113__pages_access_card_request_form_access_card_request_form__["a" /* AccessCardRequestFormPage */],
                 // Guest Room Request
-                __WEBPACK_IMPORTED_MODULE_116__pages_guest_room_request_guest_room_request__["a" /* GuestRoomRequestPage */],
-                __WEBPACK_IMPORTED_MODULE_117__pages_guest_room_request_form_guest_room_request_form__["a" /* GuestRoomRequestFormPage */],
-                __WEBPACK_IMPORTED_MODULE_118__pages_guest_room_request_show_guest_room_request_show__["a" /* GuestRoomRequestShowPage */],
-                __WEBPACK_IMPORTED_MODULE_122__pages_canteen_facility_canteen_facility__["a" /* CanteenFacilityPage */],
-                __WEBPACK_IMPORTED_MODULE_123__pages_parakh_dashboard_parakh_dashboard__["a" /* ParakhDashboardPage */],
-                __WEBPACK_IMPORTED_MODULE_125__pages_suervy_suervy__["a" /* SuervyPage */]
+                __WEBPACK_IMPORTED_MODULE_117__pages_guest_room_request_guest_room_request__["a" /* GuestRoomRequestPage */],
+                __WEBPACK_IMPORTED_MODULE_118__pages_guest_room_request_form_guest_room_request_form__["a" /* GuestRoomRequestFormPage */],
+                __WEBPACK_IMPORTED_MODULE_119__pages_guest_room_request_show_guest_room_request_show__["a" /* GuestRoomRequestShowPage */],
+                __WEBPACK_IMPORTED_MODULE_123__pages_canteen_facility_canteen_facility__["a" /* CanteenFacilityPage */],
+                __WEBPACK_IMPORTED_MODULE_124__pages_parakh_dashboard_parakh_dashboard__["a" /* ParakhDashboardPage */],
+                __WEBPACK_IMPORTED_MODULE_126__pages_suervy_suervy__["a" /* SuervyPage */]
             ],
             providers: [
                 // StatusBar,
-                __WEBPACK_IMPORTED_MODULE_41__ionic_native_splash_screen__["a" /* SplashScreen */],
-                { provide: __WEBPACK_IMPORTED_MODULE_36__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_37_ionic_angular__["h" /* IonicErrorHandler */] },
-                __WEBPACK_IMPORTED_MODULE_48__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_50__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
-                __WEBPACK_IMPORTED_MODULE_57__ionic_native_file_transfer__["b" /* FileTransferObject */],
-                __WEBPACK_IMPORTED_MODULE_58__ionic_native_file__["a" /* File */],
-                __WEBPACK_IMPORTED_MODULE_57__ionic_native_file_transfer__["a" /* FileTransfer */],
-                __WEBPACK_IMPORTED_MODULE_61__ionic_native_camera__["a" /* Camera */],
-                __WEBPACK_IMPORTED_MODULE_62__ionic_native_file_path__["a" /* FilePath */],
-                __WEBPACK_IMPORTED_MODULE_46__ionic_native_in_app_browser__["a" /* InAppBrowser */],
-                __WEBPACK_IMPORTED_MODULE_75__ionic_native_vibration__["a" /* Vibration */],
-                __WEBPACK_IMPORTED_MODULE_65__providers_user_data_ts__["a" /* UserData */],
-                __WEBPACK_IMPORTED_MODULE_67__providers_login_service_login_service__["a" /* LoginServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_68__providers_leave_data_leave_data__["a" /* LeaveDataProvider */],
-                __WEBPACK_IMPORTED_MODULE_70__providers_app_global_app_global__["a" /* AppGlobalProvider */],
-                __WEBPACK_IMPORTED_MODULE_76__ionic_native_fcm__["a" /* FCM */],
-                __WEBPACK_IMPORTED_MODULE_78__ionic_native_app_version__["a" /* AppVersion */],
-                __WEBPACK_IMPORTED_MODULE_79__ionic_native_network__["a" /* Network */],
-                __WEBPACK_IMPORTED_MODULE_77__ionic_native_local_notifications__["a" /* LocalNotifications */],
-                __WEBPACK_IMPORTED_MODULE_59__ionic_native_image_picker__["a" /* ImagePicker */],
-                __WEBPACK_IMPORTED_MODULE_60__ionic_native_crop__["a" /* Crop */],
-                __WEBPACK_IMPORTED_MODULE_61__ionic_native_camera__["a" /* Camera */],
+                __WEBPACK_IMPORTED_MODULE_42__ionic_native_splash_screen__["a" /* SplashScreen */],
+                { provide: __WEBPACK_IMPORTED_MODULE_37__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_38_ionic_angular__["h" /* IonicErrorHandler */] },
+                __WEBPACK_IMPORTED_MODULE_49__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_51__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
+                __WEBPACK_IMPORTED_MODULE_58__ionic_native_file_transfer__["b" /* FileTransferObject */],
+                __WEBPACK_IMPORTED_MODULE_59__ionic_native_file__["a" /* File */],
+                __WEBPACK_IMPORTED_MODULE_58__ionic_native_file_transfer__["a" /* FileTransfer */],
+                __WEBPACK_IMPORTED_MODULE_62__ionic_native_camera__["a" /* Camera */],
+                __WEBPACK_IMPORTED_MODULE_63__ionic_native_file_path__["a" /* FilePath */],
+                __WEBPACK_IMPORTED_MODULE_47__ionic_native_in_app_browser__["a" /* InAppBrowser */],
+                __WEBPACK_IMPORTED_MODULE_76__ionic_native_vibration__["a" /* Vibration */],
+                __WEBPACK_IMPORTED_MODULE_66__providers_user_data_ts__["a" /* UserData */],
+                __WEBPACK_IMPORTED_MODULE_68__providers_login_service_login_service__["a" /* LoginServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_69__providers_leave_data_leave_data__["a" /* LeaveDataProvider */],
+                __WEBPACK_IMPORTED_MODULE_71__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+                __WEBPACK_IMPORTED_MODULE_77__ionic_native_fcm__["a" /* FCM */],
+                __WEBPACK_IMPORTED_MODULE_79__ionic_native_app_version__["a" /* AppVersion */],
+                __WEBPACK_IMPORTED_MODULE_80__ionic_native_network__["a" /* Network */],
+                __WEBPACK_IMPORTED_MODULE_78__ionic_native_local_notifications__["a" /* LocalNotifications */],
+                __WEBPACK_IMPORTED_MODULE_60__ionic_native_image_picker__["a" /* ImagePicker */],
+                __WEBPACK_IMPORTED_MODULE_61__ionic_native_crop__["a" /* Crop */],
+                __WEBPACK_IMPORTED_MODULE_62__ionic_native_camera__["a" /* Camera */],
+                __WEBPACK_IMPORTED_MODULE_128__providers_database_database__["a" /* DatabaseProvider */],
+                __WEBPACK_IMPORTED_MODULE_0__ionic_native_sqlite__["a" /* SQLite */]
             ]
         })
     ], AppModule);
@@ -8411,7 +8586,7 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 500:
+/***/ 510:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8488,7 +8663,7 @@ var AutoresizeDirective = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 532:
+/***/ 534:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8554,7 +8729,7 @@ var SearchPipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 533:
+/***/ 535:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8600,7 +8775,7 @@ var SafePipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 534:
+/***/ 536:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8654,248 +8829,248 @@ var SortPipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 535:
+/***/ 537:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 255,
-	"./af.js": 255,
-	"./ar": 256,
-	"./ar-dz": 257,
-	"./ar-dz.js": 257,
-	"./ar-kw": 258,
-	"./ar-kw.js": 258,
-	"./ar-ly": 259,
-	"./ar-ly.js": 259,
-	"./ar-ma": 260,
-	"./ar-ma.js": 260,
-	"./ar-sa": 261,
-	"./ar-sa.js": 261,
-	"./ar-tn": 262,
-	"./ar-tn.js": 262,
-	"./ar.js": 256,
-	"./az": 263,
-	"./az.js": 263,
-	"./be": 264,
-	"./be.js": 264,
-	"./bg": 265,
-	"./bg.js": 265,
-	"./bm": 266,
-	"./bm.js": 266,
-	"./bn": 267,
-	"./bn.js": 267,
-	"./bo": 268,
-	"./bo.js": 268,
-	"./br": 269,
-	"./br.js": 269,
-	"./bs": 270,
-	"./bs.js": 270,
-	"./ca": 271,
-	"./ca.js": 271,
-	"./cs": 272,
-	"./cs.js": 272,
-	"./cv": 273,
-	"./cv.js": 273,
-	"./cy": 274,
-	"./cy.js": 274,
-	"./da": 275,
-	"./da.js": 275,
-	"./de": 276,
-	"./de-at": 277,
-	"./de-at.js": 277,
-	"./de-ch": 278,
-	"./de-ch.js": 278,
-	"./de.js": 276,
-	"./dv": 279,
-	"./dv.js": 279,
-	"./el": 280,
-	"./el.js": 280,
-	"./en-au": 281,
-	"./en-au.js": 281,
-	"./en-ca": 282,
-	"./en-ca.js": 282,
-	"./en-gb": 283,
-	"./en-gb.js": 283,
-	"./en-ie": 284,
-	"./en-ie.js": 284,
-	"./en-nz": 285,
-	"./en-nz.js": 285,
-	"./eo": 286,
-	"./eo.js": 286,
-	"./es": 287,
-	"./es-do": 288,
-	"./es-do.js": 288,
-	"./es-us": 289,
-	"./es-us.js": 289,
-	"./es.js": 287,
-	"./et": 290,
-	"./et.js": 290,
-	"./eu": 291,
-	"./eu.js": 291,
-	"./fa": 292,
-	"./fa.js": 292,
-	"./fi": 293,
-	"./fi.js": 293,
-	"./fo": 294,
-	"./fo.js": 294,
-	"./fr": 295,
-	"./fr-ca": 296,
-	"./fr-ca.js": 296,
-	"./fr-ch": 297,
-	"./fr-ch.js": 297,
-	"./fr.js": 295,
-	"./fy": 298,
-	"./fy.js": 298,
-	"./gd": 299,
-	"./gd.js": 299,
-	"./gl": 300,
-	"./gl.js": 300,
-	"./gom-latn": 301,
-	"./gom-latn.js": 301,
-	"./gu": 302,
-	"./gu.js": 302,
-	"./he": 303,
-	"./he.js": 303,
-	"./hi": 304,
-	"./hi.js": 304,
-	"./hr": 305,
-	"./hr.js": 305,
-	"./hu": 306,
-	"./hu.js": 306,
-	"./hy-am": 307,
-	"./hy-am.js": 307,
-	"./id": 308,
-	"./id.js": 308,
-	"./is": 309,
-	"./is.js": 309,
-	"./it": 310,
-	"./it.js": 310,
-	"./ja": 311,
-	"./ja.js": 311,
-	"./jv": 312,
-	"./jv.js": 312,
-	"./ka": 313,
-	"./ka.js": 313,
-	"./kk": 314,
-	"./kk.js": 314,
-	"./km": 315,
-	"./km.js": 315,
-	"./kn": 316,
-	"./kn.js": 316,
-	"./ko": 317,
-	"./ko.js": 317,
-	"./ky": 318,
-	"./ky.js": 318,
-	"./lb": 319,
-	"./lb.js": 319,
-	"./lo": 320,
-	"./lo.js": 320,
-	"./lt": 321,
-	"./lt.js": 321,
-	"./lv": 322,
-	"./lv.js": 322,
-	"./me": 323,
-	"./me.js": 323,
-	"./mi": 324,
-	"./mi.js": 324,
-	"./mk": 325,
-	"./mk.js": 325,
-	"./ml": 326,
-	"./ml.js": 326,
-	"./mr": 327,
-	"./mr.js": 327,
-	"./ms": 328,
-	"./ms-my": 329,
-	"./ms-my.js": 329,
-	"./ms.js": 328,
-	"./mt": 330,
-	"./mt.js": 330,
-	"./my": 331,
-	"./my.js": 331,
-	"./nb": 332,
-	"./nb.js": 332,
-	"./ne": 333,
-	"./ne.js": 333,
-	"./nl": 334,
-	"./nl-be": 335,
-	"./nl-be.js": 335,
-	"./nl.js": 334,
-	"./nn": 336,
-	"./nn.js": 336,
-	"./pa-in": 337,
-	"./pa-in.js": 337,
-	"./pl": 338,
-	"./pl.js": 338,
-	"./pt": 339,
-	"./pt-br": 340,
-	"./pt-br.js": 340,
-	"./pt.js": 339,
-	"./ro": 341,
-	"./ro.js": 341,
-	"./ru": 342,
-	"./ru.js": 342,
-	"./sd": 343,
-	"./sd.js": 343,
-	"./se": 344,
-	"./se.js": 344,
-	"./si": 345,
-	"./si.js": 345,
-	"./sk": 346,
-	"./sk.js": 346,
-	"./sl": 347,
-	"./sl.js": 347,
-	"./sq": 348,
-	"./sq.js": 348,
-	"./sr": 349,
-	"./sr-cyrl": 350,
-	"./sr-cyrl.js": 350,
-	"./sr.js": 349,
-	"./ss": 351,
-	"./ss.js": 351,
-	"./sv": 352,
-	"./sv.js": 352,
-	"./sw": 353,
-	"./sw.js": 353,
-	"./ta": 354,
-	"./ta.js": 354,
-	"./te": 355,
-	"./te.js": 355,
-	"./tet": 356,
-	"./tet.js": 356,
-	"./th": 357,
-	"./th.js": 357,
-	"./tl-ph": 358,
-	"./tl-ph.js": 358,
-	"./tlh": 359,
-	"./tlh.js": 359,
-	"./tr": 360,
-	"./tr.js": 360,
-	"./tzl": 361,
-	"./tzl.js": 361,
-	"./tzm": 362,
-	"./tzm-latn": 363,
-	"./tzm-latn.js": 363,
-	"./tzm.js": 362,
-	"./uk": 364,
-	"./uk.js": 364,
-	"./ur": 365,
-	"./ur.js": 365,
-	"./uz": 366,
-	"./uz-latn": 367,
-	"./uz-latn.js": 367,
-	"./uz.js": 366,
-	"./vi": 368,
-	"./vi.js": 368,
-	"./x-pseudo": 369,
-	"./x-pseudo.js": 369,
-	"./yo": 370,
-	"./yo.js": 370,
-	"./zh-cn": 371,
-	"./zh-cn.js": 371,
-	"./zh-hk": 372,
-	"./zh-hk.js": 372,
-	"./zh-tw": 373,
-	"./zh-tw.js": 373
+	"./af": 256,
+	"./af.js": 256,
+	"./ar": 257,
+	"./ar-dz": 258,
+	"./ar-dz.js": 258,
+	"./ar-kw": 259,
+	"./ar-kw.js": 259,
+	"./ar-ly": 260,
+	"./ar-ly.js": 260,
+	"./ar-ma": 261,
+	"./ar-ma.js": 261,
+	"./ar-sa": 262,
+	"./ar-sa.js": 262,
+	"./ar-tn": 263,
+	"./ar-tn.js": 263,
+	"./ar.js": 257,
+	"./az": 264,
+	"./az.js": 264,
+	"./be": 265,
+	"./be.js": 265,
+	"./bg": 266,
+	"./bg.js": 266,
+	"./bm": 267,
+	"./bm.js": 267,
+	"./bn": 268,
+	"./bn.js": 268,
+	"./bo": 269,
+	"./bo.js": 269,
+	"./br": 270,
+	"./br.js": 270,
+	"./bs": 271,
+	"./bs.js": 271,
+	"./ca": 272,
+	"./ca.js": 272,
+	"./cs": 273,
+	"./cs.js": 273,
+	"./cv": 274,
+	"./cv.js": 274,
+	"./cy": 275,
+	"./cy.js": 275,
+	"./da": 276,
+	"./da.js": 276,
+	"./de": 277,
+	"./de-at": 278,
+	"./de-at.js": 278,
+	"./de-ch": 279,
+	"./de-ch.js": 279,
+	"./de.js": 277,
+	"./dv": 280,
+	"./dv.js": 280,
+	"./el": 281,
+	"./el.js": 281,
+	"./en-au": 282,
+	"./en-au.js": 282,
+	"./en-ca": 283,
+	"./en-ca.js": 283,
+	"./en-gb": 284,
+	"./en-gb.js": 284,
+	"./en-ie": 285,
+	"./en-ie.js": 285,
+	"./en-nz": 286,
+	"./en-nz.js": 286,
+	"./eo": 287,
+	"./eo.js": 287,
+	"./es": 288,
+	"./es-do": 289,
+	"./es-do.js": 289,
+	"./es-us": 290,
+	"./es-us.js": 290,
+	"./es.js": 288,
+	"./et": 291,
+	"./et.js": 291,
+	"./eu": 292,
+	"./eu.js": 292,
+	"./fa": 293,
+	"./fa.js": 293,
+	"./fi": 294,
+	"./fi.js": 294,
+	"./fo": 295,
+	"./fo.js": 295,
+	"./fr": 296,
+	"./fr-ca": 297,
+	"./fr-ca.js": 297,
+	"./fr-ch": 298,
+	"./fr-ch.js": 298,
+	"./fr.js": 296,
+	"./fy": 299,
+	"./fy.js": 299,
+	"./gd": 300,
+	"./gd.js": 300,
+	"./gl": 301,
+	"./gl.js": 301,
+	"./gom-latn": 302,
+	"./gom-latn.js": 302,
+	"./gu": 303,
+	"./gu.js": 303,
+	"./he": 304,
+	"./he.js": 304,
+	"./hi": 305,
+	"./hi.js": 305,
+	"./hr": 306,
+	"./hr.js": 306,
+	"./hu": 307,
+	"./hu.js": 307,
+	"./hy-am": 308,
+	"./hy-am.js": 308,
+	"./id": 309,
+	"./id.js": 309,
+	"./is": 310,
+	"./is.js": 310,
+	"./it": 311,
+	"./it.js": 311,
+	"./ja": 312,
+	"./ja.js": 312,
+	"./jv": 313,
+	"./jv.js": 313,
+	"./ka": 314,
+	"./ka.js": 314,
+	"./kk": 315,
+	"./kk.js": 315,
+	"./km": 316,
+	"./km.js": 316,
+	"./kn": 317,
+	"./kn.js": 317,
+	"./ko": 318,
+	"./ko.js": 318,
+	"./ky": 319,
+	"./ky.js": 319,
+	"./lb": 320,
+	"./lb.js": 320,
+	"./lo": 321,
+	"./lo.js": 321,
+	"./lt": 322,
+	"./lt.js": 322,
+	"./lv": 323,
+	"./lv.js": 323,
+	"./me": 324,
+	"./me.js": 324,
+	"./mi": 325,
+	"./mi.js": 325,
+	"./mk": 326,
+	"./mk.js": 326,
+	"./ml": 327,
+	"./ml.js": 327,
+	"./mr": 328,
+	"./mr.js": 328,
+	"./ms": 329,
+	"./ms-my": 330,
+	"./ms-my.js": 330,
+	"./ms.js": 329,
+	"./mt": 331,
+	"./mt.js": 331,
+	"./my": 332,
+	"./my.js": 332,
+	"./nb": 333,
+	"./nb.js": 333,
+	"./ne": 334,
+	"./ne.js": 334,
+	"./nl": 335,
+	"./nl-be": 336,
+	"./nl-be.js": 336,
+	"./nl.js": 335,
+	"./nn": 337,
+	"./nn.js": 337,
+	"./pa-in": 338,
+	"./pa-in.js": 338,
+	"./pl": 339,
+	"./pl.js": 339,
+	"./pt": 340,
+	"./pt-br": 341,
+	"./pt-br.js": 341,
+	"./pt.js": 340,
+	"./ro": 342,
+	"./ro.js": 342,
+	"./ru": 343,
+	"./ru.js": 343,
+	"./sd": 344,
+	"./sd.js": 344,
+	"./se": 345,
+	"./se.js": 345,
+	"./si": 346,
+	"./si.js": 346,
+	"./sk": 347,
+	"./sk.js": 347,
+	"./sl": 348,
+	"./sl.js": 348,
+	"./sq": 349,
+	"./sq.js": 349,
+	"./sr": 350,
+	"./sr-cyrl": 351,
+	"./sr-cyrl.js": 351,
+	"./sr.js": 350,
+	"./ss": 352,
+	"./ss.js": 352,
+	"./sv": 353,
+	"./sv.js": 353,
+	"./sw": 354,
+	"./sw.js": 354,
+	"./ta": 355,
+	"./ta.js": 355,
+	"./te": 356,
+	"./te.js": 356,
+	"./tet": 357,
+	"./tet.js": 357,
+	"./th": 358,
+	"./th.js": 358,
+	"./tl-ph": 359,
+	"./tl-ph.js": 359,
+	"./tlh": 360,
+	"./tlh.js": 360,
+	"./tr": 361,
+	"./tr.js": 361,
+	"./tzl": 362,
+	"./tzl.js": 362,
+	"./tzm": 363,
+	"./tzm-latn": 364,
+	"./tzm-latn.js": 364,
+	"./tzm.js": 363,
+	"./uk": 365,
+	"./uk.js": 365,
+	"./ur": 366,
+	"./ur.js": 366,
+	"./uz": 367,
+	"./uz-latn": 368,
+	"./uz-latn.js": 368,
+	"./uz.js": 367,
+	"./vi": 369,
+	"./vi.js": 369,
+	"./x-pseudo": 370,
+	"./x-pseudo.js": 370,
+	"./yo": 371,
+	"./yo.js": 371,
+	"./zh-cn": 372,
+	"./zh-cn.js": 372,
+	"./zh-hk": 373,
+	"./zh-hk.js": 373,
+	"./zh-tw": 374,
+	"./zh-tw.js": 374
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -8911,11 +9086,11 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 535;
+webpackContext.id = 537;
 
 /***/ }),
 
-/***/ 536:
+/***/ 538:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8965,7 +9140,7 @@ var SafeHtmlPipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 537:
+/***/ 539:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8993,7 +9168,7 @@ var TimelineComponent = /** @class */ (function () {
     ], TimelineComponent.prototype, "endIcon", void 0);
     TimelineComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'timeline',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/components/timeline/timeline.html"*/'<div class="timeline">\n  <ng-content></ng-content>\n\n  <timeline-item>\n    <ion-icon class="" [name]="endIcon"></ion-icon>\n  </timeline-item>\n\n</div>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/components/timeline/timeline.html"*/
+            selector: 'timeline',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/components/timeline/timeline.html"*/'<div class="timeline">\n  <ng-content></ng-content>\n\n  <timeline-item>\n    <ion-icon class="" [name]="endIcon"></ion-icon>\n  </timeline-item>\n\n</div>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/components/timeline/timeline.html"*/
         }),
         __metadata("design:paramtypes", [])
     ], TimelineComponent);
@@ -9038,7 +9213,7 @@ var TimelineTimeComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 538:
+/***/ 540:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9195,7 +9370,7 @@ var CommentComponent = /** @class */ (function () {
     ], CommentComponent.prototype, "user", void 0);
     CommentComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'comment',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/components/comment/comment.html"*/'<!-- Generated template for the CommentComponent component -->\n<div>\n  <div class="message-wrap" *ngIf="rootItem" >\n\n    <div *ngFor="let comment of rootItem.comments" class="message" [class.left]="comment.comment_by !== user.id" [class.right]="comment.comment_by === user.id">\n      <img class="user-img" [src]="comment.profile_pic ? comment.profile_pic : \'https://intranetstaging.herokuapp.com/assets/user_pic_missing.png\'"\n        alt="" src="">\n      <ion-spinner name="dots" *ngIf="comment.status === \'pending\'"></ion-spinner>\n      <label *ngIf="comment.status === \'failed\'" class=\'status liked\'>Failed</label>\n      <div class="msg-detail">\n        <!-- <div class="msg-info">\n          <p>{{comment.user}}</p>\n        </div> -->\n        <div class="msg-content">\n          <span class="triangle"></span>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right\':\'msg-info-left\'">\n            <p>{{comment.user}}</p>\n          </div>\n          <p class="line-breaker " [innerHTML]=\'comment.content\'></p>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right-time\':\'msg-info-left-time\'">\n            <p>{{comment.comment_time}}</p>\n          </div>\n        </div>\n\n      </div>\n    </div>\n    <div class="input-wrap" keyboard-attach [style.height]="\'55px\'">\n      <!-- <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">\n            <ion-icon name="md-happy"></ion-icon>\n          </button> -->\n    \n      <ion-textarea name="comment_input" #comment_input placeholder="Type your comment" [(ngModel)]="editorComment" (focusin)="onFocus()"></ion-textarea>\n    \n      <button ion-button clear icon-only item-right (click)="sendComment()">\n        <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n      </button>\n    </div>\n  </div>\n\n</div>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/components/comment/comment.html"*/
+            selector: 'comment',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/components/comment/comment.html"*/'<!-- Generated template for the CommentComponent component -->\n<div>\n  <div class="message-wrap" *ngIf="rootItem" >\n\n    <div *ngFor="let comment of rootItem.comments" class="message" [class.left]="comment.comment_by !== user.id" [class.right]="comment.comment_by === user.id">\n      <img class="user-img" [src]="comment.profile_pic ? comment.profile_pic : \'https://intranetstaging.herokuapp.com/assets/user_pic_missing.png\'"\n        alt="" src="">\n      <ion-spinner name="dots" *ngIf="comment.status === \'pending\'"></ion-spinner>\n      <label *ngIf="comment.status === \'failed\'" class=\'status liked\'>Failed</label>\n      <div class="msg-detail">\n        <!-- <div class="msg-info">\n          <p>{{comment.user}}</p>\n        </div> -->\n        <div class="msg-content">\n          <span class="triangle"></span>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right\':\'msg-info-left\'">\n            <p>{{comment.user}}</p>\n          </div>\n          <p class="line-breaker " [innerHTML]=\'comment.content\'></p>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right-time\':\'msg-info-left-time\'">\n            <p>{{comment.comment_time}}</p>\n          </div>\n        </div>\n\n      </div>\n    </div>\n    <div class="input-wrap" keyboard-attach [style.height]="\'55px\'">\n      <!-- <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">\n            <ion-icon name="md-happy"></ion-icon>\n          </button> -->\n    \n      <ion-textarea name="comment_input" #comment_input placeholder="Type your comment" [(ngModel)]="editorComment" (focusin)="onFocus()"></ion-textarea>\n    \n      <button ion-button clear icon-only item-right (click)="sendComment()">\n        <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n      </button>\n    </div>\n  </div>\n\n</div>'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/components/comment/comment.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* Events */],
             __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__["a" /* DataSetterProvider */]])
@@ -9231,8 +9406,9 @@ var AppGlobalProvider = /** @class */ (function () {
         // private systemXBaseURL = '';
         // LOCAL URLS
         this.server = 'Local';
-        // private intranetBaseURL = 'http://172.16.17.146:8000/api/v1';
-        this.intranetBaseURL = 'http://172.16.20.247:8000/api/v1';
+        // private intranetBaseURL = 'http://165.227.139.76:8080/api/v1';
+        this.intranetBaseURL = 'http://172.16.17.146:8000/api/v1';
+        // private intranetBaseURL = 'http://172.16.17./api/v1';
         this.surveyBaseURL = 'https://deepaksurveystaging.herokuapp.com/rapidfire/surveys';
         this.systemXBaseURL = 'https://system-x.herokuapp.com/api';
         // STAGING URLS
@@ -9354,54 +9530,54 @@ var AppGlobalProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 664:
+/***/ 666:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_userblock_userblock__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_directory_directory__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_userblock_userblock__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_directory_directory__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular_components_alert_alert_controller__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_survey_list_survey_list__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_survey_list_survey_list__ = __webpack_require__(176);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_article_show_article_show__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_grievance_show_grievance_show__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_grievance_show_grievance_show__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_idea_show_idea_show__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_service_request_show_service_request_show__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_local_notifications__ = __webpack_require__(486);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_offline_offline__ = __webpack_require__(429);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_local_notifications__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_offline_offline__ = __webpack_require__(433);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_network__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_app_version__ = __webpack_require__(487);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_app_version__ = __webpack_require__(489);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_vibration__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_article_index_article_index__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_article_index_article_index__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__providers_data_setter_data_setter__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_leaves_show_leaves_show__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_logout_logout__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_leaves_show_leaves_show__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_logout_logout__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__ionic_native_splash_screen__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__ionic_native_splash_screen__ = __webpack_require__(490);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_home_home__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_service_request_service_request__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_service_request_service_request__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__ngx_translate_core__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_calendar_view_calendar_view__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_grievance_grievance__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_policies_policies__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_login_login__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_calendar_view_calendar_view__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_grievance_grievance__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_policies_policies__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_login_login__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__providers_user_data_ts__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__ionic_native_fcm__ = __webpack_require__(489);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__ionic_native_fcm__ = __webpack_require__(491);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__providers_app_global_app_global__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_lodash__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_31_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_profile_profile__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_guest_lunch_guest_lunch__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_visiting_card_visiting_card__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_stationery_request_stationery_request__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_maintenance_request_maintenance_request__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_guest_lunch_guest_lunch__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_visiting_card_visiting_card__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_stationery_request_stationery_request__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_maintenance_request_maintenance_request__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_access_card_request_access_card_request__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_guest_room_request_guest_room_request__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_canteen_facility_canteen_facility__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_guest_room_request_show_guest_room_request_show__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_parakh_dashboard_parakh_dashboard__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_guest_room_request_guest_room_request__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_canteen_facility_canteen_facility__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_guest_room_request_show_guest_room_request_show__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_parakh_dashboard_parakh_dashboard__ = __webpack_require__(170);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9976,7 +10152,7 @@ var MyApp = /** @class */ (function () {
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_18_ionic_angular__["o" /* Nav */])
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_17__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/app/app.html"*/'<!-- <ion-split-pane> -->\n\n<ion-menu id="loggedInMenu" [content]="content">\n\n  <!-- <ion-header>\n    <ion-toolbar>\n      <ion-title>EmPower</ion-title>\n      <ion-title>{{username}}</ion-title>\n    </ion-toolbar>\n  </ion-header> -->\n\n  <ion-content class="outer-content">\n    <ion-item menuClose (click)="openProfile()">\n      <ion-avatar item-start>\n        <img src="{{userprofile}}" style="width:5em; height:5em; border:3px solid gray;">\n      </ion-avatar>\n      <ion-title>{{username}}</ion-title>\n    </ion-item>\n\n    <ion-list>\n      <button ion-item menuClose *ngFor="let p of loggedInPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n        <ion-badge item-end color="light" *ngIf="p.countName && getCount(p.countName) > 0">{{getCount(p.countName)}}\n        </ion-badge>\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        My Voice\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of myVoicePages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        IT\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of itPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        HR\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of hrPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        Company\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of companyPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        Services\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of servicesPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        Account\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of loggedOutPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        About the App\n      </ion-list-header>\n      <ion-title left>\n        <h6 class="version">Version: {{applicationVersion}}</h6>\n        <h6 class="version">Server: {{appGlobal.server}}</h6>\n        <h6 class="version">Powered by: Deepak Cybit Pvt. Ltd.</h6>\n      </ion-title>\n    </ion-list>\n  </ion-content>\n\n  <!-- <ion-footer>\n    <ion-title left>\n      <h6 class="version">Version: {{applicationVersion}}</h6>\n      <h6 class="version">Powered By: Deepak Cybit Pvt. Ltd.</h6>\n    </ion-title>\n  </ion-footer> -->\n\n</ion-menu>\n\n<!-- </ion-split-pane> -->\n\n<!-- <ion-menu [content]="content">\n  <ion-header>\n    <ion-toolbar>\n      <ion-title>Menu</ion-title>\n    </ion-toolbar>\n  </ion-header>\n\n  <ion-content>\n    <ion-list>\n      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">\n        {{p.title}}\n      </button>\n    </ion-list>\n  </ion-content>\n\n</ion-menu> -->\n\n<!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n<ion-nav [root]="rootPage" #content swipeBackEnabled="false" main name="MyApp"></ion-nav>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/app/app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_17__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/app/app.html"*/'<!-- <ion-split-pane> -->\n\n<ion-menu id="loggedInMenu" [content]="content">\n\n  <!-- <ion-header>\n    <ion-toolbar>\n      <ion-title>EmPower</ion-title>\n      <ion-title>{{username}}</ion-title>\n    </ion-toolbar>\n  </ion-header> -->\n\n  <ion-content class="outer-content">\n    <ion-item menuClose (click)="openProfile()">\n      <ion-avatar item-start>\n        <img src="{{userprofile}}" style="width:5em; height:5em; border:3px solid gray;">\n      </ion-avatar>\n      <ion-title>{{username}}</ion-title>\n    </ion-item>\n\n    <ion-list>\n      <button ion-item menuClose *ngFor="let p of loggedInPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n        <ion-badge item-end color="light" *ngIf="p.countName && getCount(p.countName) > 0">{{getCount(p.countName)}}\n        </ion-badge>\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        My Voice\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of myVoicePages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        IT\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of itPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        HR\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of hrPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        Company\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of companyPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        Services\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of servicesPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        Account\n      </ion-list-header>\n      <button ion-item menuClose *ngFor="let p of loggedOutPages" (click)="openPage(p)">\n        <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>\n        {{p.title}}\n      </button>\n    </ion-list>\n\n    <ion-list>\n      <ion-list-header style="margin-bottom: 0;">\n        About the App\n      </ion-list-header>\n      <ion-title left>\n        <h6 class="version">Version: {{applicationVersion}}</h6>\n        <h6 class="version">Server: {{appGlobal.server}}</h6>\n        <h6 class="version">Powered by: Deepak Cybit Pvt. Ltd.</h6>\n      </ion-title>\n    </ion-list>\n  </ion-content>\n\n  <!-- <ion-footer>\n    <ion-title left>\n      <h6 class="version">Version: {{applicationVersion}}</h6>\n      <h6 class="version">Powered By: Deepak Cybit Pvt. Ltd.</h6>\n    </ion-title>\n  </ion-footer> -->\n\n</ion-menu>\n\n<!-- </ion-split-pane> -->\n\n<!-- <ion-menu [content]="content">\n  <ion-header>\n    <ion-toolbar>\n      <ion-title>Menu</ion-title>\n    </ion-toolbar>\n  </ion-header>\n\n  <ion-content>\n    <ion-list>\n      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">\n        {{p.title}}\n      </button>\n    </ion-list>\n  </ion-content>\n\n</ion-menu> -->\n\n<!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n<ion-nav [root]="rootPage" #content swipeBackEnabled="false" main name="MyApp"></ion-nav>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/app/app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_22__ngx_translate_core__["c" /* TranslateService */],
             __WEBPACK_IMPORTED_MODULE_18_ionic_angular__["c" /* App */],
@@ -10174,7 +10350,7 @@ var ArticleShowPage = /** @class */ (function () {
     };
     ArticleShowPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_6__angular_core__["m" /* Component */])({
-            selector: 'page-article-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/article-show/article-show.html"*/'<!--\n  Generated template for the ArticleShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Article</ion-title>\n    <ion-buttons end *ngIf="article" >\n      <button ion-button icon-only clear (click)="like()">\n        <ion-icon [name]="article.liked_by_me ? \'heart\' : \'heart-outline\'" isActive="true" [class.liked]="article.liked_by_me"></ion-icon>\n        {{article.likes}}\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="article.can_comment">\n        <ion-icon name=\'chatbubbles\' isActive="true"></ion-icon>\n        {{article.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="article">\n    <div *ngIf="article.showHeader">\n      <h1>{{article.title}}</h1>\n      <hr>\n    </div>\n    <ion-slides *ngIf="article.courasel_attachments.length > 0" [autoplay]="5000" [pager]="true" [loop]="true" style="height: auto;">\n      <ion-slide *ngFor="let slide of article.courasel_attachments">\n        <img [src]="slide.url">\n      </ion-slide>\n    </ion-slides>\n    <hr *ngIf="article.courasel_attachments.length > 0" >\n    <div [innerHtml]="article.content | safeHtml">\n      <!--{{idea.content}}-->\n    </div>\n    <div *ngIf="article.showFooter">\n      <hr>\n      <h5 *ngIf="article.date">Created on: {{article.date}}</h5>\n      <h5 *ngIf="article.creator">Created by: {{article.creator}}</h5>\n    </div>\n  </div>\n  <hr>\n  <!-- <comment [rootItem]="article" [user]="user"></comment> -->\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/article-show/article-show.html"*/,
+            selector: 'page-article-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/article-show/article-show.html"*/'<!--\n  Generated template for the ArticleShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Article</ion-title>\n    <ion-buttons end *ngIf="article" >\n      <button ion-button icon-only clear (click)="like()">\n        <ion-icon [name]="article.liked_by_me ? \'heart\' : \'heart-outline\'" isActive="true" [class.liked]="article.liked_by_me"></ion-icon>\n        {{article.likes}}\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="article.can_comment">\n        <ion-icon name=\'chatbubbles\' isActive="true"></ion-icon>\n        {{article.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="article">\n    <div *ngIf="article.showHeader">\n      <h1>{{article.title}}</h1>\n      <hr>\n    </div>\n    <ion-slides *ngIf="article.courasel_attachments.length > 0" [autoplay]="5000" [pager]="true" [loop]="true" style="height: auto;">\n      <ion-slide *ngFor="let slide of article.courasel_attachments">\n        <img [src]="slide.url">\n      </ion-slide>\n    </ion-slides>\n    <hr *ngIf="article.courasel_attachments.length > 0" >\n    <div [innerHtml]="article.content | safeHtml">\n      <!--{{idea.content}}-->\n    </div>\n    <div *ngIf="article.showFooter">\n      <hr>\n      <h5 *ngIf="article.date">Created on: {{article.date}}</h5>\n      <h5 *ngIf="article.creator">Created by: {{article.creator}}</h5>\n    </div>\n  </div>\n  <hr>\n  <!-- <comment [rootItem]="article" [user]="user"></comment> -->\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/article-show/article-show.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_8__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__["a" /* DataSetterProvider */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["f" /* Events */],
@@ -10192,7 +10368,7 @@ var ArticleShowPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 69:
+/***/ 71:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10319,7 +10495,7 @@ var GuestRoomRequestShowPage = /** @class */ (function () {
     };
     GuestRoomRequestShowPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-guest-room-request-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-room-request-show/guest-room-request-show.html"*/'<!--\n  Generated template for the GuestRoomRequestShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>{{guestRoomRequest ? guestRoomRequest.uid : \'\'}}</ion-title>\n  </ion-navbar>\n  <div class="idea_state_header_{{guestRoomRequest ? guestRoomRequest.state : \'\'}}"></div>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-card>\n    <ion-card-header>\n      <ion-row>\n        <ion-col>\n          <div class="pull-right" *ngIf="guestRoomRequest.approved">\n            <p>Approved By: <strong>{{guestRoomRequest.approver}}</strong></p>\n            <p>Approved At: <strong>{{guestRoomRequest.approved_at}}</strong></p>\n          </div>\n        </ion-col>\n\n        <ion-col>\n          <ion-badge class="pull-right">{{guestRoomRequest.state}}</ion-badge>\n        </ion-col>\n      </ion-row>\n    </ion-card-header>\n\n    <ion-card-content>\n      <ion-row>\n        <ion-col>\n          <p>Address: <strong>{{guestRoomRequest.address}}</strong></p>\n          <p>Number of Guest: <strong>{{guestRoomRequest.number_of_guest}}</strong></p>\n          <p>Details: <strong>{{guestRoomRequest.detail}}</strong></p>\n        </ion-col>\n      </ion-row>\n\n      <ion-row>\n        <ion-col>Check In</ion-col>\n        <ion-col>Check Out</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col><strong>{{guestRoomRequest.check_in}}</strong></ion-col>\n        <ion-col><strong>{{guestRoomRequest.check_out}}</strong></ion-col>\n      </ion-row>\n\n      <ion-row *ngIf=\'room_flags.length > 0\'>\n        <ion-col>\n          <ion-tags-input [(ngModel)]="room_flags" [readonly]="true"></ion-tags-input>\n        </ion-col>\n      </ion-row>\n    </ion-card-content>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-room-request-show/guest-room-request-show.html"*/,
+            selector: 'page-guest-room-request-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-room-request-show/guest-room-request-show.html"*/'<!--\n  Generated template for the GuestRoomRequestShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>{{guestRoomRequest ? guestRoomRequest.uid : \'\'}}</ion-title>\n  </ion-navbar>\n  <div class="idea_state_header_{{guestRoomRequest ? guestRoomRequest.state : \'\'}}"></div>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-card>\n    <ion-card-header>\n      <ion-row>\n        <ion-col>\n          <div class="pull-right" *ngIf="guestRoomRequest.approved">\n            <p>Approved By: <strong>{{guestRoomRequest.approver}}</strong></p>\n            <p>Approved At: <strong>{{guestRoomRequest.approved_at}}</strong></p>\n          </div>\n        </ion-col>\n\n        <ion-col>\n          <ion-badge class="pull-right">{{guestRoomRequest.state}}</ion-badge>\n        </ion-col>\n      </ion-row>\n    </ion-card-header>\n\n    <ion-card-content>\n      <ion-row>\n        <ion-col>\n          <p>Address: <strong>{{guestRoomRequest.address}}</strong></p>\n          <p>Number of Guest: <strong>{{guestRoomRequest.number_of_guest}}</strong></p>\n          <p>Details: <strong>{{guestRoomRequest.detail}}</strong></p>\n        </ion-col>\n      </ion-row>\n\n      <ion-row>\n        <ion-col>Check In</ion-col>\n        <ion-col>Check Out</ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col><strong>{{guestRoomRequest.check_in}}</strong></ion-col>\n        <ion-col><strong>{{guestRoomRequest.check_out}}</strong></ion-col>\n      </ion-row>\n\n      <ion-row *ngIf=\'room_flags.length > 0\'>\n        <ion-col>\n          <ion-tags-input [(ngModel)]="room_flags" [readonly]="true"></ion-tags-input>\n        </ion-col>\n      </ion-row>\n    </ion-card-content>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-room-request-show/guest-room-request-show.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -10356,16 +10532,18 @@ var GuestRoomRequestShowPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__idea_show_idea_show__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__service_request_show_service_request_show__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__grievance_show_grievance_show__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__grievance_show_grievance_show__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__article_show_article_show__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_storage__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__intro_intro__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__guest_lunch_guest_lunch__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__visiting_card_visiting_card__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__maintenance_request_maintenance_request__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__guest_room_request_show_guest_room_request_show__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__stationery_request_stationery_request__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__access_card_request_access_card_request__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_storage__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__intro_intro__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__providers_database_database__ = __webpack_require__(413);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_native_sqlite__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__guest_lunch_guest_lunch__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__visiting_card_visiting_card__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__maintenance_request_maintenance_request__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__guest_room_request_show_guest_room_request_show__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__stationery_request_stationery_request__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__access_card_request_access_card_request__ = __webpack_require__(86);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10395,8 +10573,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl, network, dataGetterService, toastCtrl, dataSetterService, loadingCtrl, appGlobal, storage) {
+    function HomePage(navCtrl, network, dataGetterService, toastCtrl, dataSetterService, loadingCtrl, appGlobal, storage, sql, databse //  public sqlProvider:DatabaseProvider
+    ) {
+        //this.sqlProvider=this.sqlstorage;
+        // sqlservice.createDB();
         this.navCtrl = navCtrl;
         this.network = network;
         this.dataGetterService = dataGetterService;
@@ -10405,6 +10588,8 @@ var HomePage = /** @class */ (function () {
         this.loadingCtrl = loadingCtrl;
         this.appGlobal = appGlobal;
         this.storage = storage;
+        this.sql = sql;
+        this.databse = databse;
         this.notifications = [];
         this.descending = false;
         this.order = -1;
@@ -10469,27 +10654,27 @@ var HomePage = /** @class */ (function () {
                 break;
             }
             case "guest_lunch_requests": {
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_14__guest_lunch_guest_lunch__["a" /* GuestLunchPage */], { id: id });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_16__guest_lunch_guest_lunch__["a" /* GuestLunchPage */], { id: id });
                 break;
             }
             case "visiting_card_requests": {
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__visiting_card_visiting_card__["a" /* VisitingCardPage */], { id: id });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_17__visiting_card_visiting_card__["a" /* VisitingCardPage */], { id: id });
                 break;
             }
             case "maintenance_requests": {
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_16__maintenance_request_maintenance_request__["a" /* MaintenanceRequestPage */], { id: id });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_18__maintenance_request_maintenance_request__["a" /* MaintenanceRequestPage */], { id: id });
                 break;
             }
             case "room_requests": {
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_17__guest_room_request_show_guest_room_request_show__["a" /* GuestRoomRequestShowPage */], { id: id });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_19__guest_room_request_show_guest_room_request_show__["a" /* GuestRoomRequestShowPage */], { id: id });
                 break;
             }
             case "stationery_requests": {
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_18__stationery_request_stationery_request__["a" /* StationeryRequestPage */], { id: id });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_20__stationery_request_stationery_request__["a" /* StationeryRequestPage */], { id: id });
                 break;
             }
             case "access_card_requests": {
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_19__access_card_request_access_card_request__["a" /* AccessCardRequestPage */], { id: id });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_21__access_card_request_access_card_request__["a" /* AccessCardRequestPage */], { id: id });
                 break;
             }
             default: {
@@ -10591,12 +10776,17 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_5__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="Empower">\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list *ngIf="notifications.length > 0">\n    <ion-item-sliding #item *ngFor="let notification of notifications | sort: {property: field, order: order}">\n      <ion-item no-lines class="bottom-border"\n                (click)="goToPage(notification.associated_item_id, notification.associated_item_type)"\n                [ngStyle]="{\'background-color\': notification.background_color}">\n        <ion-avatar item-start>\n          <img src="{{notification.profile}}" style="border:2px solid gray;width:3.5em;height:3.5em;">\n        </ion-avatar>\n\n        <ion-card-header [ngStyle]="{\'font-weight\': bold, \'color\': notification.font_color}">\n          {{notification.title}}\n        </ion-card-header>\n\n        <ion-card-content [ngStyle]="{\'text-align\':left, \'color\': notification.font_color}">\n          {{notification.message}}\n        </ion-card-content>\n      </ion-item>\n\n      <ion-item-options side="left">\n        <button ion-button (click)="onSnooze(item,notification)">Snooze</button>\n      </ion-item-options>\n\n      <ion-item-options side="right">\n        <button ion-button color="danger" (click)="onDismiss(item,notification)">Dismiss</button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n  <ion-item no-lines class="bottom-border" *ngIf="notifications.length === 0" text-center>\n    No Notifications Available\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="Empower">\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list *ngIf="notifications.length > 0">\n    <ion-item-sliding #item *ngFor="let notification of notifications | sort: {property: field, order: order}">\n      <ion-item no-lines class="bottom-border"\n                (click)="goToPage(notification.associated_item_id, notification.associated_item_type)"\n                [ngStyle]="{\'background-color\': notification.background_color}">\n        <ion-avatar item-start>\n          <img src="{{notification.profile}}" style="border:2px solid gray;width:3.5em;height:3.5em;">\n        </ion-avatar>\n\n        <ion-card-header [ngStyle]="{\'font-weight\': bold, \'color\': notification.font_color}">\n          {{notification.title}}\n        </ion-card-header>\n\n        <ion-card-content [ngStyle]="{\'text-align\':left, \'color\': notification.font_color}">\n          {{notification.message}}\n        </ion-card-content>\n      </ion-item>\n\n      <ion-item-options side="left">\n        <button ion-button (click)="onSnooze(item,notification)">Snooze</button>\n      </ion-item-options>\n\n      <ion-item-options side="right">\n        <button ion-button color="danger" (click)="onDismiss(item,notification)">Dismiss</button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n  <ion-item no-lines class="bottom-border" *ngIf="notifications.length === 0" text-center>\n    No Notifications Available\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */], __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */],
+            __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
             __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["l" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_12__ionic_storage__["b" /* Storage */]])
+            __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+            __WEBPACK_IMPORTED_MODULE_12__ionic_storage__["b" /* Storage */],
+            __WEBPACK_IMPORTED_MODULE_15__ionic_native_sqlite__["a" /* SQLite */],
+            __WEBPACK_IMPORTED_MODULE_14__providers_database_database__["a" /* DatabaseProvider */] //  public sqlProvider:DatabaseProvider
+        ])
     ], HomePage);
     return HomePage;
 }());
@@ -10616,7 +10806,7 @@ var HomePage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_data_setter_data_setter__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter__ = __webpack_require__(639);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter__ = __webpack_require__(642);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ionic_angular__ = __webpack_require__(2);
@@ -10954,7 +11144,7 @@ var IdeaShowPage = /** @class */ (function () {
     };
     IdeaShowPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_6__angular_core__["m" /* Component */])({
-            selector: 'page-idea-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea-show/idea-show.html"*/'<!--\n  Generated template for the IdeaShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>{{Idea ? Idea.uuid : \'\'}}\n    </ion-title>\n    <ion-buttons end *ngIf="Idea" >\n      <button ion-button icon-only clear (click)="tagUsers()" *ngIf="Idea.can_tag">\n        <ion-icon name="pricetag"></ion-icon>\n      </button>\n      <button ion-button icon-only clear (click)="allocateUsers()" *ngIf="Idea.Can_allocate && userTagged.length > 0">\n        <ion-icon [name]="Idea.allocated_users.length > 0 ? \'git-compare\' : \'git-network\'"></ion-icon>\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="Idea.can_comment">\n        <ion-icon name=\'chatbubbles\'></ion-icon>\n        {{Idea.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n  <div class="idea_state_header_{{Idea ? Idea.state : \'\'}}"></div>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="Idea">\n    <div *ngIf="isAllocating">\n      <tag-input \n        [(ngModel)]="Idea.allocated_users" \n        [identifyBy]="\'id\'" \n        [displayBy]="\'name\'" \n        [onlyFromAutocomplete]="true"\n        [placeholder]="\'Type User name\'"\n        [secondaryPlaceholder]="\'Search User\'"\n        [clearOnBlur]="true"\n        [maxItems]="Idea.allocation_limit"\n        (onAdd)="onAddAllocation($event)"\n        (onRemove)="onRemoveAllocation($event)"\n        [onRemoving]="onRemovingAllocation">\n        <tag-input-dropdown \n          [showDropdownIfEmpty]="true" \n          [identifyBy]="\'id\'" \n          [displayBy]="\'name\'" \n          [focusFirstElement]="true"\n          [minimumTextLength]="0"\n          [autocompleteItems]="userTagged">\n          <ng-template let-item="item" let-index="index">\n            {{ item.name }}\n          </ng-template>\n        </tag-input-dropdown>\n      </tag-input>\n      <button ion-button full (click)="submitAllocation()">{{viewAllocated.length > 0 ? \'Re-allocate\' : \'Allocate\'}}</button>\n      <hr/>\n    </div>\n    <div *ngIf="isTagging">\n      <tag-input \n        #tagsInput\n        [(ngModel)]="Idea.tagged_users"\n        [identifyBy]="\'id\'"\n        [displayBy]="\'name\'"\n        [onlyFromAutocomplete]="true"\n        [placeholder]="\'Type New User Name\'"\n        [onTextChangeDebounce]="500"\n        [secondaryPlaceholder]="\'Search User\'"\n        [clearOnBlur]="true"\n        (onAdd)="onAdd($event)"\n        (onRemove)="onRemove($event)">\n          <tag-input-dropdown \n            [showDropdownIfEmpty]="true"\n            [identifyBy]="\'id\'"\n            [focusFirstElement]="true"\n            [displayBy]="\'name\'"\n            [minimumTextLength]="1"\n            [autocompleteObservable]="getTags">\n            <ng-template let-item="item" let-index="index">\n              {{ item.name }}\n            </ng-template>\n          </tag-input-dropdown>\n      </tag-input>\n      <button ion-button full (click)="submitTags()">Submit Tags</button>\n      <hr/>\n    </div>\n    <ion-card>\n      <ion-card-header>\n        <ion-badge class="pull-right">{{Idea.state}}</ion-badge>\n        <ion-title>\n          {{Idea.title}}\n        </ion-title>\n      </ion-card-header>\n      <ion-card-content>\n        <ion-list>\n          <ion-item *ngIf=\'viewAllocated.length > 0\' text-wrap>\n            Allocated:\n            <ion-tags-input [(ngModel)]="viewAllocated" [readonly]="true"></ion-tags-input>\n            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="\'id\'" [displayBy]="\'name\'" [hideForm]="true" [removable]="false"></tag-input> -->\n          </ion-item>\n          <ion-item *ngIf=\'viewTags.length > 0\' text-wrap>\n            Tags:\n            <ion-tags-input [(ngModel)]="viewTags" [readonly]="true"></ion-tags-input>\n            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="\'id\'" [displayBy]="\'name\'" [hideForm]="true" [removable]="false"></tag-input> -->\n          </ion-item>\n          <ion-item text-wrap>\n            Details:\n            <div [innerHtml]="Idea.content"></div>\n          </ion-item>\n        </ion-list>\n      </ion-card-content>\n    </ion-card>\n\n    <ion-list>\n      <ion-item *ngFor="let attach of Idea.attachment">\n        <img src="{{attach.url}}" *ngIf="attach.file_type === \'image\'" alt="{{attach.file_name}}" width="300"/>\n        <a href="{{attach.url}}" *ngIf="attach.file_type !== \'image\'" padding>{{attach.file_name}}</a>\n      </ion-item>\n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/idea-show/idea-show.html"*/,
+            selector: 'page-idea-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea-show/idea-show.html"*/'<!--\n  Generated template for the IdeaShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>{{Idea ? Idea.uuid : \'\'}}\n    </ion-title>\n    <ion-buttons end *ngIf="Idea" >\n      <button ion-button icon-only clear (click)="tagUsers()" *ngIf="Idea.can_tag">\n        <ion-icon name="pricetag"></ion-icon>\n      </button>\n      <button ion-button icon-only clear (click)="allocateUsers()" *ngIf="Idea.Can_allocate && userTagged.length > 0">\n        <ion-icon [name]="Idea.allocated_users.length > 0 ? \'git-compare\' : \'git-network\'"></ion-icon>\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="Idea.can_comment">\n        <ion-icon name=\'chatbubbles\'></ion-icon>\n        {{Idea.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n  <div class="idea_state_header_{{Idea ? Idea.state : \'\'}}"></div>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="Idea">\n    <div *ngIf="isAllocating">\n      <tag-input \n        [(ngModel)]="Idea.allocated_users" \n        [identifyBy]="\'id\'" \n        [displayBy]="\'name\'" \n        [onlyFromAutocomplete]="true"\n        [placeholder]="\'Type User name\'"\n        [secondaryPlaceholder]="\'Search User\'"\n        [clearOnBlur]="true"\n        [maxItems]="Idea.allocation_limit"\n        (onAdd)="onAddAllocation($event)"\n        (onRemove)="onRemoveAllocation($event)"\n        [onRemoving]="onRemovingAllocation">\n        <tag-input-dropdown \n          [showDropdownIfEmpty]="true" \n          [identifyBy]="\'id\'" \n          [displayBy]="\'name\'" \n          [focusFirstElement]="true"\n          [minimumTextLength]="0"\n          [autocompleteItems]="userTagged">\n          <ng-template let-item="item" let-index="index">\n            {{ item.name }}\n          </ng-template>\n        </tag-input-dropdown>\n      </tag-input>\n      <button ion-button full (click)="submitAllocation()">{{viewAllocated.length > 0 ? \'Re-allocate\' : \'Allocate\'}}</button>\n      <hr/>\n    </div>\n    <div *ngIf="isTagging">\n      <tag-input \n        #tagsInput\n        [(ngModel)]="Idea.tagged_users"\n        [identifyBy]="\'id\'"\n        [displayBy]="\'name\'"\n        [onlyFromAutocomplete]="true"\n        [placeholder]="\'Type New User Name\'"\n        [onTextChangeDebounce]="500"\n        [secondaryPlaceholder]="\'Search User\'"\n        [clearOnBlur]="true"\n        (onAdd)="onAdd($event)"\n        (onRemove)="onRemove($event)">\n          <tag-input-dropdown \n            [showDropdownIfEmpty]="true"\n            [identifyBy]="\'id\'"\n            [focusFirstElement]="true"\n            [displayBy]="\'name\'"\n            [minimumTextLength]="1"\n            [autocompleteObservable]="getTags">\n            <ng-template let-item="item" let-index="index">\n              {{ item.name }}\n            </ng-template>\n          </tag-input-dropdown>\n      </tag-input>\n      <button ion-button full (click)="submitTags()">Submit Tags</button>\n      <hr/>\n    </div>\n    <ion-card>\n      <ion-card-header>\n        <ion-badge class="pull-right">{{Idea.state}}</ion-badge>\n        <ion-title>\n          {{Idea.title}}\n        </ion-title>\n      </ion-card-header>\n      <ion-card-content>\n        <ion-list>\n          <ion-item *ngIf=\'viewAllocated.length > 0\' text-wrap>\n            Allocated:\n            <ion-tags-input [(ngModel)]="viewAllocated" [readonly]="true"></ion-tags-input>\n            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="\'id\'" [displayBy]="\'name\'" [hideForm]="true" [removable]="false"></tag-input> -->\n          </ion-item>\n          <ion-item *ngIf=\'viewTags.length > 0\' text-wrap>\n            Tags:\n            <ion-tags-input [(ngModel)]="viewTags" [readonly]="true"></ion-tags-input>\n            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="\'id\'" [displayBy]="\'name\'" [hideForm]="true" [removable]="false"></tag-input> -->\n          </ion-item>\n          <ion-item text-wrap>\n            Details:\n            <div [innerHtml]="Idea.content"></div>\n          </ion-item>\n        </ion-list>\n      </ion-card-content>\n    </ion-card>\n\n    <ion-list>\n      <ion-item *ngFor="let attach of Idea.attachment">\n        <img src="{{attach.url}}" *ngIf="attach.file_type === \'image\'" alt="{{attach.file_name}}" width="300"/>\n        <a href="{{attach.url}}" *ngIf="attach.file_type !== \'image\'" padding>{{attach.file_name}}</a>\n      </ion-item>\n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/idea-show/idea-show.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_8__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["l" /* LoadingController */],
             __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["f" /* Events */], __WEBPACK_IMPORTED_MODULE_3__providers_data_setter_data_setter__["a" /* DataSetterProvider */], __WEBPACK_IMPORTED_MODULE_1__providers_app_global_app_global__["a" /* AppGlobalProvider */],
@@ -11283,7 +11473,7 @@ var ServiceRequestShowPage = /** @class */ (function () {
     };
     ServiceRequestShowPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
-            selector: 'page-service-request-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/service-request-show/service-request-show.html"*/'<!--\n  Generated template for the ServiceRequestShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{serviceRequest ? serviceRequest.uid : \'\'}}\n    </ion-title>\n  </ion-navbar>\n  <div class="sr_state_header_{{serviceRequest ? serviceRequest.state : \'\'}}">\n\n  </div>\n\n</ion-header>\n\n<ion-content padding>\n\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <div *ngIf="serviceRequest">\n   <ion-card>\n    <ion-card-header>\n      <ion-badge class="pull-right">{{serviceRequest.state}}</ion-badge>\n      <ion-title>\n        {{serviceRequest.category}}\n      </ion-title>\n    </ion-card-header>\n    <ion-card-content> \n      <!-- Category: {{serviceRequest.category}}<br/> -->\n     Details: {{serviceRequest.detail}}\n    </ion-card-content>\n    <div *ngIf="show_buttons">\n      <button  ion-button color="secondary" (click)="change_state(\'closed\')">Close</button>\n      <button float-right ion-button color="danger" (click)="change_state(\'reopen\')">Reopen</button>\n    </div>\n    <ion-list>\n      <ion-item *ngFor="let attach of serviceRequest.attachment">\n        <img src="{{attach.url}}" *ngIf="attach.file_type === \'image\'" alt="{{attach.file_name}}" width="300" />\n        <a href="{{attach.url}}" *ngIf="attach.file_type !== \'image\'" padding>{{attach.file_name}}</a>\n      </ion-item>\n    </ion-list>\n  </ion-card>\n\n\n  <hr>\n  </div>\n  <timeline endIcon="call" *ngIf="items">\n    <timeline-item *ngFor="let item of items">\n      <timeline-time [time]="item.time"></timeline-time>\n      <ion-icon [name]="item.icon"></ion-icon>\n      <ion-card>\n\n        <ion-card-header>\n          {{item.title}}\n        </ion-card-header>\n        <ion-card-content>\n\n          {{item.subtitle}}\n        </ion-card-content>\n        <hr>\n        <ion-card-content>\n          {{item.content}}\n        </ion-card-content>\n      </ion-card>\n    </timeline-item>\n\n  </timeline>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/service-request-show/service-request-show.html"*/,
+            selector: 'page-service-request-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/service-request-show/service-request-show.html"*/'<!--\n  Generated template for the ServiceRequestShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{serviceRequest ? serviceRequest.uid : \'\'}}\n    </ion-title>\n  </ion-navbar>\n  <div class="sr_state_header_{{serviceRequest ? serviceRequest.state : \'\'}}">\n\n  </div>\n\n</ion-header>\n\n<ion-content padding>\n\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <div *ngIf="serviceRequest">\n   <ion-card>\n    <ion-card-header>\n      <ion-badge class="pull-right">{{serviceRequest.state}}</ion-badge>\n      <ion-title>\n        {{serviceRequest.category}}\n      </ion-title>\n    </ion-card-header>\n    <ion-card-content> \n      <!-- Category: {{serviceRequest.category}}<br/> -->\n     Details: {{serviceRequest.detail}}\n    </ion-card-content>\n    <div *ngIf="show_buttons">\n      <button  ion-button color="secondary" (click)="change_state(\'closed\')">Close</button>\n      <button float-right ion-button color="danger" (click)="change_state(\'reopen\')">Reopen</button>\n    </div>\n    <ion-list>\n      <ion-item *ngFor="let attach of serviceRequest.attachment">\n        <img src="{{attach.url}}" *ngIf="attach.file_type === \'image\'" alt="{{attach.file_name}}" width="300" />\n        <a href="{{attach.url}}" *ngIf="attach.file_type !== \'image\'" padding>{{attach.file_name}}</a>\n      </ion-item>\n    </ion-list>\n  </ion-card>\n\n\n  <hr>\n  </div>\n  <timeline endIcon="call" *ngIf="items">\n    <timeline-item *ngFor="let item of items">\n      <timeline-time [time]="item.time"></timeline-time>\n      <ion-icon [name]="item.icon"></ion-icon>\n      <ion-card>\n\n        <ion-card-header>\n          {{item.title}}\n        </ion-card-header>\n        <ion-card-content>\n\n          {{item.subtitle}}\n        </ion-card-content>\n        <hr>\n        <ion-card-content>\n          {{item.content}}\n        </ion-card-content>\n      </ion-card>\n    </timeline-item>\n\n  </timeline>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/service-request-show/service-request-show.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_5__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */], __WEBPACK_IMPORTED_MODULE_6__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
             __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["b" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular_components_toast_toast_controller__["a" /* ToastController */],
@@ -11305,16 +11495,16 @@ var ServiceRequestShowPage = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LeaveDataProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_data_ts__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__(644);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__(646);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of__ = __webpack_require__(645);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of__ = __webpack_require__(647);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__ = __webpack_require__(646);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__ = __webpack_require__(648);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ionic_angular_components_loading_loading_controller__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash__ = __webpack_require__(55);
@@ -11765,7 +11955,7 @@ var LeaveDataProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__access_card_request_form_access_card_request_form__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__access_card_request_form_access_card_request_form__ = __webpack_require__(143);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11864,7 +12054,7 @@ var AccessCardRequestPage = /** @class */ (function () {
     };
     AccessCardRequestPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-access-card-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/access-card-request/access-card-request.html"*/'<!--\n  Generated template for the AccessCardRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>ID/Access Card Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshAccessCardRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let accessCardRequest of accessCardRequests | search : {term:queryText,fields:[\'uid\',\'justification\']}">\n      <div class="{{\'access_card_state_sidebar_\'+accessCardRequest.state}}">\n        <ion-card-header>\n          {{accessCardRequest.uid}}\n          <span class="pull-right sr-age">{{accessCardRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>{{accessCardRequest.justification}}</p>\n        </ion-card-content>\n\n        <ion-row *ngIf="accessCardRequest.approved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{accessCardRequest.approver}}</strong></p>\n              <p>Approved At: <strong>{{accessCardRequest.approved_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row *ngIf="accessCardRequest.closed">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{accessCardRequest.closer}}</strong></p>\n              <p>Closed At: <strong>{{accessCardRequest.closed_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{accessCardRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToAccessCardRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/access-card-request/access-card-request.html"*/,
+            selector: 'page-access-card-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/access-card-request/access-card-request.html"*/'<!--\n  Generated template for the AccessCardRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>ID/Access Card Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshAccessCardRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let accessCardRequest of accessCardRequests | search : {term:queryText,fields:[\'uid\',\'justification\']}">\n      <div class="{{\'access_card_state_sidebar_\'+accessCardRequest.state}}">\n        <ion-card-header>\n          {{accessCardRequest.uid}}\n          <span class="pull-right sr-age">{{accessCardRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>{{accessCardRequest.justification}}</p>\n        </ion-card-content>\n\n        <ion-row *ngIf="accessCardRequest.approved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{accessCardRequest.approver}}</strong></p>\n              <p>Approved At: <strong>{{accessCardRequest.approved_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row *ngIf="accessCardRequest.closed">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{accessCardRequest.closer}}</strong></p>\n              <p>Closed At: <strong>{{accessCardRequest.closed_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{accessCardRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToAccessCardRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/access-card-request/access-card-request.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -12035,7 +12225,7 @@ var CommentsPage = /** @class */ (function () {
     ], CommentsPage.prototype, "messageInput", void 0);
     CommentsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-comments',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/comments/comments.html"*/'<!--\n  Generated template for the CommentsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="dismiss()">\n        <ion-icon name="close-circle"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>Comments ({{rootItem.comments.length}})</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n  <div class="message-wrap">\n\n    <div *ngFor="let comment of rootItem.comments" class="message" [class.left]="comment.comment_by !== user.id" [class.right]="comment.comment_by === user.id">\n      <img class="user-img" [src]="comment.profile_pic ? comment.profile_pic : \'https://intranetstaging.herokuapp.com/assets/user_pic_missing.png\'" alt="" src="">\n      <ion-spinner name="dots" *ngIf="comment.status === \'pending\'"></ion-spinner>\n      <label *ngIf="comment.status === \'failed\'" class=\'status liked\'>Failed</label>\n      <div class="msg-detail">\n        <!-- <div class="msg-info">\n          <p>{{comment.user}}</p>\n        </div> -->\n        <div class="msg-content">\n          <span class="triangle"></span>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right\':\'msg-info-left\'">\n            <p>{{comment.user}}</p>\n          </div>\n          <p class="line-breaker " [innerHTML]=\'comment.content\'></p>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right-time\':\'msg-info-left-time\'">\n            <p>{{comment.comment_time}}</p>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n\n  </div>\n\n</ion-content>\n\n<ion-footer no-border [style.height]="\'55px\'">\n  <div class="input-wrap">\n    <!-- <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">\n      <ion-icon name="md-happy"></ion-icon>\n    </button> -->\n    <ion-textarea name="comment_input" #comment_input placeholder="Type your comment" [(ngModel)]="editorComment" (focusin)="onFocus()"></ion-textarea>\n    <button ion-button clear icon-only item-right (click)="sendComment()">\n      <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n    </button>\n  </div>\n  <!-- <emoji-picker [(ngModel)]="editorMsg"></emoji-picker> -->\n</ion-footer>\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/comments/comments.html"*/,
+            selector: 'page-comments',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/comments/comments.html"*/'<!--\n  Generated template for the CommentsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="dismiss()">\n        <ion-icon name="close-circle"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>Comments ({{rootItem.comments.length}})</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n  <div class="message-wrap">\n\n    <div *ngFor="let comment of rootItem.comments" class="message" [class.left]="comment.comment_by !== user.id" [class.right]="comment.comment_by === user.id">\n      <img class="user-img" [src]="comment.profile_pic ? comment.profile_pic : \'https://intranetstaging.herokuapp.com/assets/user_pic_missing.png\'" alt="" src="">\n      <ion-spinner name="dots" *ngIf="comment.status === \'pending\'"></ion-spinner>\n      <label *ngIf="comment.status === \'failed\'" class=\'status liked\'>Failed</label>\n      <div class="msg-detail">\n        <!-- <div class="msg-info">\n          <p>{{comment.user}}</p>\n        </div> -->\n        <div class="msg-content">\n          <span class="triangle"></span>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right\':\'msg-info-left\'">\n            <p>{{comment.user}}</p>\n          </div>\n          <p class="line-breaker " [innerHTML]=\'comment.content\'></p>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right-time\':\'msg-info-left-time\'">\n            <p>{{comment.comment_time}}</p>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n\n  </div>\n\n</ion-content>\n\n<ion-footer no-border [style.height]="\'55px\'">\n  <div class="input-wrap">\n    <!-- <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">\n      <ion-icon name="md-happy"></ion-icon>\n    </button> -->\n    <ion-textarea name="comment_input" #comment_input placeholder="Type your comment" [(ngModel)]="editorComment" (focusin)="onFocus()"></ion-textarea>\n    <button ion-button clear icon-only item-right (click)="sendComment()">\n      <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n    </button>\n  </div>\n  <!-- <emoji-picker [(ngModel)]="editorMsg"></emoji-picker> -->\n</ion-footer>\n\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/comments/comments.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["q" /* NavParams */],
@@ -12058,8 +12248,8 @@ var CommentsPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ComponentsModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeline_timeline__ = __webpack_require__(537);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__comment_comment__ = __webpack_require__(538);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeline_timeline__ = __webpack_require__(539);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__comment_comment__ = __webpack_require__(540);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12112,8 +12302,8 @@ var ComponentsModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_transfer__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__ = __webpack_require__(381);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_crop__ = __webpack_require__(382);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__ = __webpack_require__(382);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_crop__ = __webpack_require__(383);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_camera__ = __webpack_require__(68);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -12383,7 +12573,7 @@ var ProfilePage = /** @class */ (function () {
     };
     ProfilePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_5__angular_core__["m" /* Component */])({
-            selector: 'page-profile',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/profile/profile.html"*/'<!--\n  Generated template for the ProfilePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>PROFILE</ion-title>\n\n    <ion-buttons end *ngIf="showEditBtn">\n      <button ion-button icon-only clear (click)="onSubmit(!edit)">\n        <ion-icon [name]="edit ? \'checkmark\' : \'create\'"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <div *ngIf="profile && !edit">\n    <ion-card class="blurred-title-card">\n      <!-- <div class="card-image" [style.background-image]="\'url(\' + profile.profile + \')\'"></div> -->\n\n      <div class="card-title-background">\n        <span [style.background-image]="\'url(\' + profile.profile + \')\'"></span>\n      </div>\n      <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n        <ion-avatar>\n          <img [src]="profile.profile" style="width:8em;height:8em;">\n        </ion-avatar>\n      </div>\n    </ion-card>\n    <ion-card text-center>\n      <ion-card-content>\n        <p *ngIf="profile.name" style="font-size: 2rem;">\n          <b>{{profile.name ? profile.name : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.designation">\n          <b>{{profile.designation ? profile.designation : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.department">\n          <b>{{profile.department ? profile.department : \'\'}}</b>\n        </p>\n        <hr style="width: 50%"/>\n        <p *ngIf="profile.location">\n          <ion-icon name="pin"></ion-icon>\n          {{profile.location ? profile.location : \'\'}}\n        </p>\n        <p *ngIf="profile.mobile">\n          <ion-icon name="phone-portrait"></ion-icon>\n          {{profile.mobile ? profile.mobile:\'\'}}\n        </p>\n        <p *ngIf="profile.extension">\n          <ion-icon name="call"></ion-icon>\n          {{profile.extension ? profile.extension : \'\'}}\n        </p>\n      </ion-card-content>\n    </ion-card>\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n           About Me\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.about_me" >\n        {{profile.about_me}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.about_me">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Experience\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.experience" >\n        {{profile.experience}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.experience">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Skill Set\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.skill_set.length > 0" >\n        <ion-tags-input\n          [(ngModel)]="profile.skill_set"\n          [mode]="\'ios\'"\n          [readonly]="true">\n        </ion-tags-input>\n      </ion-card-content>\n      <ion-card-content *ngIf="profile.skill_set.length === 0">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Learning and Development\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.learning_and_development" >\n        {{profile.learning_and_development}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.learning_and_development" >\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n  </div>\n\n  <div *ngIf="edit_profile && edit">\n      <!-- <div class="item item-block item-md" style="justify-content: center;">\n        <ion-avatar item-start>\n          <img [src]="edit_profile.profile" style="width:120px;height:120px;">\n        </ion-avatar>\n      </div> -->\n      <ion-card class="blurred-title-card" (click)="editImage()">\n        <div class="card-title-background">\n          <span [style.background-image]="\'url(\' + edit_profile.profile + \')\'"></span>\n        </div>\n        <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n          <ion-avatar>\n            <img [src]="edit_profile.profile" style="width:8em;height:8em;">\n          </ion-avatar>\n          <ion-icon name="create"></ion-icon>\n        </div>\n      </ion-card>\n      <ion-list padding>\n        <ion-item>\n          <ion-label for="name" stacked>Name</ion-label>\n          <ion-input type="text" name="name" [(ngModel)]="edit_profile.name" autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="department" stacked>Department</ion-label>\n          <ion-input type="text" name="department" [(ngModel)]="edit_profile.department"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="designation" stacked>Designation</ion-label>\n          <ion-input type="text" name="designation" [(ngModel)]="edit_profile.designation"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="mobile" stacked>Mobile</ion-label>\n          <ion-input type="tel" name="mobile" [(ngModel)]="edit_profile.mobile"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="extension" stacked>Extension Number</ion-label>\n          <ion-input type="tel" name="extension" [(ngModel)]="edit_profile.extension"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="location" stacked>Location</ion-label>\n          <ion-input type="text" name="location" [(ngModel)]="edit_profile.location"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="about_me" stacked>About Me</ion-label>\n          <ion-textarea autoresize name="about_me" [(ngModel)]="edit_profile.about_me"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-label for="experience" stacked>Experience</ion-label>\n          <ion-textarea autoresize name="experience" [(ngModel)]="edit_profile.experience"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-label class="item-md" style="color: #999;" stacked>Skill Set</ion-label>\n\n        <ion-tags-input style="margin-left: 16px;"\n            [(ngModel)]="edit_profile.skill_set"\n            [once]="\'true\'"\n            [mode]="\'ios\'"\n            [placeholder]="\'Add Skills\'"\n            [canBackspaceRemove]="true"\n            [canEnterAdd]="true"\n            [readonly]="false">\n          </ion-tags-input>\n        <ion-item>\n          <ion-label for="learning_and_development" stacked>Learning and Development</ion-label>\n          <ion-textarea autoresize name="learning_and_development" [(ngModel)]="edit_profile.learning_and_development"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-buttons text-center>\n            <button ion-button block round color="primary" (click)="onSubmit(!edit)">{{edit? "Update" : "Edit"}}</button>\n          </ion-buttons>\n        </ion-item>\n      </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/profile/profile.html"*/,
+            selector: 'page-profile',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/profile/profile.html"*/'<!--\n  Generated template for the ProfilePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>PROFILE</ion-title>\n\n    <ion-buttons end *ngIf="showEditBtn">\n      <button ion-button icon-only clear (click)="onSubmit(!edit)">\n        <ion-icon [name]="edit ? \'checkmark\' : \'create\'"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <div *ngIf="profile && !edit">\n    <ion-card class="blurred-title-card">\n      <!-- <div class="card-image" [style.background-image]="\'url(\' + profile.profile + \')\'"></div> -->\n\n      <div class="card-title-background">\n        <span [style.background-image]="\'url(\' + profile.profile + \')\'"></span>\n      </div>\n      <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n        <ion-avatar>\n          <img [src]="profile.profile" style="width:8em;height:8em;">\n        </ion-avatar>\n      </div>\n    </ion-card>\n    <ion-card text-center>\n      <ion-card-content>\n        <p *ngIf="profile.name" style="font-size: 2rem;">\n          <b>{{profile.name ? profile.name : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.designation">\n          <b>{{profile.designation ? profile.designation : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.department">\n          <b>{{profile.department ? profile.department : \'\'}}</b>\n        </p>\n        <hr style="width: 50%"/>\n        <p *ngIf="profile.location">\n          <ion-icon name="pin"></ion-icon>\n          {{profile.location ? profile.location : \'\'}}\n        </p>\n        <p *ngIf="profile.mobile">\n          <ion-icon name="phone-portrait"></ion-icon>\n          {{profile.mobile ? profile.mobile:\'\'}}\n        </p>\n        <p *ngIf="profile.extension">\n          <ion-icon name="call"></ion-icon>\n          {{profile.extension ? profile.extension : \'\'}}\n        </p>\n      </ion-card-content>\n    </ion-card>\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n           About Me\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.about_me" >\n        {{profile.about_me}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.about_me">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Experience\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.experience" >\n        {{profile.experience}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.experience">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Skill Set\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.skill_set.length > 0" >\n        <ion-tags-input\n          [(ngModel)]="profile.skill_set"\n          [mode]="\'ios\'"\n          [readonly]="true">\n        </ion-tags-input>\n      </ion-card-content>\n      <ion-card-content *ngIf="profile.skill_set.length === 0">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Learning and Development\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.learning_and_development" >\n        {{profile.learning_and_development}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.learning_and_development" >\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n  </div>\n\n  <div *ngIf="edit_profile && edit">\n      <!-- <div class="item item-block item-md" style="justify-content: center;">\n        <ion-avatar item-start>\n          <img [src]="edit_profile.profile" style="width:120px;height:120px;">\n        </ion-avatar>\n      </div> -->\n      <ion-card class="blurred-title-card" (click)="editImage()">\n        <div class="card-title-background">\n          <span [style.background-image]="\'url(\' + edit_profile.profile + \')\'"></span>\n        </div>\n        <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n          <ion-avatar>\n            <img [src]="edit_profile.profile" style="width:8em;height:8em;">\n          </ion-avatar>\n          <ion-icon name="create"></ion-icon>\n        </div>\n      </ion-card>\n      <ion-list padding>\n        <ion-item>\n          <ion-label for="name" stacked>Name</ion-label>\n          <ion-input type="text" name="name" [(ngModel)]="edit_profile.name" autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="department" stacked>Department</ion-label>\n          <ion-input type="text" name="department" [(ngModel)]="edit_profile.department"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="designation" stacked>Designation</ion-label>\n          <ion-input type="text" name="designation" [(ngModel)]="edit_profile.designation"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="mobile" stacked>Mobile</ion-label>\n          <ion-input type="tel" name="mobile" [(ngModel)]="edit_profile.mobile"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="extension" stacked>Extension Number</ion-label>\n          <ion-input type="tel" name="extension" [(ngModel)]="edit_profile.extension"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="location" stacked>Location</ion-label>\n          <ion-input type="text" name="location" [(ngModel)]="edit_profile.location"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="about_me" stacked>About Me</ion-label>\n          <ion-textarea autoresize name="about_me" [(ngModel)]="edit_profile.about_me"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-label for="experience" stacked>Experience</ion-label>\n          <ion-textarea autoresize name="experience" [(ngModel)]="edit_profile.experience"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-label class="item-md" style="color: #999;" stacked>Skill Set</ion-label>\n\n        <ion-tags-input style="margin-left: 16px;"\n            [(ngModel)]="edit_profile.skill_set"\n            [once]="\'true\'"\n            [mode]="\'ios\'"\n            [placeholder]="\'Add Skills\'"\n            [canBackspaceRemove]="true"\n            [canEnterAdd]="true"\n            [readonly]="false">\n          </ion-tags-input>\n        <ion-item>\n          <ion-label for="learning_and_development" stacked>Learning and Development</ion-label>\n          <ion-textarea autoresize name="learning_and_development" [(ngModel)]="edit_profile.learning_and_development"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-buttons text-center>\n            <button ion-button block round color="primary" (click)="onSubmit(!edit)">{{edit? "Update" : "Edit"}}</button>\n          </ion-buttons>\n        </ion-item>\n      </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/profile/profile.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["q" /* NavParams */],
@@ -12413,7 +12603,7 @@ var ProfilePage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DataGetterServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_loading_loading_controller__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_data_ts__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_global_app_global__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(2);
@@ -12603,117 +12793,6 @@ var DataGetterServiceProvider = /** @class */ (function () {
 /***/ }),
 
 /***/ 90:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GuestLunchPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__guest_lunch_form_guest_lunch_form__ = __webpack_require__(150);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the GuestLunchPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var GuestLunchPage = /** @class */ (function () {
-    function GuestLunchPage(navCtrl, navParams, dataGetterService, loadingCtrl, events, toastCtrl, appGlobal) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.dataGetterService = dataGetterService;
-        this.loadingCtrl = loadingCtrl;
-        this.events = events;
-        this.toastCtrl = toastCtrl;
-        this.appGlobal = appGlobal;
-        this.guestLunches = [];
-        this.queryText = '';
-        this.events.subscribe('reload:guest-lunch', function (isNotification, id) {
-            _this.refreshGuestLunchList(null);
-        });
-    }
-    GuestLunchPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad GuestLunchPage');
-    };
-    GuestLunchPage.prototype.ionViewDidEnter = function () {
-        this.loadGuestLunches(null);
-    };
-    GuestLunchPage.prototype.refreshGuestLunchList = function (reference) {
-        this.loadGuestLunches(reference);
-    };
-    GuestLunchPage.prototype.loadGuestLunches = function (reference) {
-        var _this = this;
-        var loading = this.loadingCtrl.create({
-            content: 'Please wait...'
-        });
-        if (reference === null) {
-            loading.present();
-        }
-        this.dataGetterService.getAllGuestLunches().subscribe(function (data) {
-            console.log("Guest Lunch Loaded", data);
-            if (data.success) {
-                _this.guestLunches = data.guest_lunch_requests;
-            }
-            else {
-                _this.guestLunches = [];
-            }
-            loading.dismiss();
-            if (reference != null) {
-                reference.complete();
-            }
-        }, function (error) {
-            console.log(error);
-            _this.guestLunches = [];
-            var toast = _this.toastCtrl.create({
-                message: _this.appGlobal.ServerError,
-                duration: 3000
-            });
-            toast.present();
-            loading.dismiss();
-            if (reference != null) {
-                reference.complete();
-            }
-        });
-    };
-    GuestLunchPage.prototype.goToGuestLunchForm = function () {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__guest_lunch_form_guest_lunch_form__["a" /* GuestLunchFormPage */]);
-    };
-    GuestLunchPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-guest-lunch',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-lunch/guest-lunch.html"*/'<!--\n  Generated template for the GuestLunchPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Guest Lunch Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshGuestLunchList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let guestLunch of guestLunches | search : {term:queryText,fields:[\'uid\',\'date_of_lunch\',\'no_of_people\']}">\n      <div class="{{\'guest_lunch_state_sidebar_\'+guestLunch.state}}">\n        <ion-card-header>\n          {{guestLunch.uid}}\n          <span class="pull-right sr-age">{{guestLunch.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Date of Lunch: <strong>{{guestLunch.date_of_lunch}}</strong></p>\n          <p>No. of Guests: <strong>{{guestLunch.no_of_people}}</strong></p>\n        </ion-card-content>\n\n        <ion-row *ngIf="guestLunch.accepted">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{guestLunch.accepted_by}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{guestLunch.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToGuestLunchForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/guest-lunch/guest-lunch.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["s" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__["a" /* AppGlobalProvider */]])
-    ], GuestLunchPage);
-    return GuestLunchPage;
-}());
-
-//# sourceMappingURL=guest-lunch.js.map
-
-/***/ }),
-
-/***/ 95:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12987,7 +13066,7 @@ var GrievanceShowPage = /** @class */ (function () {
     };
     GrievanceShowPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_6__angular_core__["m" /* Component */])({
-            selector: 'page-grievance-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance-show/grievance-show.html"*/'<!--\n  Generated template for the GrievanceShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{Grievance ? Grievance.uuid : \'\'}}\n    </ion-title>\n    <ion-buttons end *ngIf="Grievance" >\n      <button ion-button icon-only clear (click)="allocateUsers()" *ngIf="Grievance.Can_allocate">\n        <ion-icon [name]="Grievance.allocated_users.length > 0 ? \'git-compare\' : \'git-network\'"></ion-icon>\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="Grievance.can_comment">\n        <ion-icon name=\'chatbubbles\'></ion-icon>\n        {{Grievance.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n  <div class="gr_state_header_{{Grievance ? Grievance.state : \'\'}}"></div>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="Grievance">\n    <div *ngIf="isAllocating">\n      <tag-input \n        [(ngModel)]="Grievance.allocated_users" \n        [identifyBy]="\'id\'" \n        [displayBy]="\'name\'" \n        [onlyFromAutocomplete]="true" \n        [placeholder]="\'Type User name\'"\n        [secondaryPlaceholder]="\'Search User\'" \n        [clearOnBlur]="true" \n        [onTextChangeDebounce]="500"\n        [maxItems]="Grievance.allocation_limit" \n        (onAdd)="onAddAllocation($event)"\n        (onRemove)="onRemoveAllocation($event)"\n        [onRemoving]="onRemovingAllocation">\n        <tag-input-dropdown \n          [showDropdownIfEmpty]="true" \n          [identifyBy]="\'id\'" \n          [displayBy]="\'name\'" \n          [focusFirstElement]="true"\n          [minimumTextLength]="1"\n          [autocompleteObservable]="getAllocationUsers">\n          <ng-template let-item="item" let-index="index">\n            {{ item.name }}\n          </ng-template>\n        </tag-input-dropdown>\n      </tag-input>\n      <button ion-button full (click)="submitAllocation()">{{viewAllocated.length > 0 ? \'Re-allocate\' : \'Allocate\'}}</button>\n      <hr/>\n    </div>\n    <ion-card>\n      <ion-card-header>\n        <ion-badge class="pull-right">{{Grievance.state}}</ion-badge>\n        <ion-title>\n        {{Grievance.title}}\n        </ion-title>\n      </ion-card-header>\n      <ion-card-content>\n        <ion-list>\n          <ion-item text-wrap>\n            Category: {{Grievance.grievance_category}}\n          </ion-item>\n          <ion-item text-wrap>\n            Type: {{Grievance.grievance_type}}\n          </ion-item>\n          <ion-item *ngIf=\'viewAllocated.length > 0\' text-wrap>\n            Allocated:\n            <ion-tags-input [(ngModel)]="viewAllocated" [readonly]="true"></ion-tags-input>\n            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="\'id\'" [displayBy]="\'name\'" [hideForm]="true" [removable]="false"></tag-input> -->\n          </ion-item>\n          <ion-item text-wrap>\n            Details:\n            <div [innerHtml]="Grievance.content">\n              <!--{{idea.content}}-->\n            </div>\n          </ion-item>\n        </ion-list>\n      </ion-card-content>\n\n    </ion-card>\n\n    <ion-list>\n      <ion-item *ngFor="let attach of Grievance.attachment">\n        <img src="{{attach.url}}" *ngIf="attach.file_type === \'image\'" alt="{{attach.file_name}}" width="300" />\n        <a href="{{attach.url}}" *ngIf="attach.file_type !== \'image\'" padding>{{attach.file_name}}</a>\n      </ion-item>\n    </ion-list>\n\n    <hr>\n  </div>\n  <timeline endIcon="call" *ngIf="items" >\n    <timeline-item *ngFor="let item of items">\n      <timeline-time [time]="item.time"></timeline-time>\n      <ion-icon [name]="item.icon"></ion-icon>\n      <ion-card>\n\n        <ion-card-header>\n          {{item.title}}\n        </ion-card-header>\n        <ion-card-content>\n          {{item.subtitle}}\n        </ion-card-content>\n        <hr>\n        <ion-card-content>\n          {{item.content}}\n        </ion-card-content>\n      </ion-card>\n    </timeline-item>\n\n  </timeline>\n\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/grievance-show/grievance-show.html"*/,
+            selector: 'page-grievance-show',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance-show/grievance-show.html"*/'<!--\n  Generated template for the GrievanceShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{Grievance ? Grievance.uuid : \'\'}}\n    </ion-title>\n    <ion-buttons end *ngIf="Grievance" >\n      <button ion-button icon-only clear (click)="allocateUsers()" *ngIf="Grievance.Can_allocate">\n        <ion-icon [name]="Grievance.allocated_users.length > 0 ? \'git-compare\' : \'git-network\'"></ion-icon>\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="Grievance.can_comment">\n        <ion-icon name=\'chatbubbles\'></ion-icon>\n        {{Grievance.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n  <div class="gr_state_header_{{Grievance ? Grievance.state : \'\'}}"></div>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="Grievance">\n    <div *ngIf="isAllocating">\n      <tag-input \n        [(ngModel)]="Grievance.allocated_users" \n        [identifyBy]="\'id\'" \n        [displayBy]="\'name\'" \n        [onlyFromAutocomplete]="true" \n        [placeholder]="\'Type User name\'"\n        [secondaryPlaceholder]="\'Search User\'" \n        [clearOnBlur]="true" \n        [onTextChangeDebounce]="500"\n        [maxItems]="Grievance.allocation_limit" \n        (onAdd)="onAddAllocation($event)"\n        (onRemove)="onRemoveAllocation($event)"\n        [onRemoving]="onRemovingAllocation">\n        <tag-input-dropdown \n          [showDropdownIfEmpty]="true" \n          [identifyBy]="\'id\'" \n          [displayBy]="\'name\'" \n          [focusFirstElement]="true"\n          [minimumTextLength]="1"\n          [autocompleteObservable]="getAllocationUsers">\n          <ng-template let-item="item" let-index="index">\n            {{ item.name }}\n          </ng-template>\n        </tag-input-dropdown>\n      </tag-input>\n      <button ion-button full (click)="submitAllocation()">{{viewAllocated.length > 0 ? \'Re-allocate\' : \'Allocate\'}}</button>\n      <hr/>\n    </div>\n    <ion-card>\n      <ion-card-header>\n        <ion-badge class="pull-right">{{Grievance.state}}</ion-badge>\n        <ion-title>\n        {{Grievance.title}}\n        </ion-title>\n      </ion-card-header>\n      <ion-card-content>\n        <ion-list>\n          <ion-item text-wrap>\n            Category: {{Grievance.grievance_category}}\n          </ion-item>\n          <ion-item text-wrap>\n            Type: {{Grievance.grievance_type}}\n          </ion-item>\n          <ion-item *ngIf=\'viewAllocated.length > 0\' text-wrap>\n            Allocated:\n            <ion-tags-input [(ngModel)]="viewAllocated" [readonly]="true"></ion-tags-input>\n            <!-- <tag-input [(ngModel)]="Idea.tagged_users" [identifyBy]="\'id\'" [displayBy]="\'name\'" [hideForm]="true" [removable]="false"></tag-input> -->\n          </ion-item>\n          <ion-item text-wrap>\n            Details:\n            <div [innerHtml]="Grievance.content">\n              <!--{{idea.content}}-->\n            </div>\n          </ion-item>\n        </ion-list>\n      </ion-card-content>\n\n    </ion-card>\n\n    <ion-list>\n      <ion-item *ngFor="let attach of Grievance.attachment">\n        <img src="{{attach.url}}" *ngIf="attach.file_type === \'image\'" alt="{{attach.file_name}}" width="300" />\n        <a href="{{attach.url}}" *ngIf="attach.file_type !== \'image\'" padding>{{attach.file_name}}</a>\n      </ion-item>\n    </ion-list>\n\n    <hr>\n  </div>\n  <timeline endIcon="call" *ngIf="items" >\n    <timeline-item *ngFor="let item of items">\n      <timeline-time [time]="item.time"></timeline-time>\n      <ion-icon [name]="item.icon"></ion-icon>\n      <ion-card>\n\n        <ion-card-header>\n          {{item.title}}\n        </ion-card-header>\n        <ion-card-content>\n          {{item.subtitle}}\n        </ion-card-content>\n        <hr>\n        <ion-card-content>\n          {{item.content}}\n        </ion-card-content>\n      </ion-card>\n    </timeline-item>\n\n  </timeline>\n\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/grievance-show/grievance-show.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7_ionic_angular__["p" /* NavController */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["q" /* NavParams */], __WEBPACK_IMPORTED_MODULE_8__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["l" /* LoadingController */],
             __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["f" /* Events */], __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
@@ -13003,7 +13082,118 @@ var GrievanceShowPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 97:
+/***/ 96:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GuestLunchPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__guest_lunch_form_guest_lunch_form__ = __webpack_require__(155);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the GuestLunchPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var GuestLunchPage = /** @class */ (function () {
+    function GuestLunchPage(navCtrl, navParams, dataGetterService, loadingCtrl, events, toastCtrl, appGlobal) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.dataGetterService = dataGetterService;
+        this.loadingCtrl = loadingCtrl;
+        this.events = events;
+        this.toastCtrl = toastCtrl;
+        this.appGlobal = appGlobal;
+        this.guestLunches = [];
+        this.queryText = '';
+        this.events.subscribe('reload:guest-lunch', function (isNotification, id) {
+            _this.refreshGuestLunchList(null);
+        });
+    }
+    GuestLunchPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad GuestLunchPage');
+    };
+    GuestLunchPage.prototype.ionViewDidEnter = function () {
+        this.loadGuestLunches(null);
+    };
+    GuestLunchPage.prototype.refreshGuestLunchList = function (reference) {
+        this.loadGuestLunches(reference);
+    };
+    GuestLunchPage.prototype.loadGuestLunches = function (reference) {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        if (reference === null) {
+            loading.present();
+        }
+        this.dataGetterService.getAllGuestLunches().subscribe(function (data) {
+            console.log("Guest Lunch Loaded", data);
+            if (data.success) {
+                _this.guestLunches = data.guest_lunch_requests;
+            }
+            else {
+                _this.guestLunches = [];
+            }
+            loading.dismiss();
+            if (reference != null) {
+                reference.complete();
+            }
+        }, function (error) {
+            console.log(error);
+            _this.guestLunches = [];
+            var toast = _this.toastCtrl.create({
+                message: _this.appGlobal.ServerError,
+                duration: 3000
+            });
+            toast.present();
+            loading.dismiss();
+            if (reference != null) {
+                reference.complete();
+            }
+        });
+    };
+    GuestLunchPage.prototype.goToGuestLunchForm = function () {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__guest_lunch_form_guest_lunch_form__["a" /* GuestLunchFormPage */]);
+    };
+    GuestLunchPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-guest-lunch',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-lunch/guest-lunch.html"*/'<!--\n  Generated template for the GuestLunchPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Guest Lunch Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshGuestLunchList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let guestLunch of guestLunches | search : {term:queryText,fields:[\'uid\',\'date_of_lunch\',\'no_of_people\']}">\n      <div class="{{\'guest_lunch_state_sidebar_\'+guestLunch.state}}">\n        <ion-card-header>\n          {{guestLunch.uid}}\n          <span class="pull-right sr-age">{{guestLunch.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Date of Lunch: <strong>{{guestLunch.date_of_lunch}}</strong></p>\n          <p>No. of Guests: <strong>{{guestLunch.no_of_people}}</strong></p>\n        </ion-card-content>\n\n        <ion-row *ngIf="guestLunch.accepted">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{guestLunch.accepted_by}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{guestLunch.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToGuestLunchForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/guest-lunch/guest-lunch.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["s" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__["a" /* AppGlobalProvider */]])
+    ], GuestLunchPage);
+    return GuestLunchPage;
+}());
+
+//# sourceMappingURL=guest-lunch.js.map
+
+/***/ }),
+
+/***/ 98:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13012,7 +13202,7 @@ var GrievanceShowPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__visiting_card_form_visiting_card_form__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__visiting_card_form_visiting_card_form__ = __webpack_require__(160);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13108,7 +13298,7 @@ var VisitingCardPage = /** @class */ (function () {
     };
     VisitingCardPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-visiting-card',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/visiting-card/visiting-card.html"*/'<!--\n  Generated template for the VisitingCardPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Visiting Card Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshVisitingCardList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let visitingCard of visitingCards | search : {term:queryText,fields:[\'uid\',\'name\',\'mobile_no\', \'landline\']}">\n      <div class="{{\'visiting_card_state_sidebar_\'+visitingCard.state}}">\n        <ion-card-header>\n          {{visitingCard.uid}}\n          <span class="pull-right sr-age">{{visitingCard.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <h1>{{visitingCard.name}}</h1>\n          <h2>{{visitingCard.designation}}</h2>\n          <h2>{{visitingCard.company_name}}</h2>\n          <hr/>\n          <p>\n            <ion-icon name="pin"></ion-icon>&nbsp;{{visitingCard.company_address}}\n          </p>\n          <p>\n            <ion-icon name="mail"></ion-icon>&nbsp;{{visitingCard.email}}\n          </p>\n          <p>\n            <ion-icon name="phone-portrait"></ion-icon>&nbsp;{{visitingCard.mobile_no}}\n          </p>\n          <p>\n            <ion-icon name="call"></ion-icon>&nbsp;{{visitingCard.landline}}\n          </p>\n        </ion-card-content>\n\n        <ion-row *ngIf="visitingCard.approved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{visitingCard.approved_by}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{visitingCard.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToVisitingCardForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/visiting-card/visiting-card.html"*/,
+            selector: 'page-visiting-card',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/visiting-card/visiting-card.html"*/'<!--\n  Generated template for the VisitingCardPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Visiting Card Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshVisitingCardList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let visitingCard of visitingCards | search : {term:queryText,fields:[\'uid\',\'name\',\'mobile_no\', \'landline\']}">\n      <div class="{{\'visiting_card_state_sidebar_\'+visitingCard.state}}">\n        <ion-card-header>\n          {{visitingCard.uid}}\n          <span class="pull-right sr-age">{{visitingCard.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <h1>{{visitingCard.name}}</h1>\n          <h2>{{visitingCard.designation}}</h2>\n          <h2>{{visitingCard.company_name}}</h2>\n          <hr/>\n          <p>\n            <ion-icon name="pin"></ion-icon>&nbsp;{{visitingCard.company_address}}\n          </p>\n          <p>\n            <ion-icon name="mail"></ion-icon>&nbsp;{{visitingCard.email}}\n          </p>\n          <p>\n            <ion-icon name="phone-portrait"></ion-icon>&nbsp;{{visitingCard.mobile_no}}\n          </p>\n          <p>\n            <ion-icon name="call"></ion-icon>&nbsp;{{visitingCard.landline}}\n          </p>\n        </ion-card-content>\n\n        <ion-row *ngIf="visitingCard.approved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Approved By: <strong>{{visitingCard.approved_by}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{visitingCard.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToVisitingCardForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/visiting-card/visiting-card.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
@@ -13125,7 +13315,7 @@ var VisitingCardPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 98:
+/***/ 99:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13135,7 +13325,7 @@ var VisitingCardPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__maintenance_request_form_maintenance_request_form__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__maintenance_request_form_maintenance_request_form__ = __webpack_require__(161);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13231,7 +13421,7 @@ var MaintenanceRequestPage = /** @class */ (function () {
     };
     MaintenanceRequestPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-maintenance-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/maintenance-request/maintenance-request.html"*/'<!--\n  Generated template for the MaintenanceRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Beneficialy</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshMaintenanceRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:[\'uid\',\'asset\',\'detail\']}"  (click)="EditUserProfile(maintenanceRequest.id)" [hidden]="maintenanceRequests.hide">\n      <div class="{{\'maintenance_request_state_sidebar_\'+maintenanceRequest.state}}">\n        <ion-card-header >\n          {{maintenanceRequest.code}} \n          <span class="pull-right sr-age"><p>Age: <strong>{{maintenanceRequest.age}}</strong></p></span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Name:           <strong>{{maintenanceRequest.beneficiary_name}}</strong></p>\n          <p>gender:         <strong>{{maintenanceRequest.gender}}</strong></p>\n          <p>date_of_birth:  <strong>{{maintenanceRequest.date_of_birth}}</strong></p>\n          <p>contact_number: <strong>{{maintenanceRequest.contact_number}}</strong></p>\n          <p>whatsapp_number:<strong>{{maintenanceRequest.whatsapp_number}}</strong> </p>\n          <p>household_id:   <strong>{{maintenanceRequest.household_id}}</strong> </p>\n\n        </ion-card-content>\n\n        <ion-row *ngIf="maintenanceRequest.resolved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{maintenanceRequest.resolver}}</strong></p>\n              <p>Closed At: <strong>{{maintenanceRequest.resolved_on}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{maintenanceRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToMaintenanceRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/maintenance-request/maintenance-request.html"*/,
+            selector: 'page-maintenance-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/maintenance-request/maintenance-request.html"*/'<!--\n  Generated template for the MaintenanceRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Beneficialy</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshMaintenanceRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:[\'uid\',\'asset\',\'detail\']}"  (click)="EditUserProfile(maintenanceRequest.id)" [hidden]="maintenanceRequests.hide">\n      <div class="{{\'maintenance_request_state_sidebar_\'+maintenanceRequest.state}}">\n        <ion-card-header >\n          {{maintenanceRequest.code}} \n          <span class="pull-right sr-age"><p>Age: <strong>{{maintenanceRequest.age}}</strong></p></span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Name:           <strong>{{maintenanceRequest.beneficiary_name}}</strong></p>\n          <p>gender:         <strong>{{maintenanceRequest.gender}}</strong></p>\n          <p>date_of_birth:  <strong>{{maintenanceRequest.date_of_birth}}</strong></p>\n          <p>contact_number: <strong>{{maintenanceRequest.contact_number}}</strong></p>\n          <p>whatsapp_number:<strong>{{maintenanceRequest.whatsapp_number}}</strong> </p>\n          <p>household_id:   <strong>{{maintenanceRequest.household_id}}</strong> </p>\n\n        </ion-card-content>\n\n        <ion-row *ngIf="maintenanceRequest.resolved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{maintenanceRequest.resolver}}</strong></p>\n              <p>Closed At: <strong>{{maintenanceRequest.resolved_on}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{maintenanceRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToMaintenanceRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/ivdp_ionic_03012019/src/pages/maintenance-request/maintenance-request.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["q" /* NavParams */],
@@ -13247,118 +13437,7 @@ var MaintenanceRequestPage = /** @class */ (function () {
 
 //# sourceMappingURL=maintenance-request.js.map
 
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StationeryRequestPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stationery_request_form_stationery_request_form__ = __webpack_require__(161);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the StationeryRequestPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var StationeryRequestPage = /** @class */ (function () {
-    function StationeryRequestPage(navCtrl, navParams, dataGetterService, loadingCtrl, events, toastCtrl, appGlobal) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.dataGetterService = dataGetterService;
-        this.loadingCtrl = loadingCtrl;
-        this.events = events;
-        this.toastCtrl = toastCtrl;
-        this.appGlobal = appGlobal;
-        this.stationeryRequests = [];
-        this.queryText = '';
-        this.events.subscribe('reload:stationery-request', function (isNotification, id) {
-            _this.refreshStationeryRequestList(null);
-        });
-    }
-    StationeryRequestPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad StationeryRequestPage');
-    };
-    StationeryRequestPage.prototype.ionViewDidEnter = function () {
-        this.loadStationeryRequests(null);
-    };
-    StationeryRequestPage.prototype.refreshStationeryRequestList = function (reference) {
-        this.loadStationeryRequests(reference);
-    };
-    StationeryRequestPage.prototype.loadStationeryRequests = function (reference) {
-        var _this = this;
-        var loading = this.loadingCtrl.create({
-            content: 'Please wait...'
-        });
-        if (reference === null) {
-            loading.present();
-        }
-        this.dataGetterService.getAllStationeryRequests().subscribe(function (data) {
-            console.log("Stationery Requests Loaded", data);
-            if (data.success) {
-                _this.stationeryRequests = data.stationery_requests;
-            }
-            else {
-                _this.stationeryRequests = [];
-            }
-            loading.dismiss();
-            if (reference != null) {
-                reference.complete();
-            }
-        }, function (error) {
-            console.log(error);
-            _this.stationeryRequests = [];
-            var toast = _this.toastCtrl.create({
-                message: _this.appGlobal.ServerError,
-                duration: 3000
-            });
-            toast.present();
-            loading.dismiss();
-            if (reference != null) {
-                reference.complete();
-            }
-        });
-    };
-    StationeryRequestPage.prototype.goToStationeryRequestForm = function () {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__stationery_request_form_stationery_request_form__["a" /* StationeryRequestFormPage */]);
-    };
-    StationeryRequestPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-stationery-request',template:/*ion-inline-start:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/stationery-request/stationery-request.html"*/'<!--\n  Generated template for the StationeryRequestPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Stationery Requests</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshStationeryRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card\n      *ngFor="let stationeryRequest of stationeryRequests | search : {term:queryText,fields:[\'uid\',\'stationery\',\'requested_quantity\']}">\n      <div class="{{\'stationery_request_state_sidebar_\'+stationeryRequest.state}}">\n        <ion-card-header>\n          {{stationeryRequest.uid}}\n          <span class="pull-right sr-age">{{stationeryRequest.age}}</span>\n        </ion-card-header>\n\n        <ion-card-content>\n          <p>Stationery: <strong>{{stationeryRequest.stationery}}</strong></p>\n          <p>Requested Quantity: <strong>{{stationeryRequest.requested_quantity}}</strong></p>\n        </ion-card-content>\n\n        <ion-row *ngIf="stationeryRequest.closed">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{stationeryRequest.closer}}</strong></p>\n              <p>Closed At: <strong>{{stationeryRequest.closed_at}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{stationeryRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n\n  <ion-fab right bottom>\n    <button ion-fab (click)="goToStationeryRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/ionicproject/intranetmobile-1.1.0/src/pages/stationery-request/stationery-request.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["s" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_app_global_app_global__["a" /* AppGlobalProvider */]])
-    ], StationeryRequestPage);
-    return StationeryRequestPage;
-}());
-
-//# sourceMappingURL=stationery-request.js.map
-
 /***/ })
 
-},[490]);
+},[492]);
 //# sourceMappingURL=main.js.map

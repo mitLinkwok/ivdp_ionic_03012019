@@ -48,6 +48,7 @@ export class SuervyPage {
     if(this.qindex == this.appGlobal.questionsList.length - 1)
     {
       alert("Last Question");
+      console.log(this.appGlobal.answers)
       return
     }
     console.log(this.answer);

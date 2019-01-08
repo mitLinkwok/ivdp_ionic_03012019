@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5b7a72bc-e183-4cbc-9b1a-c3a3ec0ec1f3" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.vscode/plugins.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/plugins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-android-support-gradle-release/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-android-support-gradle-release/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-android/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-android/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-browser/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-browser/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-advanced-http/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-advanced-http/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-allow-backup/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-allow-backup/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-app-version/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-app-version/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-badge/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-badge/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-calendar/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-calendar/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-camera/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-camera/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-crop/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-crop/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-device/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-device/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-fcm-with-dependecy-updated/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-fcm-with-dependecy-updated/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-file-transfer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-file-transfer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-file/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-file/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-filepath/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-filepath/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-image-picker/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-image-picker/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-ionic-keyboard/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-ionic-keyboard/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-ionic-webview/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-ionic-webview/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-local-notification/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-local-notification/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-network-information/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-network-information/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-splashscreen/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-splashscreen/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-vibration/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-vibration/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/cordova-plugin-whitelist/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/cordova-plugin-whitelist/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/browser.json" beforeDir="false" afterPath="$PROJECT_DIR$/platforms/browser/browser.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/platform_www/cordova_plugins.js" beforeDir="false" afterPath="$PROJECT_DIR$/platforms/browser/platform_www/cordova_plugins.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/www/build/0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/www/build/0.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/www/build/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/platforms/browser/www/build/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/www/build/main.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/platforms/browser/www/build/main.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/www/build/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/platforms/browser/www/build/vendor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/www/build/vendor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/platforms/browser/www/build/vendor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platforms/browser/www/cordova_plugins.js" beforeDir="false" afterPath="$PROJECT_DIR$/platforms/browser/www/cordova_plugins.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/browser.json" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/browser.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/fetch.json" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/fetch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/grievance-form/grievance-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/grievance-form/grievance-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/home/home.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/home.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/suervy/suervy.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/suervy/suervy.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/providers/app-global/app-global.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/providers/app-global/app-global.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/build/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/build/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/build/main.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/www/build/main.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/build/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/build/vendor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/build/vendor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/www/build/vendor.js.map" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="43" />
+    <option name="y" value="25" />
+    <option name="width" value="939" />
+    <option name="height" value="1055" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="PackagesPane" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ivdp_ionic_03012019" type="1abcf292:AndroidViewProjectNode" />
+              <item name="ivdp_ionic_03012019" type="e9137016:NonAndroidModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <properties />
+      <listeners />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="JUnit" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5b7a72bc-e183-4cbc-9b1a-c3a3ec0ec1f3" name="Default" comment="" />
+      <created>1546839266052</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1546839266052</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="43" y="25" width="1877" height="1055" extended-state="6" />
+    <layout>
+      <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Build Variants" order="2" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="right" id="Flutter Outline" order="3" />
+      <window_info anchor="bottom" id="Logcat" order="7" />
+      <window_info id="Captures" order="2" weight="0.25" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18951392" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" id="Flutter Inspector" order="3" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+</project>

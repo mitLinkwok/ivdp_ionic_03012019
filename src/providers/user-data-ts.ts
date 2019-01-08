@@ -48,6 +48,7 @@ export class UserData {
       .then((data:any) => {
         console.log(data);
         if (!!data.success){
+          
           this.storage.set(this.HAS_LOGGED_IN, true);
           this.hasLoggedIn = true;
           this.setUserData(data);

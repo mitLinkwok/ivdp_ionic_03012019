@@ -12,11 +12,10 @@
 
 </ion-header>
 
+ 
+<!-- <ion-content padding> -->
 
-<ion-content padding>
-
-    <form #form="ngForm"  >
-        <ion-list>
+    <!-- <form #form="ngForm"  >         <ion-list>
     
     
             <ion-item>
@@ -43,18 +42,23 @@
                 <ion-label stacked floating color="primary">Document Number</ion-label>
                <ion-input name="kyc_number" type="text" [(ngModel)]="AddKyc.kyc_number" required></ion-input>
              </ion-item>
-             <!-- <ion-item>
+              <ion-item>
                 <ion-label stacked floating color="primary">Document Image</ion-label>
-                <ion-input  type="text"  ></ion-input> -->
-            <!-- </ion-item>  -->
-         </ion-list>
+                <ion-input  type="text"  ></ion-input>
+           </ion-item> 
+        </ion-list>
          <ion-label stacked floating color="primary">Document Image</ion-label>
        
          <ion-item *ngIf="imageURI" name="kyc_file" [(ngModel)]="AddKyc.kyc_file" required >
            
             <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />
-          </ion-item>
-          <ion-buttons>
+          </ion-item> 
+              <ion-item *ngIf="imageURI">
+            <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />
+          </ion-item> ionic cordova plugin add cordova-sqlite-storage
+ -->
+
+          <!--<ion-buttons>
             <ion-grid>
               <ion-row>
                 <ion-col>
@@ -66,6 +70,7 @@
               </ion-row>
             </ion-grid>
           </ion-buttons>
+
     
          
 
@@ -73,7 +78,7 @@
         <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit </button>  
       
       </form>
-    </ion-content>
+    </ion-content> -->
 
 
 
@@ -85,8 +90,8 @@
 
 
 
-
-  <!-- <form  #form="ngForm">
+<ion-content padding>
+  <form  #form="ngForm">
     <ion-list>
       <ion-item>
         <ion-input type="text" [(ngModel)]="grievance.title" name="title" placeholder="Enter title of your grievance" required></ion-input>
@@ -99,15 +104,15 @@
           <ion-option value="Policy Issue">Policy Issue</ion-option>
         </ion-select>
       </ion-item>
-    <!-- </ion-list> -->
-    <!-- <ion-list> -->
-      <!-- <ion-item>
+    </ion-list>
+    <ion-list>
+    <ion-item>
         <ion-label>Category</ion-label>
           <ion-select [(ngModel)]="grievance.category" name="category" required interface="popover">
             <ion-option value={{grievance_category.uuid}}  *ngFor="let grievance_category of grievance_categories" >{{grievance_category.name}}</ion-option>
-            <!--<ion-option value="Group Grievance">Group Grievance</ion-option>-->
-            <!--<ion-option value="Policy Issue">Policy Issue</ion-option>-->
-          <!-- </ion-select>
+            <ion-option value="Group Grievance">Group Grievance</ion-option>-->
+        <ion-option value="Policy Issue">Policy Issue</ion-option>-->
+      </ion-select>
       </ion-item>
       <ion-item>
         <ion-textarea [(ngModel)]="grievance.content" name="content" rows="5" placeholder="Enter Description" required></ion-textarea>
@@ -118,8 +123,8 @@
     </ion-item>
     <ion-buttons>
       <ion-grid>
-        <ion-row>
-          <ion-col>
+        <ion-row> 
+         <ion-col>
             <button ion-button color="secondary" round (click)="getImageFromCamera()" block>Camera</button>
           </ion-col>
           <ion-col>
@@ -128,7 +133,6 @@
         </ion-row>
       </ion-grid>
     </ion-buttons>
-    <button ion-button type="submit" [disabled]="!form.valid" (click)="logForm(form)" block>Add Grievance</button>
-  </form> --> 
-
-
+    <button ion-button type="submit" [disabled]="!form.valid" (click)="logForm(form)" block>Add Grievance</button> 
+  </form>  
+ </ion-content> 

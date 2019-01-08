@@ -1,4 +1,4 @@
-import { SuervyPage } from './../pages/suervy/suervy';
+
 
 import {UserblockPage} from './../pages/userblock/userblock';
 import {DirectoryPage} from './../pages/directory/directory';

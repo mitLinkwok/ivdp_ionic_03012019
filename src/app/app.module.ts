@@ -1,3 +1,4 @@
+import { SQLite } from '@ionic-native/sqlite';
 
 import {DirectivesModule} from './../directives/directives.module';
 import {UserblockPage} from './../pages/userblock/userblock';
@@ -127,8 +128,14 @@ import {ParakhDashboardPage} from "../pages/parakh-dashboard/parakh-dashboard";
 import {ParakhDashboardPageModule} from "../pages/parakh-dashboard/parakh-dashboard.module";
 
 
-import { SuervyPage } from "./../pages/suervy/suervy"
-import { SuervyPageModule } from "./../pages/suervy/suervy.module"
+import { SuervyPage } from "./../pages/suervy/suervy";
+import { SuervyPageModule } from "./../pages/suervy/suervy.module";
+import { DatabaseProvider } from '../providers/database/database';
+
+
+
+
+
 
 
 
@@ -322,7 +329,6 @@ export function createTranslateLoader(http: HttpClient) {
     LoginServiceProvider,
     LeaveDataProvider,
     AppGlobalProvider,
-
     FCM,
     AppVersion,
     Network,
@@ -330,6 +336,10 @@ export function createTranslateLoader(http: HttpClient) {
     ImagePicker,
     Crop,
     Camera,
+    DatabaseProvider,
+    SQLite
+    
+    
   ]
 })
 export class AppModule {
