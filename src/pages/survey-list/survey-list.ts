@@ -106,10 +106,14 @@ export class SurveyListPage {
   }
 
 
-  StartSurvey(ProjectId){
-this.navCtrl.push(SuervyPage,{qindex: 0});
+  StartSurvey(ProjectId,suervtId,qId){
+// this.navCtrl.push(SuervyPage,{qindex: 0});
 
-  }
+this.navCtrl.push(SuervyPage,{
+  project_id:ProjectId,
+  survey_id:suervtId,
+  question_id:qId});
+}
 
 
   

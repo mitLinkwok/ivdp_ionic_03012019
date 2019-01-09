@@ -1,4 +1,5 @@
-import { SQLite } from '@ionic-native/sqlite';
+
+
 
 import {DirectivesModule} from './../directives/directives.module';
 import {UserblockPage} from './../pages/userblock/userblock';
@@ -130,7 +131,8 @@ import {ParakhDashboardPageModule} from "../pages/parakh-dashboard/parakh-dashbo
 
 import { SuervyPage } from "./../pages/suervy/suervy";
 import { SuervyPageModule } from "./../pages/suervy/suervy.module";
-import { DatabaseProvider } from '../providers/database/database';
+
+
 
 
 
@@ -335,9 +337,8 @@ export function createTranslateLoader(http: HttpClient) {
     LocalNotifications,
     ImagePicker,
     Crop,
-    Camera,
-    DatabaseProvider,
-    SQLite
+    Camera
+  
     
     
   ]

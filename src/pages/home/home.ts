@@ -12,8 +12,8 @@ import {GrievanceShowPage} from "../grievance-show/grievance-show";
 import {ArticleShowPage} from "../article-show/article-show";
 import { Storage } from '@ionic/storage';
 import {IntroPage} from "../intro/intro";
-import {DatabaseProvider} from "./../../providers/database/database";
-import { SQLite } from '@ionic-native/sqlite';
+
+
 
 import {GuestLunchPage} from "../guest-lunch/guest-lunch";
 import {VisitingCardPage} from "../visiting-card/visiting-card";
@@ -43,12 +43,11 @@ export class HomePage {
     public toastCtrl: ToastController, public dataSetterService:DataSetterProvider,
     public loadingCtrl: LoadingController,
     public appGlobal: AppGlobalProvider,
-    public storage: Storage,
-    public sql:SQLite,
-    public databse:DatabaseProvider  //  public sqlProvider:DatabaseProvider
+    public storage: Storage
+     //  public sqlProvider:DatabaseProvider
     ) {
       //this.sqlProvider=this.sqlstorage;
-       databse.createDataBase();
+      
     
 
   }

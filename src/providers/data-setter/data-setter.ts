@@ -165,18 +165,12 @@ sendNotificationToken() {
     try{
     
    
-    return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions()).subscribe(data => {
-     
-     console.log("@@@@@respons"+data);
-      
-    }, err => {
-      console.log("error!")
-      console.log(Object.keys(err));
+    return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions());
    
       
      
     
-    });
+    
 
   }catch (ErrorHandler ){
     console.log("#####################",ErrorHandler)
@@ -196,6 +190,17 @@ sendNotificationToken() {
   recordCanteenFacilityUsage(data) {
     return this.http.post(this.appGlobal.canteenFacilityUsage, data, this.getHTTPOptions());
   }
+
+
+
+
+  gatsuervysrequest(data){
+    return this.http.post(this.appGlobal.gesuervyrequest,data,this.getHTTPOptions()).subscribe(data =>{
+      console.log("@@@@@respons"+data);
+    });
+  }
+
+
 
   
 

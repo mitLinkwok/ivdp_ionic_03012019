@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {Component} from '@angular/core';
 import {Events, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {DataSetterProvider} from "../../providers/data-setter/data-setter";
@@ -6,6 +7,7 @@ import {Vibration} from "@ionic-native/vibration";
 import {AppGlobalProvider} from "../../providers/app-global/app-global";
 import {ToastController} from "ionic-angular/components/toast/toast-controller";
 import {NgForm} from "@angular/forms";
+
 
 /**
  * Generated class for the MaintenanceRequestFormPage page.
