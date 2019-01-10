@@ -332,9 +332,9 @@ export class MyApp {
       }
       //if (!this.appGlobal.isOnline ) {
       if (false ) {
-        if (pageName instanceof this.rootPage) {
-          this.nav.push(OfflinePage);
-        }
+        // if (pageName instanceof this.rootPage) {
+        //   this.nav.push(OfflinePage);
+        // }
       }
       if (pageName instanceof LoginPage || pageName instanceof OfflinePage || pageName instanceof UserblockPage) {
         this.menuCtrl.swipeEnable(false);

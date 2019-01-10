@@ -31,9 +31,10 @@ export class GrievanceFormPage {
   }
   imageURI: any;
   imageFileName: any;
-  grievance_categories: any
-  public grievanceTypes: any
-  AddKyc: any = []
+  grievance_categories: any;
+  public grievanceTypes: any;
+  AddKyc: any = [];
+  SurveyorID : string;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -46,6 +47,7 @@ export class GrievanceFormPage {
     private camera: Camera,
     public platform: Platform,
     public vibration: Vibration) {
+      this.SurveyorID = navParams.get('Surveyor');
     this.initMaintenanceRequest();
 
   }
@@ -58,7 +60,7 @@ export class GrievanceFormPage {
       kyc_detail: '',
       kyc_number: '',
       kyc_file: '',
-      user_id: ''
+      user_id: this.SurveyorID
     };
 
   }
@@ -155,12 +157,14 @@ export class GrievanceFormPage {
 
   getImageFromCamera() {
     const options: CameraOptions = {
-      quality: 100,
+     quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
-      sourceType: this.camera.PictureSourceType.CAMERA,
-      cameraDirection: 0,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
-      saveToPhotoAlbum: true
+      saveToPhotoAlbum: true,
+      cameraDirection: 0
+     
 
     };
     this.platform.ready().then(() => {
@@ -196,7 +200,7 @@ export class GrievanceFormPage {
 
   logForm(form: NgForm) {
     this.submitSR(form.value);
-    // this.navCtrl.push(GrievancePage);
+   
   }
 
   ionViewDidLoad() {
@@ -205,7 +209,7 @@ export class GrievanceFormPage {
 
 
 
-
+  isReadonly() {return true;}
 
 
 

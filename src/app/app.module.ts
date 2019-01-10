@@ -1,6 +1,4 @@
 
-
-
 import {DirectivesModule} from './../directives/directives.module';
 import {UserblockPage} from './../pages/userblock/userblock';
 import {DirectoryPage} from './../pages/directory/directory';
@@ -131,16 +129,8 @@ import {ParakhDashboardPageModule} from "../pages/parakh-dashboard/parakh-dashbo
 
 import { SuervyPage } from "./../pages/suervy/suervy";
 import { SuervyPageModule } from "./../pages/suervy/suervy.module";
-
-
-
-
-
-
-
-
-
-
+import { DatabaseProvider } from '../providers/database/database';
+import { SQLite } from '@ionic-native/sqlite';
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -337,7 +327,11 @@ export function createTranslateLoader(http: HttpClient) {
     LocalNotifications,
     ImagePicker,
     Crop,
-    Camera
+    Camera,
+    DatabaseProvider,
+    SQLite
+   
+   
   
     
     

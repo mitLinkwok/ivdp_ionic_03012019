@@ -12,15 +12,15 @@ export class AppGlobalProvider {
   // private systemXBaseURL = '';
 
 
-  // LOCAL URLS
+  // LOCAL URLS165.227.139.76:8080
   public server = 'Local';
 
 
+  private intranetBaseURL = 'http://165.227.139.76:8080/api/v1';
   // private intranetBaseURL = 'http://165.227.139.76:8080/api/v1';
-  private intranetBaseURL = 'http://172.16.20.188:8000/api/v1';
 
   
-  //private intranetBaseURL = 'http://172.16.17.146:8000/api/v1';
+  // private intranetBaseURL = 'http://172.16.20.188:8000/api/v1';
   // private intranetBaseURL = 'http://172.16.17./api/v1';
   private surveyBaseURL = 'https://deepaksurveystaging.herokuapp.com/rapidfire/surveys';
   private systemXBaseURL = 'https://system-x.herokuapp.com/api';
@@ -145,21 +145,24 @@ export class AppGlobalProvider {
 
   public answers  = {};
 
-  public questionsList = [{
-    question: "What is your first name",
-    key: "q1"
-  },
-  {
-    question: "What is your middle name",
-    key: "q2"
-  },
-  {
-    question: "What is your last name",
-    key: "q3"
-  }
-]
+//   public questionsList = [{
+//     question: "What is your first name",
+//     key: "q1"
+//   },
+//   {
+//     question: "What is your middle name",
+//     key: "q2"
+//   },
+//   {
+//     question: "What is your last name",
+//     key: "q3"
+//   }
+// ]
+
+public questionsList=[];
 
 
 public gesuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
+public answersrequest=this.intranetBaseURL +'/answer/';
 
 }

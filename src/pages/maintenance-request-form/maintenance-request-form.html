@@ -18,12 +18,12 @@
 
 
         <ion-item>
-            <ion-label stacked floating color="primary">Code</ion-label>
-           <ion-input name="code" type="text" [(ngModel)]="Addbeneficialy.code" required></ion-input>
+            <ion-label stacked floating color="primary" >Code</ion-label>
+           <ion-input name="code" type="number" [(ngModel)]="Addbeneficialy.code" required></ion-input>
          </ion-item>
          <ion-item>
             <ion-label stacked floating color="primary">serveryer Id</ion-label>
-           <ion-input name="user_id" type="text" [(ngModel)]="Addbeneficialy.user_id" required></ion-input>
+           <ion-input name="user_id"  [readonly]="isReadonly"  [(ngModel)]="Addbeneficialy.user_id" required></ion-input>
          </ion-item>
         <ion-item>
             <ion-label stacked floating color="primary">Firstname</ion-label>
@@ -39,7 +39,7 @@
          </ion-item>
           <ion-item> 
           <ion-label stacked floating color="primary">Age</ion-label>
-          <ion-input name="age" type="text" [(ngModel)]="Addbeneficialy.age" required></ion-input>
+          <ion-input name="age" type="number" [(ngModel)]="Addbeneficialy.age" required></ion-input>
       </ion-item>
 
 
@@ -70,23 +70,23 @@
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary">House hold ID  </ion-label>
-          <ion-input name="household_id" type="text" [(ngModel)]="Addbeneficialy.household_id" required></ion-input>
+          <ion-input name="household_id" type="number" [(ngModel)]="Addbeneficialy.household_id" required></ion-input>
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary">Village ID</ion-label>
-          <ion-input name="village_id" type="text" [(ngModel)]="Addbeneficialy.village_id" required></ion-input>
+          <ion-input name="village_id" type="number" [(ngModel)]="Addbeneficialy.village_id" required></ion-input>
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary">Family Hade Id</ion-label>
-          <ion-input name="family_head_id" type="text" [(ngModel)]="Addbeneficialy.family_head_id" required></ion-input>
+          <ion-input name="family_head_id" type="number" [(ngModel)]="Addbeneficialy.family_head_id" required></ion-input>
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary">Contact Number</ion-label>
-          <ion-input name="contact_number" type="text" [(ngModel)]="Addbeneficialy.contact_number" required></ion-input>
+          <ion-input name="contact_number" type="number" [(ngModel)]="Addbeneficialy.contact_number" required></ion-input>
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary"> Whatsapp Number</ion-label>
-          <ion-input name="whatsapp_number" type="text" [(ngModel)]="Addbeneficialy.whatsapp_number" required></ion-input>
+          <ion-input name="whatsapp_number" type="number" [(ngModel)]="Addbeneficialy.whatsapp_number" required></ion-input>
       </ion-item>
       <ion-item> 
         <ion-label stacked floating color="primary">Relation With Family had  </ion-label>

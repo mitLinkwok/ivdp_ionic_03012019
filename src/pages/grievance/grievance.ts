@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams, Events, ModalController, ToastController } from 'ionic-angular';
 import { DataGetterServiceProvider } from '../../providers/data-getter-service/data-getter-service';
 import {GrievanceFormPage} from "../grievance-form/grievance-form";
+import { UserData } from './../../providers/user-data-ts';
 
 import * as _ from "lodash";
 import * as moment from 'moment';
@@ -22,22 +23,21 @@ import * as moment from 'moment';
   templateUrl: 'grievance.html',
 })
 export class GrievancePage {
-
   grievance_m : any = [];
   public grievances: any;
   queryText:any = '';
-
   grievanceWhoseList: any = [];
   excludeWhoseGrievances: any = ["mine"];
-
   descending: boolean = false;
   order: number = -1;
   field: string = 'updated_at';
+  UserId;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public dataGetterService: DataGetterServiceProvider,
     public loadingCtrl: LoadingController,
     public events:Events,
+    public user: UserData,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public appGlobal: AppGlobalProvider) {
@@ -113,7 +113,10 @@ export class GrievancePage {
   }
 
   goToSRForm() {
-    this.navCtrl.push(GrievanceFormPage);
+    this.UserId= this.user.userData.id;
+    this.navCtrl.push(GrievanceFormPage,{
+      Surveyor:this.UserId 
+    });
   }
 
   goToGrievance(id){

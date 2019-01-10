@@ -60,7 +60,7 @@ export class MaintenanceRequestPage {
 
     this.dataGetterService.getAllMaintenanceRequests().subscribe((data: any) => {
       // console.log("Stationery Requests Loaded", data);
-      console.log("@@@@@",data.data);
+     
 
       let a=true
       if (data.success || a ) {
@@ -97,9 +97,7 @@ export class MaintenanceRequestPage {
   }
 
   EditUserProfile(id){
-    console.log("@@@@@### @@@@@@@   :- "+ id);
-   
-    console.log("@@@@@###    :- "+ this.UserId);
+   console.log("UserID :- "+ this.UserId + "  ID ::-" + id );
     
   }
 }

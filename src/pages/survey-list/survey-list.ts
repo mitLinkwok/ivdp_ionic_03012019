@@ -78,7 +78,7 @@ export class SurveyListPage {
     }
 
     this.dataGetterService.getSurveys().subscribe((data: any) => {
-        console.log("Survey Loaded",data.data);
+        
         let a=true
         if(data.success || a){
           this.surveys = data.data;
@@ -112,7 +112,8 @@ export class SurveyListPage {
 this.navCtrl.push(SuervyPage,{
   project_id:ProjectId,
   survey_id:suervtId,
-  question_id:qId});
+  question_id:qId,
+  qindex: 0});
 }
 
 

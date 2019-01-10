@@ -163,15 +163,7 @@ sendNotificationToken() {
   // Maintenance Request
   createMaintenanceRequest(data) {
     try{
-    
-   
     return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions());
-   
-      
-     
-    
-    
-
   }catch (ErrorHandler ){
     console.log("#####################",ErrorHandler)
     
@@ -195,10 +187,12 @@ sendNotificationToken() {
 
 
   gatsuervysrequest(data){
-    return this.http.post(this.appGlobal.gesuervyrequest,data,this.getHTTPOptions()).subscribe(data =>{
-      console.log("@@@@@respons"+data);
-    });
+    return this.http.post(this.appGlobal.gesuervyrequest,data,this.getHTTPOptions());
   }
+  submitanswerrequest(data){
+    return this.http.post(this.appGlobal.answersrequest,data,this.getHTTPOptions());
+  }
+
 
 
 

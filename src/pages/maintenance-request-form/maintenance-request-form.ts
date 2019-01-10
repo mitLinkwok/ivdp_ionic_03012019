@@ -43,7 +43,7 @@ export class MaintenanceRequestFormPage {
               public appGlobal: AppGlobalProvider,
               public vibration: Vibration) {
                 this.SurveyorID = navParams.get('Surveyor');
-                console.log("@@@@@  Surveyor :" + this.SurveyorID);
+               
     this.initMaintenanceRequest();
   }
 
@@ -52,7 +52,7 @@ export class MaintenanceRequestFormPage {
   }
 
   ionViewDidEnter() {
-    this.loadAssetsList();
+    // this.loadAssetsList();
   }
 
   initMaintenanceRequest() {
@@ -85,69 +85,69 @@ export class MaintenanceRequestFormPage {
 
 
   }
-  loadAssetsList() {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    loading.present();
+  // loadAssetsList() {
+  //   let loading = this.loadingCtrl.create({
+  //     content: 'Please wait...'
+  //   });
+  //   loading.present();
 
-    this.dataGetterService.getMaintenanceAssets().subscribe((data: any) => {
-      console.log("Assets Loaded", data);
+  //   this.dataGetterService.getMaintenanceAssets().subscribe((data: any) => {
+  //     console.log("Assets Loaded", data);
 
-      if (data.success) {
-        this.assets = data.maintenance_assets;
-      } else {
-        this.initMaintenanceRequest();
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-        loading.dismiss();
-        this.navCtrl.pop();
-      }
+  //     if (data.success) {
+  //       this.assets = data.maintenance_assets;
+  //     } else {
+  //       this.initMaintenanceRequest();
+  //       const toast = this.toastCtrl.create({
+  //         message: this.appGlobal.ServerError,
+  //         duration: 3000
+  //       });
+  //       toast.present();
+  //       loading.dismiss();
+  //       this.navCtrl.pop();
+  //     }
 
-      loading.dismiss();
-    }, error => {
-      console.log(error);
-      this.initMaintenanceRequest();
-      const toast = this.toastCtrl.create({
-        message: this.appGlobal.ServerError,
-        duration: 3000
-      });
-      toast.present();
-      loading.dismiss();
-    });
-    this.dataGetterService.getMRLocations().subscribe((data: any) => {
-      console.log("Assets Loaded", data);
+  //     loading.dismiss();
+  //   }, error => {
+  //     console.log(error);
+  //     this.initMaintenanceRequest();
+  //     const toast = this.toastCtrl.create({
+  //       message: this.appGlobal.ServerError,
+  //       duration: 3000
+  //     });
+  //     toast.present();
+  //     loading.dismiss();
+  //   });
+  //   this.dataGetterService.getMRLocations().subscribe((data: any) => {
+  //     console.log("Assets Loaded", data);
 
-      if (data.success) {
-        this.locations = data.locations;
-      } else {
+  //     if (data.success) {
+  //       this.locations = data.locations;
+  //     } else {
 
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-        loading.dismiss();
-        this.navCtrl.pop();
-      }
-
-
-    }, error => {
-      console.log(error);
-      this.initMaintenanceRequest();
-      const toast = this.toastCtrl.create({
-        message: this.appGlobal.ServerError,
-        duration: 3000
-      });
-      toast.present();
-      loading.dismiss();
-    });
+  //       const toast = this.toastCtrl.create({
+  //         message: this.appGlobal.ServerError,
+  //         duration: 3000
+  //       });
+  //       toast.present();
+  //       loading.dismiss();
+  //       this.navCtrl.pop();
+  //     }
 
 
-  }
+  //   }, error => {
+  //     console.log(error);
+  //     this.initMaintenanceRequest();
+  //     const toast = this.toastCtrl.create({
+  //       message: this.appGlobal.ServerError,
+  //       duration: 3000
+  //     });
+  //     toast.present();
+  //     loading.dismiss();
+  //   });
+
+
+  // }
 
 
   submitMaintenanceRequest(data) {
@@ -161,7 +161,7 @@ export class MaintenanceRequestFormPage {
       loading.dismiss();
      
 
-      if (data.success) {
+      if (data) {
         this.responsData=data.data;
         console.log("@@@@@$5555"+this.responsData);
         const toast = this.toastCtrl.create({
@@ -174,11 +174,9 @@ export class MaintenanceRequestFormPage {
         }
         this.vibration.vibrate(this.appGlobal.vibrationTimings);
       } else {
-        const toast = this.toastCtrl.create({
-          message: data.errors,
-          duration: 3000
-        });
-        toast.present();
+
+        alert( data.errors);
+        
       }
     }, error => {
       loading.dismiss();
@@ -193,16 +191,6 @@ export class MaintenanceRequestFormPage {
 
   logForm(form: NgForm) {
     this.submitMaintenanceRequest(form.value);
-   
-    // debugger;
-    // if(form.value.detail.trim().length > 0){
-    //   console.log("formvale folloing")
-    //   this.submitMaintenanceRequest(form.value);
-   
-    // }else{
-    //   alert("Detail cannot be blank!");
-    // }
-     
-      
   }
+  isReadonly() {return true;}
 }
