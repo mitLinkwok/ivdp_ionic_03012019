@@ -38,17 +38,13 @@ export class UserData {
       this.fcmTokenStatus = value;
     });
 
-    console.log('Hello UserData Provider');
   }
 
   login(username: string,password:string): void {
-    console.log("USERNAME:",username);
-    console.log("PASSWORD:",password);
+   
     this.loginserviceprovider.doLogin(username,password)
       .then((data:any) => {
-        console.log(data);
         if (!!data.success){
-          
           this.storage.set(this.HAS_LOGGED_IN, true);
           this.hasLoggedIn = true;
           this.setUserData(data);
@@ -105,6 +101,7 @@ export class UserData {
 
   setUserData(userData: JSON): void {
     this.userData = userData;
+    // this.userData.userprofile = "assets/img/user_image_sample.png"
     this.storage.set('userdata', userData);
     this.events.publish('userdata:changed');
   };

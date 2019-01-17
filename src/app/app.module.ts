@@ -125,6 +125,8 @@ import {CanteenFacilityPageModule} from "../pages/canteen-facility/canteen-facil
 import {CanteenFacilityPage} from "../pages/canteen-facility/canteen-facility";
 import {ParakhDashboardPage} from "../pages/parakh-dashboard/parakh-dashboard";
 import {ParakhDashboardPageModule} from "../pages/parakh-dashboard/parakh-dashboard.module";
+import { CallNumber } from '@ionic-native/call-number';
+
 
 
 import { SuervyPage } from "./../pages/suervy/suervy";
@@ -329,7 +331,8 @@ export function createTranslateLoader(http: HttpClient) {
     Crop,
     Camera,
     DatabaseProvider,
-    SQLite
+    SQLite,
+    CallNumber
    
    
   

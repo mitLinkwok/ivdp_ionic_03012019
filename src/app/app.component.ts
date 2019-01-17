@@ -73,47 +73,47 @@ export class MyApp {
   ];
 
   myVoicePages: PageInterface[] = [
-    {title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'bulb', countName: 'Idea'},
-    {title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'paper'},
-    {title: 'Kyc', name: "GrievancePage", component: GrievancePage, icon: 'chatbubbles', countName: 'Grievance'}
+    {title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'people', countName: 'Idea'},
+    {title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box'},
+    {title: 'KYC', name: "GrievancePage", component: GrievancePage, icon: 'body', countName: 'Grievance'}
   ];
 
-  itPages: PageInterface[] = [
-    {
-      title: 'Tech Support',
-      name: 'ServiceRequestPage',
-      component: ServiceRequestPage,
-      icon: 'construct',
-      countName: 'ServiceRequest'
-    }
-  ];
+  // itPages: PageInterface[] = [
+  //   {
+  //     title: 'Tech Support',
+  //     name: 'ServiceRequestPage',
+  //     component: ServiceRequestPage,
+  //     icon: 'construct',
+  //     countName: 'ServiceRequest'
+  //   }
+  // ];
 
-  hrPages: PageInterface[] = [
-    {title: 'Attendance', name: "CalendarViewPage", component: CalendarViewPage, icon: 'calendar'},
-    {title: 'Leaves', name: 'LeavesShowPage', component: LeavesShowPage, icon: 'paper-plane'},
-    {title: 'Parakh Dashboard', name: 'ParakhDashboardPage', component: ParakhDashboardPage, icon: 'trophy'}
-  ];
+  // hrPages: PageInterface[] = [
+  //   {title: 'Attendance', name: "CalendarViewPage", component: CalendarViewPage, icon: 'calendar'},
+  //   {title: 'Leaves', name: 'LeavesShowPage', component: LeavesShowPage, icon: 'paper-plane'},
+  //   {title: 'Parakh Dashboard', name: 'ParakhDashboardPage', component: ParakhDashboardPage, icon: 'trophy'}
+  // ];
 
-  companyPages: PageInterface[] = [
-    {title: 'Articles', name: "ArticleIndexPage", component: ArticleIndexPage, icon: 'easel', countName: 'Articles'},
-    {title: 'Policies', name: "PoliciesPage", component: PoliciesPage, icon: 'document'},
-    {title: 'Directory', name: "DirectoryPage", component: DirectoryPage, icon: 'book'}
-  ];
+  // companyPages: PageInterface[] = [
+  //   {title: 'Articles', name: "ArticleIndexPage", component: ArticleIndexPage, icon: 'easel', countName: 'Articles'},
+  //   {title: 'Policies', name: "PoliciesPage", component: PoliciesPage, icon: 'document'},
+  //   {title: 'Directory', name: "DirectoryPage", component: DirectoryPage, icon: 'book'}
+  // ];
 
-  servicesPages: PageInterface[] = [
-    {title: 'Visiting Card Requests', name: "VisitingCardPage", component: VisitingCardPage, icon: 'person'},
-    {title: 'Guest Lunch Requests', name: "GuestLunchPage", component: GuestLunchPage, icon: 'pizza'},
-    {
-      title: 'Facility Requests',
-      name: "MaintenanceRequestPage",
-      component: MaintenanceRequestPage,
-      icon: 'build'
-    },
-    {title: 'ID / Access Card Requests', name: "AccessCardRequestPage", component: AccessCardRequestPage, icon: 'card'},
-    {title: 'Stationery Requests', name: "StationeryRequestPage", component: StationeryRequestPage, icon: 'clipboard'},
-    {title: 'Guest House Requests', name: "GuestRoomRequestPage", component: GuestRoomRequestPage, icon: 'home'},
-    {title: 'Canteen Facility', name: "CanteenFacilityPage", component: CanteenFacilityPage, icon: 'pizza'}
-  ];
+  // servicesPages: PageInterface[] = [
+  //   {title: 'Visiting Card Requests', name: "VisitingCardPage", component: VisitingCardPage, icon: 'person'},
+  //   {title: 'Guest Lunch Requests', name: "GuestLunchPage", component: GuestLunchPage, icon: 'pizza'},
+  //   {
+  //     title: 'Facility Requests',
+  //     name: "MaintenanceRequestPage",
+  //     component: MaintenanceRequestPage,
+  //     icon: 'build'
+  //   },
+  //   {title: 'ID / Access Card Requests', name: "AccessCardRequestPage", component: AccessCardRequestPage, icon: 'card'},
+  //   {title: 'Stationery Requests', name: "StationeryRequestPage", component: StationeryRequestPage, icon: 'clipboard'},
+  //   {title: 'Guest House Requests', name: "GuestRoomRequestPage", component: GuestRoomRequestPage, icon: 'home'},
+  //   {title: 'Canteen Facility', name: "CanteenFacilityPage", component: CanteenFacilityPage, icon: 'pizza'}
+  // ];
 
   loggedOutPages: PageInterface[] = [
     {title: 'Logout', name: 'LogoutPage', component: LogoutPage, icon: 'log-out', logsOut: true}
@@ -126,6 +126,7 @@ export class MyApp {
   lastBack: any;
   allowClose: any;
   pagesCounts: any = [];
+  userprofile_sample : any = "assets/img/user_sample.jpg"
 
   //Counts Variables
   // ServiceRequest:number;

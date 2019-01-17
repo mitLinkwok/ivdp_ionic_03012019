@@ -1,11 +1,4 @@
-<!-- <ion-header>
-  <ion-navbar>
-    <!-- <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button> -->
-   <!-- <ion-title>Login</ion-title>
-  </ion-navbar>
-</ion-header> -->
+
 
 <ion-content padding>
   <div class="logo">
@@ -13,25 +6,25 @@
     <br>
     <div>
       <br>
-      <h4>Welcome to Empower...</h4>
-      <h6>Your Digital Workspace...</h6>
+      <h4>Integrated Village Development Programme</h4>
+      <h6><i>A Deepak Foundation Initiative</i></h6>
     </div>
   </div>
 
   <div class="helptext">
-    Please enter your username and password and click on login
+    Enter your login credentials to start using the application
   </div>
   <form #loginForm="ngForm" novalidate>
     <ion-list no-lines>
       <ion-item>
-        <ion-label stacked floating color="primary">Employee ID/Email</ion-label>
+        <ion-label stacked floating color="primary">Username</ion-label>
         <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" 
         autocomplete=“true” spellcheck=“true” (change)="this.login.password = '';" autocapitalize="off"
           required>
         </ion-input>
       </ion-item>
       <p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>
-        Employee ID or Email is required
+        Username is required
       </p>
 
       <ion-item>

@@ -4,6 +4,8 @@ import {Events, IonicPage, LoadingController, NavController, NavParams, ToastCon
 import {DataGetterServiceProvider} from "../../providers/data-getter-service/data-getter-service";
 import {AppGlobalProvider} from "../../providers/app-global/app-global";
 import {MaintenanceRequestFormPage} from "../maintenance-request-form/maintenance-request-form";
+import { CallNumber } from '@ionic-native/call-number';
+
 
 
 /**
@@ -31,7 +33,8 @@ export class MaintenanceRequestPage {
               public events: Events,
               public user: UserData,
               public toastCtrl: ToastController,
-              public appGlobal: AppGlobalProvider) {
+              public appGlobal: AppGlobalProvider,
+              private callNumber: CallNumber) {
     this.events.subscribe('reload:maintenance-request', (isNotification, id) => {
       this.refreshMaintenanceRequestList(null);
     });
@@ -99,5 +102,9 @@ export class MaintenanceRequestPage {
   EditUserProfile(id){
    console.log("UserID :- "+ this.UserId + "  ID ::-" + id );
     
+  }
+  call(num){
+    this.callNumber.callNumber(num, true)
+
   }
 }

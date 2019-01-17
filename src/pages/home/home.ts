@@ -157,12 +157,12 @@ export class HomePage {
   ionViewDidLoad() {
 
 
-    this.storage.get('intro-done').then(done => {
-      if (!done) {
-        this.storage.set('intro-done', true);
-        this.navCtrl.setRoot(IntroPage);
-      }
-    });
+    // this.storage.get('intro-done').then(done => {
+    //   if (!done) {
+    //     this.storage.set('intro-done', true);
+    //     this.navCtrl.setRoot(IntroPage);
+    //   }
+    // });
   }
 
   ionViewDidEnter(){

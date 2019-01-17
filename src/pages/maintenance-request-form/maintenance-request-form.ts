@@ -27,7 +27,7 @@ export class MaintenanceRequestFormPage {
 
 
   maintenanceRequest: any = {};
-  Addbeneficialy : any = {};
+  beneficiary : any = {};
   assets: any = [];
   locations: any = [];
   SurveyorID : string;
@@ -56,7 +56,7 @@ export class MaintenanceRequestFormPage {
   }
 
   initMaintenanceRequest() {
-    this.Addbeneficialy = {
+    this.beneficiary = {
       code :'',
       firstname:'',
       lastname :'',
