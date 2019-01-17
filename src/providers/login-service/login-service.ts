@@ -1,10 +1,15 @@
+
+
+
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { Vibration } from '@ionic-native/vibration';
 import { AppGlobalProvider } from './../app-global/app-global';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
+
 import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
+
 
 /*
   Generated class for the LoginServiceProvider provider.
@@ -49,6 +54,8 @@ export class LoginServiceProvider {
         console.log("Login Resolved");
         this.vibrationCtrl.vibrate(1000);
         resolve(data);
+       
+
       }, err => {
         console.log("error!")
         console.log(Object.keys(err));

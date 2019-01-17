@@ -1,3 +1,4 @@
+import { DBmaneger } from './../../providers/database/Dbmaneger';
 import { AppGlobalProvider } from './../../providers/app-global/app-global';
 import * as _ from 'lodash';
 import { DataSetterProvider } from './../../providers/data-setter/data-setter';
@@ -5,22 +6,23 @@ import { ToastController } from 'ionic-angular/components/toast/toast-controller
 import { Network } from '@ionic-native/network';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ItemSliding, LoadingController } from 'ionic-angular';
-import {DataGetterServiceProvider} from "../../providers/data-getter-service/data-getter-service";
-import {IdeaShowPage} from "../idea-show/idea-show";
+import { DataGetterServiceProvider } from "../../providers/data-getter-service/data-getter-service";
+import { IdeaShowPage } from "../idea-show/idea-show";
 import { ServiceRequestShowPage } from './../service-request-show/service-request-show';
-import {GrievanceShowPage} from "../grievance-show/grievance-show";
-import {ArticleShowPage} from "../article-show/article-show";
+import { GrievanceShowPage } from "../grievance-show/grievance-show";
+import { ArticleShowPage } from "../article-show/article-show";
 import { Storage } from '@ionic/storage';
-import {IntroPage} from "../intro/intro";
+import { IntroPage } from "../intro/intro";
 
 
 
-import {GuestLunchPage} from "../guest-lunch/guest-lunch";
-import {VisitingCardPage} from "../visiting-card/visiting-card";
-import {MaintenanceRequestPage} from "../maintenance-request/maintenance-request";
-import {GuestRoomRequestShowPage} from "../guest-room-request-show/guest-room-request-show";
-import {StationeryRequestPage} from "../stationery-request/stationery-request";
-import {AccessCardRequestPage} from "../access-card-request/access-card-request";
+import { GuestLunchPage } from "../guest-lunch/guest-lunch";
+import { VisitingCardPage } from "../visiting-card/visiting-card";
+import { MaintenanceRequestPage } from "../maintenance-request/maintenance-request";
+import { GuestRoomRequestShowPage } from "../guest-room-request-show/guest-room-request-show";
+import { StationeryRequestPage } from "../stationery-request/stationery-request";
+import { AccessCardRequestPage } from "../access-card-request/access-card-request";
+
 
 
 
@@ -32,30 +34,30 @@ import {AccessCardRequestPage} from "../access-card-request/access-card-request"
 })
 export class HomePage {
   public notification;
-  public notifications:any = [];
-  
+  databaseobj: any;
+  public notifications: any = [];
+
   descending: boolean = false;
   order: number = -1;
   field: string = 'updated_at';
 
-  constructor(public navCtrl: NavController, public network:Network,
+  constructor(public navCtrl: NavController, public network: Network,
     public dataGetterService: DataGetterServiceProvider,
-    public toastCtrl: ToastController, public dataSetterService:DataSetterProvider,
+    public toastCtrl: ToastController, public dataSetterService: DataSetterProvider,
     public loadingCtrl: LoadingController,
     public appGlobal: AppGlobalProvider,
-    public storage: Storage
-     //  public sqlProvider:DatabaseProvider
-    ) {
-      //this.sqlProvider=this.sqlstorage;
-      
-    
+    public storage: Storage,
+    public db:DBmaneger
+  
+  ) {
+
+    this.db.getbenificialydata();
+    if(this.db.isqurestatus){
+     this.db.getkycsdata();
+    }
 
   }
-
-
-
-
-  sort(){
+  sort() {
     this.descending = !this.descending;
     this.order = this.descending ? 1 : -1;
   }
@@ -98,58 +100,58 @@ export class HomePage {
       });
   }
 
-  goToPage(id,association){
+  goToPage(id, association) {
     console.log(this.notification)
-    switch(association){
-      case "idea":{
-        this.navCtrl.push(IdeaShowPage,{id:id})
+    switch (association) {
+      case "idea": {
+        this.navCtrl.push(IdeaShowPage, { id: id })
         break;
       }
-      case "Service Request":{
-        this.navCtrl.push(ServiceRequestShowPage,{id:id})
+      case "Service Request": {
+        this.navCtrl.push(ServiceRequestShowPage, { id: id })
         break;
       }
-      case "grievance":{
-        this.navCtrl.push(GrievanceShowPage,{id:id})
+      case "grievance": {
+        this.navCtrl.push(GrievanceShowPage, { id: id })
         break;
       }
-      case "cms":{
-        this.navCtrl.push(ArticleShowPage,{id: id})
+      case "cms": {
+        this.navCtrl.push(ArticleShowPage, { id: id })
         break;
       }
-      case "guest_lunch_requests":{
-        this.navCtrl.push(GuestLunchPage,{id: id});
+      case "guest_lunch_requests": {
+        this.navCtrl.push(GuestLunchPage, { id: id });
         break;
       }
-      case "visiting_card_requests":{
-        this.navCtrl.push(VisitingCardPage,{id: id});
+      case "visiting_card_requests": {
+        this.navCtrl.push(VisitingCardPage, { id: id });
         break;
       }
-      case "maintenance_requests":{
-        this.navCtrl.push(MaintenanceRequestPage,{id: id});
+      case "maintenance_requests": {
+        this.navCtrl.push(MaintenanceRequestPage, { id: id });
         break;
       }
-      case "room_requests":{
-        this.navCtrl.push(GuestRoomRequestShowPage,{id: id});
-        break;
-      }
-
-      case "stationery_requests":{
-        this.navCtrl.push(StationeryRequestPage,{id: id});
+      case "room_requests": {
+        this.navCtrl.push(GuestRoomRequestShowPage, { id: id });
         break;
       }
 
-
-      case "access_card_requests":{
-        this.navCtrl.push(AccessCardRequestPage,{id: id});
+      case "stationery_requests": {
+        this.navCtrl.push(StationeryRequestPage, { id: id });
         break;
       }
 
 
+      case "access_card_requests": {
+        this.navCtrl.push(AccessCardRequestPage, { id: id });
+        break;
+      }
 
 
 
-      default :{
+
+
+      default: {
         console.log("default")
       }
     }
@@ -165,7 +167,7 @@ export class HomePage {
     });
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.loadNotifications(null)
   }
 
@@ -173,7 +175,7 @@ export class HomePage {
     this.loadNotifications(ev);
   }
 
-  onSnooze(slidingItem: ItemSliding, notification:any){
+  onSnooze(slidingItem: ItemSliding, notification: any) {
     slidingItem.close();
 
     const request = {
@@ -221,7 +223,7 @@ export class HomePage {
       });
   }
 
-  onDismiss(slidingItem: ItemSliding, notification: any){
+  onDismiss(slidingItem: ItemSliding, notification: any) {
     slidingItem.close();
 
     const request = {

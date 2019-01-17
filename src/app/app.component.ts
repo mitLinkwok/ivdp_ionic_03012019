@@ -1,3 +1,4 @@
+import { DatabaseProvider } from './../providers/database/database';
 
 
 import {UserblockPage} from './../pages/userblock/userblock';
@@ -47,6 +48,8 @@ import {ParakhDashboardPage} from "../pages/parakh-dashboard/parakh-dashboard";
 
 
 
+
+
 export interface PageInterface {
   title: string;
   name: string;
@@ -73,8 +76,8 @@ export class MyApp {
   ];
 
   myVoicePages: PageInterface[] = [
-    {title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'bulb', countName: 'Idea'},
-    {title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'paper'},
+    {title: 'Beneficiaries', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'bulb', countName: 'Idea'},
+    {title: 'Survey', name: "SurveyListPage", component: SurveyListPage, icon: 'paper'},
     {title: 'Kyc', name: "GrievancePage", component: GrievancePage, icon: 'chatbubbles', countName: 'Grievance'}
   ];
 
@@ -153,7 +156,11 @@ export class MyApp {
               public appVersion: AppVersion,
               public network: Network,
               public menuCtrl: MenuController,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+             
+             ) {
+               
+               
 
     this.userData.getHasLoggedIn().then((hasLoggedIn) => {
       if (hasLoggedIn) {

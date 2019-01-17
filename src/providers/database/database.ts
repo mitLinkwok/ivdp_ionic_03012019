@@ -1,9 +1,9 @@
 
+import { Platform } from 'ionic-angular';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-
-
+import { AppGlobalProvider } from "../../providers/app-global/app-global";
 
 
 /*
@@ -12,13 +12,159 @@ import { Injectable } from '@angular/core';
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
+const DATABASENAME: string = 'ivdp.db'
 @Injectable()
 export class DatabaseProvider {
-
+  public dbobject: any;
+  public db: null
+  public offlineCase: any = [];
+  public offlineCasekycs: any = [];
+  public tablname = "beneficiaries";
   constructor(public http: HttpClient,
-   
-   ) {
-    console.log('Hello DatabaseProvider Provider');
+    public database: SQLite,
+    public platform: Platform,
+    public appGlobal: AppGlobalProvider,
+
+  ) {
+    if (this.platform.is('cordova')) {
+      this.database.create({
+        name: DATABASENAME,
+        location: "default"
+      }).then((db: SQLiteObject) => {
+        this.dbobject = db;
+        alert("open DB");
+        this.createtable();
+      })
+    } else {
+      alert("error in finding plat form !!!!!")
+    }
+
+
+  }
+  public createtable() {
+    for (let i = 0; i <= this.appGlobal.createtable.length; i++) {
+      console.log("query in arry : -" + this.appGlobal.createtable[i]);
+
+      this.dbobject.executeSql(this.appGlobal.createtable[i], {})
+        .then((data) => {
+          console.log(JSON.stringify(data));
+        }, (error) => {
+          alert(JSON.stringify(error));
+        });
+
+    }
+
   }
 
+
+  public insertbeneficiarydata(objCase: any) {
+    console.log(objCase);
+    return new Promise((resolve, reject) => {
+      this.dbobject.executeSql("INSERT INTO beneficiaries (id,code,beneficiary_name,gender,date_of_birth,contact_number,created_at,updated_at,family_head_id,firstname,middlename,lastname,household_id,village_id,user_id,age,family_head_relation,whatsapp_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [objCase.id, objCase.code, objCase.beneficiary_name, objCase.gender, objCase.date_of_birth, objCase.contact_number, objCase.created_at, objCase.updated_at, objCase.family_head_id, objCase.firstname, objCase.middlename, objCase.lastname, objCase.household_id, objCase.village_id, objCase.user_id, objCase.age, objCase.family_head_relation, objCase.whatsapp_number])
+        .then((data) => {
+          resolve(data);
+          console.log("INSERTED: insertCase" + JSON.stringify(data));
+        }, (error) => {
+          reject(error);
+          console.log("ERROR: insertCase" + JSON.stringify(error));
+        });
+    });
+  }
+  public insertkycsdata(objCase: any) {
+    console.log(objCase);
+    return new Promise((resolve, reject) => {
+      this.dbobject.executeSql("INSERT INTO kycs(id,user_id,kyc_person_id,kyc_person_type,kyc_name,kyc_detail,kyc_number,kyc_file,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [objCase.id, objCase.user_id, objCase.kyc_person_id, objCase.kyc_person_type, objCase.kyc_name, objCase.kyc_detail, objCase.kyc_number, objCase.kyc_file, objCase.created_at, objCase.updated_at])
+        .then((data) => {
+          resolve(data);
+          alert("insert 4444 in " + data)
+          alert("INSERTED: insertCase" + JSON.stringify(data));
+        }, (error) => {
+          reject(error);
+          alert("insert 4444 " + error)
+          alert("ERROR: insertCase" + JSON.stringify(error));
+        });
+    });
+  }
+
+  
+
+  public getbeneficiarydata() {
+    let query = '';
+    query = 'SELECT * FROM beneficiaries';
+    this.offlineCase = []
+    this.dbobject.executeSql(query, {})
+      .then((data) => {
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            this.offlineCase.push({
+              id: data.rows.item(i).id,
+              code: data.rows.item(i).code,
+              beneficiary_name: data.rows.item(i).beneficiary_name,
+              gender: data.rows.item(i).gender,
+              date_of_birth: data.rows.item(i).date_of_birth,
+              contact_number: data.rows.item(i).contact_number,
+              created_at: data.rows.item(i).created_at,
+              updated_at: data.rows.item(i).updated_at,
+              family_head_id: data.rows.item(i).family_head_id,
+              firstname: data.rows.item(i).firstname,
+              middlename: data.rows.item(i).middlename,
+              lastname: data.rows.item(i).lastname,
+              household_id: data.rows.item(i).household_id,
+              village_id: data.rows.item(i).village_id,
+              user_id: data.rows.item(i).user_id,
+              age: data.rows.item(i).age,
+              family_head_relation: data.rows.item(i).family_head_relation,
+              whatsapp_number: data.rows.item(i).whatsapp_number
+            });
+          }
+        } else {
+          alert("error in getting beneficiary data from database !!!!")
+        }
+      }, (error) => {
+        console.log("ERROR: getAllCase " + JSON.stringify(error));
+      });
+  }
+  public getKycsdata() {
+    let query = '';
+    query = 'SELECT * FROM kycs';
+    this.offlineCasekycs = [];
+    this.dbobject.executeSql('SELECT * FROM kycs', {})
+      .then((data) => {
+        alert(" red kycs " + data.rows.length);
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            this.offlineCasekycs.push({
+              id: data.rows.item(i).id,
+              user_id: data.rows.item(i).user_id,
+              kyc_person_id: data.rows.item(i).kyc_person_id,
+              kyc_person_type: data.rows.item(i).kyc_person_type,
+              kyc_name: data.rows.item(i).kyc_name,
+              kyc_number: data.rows.item(i).kyc_number,
+              kyc_detail: data.rows.item(i).kyc_detail,
+              kyc_file: data.rows.item(i).kyc_file,
+              created_at: data.rows.item(i).created_at,
+              updated_at: data.rows.item(i).updated_at
+            });
+            alert("i am in red kycs for loop   " + data.rows.item(i).id)
+          }
+        } else { alert("error in getting kyc data from database !!!!") }
+      }, (error) => {
+        console.log("ERROR: getAllCase " + JSON.stringify(error));
+      });
+
+  }
+
+
+
+
 }
+
+
+
+
+
+
+
+

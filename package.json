@@ -49,7 +49,7 @@
     "@ionic/storage": "2.1.3",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
-    "cordova-android": "6.4.0",
+    "cordova-android": "^6.4.0",
     "cordova-android-support-gradle-release": "^1.4.7",
     "cordova-browser": "5.0.4",
     "cordova-ios": "^4.5.5",
@@ -121,8 +121,8 @@
       },
       "cordova-plugin-image-picker": {},
       "cordova-plugin-fcm-with-dependecy-updated": {},
-      "cordova-sqlite-storage": {},
-      "cordova-plugin-x-toast": {}
+      "cordova-plugin-x-toast": {},
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "ios",

@@ -69,13 +69,10 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.linkwok.empower"
     },
-    "cordova-sqlite-storage": {
-      "PACKAGE_NAME": "com.linkwok.empower"
-    },
     "cordova-plugin-x-toast": {
       "PACKAGE_NAME": "com.linkwok.empower"
     },
-    "cordova-plugin-sqlite": {
+    "cordova-sqlite-storage": {
       "PACKAGE_NAME": "com.linkwok.empower"
     }
   },

@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AppGlobalProvider {
 
   applicationVersion: '1.1s';
+  generatedSqlQuery: string
   applicationName: any;
   isOnline: boolean = false;
 
@@ -19,7 +20,7 @@ export class AppGlobalProvider {
   private intranetBaseURL = 'http://165.227.139.76:8080/api/v1';
   // private intranetBaseURL = 'http://165.227.139.76:8080/api/v1';
 
-  
+
   // private intranetBaseURL = 'http://172.16.20.188:8000/api/v1';
   // private intranetBaseURL = 'http://172.16.17./api/v1';
   private surveyBaseURL = 'https://deepaksurveystaging.herokuapp.com/rapidfire/surveys';
@@ -126,13 +127,13 @@ export class AppGlobalProvider {
   public getMRLocations = this.intranetBaseURL + '/get_locations';
   public getLunchCategories = this.intranetBaseURL + '/get_lunch_categories';
   public canteenFacilityUsage = this.intranetBaseURL + '/record_canteen_usage';
-  
+
   //rewards and redemption 
-  public getMyAwards  = this.intranetBaseURL + "/get_user_awards"
+  public getMyAwards = this.intranetBaseURL + "/get_user_awards"
 
   constructor() {
     console.log('Hello AppGlobalProvider Provider');
-    
+
   }
 
 
@@ -143,26 +144,21 @@ export class AppGlobalProvider {
   public vibrationTimings = 500;
 
 
-  public answers  = {};
-
-//   public questionsList = [{
-//     question: "What is your first name",
-//     key: "q1"
-//   },
-//   {
-//     question: "What is your middle name",
-//     key: "q2"
-//   },
-//   {
-//     question: "What is your last name",
-//     key: "q3"
-//   }
-// ]
-
-public questionsList=[];
+  public answers = {};
+  public questionsList = [];
 
 
-public gesuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
-public answersrequest=this.intranetBaseURL +'/answer/';
+  public gesuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
+  public answersrequest = this.intranetBaseURL + '/answer/';
 
+  // -------------------------------CREATE DATABASE FROM LOGIN TIME-----------------------------
+
+  public createtable = ["CREATE TABLE beneficiaries(id INTEGER PRIMARY KEY AUTOINCREMENT,code TEXT,beneficiary_name TEXT,gender NUMBER,date_of_birth TEXT,contact_number NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,family_head_id TEXT,firstname TEXT,middlename TEXT,lastname TEXT,household_id NUMBER,village_id NUMBER,user_id NUMBER,age NUMBER,family_head_relation TEXT,whatsapp_number NUMBER)",
+    , "CREATE TABLE kycs(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,created_at TIMESTAMP,updated_at TIMESTAMP)"
+    , "CREATE TABLE `survey` ( `id` INTEGER, `project_id` INTEGER, `title` TEXT, `description` TEXT, `start_date` TEXT, `created_at` TEXT, `updated_at` TEXT )"
+    , "CREATE TABLE `questions` ( `id` INTEGER, `survey_id` INTEGER, `section_id` INTEGER, `order` INTEGER, `text` TEXT, `type` TEXT, `language_json` TEXT, `rule_json` TEXT, `created_at` TEXT, `updated_at` INTEGER )"
+    , "CREATE TABLE `options` ( `id` INTEGER, `question_id` INTEGER, `type` TEXT, `order` INTEGER, `text` TEXT, `language_json` TEXT, `created_at` TEXT, `updated_at` TEXT )"
+    , "CREATE TABLE `answers` ( `id` INTEGER, `beneficiarie_id` INTEGER, `survey_id` INTEGER, `question_id` INTEGER, `language_id` INTEGER, `option_id` INTEGER, `option_text` TEXT, `other_text` TEXT, `created_at` TEXT, `updated_at` TEXT )"]
 }
+
+

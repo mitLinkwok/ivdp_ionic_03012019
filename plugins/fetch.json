@@ -171,14 +171,6 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-sqlite-storage": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-sqlite-storage@2.6.0"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-x-toast": {
     "source": {
       "type": "registry",
@@ -187,10 +179,10 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-sqlite": {
+  "cordova-sqlite-storage": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-sqlite"
+      "id": "cordova-sqlite-storage"
     },
     "is_top_level": true,
     "variables": {}

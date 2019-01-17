@@ -28,6 +28,7 @@ export class DataSetterProvider {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
+      
         'Authorization': 'Bearer '+ this.user.userData.auth_token
         // 'Version': this.appGlobal.applicationVersion
       })
