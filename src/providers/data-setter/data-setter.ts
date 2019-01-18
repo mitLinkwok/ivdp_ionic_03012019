@@ -28,6 +28,7 @@ export class DataSetterProvider {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
+      
         'Authorization': 'Bearer '+ this.user.userData.auth_token
         // 'Version': this.appGlobal.applicationVersion
       })
@@ -186,8 +187,8 @@ sendNotificationToken() {
 
 
 
-  gatsuervysrequest(data){
-    return this.http.post(this.appGlobal.gesuervyrequest,data,this.getHTTPOptions());
+  gatquestionrequest(){
+    return this.http.post(this.appGlobal.getquestionrequest,this.getHTTPOptions());
   }
   submitanswerrequest(data){
     return this.http.post(this.appGlobal.answersrequest,data,this.getHTTPOptions());

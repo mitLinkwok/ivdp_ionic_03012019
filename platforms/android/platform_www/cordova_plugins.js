@@ -388,14 +388,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-sqlite-storage.SQLitePlugin",
-    "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
-    "pluginId": "cordova-sqlite-storage",
-    "clobbers": [
-      "SQLitePlugin"
-    ]
-  },
-  {
     "id": "cordova-plugin-x-toast.Toast",
     "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
     "pluginId": "cordova-plugin-x-toast",
@@ -404,12 +396,11 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-sqlite.SQLitePlugin",
-    "file": "plugins/cordova-plugin-sqlite/www/SQLitePlugin.js",
-    "pluginId": "cordova-plugin-sqlite",
+    "id": "cordova-sqlite-storage.SQLitePlugin",
+    "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+    "pluginId": "cordova-sqlite-storage",
     "clobbers": [
-      "window.sqlitePlugin",
-      "cordova.plugins.sqlitePlugin"
+      "SQLitePlugin"
     ]
   }
 ];
@@ -437,9 +428,8 @@ module.exports.metadata =
   "cordova-plugin-splashscreen": "5.0.2",
   "cordova-plugin-vibration": "3.1.0",
   "cordova-plugin-whitelist": "1.3.3",
-  "cordova-sqlite-storage": "2.6.0",
   "cordova-plugin-x-toast": "2.7.2",
-  "cordova-plugin-sqlite": "1.0.3"
+  "cordova-sqlite-storage": "2.6.0"
 };
 // BOTTOM OF METADATA
 });

@@ -52,6 +52,7 @@
     "@ngx-translate/http-loader": "^2.0.1",
     "call-number": "1.0.1",
     "cordova-android": "6.4.0",
+
     "cordova-android-support-gradle-release": "^1.4.7",
     "cordova-browser": "5.0.4",
     "cordova-ios": "^4.5.5",
@@ -126,6 +127,7 @@
       "cordova-sqlite-storage": {},
       "cordova-plugin-x-toast": {},
       "mx.ferreyra.callnumber": {}
+
     },
     "platforms": [
       "ios",
