@@ -1,0 +1,85 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-android-support-gradle-release": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-advanced-http": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-allow-backup": {
+      "BACKUP": "false",
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-app-version": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-calendar": {
+      "CALENDAR_USAGE_DESCRIPTION": " ",
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-crop": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-fcm-with-dependecy-updated": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-filepath": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-image-picker": {
+      "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-ionic-webview": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "cordova-sqlite-storage": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.linkwok.empower"
+    }
+  }
+}

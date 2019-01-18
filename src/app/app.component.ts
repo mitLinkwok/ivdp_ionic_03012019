@@ -1,3 +1,4 @@
+import { DatabaseProvider } from './../providers/database/database';
 
 
 import {UserblockPage} from './../pages/userblock/userblock';
@@ -47,6 +48,8 @@ import {ParakhDashboardPage} from "../pages/parakh-dashboard/parakh-dashboard";
 
 
 
+
+
 export interface PageInterface {
   title: string;
   name: string;
@@ -76,6 +79,7 @@ export class MyApp {
     {title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'people', countName: 'Idea'},
     {title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box'},
     {title: 'KYC', name: "GrievancePage", component: GrievancePage, icon: 'body', countName: 'Grievance'}
+
   ];
 
   // itPages: PageInterface[] = [
@@ -154,7 +158,11 @@ export class MyApp {
               public appVersion: AppVersion,
               public network: Network,
               public menuCtrl: MenuController,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+             
+             ) {
+               
+               
 
     this.userData.getHasLoggedIn().then((hasLoggedIn) => {
       if (hasLoggedIn) {

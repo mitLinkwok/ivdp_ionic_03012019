@@ -200,7 +200,7 @@ export class DataGetterServiceProvider {
     return this.http.get(this.appGlobal.getMyAwards, this.getHTTPOptions());
   }
 
-
+ 
 
 
 }

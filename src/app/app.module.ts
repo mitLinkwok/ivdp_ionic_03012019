@@ -133,6 +133,8 @@ import { SuervyPage } from "./../pages/suervy/suervy";
 import { SuervyPageModule } from "./../pages/suervy/suervy.module";
 import { DatabaseProvider } from '../providers/database/database';
 import { SQLite } from '@ionic-native/sqlite';
+import { DBmaneger } from "../providers/database/Dbmaneger" 
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -234,6 +236,7 @@ export function createTranslateLoader(http: HttpClient) {
     IntroPageModule,
     ParakhDashboardPageModule,
     SuervyPageModule
+ 
    
   ],
 
@@ -303,6 +306,7 @@ export function createTranslateLoader(http: HttpClient) {
     ParakhDashboardPage,
     SuervyPage
     
+    
    
   ],
   providers: [
@@ -333,7 +337,8 @@ export function createTranslateLoader(http: HttpClient) {
     DatabaseProvider,
     SQLite,
     CallNumber
-   
+    DBmaneger
+
    
   
     

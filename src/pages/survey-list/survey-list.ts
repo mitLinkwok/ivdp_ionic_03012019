@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, LoadingController, ToastController } from 'ionic-angular';
 import { AppGlobalProvider } from '../../providers/app-global/app-global';
 import { SuervyPage } from '../suervy/suervy';
+import { DatabaseProvider } from './../../providers/database/database';
 
 /**
  * Generated class for the SurveyListPage page.
@@ -30,12 +31,14 @@ export class SurveyListPage {
     public userData:UserData,
     public loadingCtrl:LoadingController,
     public appGlobal:AppGlobalProvider,
+    public sqldatabasegetter: DatabaseProvider,
     public toastCtrl:ToastController) {
     this.user = userData.userData;
     this.events.subscribe('reload:surveys', () => {
       this.refreshSurveysList(null);
-      // this.loadSurveys(null);
+       this.loadSurveys(null);
     });
+    this.sqldatabasegetter.getsureydatalode();
   }
 
 
@@ -77,32 +80,33 @@ export class SurveyListPage {
       loading.present();
     }
 
-    this.dataGetterService.getSurveys().subscribe((data: any) => {
-        
-        let a=true
-        if(data.success || a){
-          this.surveys = data.data;
-        } else {
-          this.surveys = [];
+    if (this.sqldatabasegetter.offlineCase.length > 0) {
+      this.surveys = [];
+
+      for (let i = 0; i <= this.sqldatabasegetter.offlineCase.length; i++) {
+        if (this.sqldatabasegetter.offlineCase[i] != undefined) {
+          console.log(this.sqldatabasegetter.offlineCase[i]);
+
+          this.surveys.push(
+            this.sqldatabasegetter.offlineCase[i]
+          );
         }
-        
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
-        }
-      }, err => {
-        console.log(err);
-        this.surveys = [];
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
-        }
-      });
+      }
+      loading.dismiss();
+      if (ref != null) {
+        ref.complete();
+      }
+
+
+    } else {
+      this.surveys = [];
+      console.log("No data i array")
+      loading.dismiss();
+      if (ref != null) {
+        ref.complete();
+      }
+    }
+ 
   }
 
 

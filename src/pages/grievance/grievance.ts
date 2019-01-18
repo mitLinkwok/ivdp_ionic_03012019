@@ -1,11 +1,11 @@
+import { DatabaseProvider } from './../../providers/database/database';
 import { AppGlobalProvider } from './../../providers/app-global/app-global';
 import { GrievanceFilterPage } from './../grievance-filter/grievance-filter';
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams, Events, ModalController, ToastController } from 'ionic-angular';
 import { DataGetterServiceProvider } from '../../providers/data-getter-service/data-getter-service';
-import {GrievanceFormPage} from "../grievance-form/grievance-form";
+import { GrievanceFormPage } from "../grievance-form/grievance-form";
 import { UserData } from './../../providers/user-data-ts';
-
 import * as _ from "lodash";
 import * as moment from 'moment';
 
@@ -23,31 +23,37 @@ import * as moment from 'moment';
   templateUrl: 'grievance.html',
 })
 export class GrievancePage {
-  grievance_m : any = [];
+  grievance_m: any = [];
   public grievances: any;
-  queryText:any = '';
+  queryText: any = '';
   grievanceWhoseList: any = [];
   excludeWhoseGrievances: any = ["mine"];
   descending: boolean = false;
   order: number = -1;
   field: string = 'updated_at';
   UserId;
+  
+  
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public dataGetterService: DataGetterServiceProvider,
     public loadingCtrl: LoadingController,
-    public events:Events,
+    public events: Events,
     public user: UserData,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    public appGlobal: AppGlobalProvider) {
-     
-    this.events.subscribe('reload:grievance',()=>{
+    public appGlobal: AppGlobalProvider,
+    public sqldatabasegetter: DatabaseProvider) {
+
+
+
+    this.events.subscribe('reload:grievance', () => {
       this.refreshSRList(null);
     });
+    this.sqldatabasegetter.getKycsdata();
   }
 
-  sort(){
+  sort() {
     this.descending = !this.descending;
     this.order = this.descending ? 1 : -1;
   }
@@ -60,47 +66,35 @@ export class GrievancePage {
     if (ref === null) {
       loading.present();
     }
+    if (this.sqldatabasegetter.offlineCasekycs.length > 0) {
+      this.grievance_m = [];
 
-    this.dataGetterService.getGrievances()
-      .subscribe((data: any) => {
-        console.log("kyc Loaded", data);
-        let a=true
-        if (data.success || a) {
-          this.grievance_m=data.data
-          // this.grievance_m = data.grievances;
-          this.grievances = data.grievances;
-          // this.grievanceWhoseList = _.uniq(this.grievances.map(grievance => grievance.whose)).sort();
-          // this.updateGrievances();
-        } else {
-          // this.grievance_m = [];
-          this.grievance_m = [];
-          // this.grievanceWhoseList = [];
-          this.updateGrievances();
-        }
+      for (let i = 0; i <= this.sqldatabasegetter.offlineCasekycs.length; i++) {
+        if (this.sqldatabasegetter.offlineCasekycs[i] != undefined) {
+          console.log(this.sqldatabasegetter.offlineCasekycs[i]);
 
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
+          this.grievance_m.push(
+            this.sqldatabasegetter.offlineCasekycs[i]
+          );
         }
-      }, err => {
-        console.log(err);
-        this.grievance_m = [];
-        this.grievances = [];
-        // this.grievanceWhoseList = [];
-        this.updateGrievances();
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
-        }
-      });
+      }
+      loading.dismiss();
+      if (ref != null) {
+        ref.complete();
+      }
+
+
+    } else {
+      this.grievance_m = [];
+      alert("No data i array")
+      loading.dismiss();
+      if (ref != null) {
+        ref.complete();
+      }
+    }
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.loadGrievances(null);
   }
 
@@ -108,19 +102,19 @@ export class GrievancePage {
     console.log('ionViewDidLoad GrievancePage');
   }
 
-  refreshSRList(ev){
+  refreshSRList(ev) {
     this.loadGrievances(ev);
   }
 
   goToSRForm() {
-    this.UserId= this.user.userData.id;
-    this.navCtrl.push(GrievanceFormPage,{
-      Surveyor:this.UserId 
+    this.UserId = this.user.userData.id;
+    this.navCtrl.push(GrievanceFormPage, {
+      Surveyor: this.UserId
     });
   }
 
-  goToGrievance(id){
-      console.log("@@click"+  id)
+  goToGrievance(id) {
+    console.log("@@click" + id)
 
     // this.navCtrl.push(GrievanceShowPage,{
     //   id:id,
@@ -162,7 +156,7 @@ export class GrievancePage {
     grievance.hide = !(excludeWhoseGrievance);
   }
 
-  getLastActivity(updated_at){
+  getLastActivity(updated_at) {
     return moment(updated_at).format("MMMM DD,YYYY hh:mm A");
   }
 }
