@@ -18,6 +18,7 @@ import {ArticleIndexPage} from './../pages/article-index/article-index';
 import {DataSetterProvider} from './../providers/data-setter/data-setter';
 import {LeavesShowPage} from './../pages/leaves-show/leaves-show';
 import {LogoutPage} from './../pages/logout/logout';
+import {SyncPage} from './../pages/sync/sync';
 import {Component, ViewChild} from '@angular/core';
 import {App, Events, Nav, Platform, Config, ToastController, MenuController, Content} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
@@ -120,7 +121,9 @@ export class MyApp {
   // ];
 
   loggedOutPages: PageInterface[] = [
+    {title: 'Sync', name: 'SyncPage', component: SyncPage, icon: 'sync'},
     {title: 'Logout', name: 'LogoutPage', component: LogoutPage, icon: 'log-out', logsOut: true}
+    
   ];
 
   rootPage: any;

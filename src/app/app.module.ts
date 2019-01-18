@@ -127,6 +127,8 @@ import {ParakhDashboardPage} from "../pages/parakh-dashboard/parakh-dashboard";
 import {ParakhDashboardPageModule} from "../pages/parakh-dashboard/parakh-dashboard.module";
 import { CallNumber } from '@ionic-native/call-number';
 
+import {SyncPage} from "../pages/sync/sync";
+import {SyncPageModule} from "../pages/sync/sync.module";
 
 
 import { SuervyPage } from "./../pages/suervy/suervy";
@@ -235,7 +237,8 @@ export function createTranslateLoader(http: HttpClient) {
     DirectivesModule,
     IntroPageModule,
     ParakhDashboardPageModule,
-    SuervyPageModule
+    SuervyPageModule,
+    SyncPageModule
  
    
   ],
@@ -304,7 +307,8 @@ export function createTranslateLoader(http: HttpClient) {
     GuestRoomRequestShowPage,
     CanteenFacilityPage,
     ParakhDashboardPage,
-    SuervyPage
+    SuervyPage,
+    SyncPage
     
     
    
@@ -336,7 +340,7 @@ export function createTranslateLoader(http: HttpClient) {
     Camera,
     DatabaseProvider,
     SQLite,
-    CallNumber
+    CallNumber,
     DBmaneger
 
    
