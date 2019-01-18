@@ -3,11 +3,12 @@ import { DBmaneger } from './../../providers/database/Dbmaneger';
 import { DatabaseProvider } from './../../providers/database/database';
 import { DataSetterProvider } from './../../providers/data-setter/data-setter';
 import { UserData } from './../../providers/user-data-ts';
-import { Component } from '@angular/core';
-import { Events, IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
-import { DataGetterServiceProvider } from "../../providers/data-getter-service/data-getter-service";
-import { AppGlobalProvider } from "../../providers/app-global/app-global";
-import { MaintenanceRequestFormPage } from "../maintenance-request-form/maintenance-request-form";
+import {Component} from '@angular/core';
+import {Events, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {DataGetterServiceProvider} from "../../providers/data-getter-service/data-getter-service";
+import {AppGlobalProvider} from "../../providers/app-global/app-global";
+import {MaintenanceRequestFormPage} from "../maintenance-request-form/maintenance-request-form";
+import { CallNumber } from '@ionic-native/call-number';
 
 
 
@@ -31,6 +32,7 @@ export class MaintenanceRequestPage {
 
 
   constructor(public navCtrl: NavController,
+
     public navParams: NavParams,
     public dataGetterService: DataGetterServiceProvider,
     public loadingCtrl: LoadingController,
@@ -40,8 +42,9 @@ export class MaintenanceRequestPage {
     public appGlobal: AppGlobalProvider,
     public sqldatabasegetter: DatabaseProvider,
     public db: DBmaneger,
-    public dataSetter: DataSetterProvider) {
-     
+    public dataSetter: DataSetterProvider,
+      private callNumber: CallNumber) {
+
     this.events.subscribe('reload:maintenance-request', (isNotification, id) => {
       this.refreshMaintenanceRequestList(null);
       
@@ -114,6 +117,10 @@ loadMaintenanceRequests(reference) {
     this.navCtrl.push(GrievancePage,{
       beneficiary_id:id
     })
+
+  }
+  call(num){
+    this.callNumber.callNumber(num, true)
 
   }
 }

@@ -25,20 +25,20 @@
 
   <ion-list>
     <ion-card
-      *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:['uid','asset','detail']}"  (click)="EditUserProfile(maintenanceRequest.id)" [hidden]="maintenanceRequests.hide">
+      *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:['beneficiary_name']}"  (click)="EditUserProfile(maintenanceRequest.id)" [hidden]="maintenanceRequests.hide">
       <div class="{{'maintenance_request_state_sidebar_'+maintenanceRequest.state}}">
         <ion-card-header >
-          {{maintenanceRequest.code}} 
+          CODE: {{maintenanceRequest.code}} 
           <span class="pull-right sr-age"><p>Age: <strong type="number">{{maintenanceRequest.age}}</strong></p></span>
         </ion-card-header>
 
         <ion-card-content>
           <p>Name:           <strong>{{maintenanceRequest.beneficiary_name}}</strong></p>
-          <p>gender:         <strong>{{maintenanceRequest.gender}}</strong></p>
-          <p>date_of_birth:  <strong>{{maintenanceRequest.date_of_birth}}</strong></p>
-          <p>contact_number: <strong>{{maintenanceRequest.contact_number}}</strong></p>
-          <p>whatsapp_number:<strong>{{maintenanceRequest.whatsapp_number}}</strong> </p>
-          <p>household_id:   <strong>{{maintenanceRequest.household_id}}</strong> </p>
+          <p>Gender:         <strong>{{maintenanceRequest.gender}}</strong></p>
+          <p>DOB:  <strong>{{maintenanceRequest.date_of_birth}}</strong></p>
+          <p>Contact Number: <strong><a href="#" (click)='call(maintenanceRequest.contact_number)'>{{maintenanceRequest.contact_number}}</a></strong></p>
+          <p>Whatsapp Number:<strong>{{maintenanceRequest.whatsapp_number}}</strong> </p>
+          <p>Household ID:   <strong>{{maintenanceRequest.household_id}}</strong> </p>
 
         </ion-card-content>
 

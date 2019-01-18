@@ -12,7 +12,8 @@
   <ion-content class="outer-content">
     <ion-item menuClose (click)="openProfile()">
       <ion-avatar item-start>
-        <img src="{{userprofile}}" style="width:5em; height:5em; border:3px solid gray;">
+        <img src="{{userprofile_sample}}" style="width:5em; height:5em; border:3px solid gray;">
+        <!-- <img src="{{userprofile}}" style="width:5em; height:5em; border:3px solid gray;"> -->
       </ion-avatar>
       <ion-title>{{username}}</ion-title>
     </ion-item>
@@ -28,7 +29,7 @@
 
     <ion-list>
       <ion-list-header style="margin-bottom: 0;">
-        My Voice
+        My Features
       </ion-list-header>
       <button ion-item menuClose *ngFor="let p of myVoicePages" (click)="openPage(p)">
         <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
@@ -36,7 +37,7 @@
       </button>
     </ion-list>
 
-    <ion-list>
+  <!--   <ion-list>
       <ion-list-header style="margin-bottom: 0;">
         IT
       </ion-list-header>
@@ -75,7 +76,7 @@
         {{p.title}}
       </button>
     </ion-list>
-
+ -->
     <ion-list>
       <ion-list-header style="margin-bottom: 0;">
         Account

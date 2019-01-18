@@ -28,6 +28,7 @@ export class MaintenanceRequestFormPage {
 
 
   maintenanceRequest: any = {};
+
   Addbeneficialy: any = {};
   assets: any = [];
   locations: any = [];
@@ -58,6 +59,7 @@ export class MaintenanceRequestFormPage {
   }
 
   initMaintenanceRequest() {
+
     this.Addbeneficialy = {
       code: '',
       firstname: '',

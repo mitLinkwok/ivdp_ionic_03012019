@@ -8,7 +8,7 @@
   <ion-navbar>
     <!-- <ion-title>New Facility Request</ion-title> -->
 
-    <ion-title>Add New Beneficialy</ion-title>
+    <ion-title>Add New Beneficiary</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -19,39 +19,39 @@
 
         <ion-item>
             <ion-label stacked floating color="primary" >Code</ion-label>
-           <ion-input name="code" type="number" [(ngModel)]="Addbeneficialy.code" required></ion-input>
+           <ion-input name="code" type="number" [(ngModel)]="beneficiary.code" required></ion-input>
          </ion-item>
          <ion-item>
-            <ion-label stacked floating color="primary">serveryer Id</ion-label>
-           <ion-input name="user_id"  [readonly]="isReadonly"  [(ngModel)]="Addbeneficialy.user_id" required></ion-input>
+            <ion-label stacked floating color="primary">Surveyor ID</ion-label>
+           <ion-input name="user_id"  [readonly]="isReadonly"  [(ngModel)]="beneficiary.user_id" required></ion-input>
          </ion-item>
         <ion-item>
             <ion-label stacked floating color="primary">Firstname</ion-label>
-           <ion-input name="firstname" type="text" [(ngModel)]="Addbeneficialy.firstname" required></ion-input>
+           <ion-input name="firstname" type="text" [(ngModel)]="beneficiary.firstname" required></ion-input>
          </ion-item>
          <ion-item>
             <ion-label stacked floating color="primary">Middlename</ion-label>
-           <ion-input name="middlename" type="text" [(ngModel)]="Addbeneficialy.middlename" required></ion-input>
+           <ion-input name="middlename" type="text" [(ngModel)]="beneficiary.middlename" required></ion-input>
          </ion-item>
          <ion-item>
             <ion-label stacked floating color="primary">Lastname</ion-label>
-           <ion-input name="lastname" type="text" [(ngModel)]="Addbeneficialy.lastname" required></ion-input>
+           <ion-input name="lastname" type="text" [(ngModel)]="beneficiary.lastname" required></ion-input>
          </ion-item>
           <ion-item> 
           <ion-label stacked floating color="primary">Age</ion-label>
-          <ion-input name="age" type="number" [(ngModel)]="Addbeneficialy.age" required></ion-input>
+          <ion-input name="age" type="number" [(ngModel)]="beneficiary.age" required></ion-input>
       </ion-item>
 
 
 
-      <ion-list  radio-group [(ngModel)]="Addbeneficialy.gender" name="gender" >
+      <ion-list  radio-group [(ngModel)]="beneficiary.gender" name="gender" >
         <ion-list-header><strong>Gender</strong></ion-list-header>
           <ion-item >
               <ion-label>Male</ion-label>
               <ion-radio value="Male"></ion-radio>
           </ion-item>
           <ion-item >
-              <ion-label>FeMale</ion-label>
+              <ion-label>Female</ion-label>
               <ion-radio value="FeMale"></ion-radio>
           </ion-item>
           <ion-item >
@@ -65,35 +65,35 @@
 
 
     <ion-item> 
-          <ion-label stacked floating color="primary">Borth Date</ion-label>
-          <ion-datetime  name="date_of_birth"  displayFormat="MM/DD/YYYY"  [(ngModel)]="Addbeneficialy.date_of_birth" ></ion-datetime>
+          <ion-label stacked floating color="primary">Birth Date</ion-label>
+          <ion-datetime  name="date_of_birth"  displayFormat="MM/DD/YYYY"  [(ngModel)]="beneficiary.date_of_birth" ></ion-datetime>
       </ion-item>
       <ion-item> 
-          <ion-label stacked floating color="primary">House hold ID  </ion-label>
-          <ion-input name="household_id" type="number" [(ngModel)]="Addbeneficialy.household_id" required></ion-input>
+          <ion-label stacked floating color="primary">House Hold ID  </ion-label>
+          <ion-input name="household_id" type="number" [(ngModel)]="beneficiary.household_id" required></ion-input>
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary">Village ID</ion-label>
-          <ion-input name="village_id" type="number" [(ngModel)]="Addbeneficialy.village_id" required></ion-input>
+          <ion-input name="village_id" type="number" [(ngModel)]="beneficiary.village_id" required></ion-input>
       </ion-item>
       <ion-item> 
-          <ion-label stacked floating color="primary">Family Hade Id</ion-label>
-          <ion-input name="family_head_id" type="number" [(ngModel)]="Addbeneficialy.family_head_id" required></ion-input>
+          <ion-label stacked floating color="primary">Family Head Id</ion-label>
+          <ion-input name="family_head_id" type="number" [(ngModel)]="beneficiary.family_head_id" required></ion-input>
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary">Contact Number</ion-label>
-          <ion-input name="contact_number" type="number" [(ngModel)]="Addbeneficialy.contact_number" required></ion-input>
+          <ion-input name="contact_number" type="number" [(ngModel)]="beneficiary.contact_number" required></ion-input>
       </ion-item>
       <ion-item> 
           <ion-label stacked floating color="primary"> Whatsapp Number</ion-label>
-          <ion-input name="whatsapp_number" type="number" [(ngModel)]="Addbeneficialy.whatsapp_number" required></ion-input>
+          <ion-input name="whatsapp_number" type="number" [(ngModel)]="beneficiary.whatsapp_number" required></ion-input>
       </ion-item>
       <ion-item> 
-        <ion-label stacked floating color="primary">Relation With Family had  </ion-label>
-        <ion-input name="family_head_relation" type="text" [(ngModel)]="Addbeneficialy.family_head_relation" required></ion-input>
+        <ion-label stacked floating color="primary">Relation With Family head  </ion-label>
+        <ion-input name="family_head_relation" type="text" [(ngModel)]="beneficiary.family_head_relation" required></ion-input>
     </ion-item>
     </ion-list>
-    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit 
+    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Beneficiary 
       </button>  
   
   </form>
