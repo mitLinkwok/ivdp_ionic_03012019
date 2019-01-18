@@ -1,9 +1,13 @@
+import { DatabaseProvider } from './../../providers/database/database';
+import { DBmaneger } from './../../providers/database/Dbmaneger';
 import { DataSetterProvider } from "../../providers/data-setter/data-setter";
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AppGlobalProvider } from "../../providers/app-global/app-global";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
+
+
 
 
 /**
@@ -36,7 +40,9 @@ export class SuervyPage {
     public storage: Storage,
     public appGlobal: AppGlobalProvider,
     public dataSetterService: DataSetterProvider,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public db: DBmaneger,
+    public sqldatabasegetter: DatabaseProvider
   ) {
     this.qindex = navParams.get("qindex");
     this.question_id = navParams.get("question_id");
@@ -44,8 +50,8 @@ export class SuervyPage {
     this.survey_id = navParams.get("survey_id");
     console.log(" index  :- " + this.qindex + " pid  :  " + this.project_id + " qid  " + this.question_id + "this.survey_id :   " + this.survey_id);
 
-    this.getSuervy();
-
+    alert("survey_id :- " + this.survey_id)
+    this.sqldatabasegetter.getQuestionsfroloddata();
     this.loadQuestion();
 
 
@@ -63,17 +69,17 @@ export class SuervyPage {
 
 
 
-  getSuervy() {
-    const body = { question_id: this.question_id, project_id: this.project_id, survey_id: this.survey_id };
-    this.dataSetterService.gatsuervysrequest(body).subscribe((data: any) => {
-      this.appGlobal.questionsList = data.questions;
+  // getSuervy() {
+  //   // const body = { question_id: this.question_id, project_id: this.project_id, survey_id: this.survey_id };
+  //   // this.dataSetterService.gatsuervysrequest(body).subscribe((data: any) => {
+  //   //   this.appGlobal.questionsList = data.questions;
 
-    }, error => {
-      console.log(error);
+  //   // }, error => {
+  //   //   console.log(error);
 
-    });
+  //   // });
 
-  }
+  // }
   loadQuestion() {
 
     console.log("arrey" + this.appGlobal.questionsList);
@@ -135,16 +141,16 @@ export class SuervyPage {
       this.dataobject.push(this.appGlobal.answers[key[i]]);
     }
     console.log(this.dataobject);
-  
+
     for (let j = 0; j <= this.dataobject.length; j++) {
       if (this.dataobject[j] != undefined) {
         console.log("inofrdd" + this.dataobject[j])
         this.dataSetterService.submitanswerrequest(this.dataobject[j]).subscribe((data: any) => {
           console.log("responsdara" + JSON.stringify(data));
-          
+
           if (data) {
-            this.responsData=data.data;
-            console.log("@@@@@$5555"+this.responsData);
+            this.responsData = data.data;
+            console.log("@@@@@$5555" + this.responsData);
             const toast = this.toastCtrl.create({
               message: data.message,
               duration: 3000
@@ -154,11 +160,11 @@ export class SuervyPage {
               this.navCtrl.pop();
               alert("suery is submit successfully")
             }
-          
+
           } else {
-    
-            alert( data.errors);
-            
+
+            alert(data.errors);
+
           }
 
         }, error => {
@@ -166,7 +172,7 @@ export class SuervyPage {
         });
       }
     }
-   
+
   }
 }
 

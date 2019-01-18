@@ -1,3 +1,4 @@
+import { GrievancePage } from './../grievance/grievance';
 import { DBmaneger } from './../../providers/database/Dbmaneger';
 import { DatabaseProvider } from './../../providers/database/database';
 import { DataSetterProvider } from './../../providers/data-setter/data-setter';
@@ -110,6 +111,9 @@ loadMaintenanceRequests(reference) {
 
   EditUserProfile(id) {
     console.log("UserID :- " + this.UserId + "  ID ::-" + id);
+    this.navCtrl.push(GrievancePage,{
+      beneficiary_id:id
+    })
 
   }
 }

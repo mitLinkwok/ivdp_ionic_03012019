@@ -1,12 +1,13 @@
+import { DatabaseProvider } from './../../providers/database/database';
 import { HttpClient } from '@angular/common/http';
-import {Component} from '@angular/core';
-import {Events, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {DataSetterProvider} from "../../providers/data-setter/data-setter";
-import {DataGetterServiceProvider} from "../../providers/data-getter-service/data-getter-service";
-import {Vibration} from "@ionic-native/vibration";
-import {AppGlobalProvider} from "../../providers/app-global/app-global";
-import {ToastController} from "ionic-angular/components/toast/toast-controller";
-import {NgForm} from "@angular/forms";
+import { Component } from '@angular/core';
+import { Events, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { DataSetterProvider } from "../../providers/data-setter/data-setter";
+import { DataGetterServiceProvider } from "../../providers/data-getter-service/data-getter-service";
+import { Vibration } from "@ionic-native/vibration";
+import { AppGlobalProvider } from "../../providers/app-global/app-global";
+import { ToastController } from "ionic-angular/components/toast/toast-controller";
+import { NgForm } from "@angular/forms";
 
 
 /**
@@ -22,28 +23,29 @@ import {NgForm} from "@angular/forms";
   templateUrl: 'maintenance-request-form.html',
 })
 export class MaintenanceRequestFormPage {
- 
+
 
 
 
   maintenanceRequest: any = {};
-  Addbeneficialy : any = {};
+  Addbeneficialy: any = {};
   assets: any = [];
   locations: any = [];
-  SurveyorID : string;
+  SurveyorID: string;
   responsData: string;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public dataGetterService: DataGetterServiceProvider,
-              public dataSetterService: DataSetterProvider,
-              public toastCtrl: ToastController,
-              public events: Events,
-              public loadingCtrl: LoadingController,
-              public appGlobal: AppGlobalProvider,
-              public vibration: Vibration) {
-                this.SurveyorID = navParams.get('Surveyor');
-               
+    public navParams: NavParams,
+    public dataGetterService: DataGetterServiceProvider,
+    public dataSetterService: DataSetterProvider,
+    public toastCtrl: ToastController,
+    public events: Events,
+    public loadingCtrl: LoadingController,
+    public appGlobal: AppGlobalProvider,
+    public sqldatabasegetter: DatabaseProvider,
+    public vibration: Vibration) {
+    this.SurveyorID = navParams.get('Surveyor');
+
     this.initMaintenanceRequest();
   }
 
@@ -57,140 +59,92 @@ export class MaintenanceRequestFormPage {
 
   initMaintenanceRequest() {
     this.Addbeneficialy = {
-      code :'',
-      firstname:'',
-      lastname :'',
-      middlename:'',
-      age:'',
-      gender:'',
-      date_of_birth:'',
-      household_id:'',
-      village_id:'',
-      family_head_id:'',
-      contact_number:'',
-      whatsapp_number:'',
-      user_id:this.SurveyorID,
-      family_head_relation:''
+      code: '',
+      firstname: '',
+      lastname: '',
+      middlename: '',
+      age: '',
+      gender: '',
+      date_of_birth: '',
+      household_id: '',
+      village_id: '',
+      family_head_id: '',
+      contact_number: '',
+      whatsapp_number: '',
+      user_id: this.SurveyorID,
+      family_head_relation: ''
 
-  }
- 
+    }
+
 
     this.maintenanceRequest = {
       maintenanceasset_id: 0,
       detail: '',
-      location:''
+      location: ''
     };
     this.assets = [];
 
 
 
   }
-  // loadAssetsList() {
-  //   let loading = this.loadingCtrl.create({
-  //     content: 'Please wait...'
-  //   });
-  //   loading.present();
-
-  //   this.dataGetterService.getMaintenanceAssets().subscribe((data: any) => {
-  //     console.log("Assets Loaded", data);
-
-  //     if (data.success) {
-  //       this.assets = data.maintenance_assets;
-  //     } else {
-  //       this.initMaintenanceRequest();
-  //       const toast = this.toastCtrl.create({
-  //         message: this.appGlobal.ServerError,
-  //         duration: 3000
-  //       });
-  //       toast.present();
-  //       loading.dismiss();
-  //       this.navCtrl.pop();
-  //     }
-
-  //     loading.dismiss();
-  //   }, error => {
-  //     console.log(error);
-  //     this.initMaintenanceRequest();
-  //     const toast = this.toastCtrl.create({
-  //       message: this.appGlobal.ServerError,
-  //       duration: 3000
-  //     });
-  //     toast.present();
-  //     loading.dismiss();
-  //   });
-  //   this.dataGetterService.getMRLocations().subscribe((data: any) => {
-  //     console.log("Assets Loaded", data);
-
-  //     if (data.success) {
-  //       this.locations = data.locations;
-  //     } else {
-
-  //       const toast = this.toastCtrl.create({
-  //         message: this.appGlobal.ServerError,
-  //         duration: 3000
-  //       });
-  //       toast.present();
-  //       loading.dismiss();
-  //       this.navCtrl.pop();
-  //     }
-
-
-  //   }, error => {
-  //     console.log(error);
-  //     this.initMaintenanceRequest();
-  //     const toast = this.toastCtrl.create({
-  //       message: this.appGlobal.ServerError,
-  //       duration: 3000
-  //     });
-  //     toast.present();
-  //     loading.dismiss();
-  //   });
-
-
-  // }
 
 
   submitMaintenanceRequest(data) {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    loading.present();
-
-    this.dataSetterService.createMaintenanceRequest(data).subscribe((data: any) => {
-      console.log("Create Maintenance Response", data);
-      loading.dismiss();
-     
-
-      if (data) {
-        this.responsData=data.data;
-        console.log("@@@@@$5555"+this.responsData);
+    this.sqldatabasegetter.insertnewbeneficiary(data);
+    if (this.sqldatabasegetter.isinsertstatus) {
+      if (this.navCtrl.canGoBack) {
+        this.navCtrl.pop();
+      } else {
         const toast = this.toastCtrl.create({
-          message: data.message,
+          message: this.appGlobal.ServerError,
           duration: 3000
         });
         toast.present();
-        if (this.navCtrl.canGoBack) {
-          this.navCtrl.pop();
-        }
-        this.vibration.vibrate(this.appGlobal.vibrationTimings);
-      } else {
-
-        alert( data.errors);
-        
+        // loading.dismiss();
       }
-    }, error => {
-      loading.dismiss();
-      console.log(error);
-      const toast = this.toastCtrl.create({
-        message: this.appGlobal.ServerError,
-        duration: 3000
-      });
-      toast.present();
-    });
+    }
   }
+
+
+
+
+
+  // this.dataSetterService.createMaintenanceRequest(data).subscribe((data: any) => {
+  //   console.log("Create Maintenance Response", data);
+  //   loading.dismiss();
+
+
+  //   if (data) {
+  //     this.responsData=data.data;
+  //     console.log("@@@@@$5555"+this.responsData);
+  //     const toast = this.toastCtrl.create({
+  //       message: data.message,
+  //       duration: 3000
+  //     });
+  //     toast.present();
+  //     if (this.navCtrl.canGoBack) {
+  //       this.navCtrl.pop();
+  //     }
+  //     this.vibration.vibrate(this.appGlobal.vibrationTimings);
+  //   } else {
+
+  //     alert( data.errors);
+
+  //   }
+  // }, error => {
+  //   loading.dismiss();
+  //   console.log(error);
+  //   const toast = this.toastCtrl.create({
+  //     message: this.appGlobal.ServerError,
+  //     duration: 3000
+  //   });
+  //   toast.present();
+  // });
+
 
   logForm(form: NgForm) {
     this.submitMaintenanceRequest(form.value);
   }
-  isReadonly() {return true;}
+  isReadonly() { return true; }
+
 }

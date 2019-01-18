@@ -32,6 +32,8 @@ export class GrievancePage {
   order: number = -1;
   field: string = 'updated_at';
   UserId;
+  
+  
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public dataGetterService: DataGetterServiceProvider,
@@ -42,6 +44,8 @@ export class GrievancePage {
     public toastCtrl: ToastController,
     public appGlobal: AppGlobalProvider,
     public sqldatabasegetter: DatabaseProvider) {
+
+
 
     this.events.subscribe('reload:grievance', () => {
       this.refreshSRList(null);

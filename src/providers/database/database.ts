@@ -20,6 +20,7 @@ export class DatabaseProvider {
   public offlineCase: any = [];
   public offlineCasekycs: any = [];
   public tablname = "beneficiaries";
+  public isinsertstatus: boolean;
   constructor(public http: HttpClient,
     public database: SQLite,
     public platform: Platform,
@@ -78,17 +79,85 @@ export class DatabaseProvider {
         [objCase.id, objCase.user_id, objCase.kyc_person_id, objCase.kyc_person_type, objCase.kyc_name, objCase.kyc_detail, objCase.kyc_number, objCase.kyc_file, objCase.created_at, objCase.updated_at])
         .then((data) => {
           resolve(data);
-          alert("insert 4444 in " + data)
-          alert("INSERTED: insertCase" + JSON.stringify(data));
+          // alert("insert 4444 in " + data)
+          // alert("INSERTED: insertCase" + JSON.stringify(data));
         }, (error) => {
           reject(error);
-          alert("insert 4444 " + error)
+
           alert("ERROR: insertCase" + JSON.stringify(error));
         });
     });
   }
 
-  
+
+  public insertsurveydata(objCase: any) {
+    console.log(objCase);
+    alert("in surey insert")
+    return new Promise((resolve, reject) => {
+      this.dbobject.executeSql("INSERT INTO `survey`(`id`,`project_id`,`title`,`description`,`start_date`,`created_at`,`updated_at`) VALUES (?,?,?,?,?,?,?)",
+        [objCase.id, objCase.project_id, objCase.title, objCase.description, objCase.start_date, objCase.created_at, objCase.updated_at])
+        .then((data) => {
+          resolve(data);
+           //alert("insert 4444 survey " + data)
+          // alert("INSERTED: insertCase" + JSON.stringify(data));
+        }, (error) => {
+          reject(error);
+          alert("insert 4444 survey " + error)
+          alert("ERROR: insertCase" + JSON.stringify(error));
+        });
+    });
+
+  }
+  public insertQuestinsdata(objCase: any) {
+    console.log(objCase);
+    alert("in questions insert")
+    return new Promise((resolve, reject) => {
+      this.dbobject.executeSql("INSERT INTO `questions`(`id`,`survey_id`,`section_id`,`order`,`text`,`type`,`language_json`,`rule_json`,`created_at`,`updated_at`) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [objCase.id, objCase.survey_id, objCase.section_id, objCase.order, objCase.text, objCase.type, objCase.language_json, objCase.rule_json, objCase.created_at, objCase.updated_at])
+        .then((data) => {
+          resolve(data);
+          alert("insert @@@@@@@@@@@@@ questions ")
+        }, (error) => {
+          reject(error);
+          alert("insert @@@@@@@@@@@@@ questions " + error)
+          alert("ERROR: @@@@@@@@@@@@@ insertCase" + JSON.stringify(error));
+        });
+    });
+
+  }
+
+  public insertnewbeneficiary(objCase: any) {
+    // alert("insert new  data beneficiaries")
+    this.dbobject.executeSql("select * from Updated_beneficiaries", {})
+      .then((data) => {
+        alert(" new benificialy data  " + data.rows.length)
+      }, (error) => {
+
+        alert("ERROR: getAllCase " + JSON.stringify(error));
+      });
+    console.log(objCase);
+    return new Promise((resolve, reject) => {
+      this.dbobject.executeSql("INSERT INTO Updated_beneficiaries(id,code,beneficiary_name,gender,date_of_birth,contact_number,created_at,updated_at,family_head_id,firstname,middlename,lastname,household_id,village_id,user_id,age,family_head_relation,whatsapp_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [objCase.id, objCase.code, objCase.beneficiary_name, objCase.gender, objCase.date_of_birth, objCase.contact_number, objCase.created_at, objCase.updated_at, objCase.family_head_id, objCase.firstname, objCase.middlename, objCase.lastname, objCase.household_id, objCase.village_id, objCase.user_id, objCase.age, objCase.family_head_relation, objCase.whatsapp_number])
+        .then((data) => {
+          resolve(data);
+          console.log("INSERTED: insertCase" + JSON.stringify(data));
+          this.isinsertstatus = true
+          return true
+        }, (error) => {
+          reject(error);
+          console.log("ERROR: insertCase" + JSON.stringify(error));
+          this.isinsertstatus = false
+          return false
+        });
+    });
+  }
+
+
+
+
+
+
 
   public getbeneficiarydata() {
     let query = '';
@@ -130,9 +199,9 @@ export class DatabaseProvider {
     let query = '';
     query = 'SELECT * FROM kycs';
     this.offlineCasekycs = [];
-    this.dbobject.executeSql('SELECT * FROM kycs', {})
+    this.dbobject.executeSql(query, {})
       .then((data) => {
-        alert(" red kycs " + data.rows.length);
+        // alert(" red kycs " + data.rows.length);
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
             this.offlineCasekycs.push({
@@ -147,14 +216,73 @@ export class DatabaseProvider {
               created_at: data.rows.item(i).created_at,
               updated_at: data.rows.item(i).updated_at
             });
-            alert("i am in red kycs for loop   " + data.rows.item(i).id)
+            // alert("i am in red kycs for loop   " + data.rows.item(i).id)
           }
         } else { alert("error in getting kyc data from database !!!!") }
       }, (error) => {
         console.log("ERROR: getAllCase " + JSON.stringify(error));
       });
-
   }
+
+  public getsureydatalode() {
+    let query = '';
+    query = 'SELECT * FROM survey';
+    this.offlineCase = [];
+    this.dbobject.executeSql(query, {})
+      .then((data) => {
+        // alert(" red survey " + data.rows.length);
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            this.offlineCase.push({
+              id: data.rows.item(i).id,
+              project_id: data.rows.item(i).project_id,
+              title: data.rows.item(i).title,
+              description: data.rows.item(i).description,
+              start_date: data.rows.item(i).start_date,
+              created_at: data.rows.item(i).created_at,
+              updated_at: data.rows.item(i).updated_at
+            });
+            // alert("i am in red survey for loop   " + data.rows.item(i).id)
+          }
+        } else { alert("error in getting survey data from database !!!!") }
+      }, (error) => {
+        console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
+      });
+  }
+  public getQuestionsfroloddata() {
+    let query = '';
+    query = 'SELECT * FROM questions';
+    alert(query);
+
+    this.offlineCase = [];
+    this.dbobject.executeSql(query, {})
+      .then((data) => {
+        alert(" red survey " + data.rows.length);
+        if (data.rows.length > 0) {
+          alert("if getquestion")
+          for (var i = 0; i < data.rows.length; i++) {
+
+            this.appGlobal.questionsList.push({
+              id: data.rows.item(i).id,
+              survey_id: data.rows.item(i).survey_id,
+              section_id: data.rows.item(i).section_id,
+              order: data.rows.item(i).order,
+              text: data.rows.item(i).text,
+              type: data.rows.item(i).type,
+              language_json: data.rows.item(i).language_json,
+              rule_json: data.rows.item(i).rule_json,
+              created_at: data.rows.item(i).created_at,
+              updated_at: data.rows.item(i).updated_at,
+            });
+          }
+        } else { alert("error in getting questions data from database !!!!") }
+      }, (error) => {
+        console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
+      });
+  }
+
+
+
 
 
 

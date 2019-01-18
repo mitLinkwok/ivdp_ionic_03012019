@@ -52,9 +52,23 @@ export class HomePage {
   ) {
 
     this.db.getbenificialydata();
-    if(this.db.isqurestatus){
+    alert("get benifici status"+this.db.getbenificialydata)
+    if(this.db.getbenificialydata){
      this.db.getkycsdata();
+     
     }
+    if(this.db.isqurestatus){
+      alert(" true for surey ")
+     
+    
+      this.db.getsurvey();
+     
+     }
+     if(this.db.isqurestatus){
+      alert(" true for question ")
+       this.db.getQuestion();
+     }
+
 
   }
   sort() {
