@@ -44,14 +44,18 @@ export class SuervyPage {
     public db: DBmaneger,
     public sqldatabasegetter: DatabaseProvider
   ) {
+    this.appGlobal.questionsList=[]
+    this.sqldatabasegetter.getQuestionsfroloddata();
     this.qindex = navParams.get("qindex");
     this.question_id = navParams.get("question_id");
     this.project_id = navParams.get("project_id");
     this.survey_id = navParams.get("survey_id");
     console.log(" index  :- " + this.qindex + " pid  :  " + this.project_id + " qid  " + this.question_id + "this.survey_id :   " + this.survey_id);
 
-    alert("survey_id :- " + this.survey_id)
-    this.sqldatabasegetter.getQuestionsfroloddata();
+
+
+    alert("questions array size :=" + this.appGlobal.questionsList.length )
+
     this.loadQuestion();
 
 
@@ -61,30 +65,28 @@ export class SuervyPage {
   ionViewDidLoad() {
 
     console.log('ionViewDidLoad SuervyPage');
-
+    // this.loadQuestion();
   }
   ionViewDidEnter() {
-
+    // this.loadQuestion();
   }
 
 
 
-  // getSuervy() {
-  //   // const body = { question_id: this.question_id, project_id: this.project_id, survey_id: this.survey_id };
-  //   // this.dataSetterService.gatsuervysrequest(body).subscribe((data: any) => {
-  //   //   this.appGlobal.questionsList = data.questions;
+  getSuervy() {
+    // const body = { question_id: this.question_id, project_id: this.project_id, survey_id: this.survey_id };
+    // this.dataSetterService.gatsuervysrequest(body).subscribe((data: any) => {
+    //   this.appGlobal.questionsList = data.questions;
 
-  //   // }, error => {
-  //   //   console.log(error);
+    // }, error => {
+    //   console.log(error);
 
-  //   // });
+    // });
 
-  // }
+  }
   loadQuestion() {
 
     console.log("arrey" + this.appGlobal.questionsList);
-
-
     this.question = this.appGlobal.questionsList[this.qindex].text;
     this.key = this.appGlobal.questionsList[this.qindex].id;
 
@@ -110,6 +112,7 @@ export class SuervyPage {
       return
     }
     console.log(this.answer);
+
     let nq = this.qindex + 1;
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
@@ -117,6 +120,7 @@ export class SuervyPage {
       question_id: this.question_id,
       qindex: (nq)
     });
+
   }
 
   goToPrev(e: any) {

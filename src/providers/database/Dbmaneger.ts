@@ -78,7 +78,6 @@ export class DBmaneger {
     }
 
     public getsurvey() {
-
         this.dataGetterService.getSurveys()
             .subscribe((data: any) => {
                 let a = true
@@ -105,16 +104,6 @@ export class DBmaneger {
 
     }
     public getQuestion() {
-        //  console.log("!!!!!!!!!!!!!!!!");
-        // console.log('Question');
-        // this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
-        //     console.log(" in ========= "+data.questions);
-
-        // }, (error) => { 
-        //     alert("error in getting questions " + error);
-        // });
-
-
         alert(" in getquestions  @@@@@@");
         this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
             alert(" in getquestions  #####");

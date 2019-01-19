@@ -1,11 +1,11 @@
-import {Observable} from 'rxjs/Observable';
-import {LoadingController} from 'ionic-angular/components/loading/loading-controller';
-import {UserData} from './../user-data-ts';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {HttpHeaders} from '@angular/common/http';
-import {AppGlobalProvider} from '../app-global/app-global';
-import {ToastController} from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
+import { UserData } from './../user-data-ts';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { AppGlobalProvider } from '../app-global/app-global';
+import { ToastController } from 'ionic-angular';
 
 /*
   Generated class for the DataGetterServiceProvider provider.
@@ -17,9 +17,9 @@ import {ToastController} from 'ionic-angular';
 export class DataGetterServiceProvider {
 
   constructor(public http: HttpClient, public appGlobal: AppGlobalProvider,
-              public user: UserData,
-              public loadingCtrl: LoadingController,
-              public toastCtrl: ToastController) {
+    public user: UserData,
+    public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController) {
     console.log('Hello DataGetterServiceProvider Provider');
   }
 
@@ -27,7 +27,7 @@ export class DataGetterServiceProvider {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+this.user.userData.auth_token
+        'Authorization': 'Bearer ' + this.user.userData.auth_token
       })
     };
     return httpOptions;
@@ -148,7 +148,7 @@ export class DataGetterServiceProvider {
 
   // Stationery Request
   public getStationeries(l) {
-    return this.http.get(this.appGlobal.getStationeries +"/"+l, this.getHTTPOptions());
+    return this.http.get(this.appGlobal.getStationeries + "/" + l, this.getHTTPOptions());
   }
 
   public getAllStationeryRequests() {
@@ -183,24 +183,25 @@ export class DataGetterServiceProvider {
   }
 
   public getGuestLunchLocations() {
-    return this.http.get(this.appGlobal.getGuestLunchLocations  , this.getHTTPOptions());
+    return this.http.get(this.appGlobal.getGuestLunchLocations, this.getHTTPOptions());
   }
   public getGuestLunchTypes() {
-    return this.http.get(this.appGlobal.getGuestLunchTypes  , this.getHTTPOptions());
+    return this.http.get(this.appGlobal.getGuestLunchTypes, this.getHTTPOptions());
   }
   public getMRLocations() {
-    return this.http.get(this.appGlobal.getMRLocations  , this.getHTTPOptions());
+    return this.http.get(this.appGlobal.getMRLocations, this.getHTTPOptions());
   }
   public getLunchCategories() {
-    return this.http.get(this.appGlobal.getLunchCategories  , this.getHTTPOptions());
+    return this.http.get(this.appGlobal.getLunchCategories, this.getHTTPOptions());
   }
 
-//rewards and redemption 
+  //rewards and redemption 
   public getMyAwards() {
     return this.http.get(this.appGlobal.getMyAwards, this.getHTTPOptions());
   }
 
- 
+  
+
 
 
 }
