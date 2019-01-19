@@ -31,6 +31,7 @@ export class DataSetterProvider {
         'Authorization': 'Bearer ' + this.user.userData.auth_token
       })
     };
+   
     return httpOptions;
   }
   sendNotificationToken() {
@@ -186,8 +187,8 @@ export class DataSetterProvider {
 
 
   gatquestionrequest() {
-    
-    return this.http.post(this.appGlobal.getsuervyrequest,this.getHTTPOptions());
+    let data={}
+    return this.http.post(this.appGlobal.getsuervyrequest,data,this.getHTTPOptions());
   }
   submitanswerrequest(data) {
     return this.http.post(this.appGlobal.answersrequest, data, this.getHTTPOptions());

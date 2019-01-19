@@ -98,8 +98,7 @@ export class DatabaseProvider {
         [objCase.id, objCase.project_id, objCase.title, objCase.description, objCase.start_date, objCase.created_at, objCase.updated_at])
         .then((data) => {
           resolve(data);
-          //  alert("insert 4444 survey " + data)
-          // alert("INSERTED: insertCase" + JSON.stringify(data));
+
         }, (error) => {
           reject(error);
           console.log("insert 4444 survey " + error)
@@ -116,10 +115,8 @@ export class DatabaseProvider {
         [objCase.id, objCase.survey_id, objCase.section_id, objCase.order, objCase.text, objCase.type, objCase.language_json, objCase.rule_json, objCase.created_at, objCase.updated_at])
         .then((data) => {
           resolve(data);
-          alert("insert @@@@@@@@@@@@@ questions ")
         }, (error) => {
           reject(error);
-          alert("insert @@@@@@@@@@@@@ questions " + error)
           console.log("ERROR: @@@@@@@@@@@@@ insertCase" + JSON.stringify(error));
         });
     });
@@ -127,12 +124,10 @@ export class DatabaseProvider {
   }
 
   public insertnewbeneficiary(objCase: any) {
-    // alert("insert new  data beneficiaries")
     this.dbobject.executeSql("select * from Updated_beneficiaries", {})
       .then((data) => {
         console.log(" new benificialy data  " + data.rows.length)
       }, (error) => {
-
         console.log("ERROR: getAllCase " + JSON.stringify(error));
       });
     console.log(objCase);
@@ -252,46 +247,58 @@ export class DatabaseProvider {
   }
   public getQuestionsfroloddata() {
     let query = '';
-    query = 'SELECT * FROM `questions`';
+    query = 'SELECT * FROM questions';
+
+
+
+
+    this.offlineCase = [];
     this.dbobject.executeSql(query, {})
       .then((data) => {
-        alert("total questions" + data.rows.length)
-      }, (erro) => {
-        alert("error in geeting questions" + erro)
-      })
 
+        
+        for (var i = 0; i < data.rows.length; i++) {
+          this.appGlobal.questionsList.push({
+                  id: data.rows.item(i).id,
+                  survey_id: data.rows.item(i).survey_id,
+                  section_id: data.rows.item(i).section_id,
+                  order: data.rows.item(i).order,
+                  text: data.rows.item(i).text,
+                  type: data.rows.item(i).type,
+                  language_json: data.rows.item(i).language_json,
+                  rule_json: data.rows.item(i).rule_json,
+                  created_at: data.rows.item(i).created_at,
+                  updated_at: data.rows.item(i).updated_at,
+                });
 
+        }
+        // if (data.rows.length > 0) {
 
+        //   this.appGlobal.questionsList = data
 
-    // this.offlineCase = [];
-    // this.dbobject.executeSql(query, {})
-    //   .then((data) => {
-    //     // alert(" red survey " + data.rows.length);
-    //     if (data.rows.length > 0) {
+        //   for (var i = 0; i < data.rows.length; i++) {
 
-    //       for (var i = 0; i < data.rows.length; i++) {
+        //     // this.appGlobal.questionsList.push(
+        //     //   data.rows[i]
+        //     // )
 
-    //         this.appGlobal.questionsList.push(
-    //           data.rows[i]
-    //         )
-
-    //         // this.appGlobal.questionsList.push({
-    //         //   id: data.rows.item(i).id,
-    //         //   survey_id: data.rows.item(i).survey_id,
-    //         //   section_id: data.rows.item(i).section_id,
-    //         //   order: data.rows.item(i).order,
-    //         //   text: data.rows.item(i).text,
-    //         //   type: data.rows.item(i).type,
-    //         //   language_json: data.rows.item(i).language_json,
-    //         //   rule_json: data.rows.item(i).rule_json,
-    //         //   created_at: data.rows.item(i).created_at,
-    //         //   updated_at: data.rows.item(i).updated_at,
-    //         // });
-    //       }
-    //     } else { alert("error in getting questions data from database !!!!") }
-    //   }, (error) => {
-    //     console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
-    //   });
+        //     this.appGlobal.questionsList.push({
+        //       id: data.rows.item(i).id,
+        //       survey_id: data.rows.item(i).survey_id,
+        //       section_id: data.rows.item(i).section_id,
+        //       order: data.rows.item(i).order,
+        //       text: data.rows.item(i).text,
+        //       type: data.rows.item(i).type,
+        //       language_json: data.rows.item(i).language_json,
+        //       rule_json: data.rows.item(i).rule_json,
+        //       created_at: data.rows.item(i).created_at,
+        //       updated_at: data.rows.item(i).updated_at,
+        //     });
+        //   }
+        //} else { alert("error in getting questions data from database !!!!") }
+      }, (error) => {
+        console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
+      });
   }
 
 

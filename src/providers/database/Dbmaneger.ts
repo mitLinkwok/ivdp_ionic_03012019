@@ -78,7 +78,6 @@ export class DBmaneger {
     }
 
     public getsurvey() {
-
         this.dataGetterService.getSurveys()
             .subscribe((data: any) => {
                 let a = true
@@ -105,40 +104,30 @@ export class DBmaneger {
 
     }
     public getQuestion() {
-         alert("!!!!!!!!!!!!!!!!");
-        console.log('Question');
+        alert(" in getquestions  @@@@@@");
         this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
-            alert(" in ========= "+data.data.questions);
+            alert(" in getquestions  #####");
+            let a = true
+            if (data.success || a) {
+                for (let i = 0; i <= data.questions.length; i++) {
+                    let object = data.questions[i]
+                    alert(" Questions ##### " + object);
+                    this.db.insertQuestinsdata(data.questions[i]);
+                }
+                return this.isqurestatus = true
+            } else {
+                alert("cannot get questions data for insert");
+            }
+            return this.isqurestatus = false
 
-        }, (error) => { 
-            alert("error in getting questions " + error);
+        }, err => {
+            console.log(err);
+            const toast = this.toastCtrl.create({
+                message: this.appGlobal.ServerError,
+                duration: 3000
+            });
+            toast.present();
         });
-
-
-        // alert(" in getquestions  @@@@@@");
-        // this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
-        //     alert(" in getquestions  #####");
-        //     let a = true
-        //     if (data.success || a) {
-        //         for (let i = 0; i <= data.questions.length; i++) {
-        //             let object = data.questions[i]
-        //             alert(" Questions ##### " + object);
-        //             this.db.insertQuestinsdata(data.questions[i]);
-        //         }
-        //         return this.isqurestatus = true
-        //     } else {
-        //         alert("cannot get questions data for insert");
-        //     }
-        //     return this.isqurestatus = false
-
-        // }, err => {
-        //     console.log(err);
-        //     const toast = this.toastCtrl.create({
-        //         message: this.appGlobal.ServerError,
-        //         duration: 3000
-        //     });
-        //     toast.present();
-        // });
 
     }
 

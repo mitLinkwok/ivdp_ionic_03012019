@@ -20,39 +20,39 @@ import { DatabaseProvider } from './../../providers/database/database';
 })
 export class SurveyListPage {
 
-  surveys:any = [];
-  user:any;
-  loading:any;
+  surveys: any = [];
+  user: any;
+  loading: any;
 
   constructor(public navCtrl: NavController,
-    public navParams: NavParams, 
-    public dataGetterService:DataGetterServiceProvider,
+    public navParams: NavParams,
+    public dataGetterService: DataGetterServiceProvider,
     public events: Events,
-    public userData:UserData,
-    public loadingCtrl:LoadingController,
-    public appGlobal:AppGlobalProvider,
+    public userData: UserData,
+    public loadingCtrl: LoadingController,
+    public appGlobal: AppGlobalProvider,
     public sqldatabasegetter: DatabaseProvider,
-    public toastCtrl:ToastController) {
+    public toastCtrl: ToastController) {
     this.user = userData.userData;
     this.events.subscribe('reload:surveys', () => {
       this.refreshSurveysList(null);
-       this.loadSurveys(null);
+      this.loadSurveys(null);
     });
     this.sqldatabasegetter.getsureydatalode();
   }
 
 
-  refreshSurveysList(refrence){
+  refreshSurveysList(refrence) {
     this.loadSurveys(refrence);
   }
   ionViewDidLoad() {
-   
+    this.loadSurveys(null);
     // this.presentLoading();
   }
 
   ionViewDidEnter() {
     console.log('ionViewDidEnter SurveyListPage');
-      this.loadSurveys(null);
+    this.loadSurveys(null);
   }
 
   presentLoading() {
@@ -67,10 +67,10 @@ export class SurveyListPage {
     this.loading.dismiss();
   }
 
-  refreshSurveys(ev){
+  refreshSurveys(ev) {
     this.loadSurveys(ev);
   }
- 
+
   loadSurveys(ref) {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -106,23 +106,28 @@ export class SurveyListPage {
         ref.complete();
       }
     }
- 
+
+  }
+
+
+  StartSurvey(ProjectId, suervtId, qId) {
+    
+
+   
+    this.navCtrl.push(SuervyPage, {
+      project_id: ProjectId,
+      survey_id: suervtId,
+      question_id: qId,
+      qindex: 0
+    });
+   
+    // this.navCtrl.push(SuervyPage,{qindex: 0});
+    //alert("project_id : " + ProjectId + " survey_id: " + suervtId + " question_id:  " + qId)
+
   }
 
 
-  StartSurvey(ProjectId,suervtId,qId){
-// this.navCtrl.push(SuervyPage,{qindex: 0});
-alert("project_id : " +ProjectId +" survey_id: " + suervtId +" question_id:  " + qId)
-this.sqldatabasegetter.getQuestionsfroloddata();
-// this.navCtrl.push(SuervyPage,{
-//   project_id:ProjectId,
-//   survey_id:suervtId,
-//   question_id:qId,
-//   qindex: 0});
-// }
 
 
-  
-
-  }
 }
+
