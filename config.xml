@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.linkwok.empower" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Empower</name>
-    <description>Deepak Group Empower App</description>
+<widget id="com.linkwok.dfivdp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>DF IVDP</name>
+    <description>Deepak Foundation IVDP App</description>
     <author email="developer@linkwok.com" href="http://cybit.in/">Linkwok Team</author>
     <content src="index.html" />
     <access origin="*" />
@@ -124,6 +124,6 @@
     <plugin name="cordova-sqlite-storage" spec="2.6.0" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <engine name="ios" spec="^4.5.5" />
-    <engine name="android" spec="6.4.0" />
-    <engine name="browser" spec="5.0.4" />
+    <engine name="browser" spec="~5.0.4" />
+    <engine name="android" spec="~6.4.0" />
 </widget>

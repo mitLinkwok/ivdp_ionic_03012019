@@ -25,6 +25,7 @@ export class DataSetterProvider {
   }
 
   getHTTPOptions() {
+    console.log("token:-"+ this.user.userData.auth_token);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -186,8 +187,10 @@ export class DataSetterProvider {
 
 
   gatquestionrequest() {
-    
-    return this.http.post(this.appGlobal.getsuervyrequest,this.getHTTPOptions());
+    console.log("I m in getquestion request");
+    console.log(this.getHTTPOptions());
+    let data={}
+    return this.http.post(this.appGlobal.getsuervyrequest,data,this.getHTTPOptions());
   }
   submitanswerrequest(data) {
     return this.http.post(this.appGlobal.answersrequest, data, this.getHTTPOptions());

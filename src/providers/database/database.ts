@@ -61,6 +61,7 @@ export class DatabaseProvider {
   public insertbeneficiarydata(objCase: any) {
     console.log(objCase);
     return new Promise((resolve, reject) => {
+      
       this.dbobject.executeSql("INSERT INTO beneficiaries (id,code,beneficiary_name,gender,date_of_birth,contact_number,created_at,updated_at,family_head_id,firstname,middlename,lastname,household_id,village_id,user_id,age,family_head_relation,whatsapp_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [objCase.id, objCase.code, objCase.beneficiary_name, objCase.gender, objCase.date_of_birth, objCase.contact_number, objCase.created_at, objCase.updated_at, objCase.family_head_id, objCase.firstname, objCase.middlename, objCase.lastname, objCase.household_id, objCase.village_id, objCase.user_id, objCase.age, objCase.family_head_relation, objCase.whatsapp_number])
         .then((data) => {
@@ -263,35 +264,35 @@ export class DatabaseProvider {
 
 
 
-    // this.offlineCase = [];
-    // this.dbobject.executeSql(query, {})
-    //   .then((data) => {
-    //     // alert(" red survey " + data.rows.length);
-    //     if (data.rows.length > 0) {
+    this.offlineCase = [];
+    this.dbobject.executeSql(query, {})
+      .then((data) => {
+        // alert(" red survey " + data.rows.length);
+        if (data.rows.length > 0) {
 
-    //       for (var i = 0; i < data.rows.length; i++) {
+          for (var i = 0; i < data.rows.length; i++) {
 
-    //         this.appGlobal.questionsList.push(
-    //           data.rows[i]
-    //         )
+            this.appGlobal.questionsList.push(
+              data.rows[i]
+            )
 
-    //         // this.appGlobal.questionsList.push({
-    //         //   id: data.rows.item(i).id,
-    //         //   survey_id: data.rows.item(i).survey_id,
-    //         //   section_id: data.rows.item(i).section_id,
-    //         //   order: data.rows.item(i).order,
-    //         //   text: data.rows.item(i).text,
-    //         //   type: data.rows.item(i).type,
-    //         //   language_json: data.rows.item(i).language_json,
-    //         //   rule_json: data.rows.item(i).rule_json,
-    //         //   created_at: data.rows.item(i).created_at,
-    //         //   updated_at: data.rows.item(i).updated_at,
-    //         // });
-    //       }
-    //     } else { alert("error in getting questions data from database !!!!") }
-    //   }, (error) => {
-    //     console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
-    //   });
+            this.appGlobal.questionsList.push({
+              id: data.rows.item(i).id,
+              survey_id: data.rows.item(i).survey_id,
+              section_id: data.rows.item(i).section_id,
+              order: data.rows.item(i).order,
+              text: data.rows.item(i).text,
+              type: data.rows.item(i).type,
+              language_json: data.rows.item(i).language_json,
+              rule_json: data.rows.item(i).rule_json,
+              created_at: data.rows.item(i).created_at,
+              updated_at: data.rows.item(i).updated_at,
+            });
+          }
+        } else { alert("error in getting questions data from database !!!!") }
+      }, (error) => {
+        console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
+      });
   }
 
 

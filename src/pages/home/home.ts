@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, ItemSliding, LoadingController } from 'ionic-angular';
 import { DataGetterServiceProvider } from "../../providers/data-getter-service/data-getter-service";
 import { IdeaShowPage } from "../idea-show/idea-show";
-import { ServiceRequestShowPage } from './../service-request-show/service-request-show';
 import { GrievanceShowPage } from "../grievance-show/grievance-show";
 import { ArticleShowPage } from "../article-show/article-show";
 import { Storage } from '@ionic/storage';
@@ -16,12 +15,7 @@ import { IntroPage } from "../intro/intro";
 
 
 
-import { GuestLunchPage } from "../guest-lunch/guest-lunch";
-import { VisitingCardPage } from "../visiting-card/visiting-card";
 import { MaintenanceRequestPage } from "../maintenance-request/maintenance-request";
-import { GuestRoomRequestShowPage } from "../guest-room-request-show/guest-room-request-show";
-import { StationeryRequestPage } from "../stationery-request/stationery-request";
-import { AccessCardRequestPage } from "../access-card-request/access-card-request";
 
 
 
@@ -61,7 +55,7 @@ export class HomePage {
      this.db.getsurvey();
      }
      if(this.db.isqurestatus){
-    alert(" true for question ")
+    console.log(" true for question ")
        this.db.getQuestion();
      }
 
@@ -117,10 +111,6 @@ export class HomePage {
         this.navCtrl.push(IdeaShowPage, { id: id })
         break;
       }
-      case "Service Request": {
-        this.navCtrl.push(ServiceRequestShowPage, { id: id })
-        break;
-      }
       case "grievance": {
         this.navCtrl.push(GrievanceShowPage, { id: id })
         break;
@@ -129,33 +119,13 @@ export class HomePage {
         this.navCtrl.push(ArticleShowPage, { id: id })
         break;
       }
-      case "guest_lunch_requests": {
-        this.navCtrl.push(GuestLunchPage, { id: id });
-        break;
-      }
-      case "visiting_card_requests": {
-        this.navCtrl.push(VisitingCardPage, { id: id });
-        break;
-      }
       case "maintenance_requests": {
         this.navCtrl.push(MaintenanceRequestPage, { id: id });
         break;
       }
-      case "room_requests": {
-        this.navCtrl.push(GuestRoomRequestShowPage, { id: id });
-        break;
-      }
-
-      case "stationery_requests": {
-        this.navCtrl.push(StationeryRequestPage, { id: id });
-        break;
-      }
 
 
-      case "access_card_requests": {
-        this.navCtrl.push(AccessCardRequestPage, { id: id });
-        break;
-      }
+
 
 
 

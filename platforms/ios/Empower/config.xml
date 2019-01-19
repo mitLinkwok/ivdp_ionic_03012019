@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.linkwok.empower" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.linkwok.dfivdp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
@@ -79,8 +79,8 @@
     <feature name="CallNumber">
         <param name="ios-package" value="CFCallNumber" />
     </feature>
-    <name>Empower</name>
-    <description>Deepak Group Empower App</description>
+    <name>DF IVDP</name>
+    <description>Deepak Foundation IVDP App</description>
     <author email="developer@linkwok.com" href="http://cybit.in/">Linkwok Team</author>
     <content src="index.html" />
     <access origin="*" />
