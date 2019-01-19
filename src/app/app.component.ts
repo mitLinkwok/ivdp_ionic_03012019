@@ -8,7 +8,6 @@ import { SurveyListPage } from './../pages/survey-list/survey-list';
 import { ArticleShowPage } from './../pages/article-show/article-show';
 import { GrievanceShowPage } from './../pages/grievance-show/grievance-show';
 import { IdeaShowPage } from './../pages/idea-show/idea-show';
-import { ServiceRequestShowPage } from './../pages/service-request-show/service-request-show';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { OfflinePage } from './../pages/offline/offline';
 import { Network } from '@ionic-native/network';
@@ -16,19 +15,15 @@ import { AppVersion } from '@ionic-native/app-version';
 import { Vibration } from '@ionic-native/vibration';
 import { ArticleIndexPage } from './../pages/article-index/article-index';
 import { DataSetterProvider } from './../providers/data-setter/data-setter';
-import { LeavesShowPage } from './../pages/leaves-show/leaves-show';
 import { LogoutPage } from './../pages/logout/logout';
 import { SyncPage } from './../pages/sync/sync';
 import { Component, ViewChild } from '@angular/core';
 import { App, Events, Nav, Platform, Config, ToastController, MenuController, Content } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
-import { ServiceRequestPage } from "../pages/service-request/service-request";
 import { TranslateService } from '@ngx-translate/core';
-import { CalendarViewPage } from "../pages/calendar-view/calendar-view";
 
 import { GrievancePage } from "../pages/grievance/grievance";
-import { PoliciesPage } from "../pages/policies/policies";
 import { LoginPage } from '../pages/login/login';
 import { UserData } from '../providers/user-data-ts';
 import { FCM } from "@ionic-native/fcm";
@@ -36,15 +31,7 @@ import { AppGlobalProvider } from "../providers/app-global/app-global";
 import { DataGetterServiceProvider } from '../providers/data-getter-service/data-getter-service';
 import * as _ from "lodash";
 import { ProfilePage } from '../pages/profile/profile';
-import { GuestLunchPage } from "../pages/guest-lunch/guest-lunch";
-import { VisitingCardPage } from "../pages/visiting-card/visiting-card";
-import { StationeryRequestPage } from "../pages/stationery-request/stationery-request";
 import { MaintenanceRequestPage } from "../pages/maintenance-request/maintenance-request";
-import { AccessCardRequestPage } from "../pages/access-card-request/access-card-request";
-import { GuestRoomRequestPage } from "../pages/guest-room-request/guest-room-request";
-import { CanteenFacilityPage } from "../pages/canteen-facility/canteen-facility";
-import { GuestRoomRequestShowPage } from "../pages/guest-room-request-show/guest-room-request-show";
-import { ParakhDashboardPage } from "../pages/parakh-dashboard/parakh-dashboard";
 
 
 
@@ -225,10 +212,6 @@ export class MyApp {
 
     let page, reloadType;
     switch (data.type) {
-      case "Service Request":
-        page = ServiceRequestShowPage;
-        reloadType = 'reload:serviceRequestShow';
-        break;
       case "idea":
         page = IdeaShowPage;
         reloadType = 'reload:ideaShow';
@@ -241,32 +224,12 @@ export class MyApp {
         page = ArticleShowPage;
         reloadType = 'reload:articleShow';
         break;
-      case "guest_lunch_requests":
-        page = GuestLunchPage;
-        reloadType = 'reload:guest-lunch';
-        break;
-      case "visiting_card_requests":
-        page = VisitingCardPage;
-        reloadType = 'reload:visiting-card';
-        break;
       case "maintenance_requests":
         page = MaintenanceRequestPage;
         reloadType = 'reload:maintenance-request';
         break;
-      case "room_requests":
-        page = GuestRoomRequestShowPage;
-        reloadType = 'reload:guest-room-request';
-        break;
-      case "stationery_requests":
-        page = StationeryRequestPage;
-        reloadType = 'reload:stationery-request';
-        break;
-
-      case "LunchList":
-        page = CanteenFacilityPage;
-        reloadType = 'reload:canteen-facility';
-        break;
-
+      
+      
       default:
         console.log("Notification TYPE NOT FOUND");
         break;

@@ -1,5 +1,5 @@
 {
-  "name": "empower",
+  "name": "df-ivdp",
   "version": "1.0.0",
   "author": "Linkwok Team",
   "homepage": "http://cybit.in/",
@@ -83,6 +83,7 @@
     "ionic2-calendar-en": "^1.1.8",
     "ionicons": "3.0.0",
     "moment": "^2.20.1",
+    "mx.ferreyra.callnumber": "0.0.2",
     "ng-http-loader": "^0.7.1",
     "ngx-chips": "^1.8.0",
     "npm": "^6.5.0",
@@ -96,7 +97,7 @@
     "@types/lodash": "^4.14.106",
     "typescript": "^2.8.1"
   },
-  "description": "Deepak Group Empower App",
+  "description": "Deepak Foundation IVDP App",
   "cordova": {
     "plugins": {
       "cordova-plugin-advanced-http": {},
@@ -125,12 +126,13 @@
       "cordova-plugin-fcm-with-dependecy-updated": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-x-toast": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "call-number": {}
     },
     "platforms": [
       "ios",
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }

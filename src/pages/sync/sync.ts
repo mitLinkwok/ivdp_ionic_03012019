@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
 import {AppGlobalProvider} from "../../providers/app-global/app-global";
 import {ToastController} from "ionic-angular/components/toast/toast-controller";
 import {DataSetterProvider} from "../../providers/data-setter/data-setter";
@@ -16,7 +16,7 @@ import {Vibration} from "@ionic-native/vibration";
 @IonicPage()
 @Component({
   selector: 'page-sync',
-  templateUrl: 'sync.html',
+  templateUrl: 'sync.html'
 })
 export class SyncPage {
 
@@ -25,7 +25,7 @@ export class SyncPage {
               public appGlobal: AppGlobalProvider,public dataGetterService: DataGetterServiceProvider,
               public dataSetterService: DataSetterProvider,
               public toastCtrl: ToastController) {
-  	// this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
+  	//this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
 
 
   }
@@ -35,8 +35,8 @@ export class SyncPage {
   }
   syncBeneficiaries(){
   	
-    // let b_success = []
-    // let m = this;
+    let b_success = []
+    let m = this;
     // this.appGlobal.benefeciaries.forEach(function(b,index){
     // 	let loading = m.loadingCtrl.create({
 		//       content: 'Syncing Beneficiaries ' + index.toString() + " of " + m.appGlobal.benefeciaries.length

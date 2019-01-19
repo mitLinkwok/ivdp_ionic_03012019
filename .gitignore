@@ -2,3 +2,6 @@
 /www
 /node_modules
 /build
+/platforms
+/.sourcemap
+/.vscode
