@@ -86,7 +86,7 @@ export class GrievancePage {
 
     } else {
       this.grievance_m = [];
-      alert("No data i array")
+      console.log("No data i array")
       loading.dismiss();
       if (ref != null) {
         ref.complete();

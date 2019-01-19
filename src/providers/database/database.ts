@@ -33,7 +33,7 @@ export class DatabaseProvider {
         location: "default"
       }).then((db: SQLiteObject) => {
         this.dbobject = db;
-        alert("open DB");
+        console.log("open DB");
         this.createtable();
       })
     } else {
@@ -50,7 +50,7 @@ export class DatabaseProvider {
         .then((data) => {
           console.log(JSON.stringify(data));
         }, (error) => {
-          alert(JSON.stringify(error));
+          console.log(JSON.stringify(error));
         });
 
     }
@@ -84,7 +84,7 @@ export class DatabaseProvider {
         }, (error) => {
           reject(error);
 
-          alert("ERROR: insertCase" + JSON.stringify(error));
+          console.log("ERROR: insertCase" + JSON.stringify(error));
         });
     });
   }
@@ -92,35 +92,35 @@ export class DatabaseProvider {
 
   public insertsurveydata(objCase: any) {
     console.log(objCase);
-    alert("in surey insert")
+    // alert("in surey insert")
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO `survey`(`id`,`project_id`,`title`,`description`,`start_date`,`created_at`,`updated_at`) VALUES (?,?,?,?,?,?,?)",
         [objCase.id, objCase.project_id, objCase.title, objCase.description, objCase.start_date, objCase.created_at, objCase.updated_at])
         .then((data) => {
           resolve(data);
-           //alert("insert 4444 survey " + data)
+          //  alert("insert 4444 survey " + data)
           // alert("INSERTED: insertCase" + JSON.stringify(data));
         }, (error) => {
           reject(error);
-          alert("insert 4444 survey " + error)
-          alert("ERROR: insertCase" + JSON.stringify(error));
+          console.log("insert 4444 survey " + error)
+          console.log("ERROR: insertCase" + JSON.stringify(error));
         });
     });
 
   }
   public insertQuestinsdata(objCase: any) {
     console.log(objCase);
-    alert("in questions insert")
+    // alert("in questions insert")
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO `questions`(`id`,`survey_id`,`section_id`,`order`,`text`,`type`,`language_json`,`rule_json`,`created_at`,`updated_at`) VALUES (?,?,?,?,?,?,?,?,?,?)",
         [objCase.id, objCase.survey_id, objCase.section_id, objCase.order, objCase.text, objCase.type, objCase.language_json, objCase.rule_json, objCase.created_at, objCase.updated_at])
         .then((data) => {
           resolve(data);
-          alert("insert @@@@@@@@@@@@@ questions ")
+          console.log("insert @@@@@@@@@@@@@ questions ")
         }, (error) => {
           reject(error);
-          alert("insert @@@@@@@@@@@@@ questions " + error)
-          alert("ERROR: @@@@@@@@@@@@@ insertCase" + JSON.stringify(error));
+          console.log("insert @@@@@@@@@@@@@ questions " + error)
+          console.log("ERROR: @@@@@@@@@@@@@ insertCase" + JSON.stringify(error));
         });
     });
 
@@ -130,10 +130,10 @@ export class DatabaseProvider {
     // alert("insert new  data beneficiaries")
     this.dbobject.executeSql("select * from Updated_beneficiaries", {})
       .then((data) => {
-        alert(" new benificialy data  " + data.rows.length)
+        console.log(" new benificialy data  " + data.rows.length)
       }, (error) => {
 
-        alert("ERROR: getAllCase " + JSON.stringify(error));
+       console.log("ERROR: getAllCase " + JSON.stringify(error));
       });
     console.log(objCase);
     return new Promise((resolve, reject) => {
@@ -230,10 +230,12 @@ export class DatabaseProvider {
     this.offlineCase = [];
     this.dbobject.executeSql(query, {})
       .then((data) => {
-        // alert(" red survey " + data.rows.length);
+        //  alert(" red survey " + data.rows.length);
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
+            alert("i am in red survey for loop   " + data.rows.item(i).id)
             this.offlineCase.push({
+              
               id: data.rows.item(i).id,
               project_id: data.rows.item(i).project_id,
               title: data.rows.item(i).title,
@@ -242,7 +244,7 @@ export class DatabaseProvider {
               created_at: data.rows.item(i).created_at,
               updated_at: data.rows.item(i).updated_at
             });
-            // alert("i am in red survey for loop   " + data.rows.item(i).id)
+            
           }
         } else { alert("error in getting survey data from database !!!!") }
       }, (error) => {
@@ -252,28 +254,32 @@ export class DatabaseProvider {
   public getQuestionsfroloddata() {
     let query = '';
     query = 'SELECT * FROM questions';
-    alert(query);
+  
 
     this.offlineCase = [];
     this.dbobject.executeSql(query, {})
       .then((data) => {
-        alert(" red survey " + data.rows.length);
+        // alert(" red survey " + data.rows.length);
         if (data.rows.length > 0) {
-          alert("if getquestion")
+        
           for (var i = 0; i < data.rows.length; i++) {
 
-            this.appGlobal.questionsList.push({
-              id: data.rows.item(i).id,
-              survey_id: data.rows.item(i).survey_id,
-              section_id: data.rows.item(i).section_id,
-              order: data.rows.item(i).order,
-              text: data.rows.item(i).text,
-              type: data.rows.item(i).type,
-              language_json: data.rows.item(i).language_json,
-              rule_json: data.rows.item(i).rule_json,
-              created_at: data.rows.item(i).created_at,
-              updated_at: data.rows.item(i).updated_at,
-            });
+            this.appGlobal.questionsList.push(
+              data.rows[i]
+            )
+
+            // this.appGlobal.questionsList.push({
+            //   id: data.rows.item(i).id,
+            //   survey_id: data.rows.item(i).survey_id,
+            //   section_id: data.rows.item(i).section_id,
+            //   order: data.rows.item(i).order,
+            //   text: data.rows.item(i).text,
+            //   type: data.rows.item(i).type,
+            //   language_json: data.rows.item(i).language_json,
+            //   rule_json: data.rows.item(i).rule_json,
+            //   created_at: data.rows.item(i).created_at,
+            //   updated_at: data.rows.item(i).updated_at,
+            // });
           }
         } else { alert("error in getting questions data from database !!!!") }
       }, (error) => {

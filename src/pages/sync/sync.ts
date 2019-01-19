@@ -25,7 +25,7 @@ export class SyncPage {
               public appGlobal: AppGlobalProvider,public dataGetterService: DataGetterServiceProvider,
               public dataSetterService: DataSetterProvider,
               public toastCtrl: ToastController) {
-  	this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
+  	// this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
 
 
   }
@@ -35,25 +35,25 @@ export class SyncPage {
   }
   syncBeneficiaries(){
   	
-    let b_success = []
-    let m = this;
-    this.appGlobal.benefeciaries.forEach(function(b,index){
-    	let loading = m.loadingCtrl.create({
-		      content: 'Syncing Beneficiaries ' + index.toString() + " of " + m.appGlobal.benefeciaries.length
-			    });
-		    loading.present();
-    	m.dataSetterService.createMaintenanceRequest(b).subscribe((data: any) => {
+    // let b_success = []
+    // let m = this;
+    // this.appGlobal.benefeciaries.forEach(function(b,index){
+    // 	let loading = m.loadingCtrl.create({
+		//       content: 'Syncing Beneficiaries ' + index.toString() + " of " + m.appGlobal.benefeciaries.length
+		// 	    });
+		//     loading.present();
+    // 	m.dataSetterService.createMaintenanceRequest(b).subscribe((data: any) => {
     		
-    		if(data){
-    			b_success.push(data)
-    			loading.dismiss();
-    		}
-    		else{
-    			alert(data.errors);
-    			loading.dismiss();
-    		}
-    	})
-    })
+    // 		if(data){
+    // 			b_success.push(data)
+    // 			loading.dismiss();
+    // 		}
+    // 		else{
+    // 			alert(data.errors);
+    // 			loading.dismiss();
+    // 		}
+    // 	})
+    // })
   }
 
 }

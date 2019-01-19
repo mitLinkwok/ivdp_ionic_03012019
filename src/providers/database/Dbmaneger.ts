@@ -35,11 +35,11 @@ export class DBmaneger {
                 for (let i = 0; i <= data.data.length; i++) {
                     this.db.insertbeneficiarydata(data.data[i]);
                 }
-                return true
+                return this.isqurestatus = true
             } else {
                 alert("cannot get beneficiary  data for insert");
             }
-            return false
+            return this.isqurestatus = false
         }, error => {
             console.log(error);
             const toast = this.toastCtrl.create({
@@ -53,7 +53,7 @@ export class DBmaneger {
     public getkycsdata() {
         this.dataGetterService.getGrievances()
             .subscribe((data: any) => {
-               
+
                 let a = true
                 if (data.success || a) {
                     for (let i = 0; i <= data.data.length; i++) {
@@ -61,11 +61,11 @@ export class DBmaneger {
                         console.log("dadaobject ##### " + object);
                         this.db.insertkycsdata(data.data[i]);
                     }
-                    return true
+                    return this.isqurestatus = true
                 } else {
                     alert("cannot get kycs data for insert");
                 }
-                return false
+                return this.isqurestatus = false
                 // this.db.getbeneficiarydata();
             }, err => {
                 console.log(err);
@@ -77,18 +77,17 @@ export class DBmaneger {
             });
     }
 
-    public  getsurvey() {
+    public getsurvey() {
+
         this.dataGetterService.getSurveys()
             .subscribe((data: any) => {
-              let a = true
+                let a = true
                 if (data.success || a) {
                     for (let i = 0; i <= data.data.length; i++) {
                         let object = data.data[i]
                         console.log("dadaobject ##### " + object);
                         this.db.insertsurveydata(data.data[i]);
                     }
-
-                 
                     return this.isqurestatus = true
                 } else {
                     alert("cannot get survey data for insert");
@@ -105,37 +104,37 @@ export class DBmaneger {
             });
 
     }
-    public async getQuestion(){
-      this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
-            alert("get questions data for insert @@@");
-                let a = true
-                if (data.success || a) {
-                    alert("get questions data for insert");
-                    for (let i = 0; i <= data.questions.length; i++) {
-                        let object = data.questions[i]
-                        console.log("dadaobject ##### " + object);
-                        this.db.insertQuestinsdata(data.questions[i]);
-                    }
-
-                    return this.isqurestatus = true
-                    
-                } else {
-                    alert("cannot get questions data for insert");
+    public async getQuestion() {
+        this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
+           
+            let a = true
+            if (data.success || a) {
+             
+                for (let i = 0; i <= data.questions.length; i++) {
+                    let object = data.questions[i]
+                    console.log("dadaobject ##### " + object);
+                    this.db.insertQuestinsdata(data.questions[i]);
                 }
-                return this.isqurestatus = false
-                // this.db.getbeneficiarydata();
-            }, err => {
-                console.log(err);
-                const toast = this.toastCtrl.create({
-                    message: this.appGlobal.ServerError,
-                    duration: 3000
-                });
-                toast.present();
+
+                return this.isqurestatus = true
+
+            } else {
+                alert("cannot get questions data for insert");
+            }
+            return this.isqurestatus = false
+            // this.db.getbeneficiarydata();
+        }, err => {
+            console.log(err);
+            const toast = this.toastCtrl.create({
+                message: this.appGlobal.ServerError,
+                duration: 3000
             });
+            toast.present();
+        });
 
     }
 
-   
+
 
 
 }

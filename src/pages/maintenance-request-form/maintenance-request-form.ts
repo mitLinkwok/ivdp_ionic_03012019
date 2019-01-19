@@ -23,13 +23,8 @@ import { NgForm } from "@angular/forms";
   templateUrl: 'maintenance-request-form.html',
 })
 export class MaintenanceRequestFormPage {
-
-
-
-
   maintenanceRequest: any = {};
-
-  Addbeneficialy: any = {};
+  Addbeneficiary: any = {};
   assets: any = [];
   locations: any = [];
   SurveyorID: string;
@@ -46,7 +41,6 @@ export class MaintenanceRequestFormPage {
     public sqldatabasegetter: DatabaseProvider,
     public vibration: Vibration) {
     this.SurveyorID = navParams.get('Surveyor');
-
     this.initMaintenanceRequest();
   }
 
@@ -59,8 +53,8 @@ export class MaintenanceRequestFormPage {
   }
 
   initMaintenanceRequest() {
-
-    this.Addbeneficialy = {
+   
+    this.Addbeneficiary= {
       code: '',
       firstname: '',
       lastname: '',
@@ -75,9 +69,7 @@ export class MaintenanceRequestFormPage {
       whatsapp_number: '',
       user_id: this.SurveyorID,
       family_head_relation: ''
-
     }
-
 
     this.maintenanceRequest = {
       maintenanceasset_id: 0,
@@ -85,12 +77,7 @@ export class MaintenanceRequestFormPage {
       location: ''
     };
     this.assets = [];
-
-
-
   }
-
-
   submitMaintenanceRequest(data) {
     this.sqldatabasegetter.insertnewbeneficiary(data);
     if (this.sqldatabasegetter.isinsertstatus) {
@@ -102,48 +89,10 @@ export class MaintenanceRequestFormPage {
           duration: 3000
         });
         toast.present();
-        // loading.dismiss();
+
       }
     }
   }
-
-
-
-
-
-  // this.dataSetterService.createMaintenanceRequest(data).subscribe((data: any) => {
-  //   console.log("Create Maintenance Response", data);
-  //   loading.dismiss();
-
-
-  //   if (data) {
-  //     this.responsData=data.data;
-  //     console.log("@@@@@$5555"+this.responsData);
-  //     const toast = this.toastCtrl.create({
-  //       message: data.message,
-  //       duration: 3000
-  //     });
-  //     toast.present();
-  //     if (this.navCtrl.canGoBack) {
-  //       this.navCtrl.pop();
-  //     }
-  //     this.vibration.vibrate(this.appGlobal.vibrationTimings);
-  //   } else {
-
-  //     alert( data.errors);
-
-  //   }
-  // }, error => {
-  //   loading.dismiss();
-  //   console.log(error);
-  //   const toast = this.toastCtrl.create({
-  //     message: this.appGlobal.ServerError,
-  //     duration: 3000
-  //   });
-  //   toast.present();
-  // });
-
-
   logForm(form: NgForm) {
     this.submitMaintenanceRequest(form.value);
   }

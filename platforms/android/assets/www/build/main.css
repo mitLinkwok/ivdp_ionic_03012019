@@ -27077,6 +27077,12 @@ page-service-request-show .top_header_ {
   border-top: 10px solid grey;
 }
 
+page-sync .big-round-btn {
+  border-radius: 50%;
+  height: 5em;
+  width: 5em;
+}
+
 page-tutorial .toolbar-background {
   background: transparent;
   border-color: transparent;

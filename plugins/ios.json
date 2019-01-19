@@ -75,6 +75,9 @@
     },
     "cordova-sqlite-storage": {
       "PACKAGE_NAME": "com.linkwok.empower"
+    },
+    "call-number": {
+      "PACKAGE_NAME": "com.linkwok.empower"
     }
   },
   "dependent_plugins": {

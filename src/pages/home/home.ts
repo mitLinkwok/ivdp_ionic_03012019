@@ -52,20 +52,16 @@ export class HomePage {
   ) {
 
     this.db.getbenificialydata();
-    alert("get benifici status"+this.db.getbenificialydata)
-    if(this.db.getbenificialydata){
+   
+    if(this.db.isqurestatus){
      this.db.getkycsdata();
-     
     }
     if(this.db.isqurestatus){
-      alert(" true for surey ")
-     
-    
-      this.db.getsurvey();
-     
+      console.log(" true for surey ")
+     this.db.getsurvey();
      }
      if(this.db.isqurestatus){
-      alert(" true for question ")
+      console.log(" true for question ")
        this.db.getQuestion();
      }
 
@@ -173,12 +169,12 @@ export class HomePage {
   ionViewDidLoad() {
 
 
-    // this.storage.get('intro-done').then(done => {
-    //   if (!done) {
-    //     this.storage.set('intro-done', true);
-    //     this.navCtrl.setRoot(IntroPage);
-    //   }
-    // });
+    this.storage.get('intro-done').then(done => {
+      if (!done) {
+        this.storage.set('intro-done', true);
+        this.navCtrl.setRoot(IntroPage);
+      }
+    });
   }
 
   ionViewDidEnter() {

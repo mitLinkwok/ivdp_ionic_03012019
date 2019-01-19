@@ -111,6 +111,7 @@
 		EF232880459246C6AF73A20D /* CDVFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 47EB2030224449DF9B522377 /* CDVFile.m */; };
 		EF3AFB34BB4B40F9B7245805 /* CDVLocalFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CE5BB4B7D4479EA6590CAA /* CDVLocalFilesystem.m */; };
 		82102DCF0AF34DCEBF4971FD /* CDVAssetLibraryFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = C27E332F0B704054B31C84D2 /* CDVAssetLibraryFilesystem.m */; };
+		289FDB58AD154EAB8FEAD485 /* CFCallNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48973C0518CC4EA9A5C8657C /* CFCallNumber.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -317,6 +318,8 @@
 		2151BC286ED440949689AD04 /* CDVFile.h */ = {isa = PBXFileReference; name = "CDVFile.h"; path = "cordova-plugin-file/CDVFile.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		CD920185CC1544A6B663BB5B /* CDVLocalFilesystem.h */ = {isa = PBXFileReference; name = "CDVLocalFilesystem.h"; path = "cordova-plugin-file/CDVLocalFilesystem.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		355CBF1B233643D98D26178F /* CDVAssetLibraryFilesystem.h */ = {isa = PBXFileReference; name = "CDVAssetLibraryFilesystem.h"; path = "cordova-plugin-file/CDVAssetLibraryFilesystem.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		48973C0518CC4EA9A5C8657C /* CFCallNumber.m */ = {isa = PBXFileReference; name = "CFCallNumber.m"; path = "call-number/CFCallNumber.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		8DDE9D2219AA4D44B73073DD /* CFCallNumber.h */ = {isa = PBXFileReference; name = "CFCallNumber.h"; path = "call-number/CFCallNumber.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -610,6 +613,8 @@
 				2151BC286ED440949689AD04 /* CDVFile.h */,
 				CD920185CC1544A6B663BB5B /* CDVLocalFilesystem.h */,
 				355CBF1B233643D98D26178F /* CDVAssetLibraryFilesystem.h */,
+				48973C0518CC4EA9A5C8657C /* CFCallNumber.m */,
+				8DDE9D2219AA4D44B73073DD /* CFCallNumber.h */,
 			);
 			name = Plugins;
 			path = "Empower/Plugins";
@@ -793,6 +798,7 @@
 				EF232880459246C6AF73A20D /* CDVFile.m in Sources */,
 				EF3AFB34BB4B40F9B7245805 /* CDVLocalFilesystem.m in Sources */,
 				82102DCF0AF34DCEBF4971FD /* CDVAssetLibraryFilesystem.m in Sources */,
+				289FDB58AD154EAB8FEAD485 /* CFCallNumber.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

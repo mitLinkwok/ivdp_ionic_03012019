@@ -1,50 +1,50 @@
 import { DatabaseProvider } from './../providers/database/database';
 
 
-import {UserblockPage} from './../pages/userblock/userblock';
-import {DirectoryPage} from './../pages/directory/directory';
-import {AlertController} from 'ionic-angular/components/alert/alert-controller';
-import {SurveyListPage} from './../pages/survey-list/survey-list';
-import {ArticleShowPage} from './../pages/article-show/article-show';
-import {GrievanceShowPage} from './../pages/grievance-show/grievance-show';
-import {IdeaShowPage} from './../pages/idea-show/idea-show';
-import {ServiceRequestShowPage} from './../pages/service-request-show/service-request-show';
-import {LocalNotifications} from '@ionic-native/local-notifications';
-import {OfflinePage} from './../pages/offline/offline';
-import {Network} from '@ionic-native/network';
-import {AppVersion} from '@ionic-native/app-version';
-import {Vibration} from '@ionic-native/vibration';
-import {ArticleIndexPage} from './../pages/article-index/article-index';
-import {DataSetterProvider} from './../providers/data-setter/data-setter';
-import {LeavesShowPage} from './../pages/leaves-show/leaves-show';
-import {LogoutPage} from './../pages/logout/logout';
-import {SyncPage} from './../pages/sync/sync';
-import {Component, ViewChild} from '@angular/core';
-import {App, Events, Nav, Platform, Config, ToastController, MenuController, Content} from 'ionic-angular';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {HomePage} from '../pages/home/home';
-import {ServiceRequestPage} from "../pages/service-request/service-request";
-import {TranslateService} from '@ngx-translate/core';
-import {CalendarViewPage} from "../pages/calendar-view/calendar-view";
+import { UserblockPage } from './../pages/userblock/userblock';
+import { DirectoryPage } from './../pages/directory/directory';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { SurveyListPage } from './../pages/survey-list/survey-list';
+import { ArticleShowPage } from './../pages/article-show/article-show';
+import { GrievanceShowPage } from './../pages/grievance-show/grievance-show';
+import { IdeaShowPage } from './../pages/idea-show/idea-show';
+import { ServiceRequestShowPage } from './../pages/service-request-show/service-request-show';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { OfflinePage } from './../pages/offline/offline';
+import { Network } from '@ionic-native/network';
+import { AppVersion } from '@ionic-native/app-version';
+import { Vibration } from '@ionic-native/vibration';
+import { ArticleIndexPage } from './../pages/article-index/article-index';
+import { DataSetterProvider } from './../providers/data-setter/data-setter';
+import { LeavesShowPage } from './../pages/leaves-show/leaves-show';
+import { LogoutPage } from './../pages/logout/logout';
+import { SyncPage } from './../pages/sync/sync';
+import { Component, ViewChild } from '@angular/core';
+import { App, Events, Nav, Platform, Config, ToastController, MenuController, Content } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { HomePage } from '../pages/home/home';
+import { ServiceRequestPage } from "../pages/service-request/service-request";
+import { TranslateService } from '@ngx-translate/core';
+import { CalendarViewPage } from "../pages/calendar-view/calendar-view";
 
-import {GrievancePage} from "../pages/grievance/grievance";
-import {PoliciesPage} from "../pages/policies/policies";
-import {LoginPage} from '../pages/login/login';
-import {UserData} from '../providers/user-data-ts';
-import {FCM} from "@ionic-native/fcm";
-import {AppGlobalProvider} from "../providers/app-global/app-global";
-import {DataGetterServiceProvider} from '../providers/data-getter-service/data-getter-service';
+import { GrievancePage } from "../pages/grievance/grievance";
+import { PoliciesPage } from "../pages/policies/policies";
+import { LoginPage } from '../pages/login/login';
+import { UserData } from '../providers/user-data-ts';
+import { FCM } from "@ionic-native/fcm";
+import { AppGlobalProvider } from "../providers/app-global/app-global";
+import { DataGetterServiceProvider } from '../providers/data-getter-service/data-getter-service';
 import * as _ from "lodash";
-import {ProfilePage} from '../pages/profile/profile';
-import {GuestLunchPage} from "../pages/guest-lunch/guest-lunch";
-import {VisitingCardPage} from "../pages/visiting-card/visiting-card";
-import {StationeryRequestPage} from "../pages/stationery-request/stationery-request";
-import {MaintenanceRequestPage} from "../pages/maintenance-request/maintenance-request";
-import {AccessCardRequestPage} from "../pages/access-card-request/access-card-request";
-import {GuestRoomRequestPage} from "../pages/guest-room-request/guest-room-request";
-import {CanteenFacilityPage} from "../pages/canteen-facility/canteen-facility";
-import {GuestRoomRequestShowPage} from "../pages/guest-room-request-show/guest-room-request-show";
-import {ParakhDashboardPage} from "../pages/parakh-dashboard/parakh-dashboard";
+import { ProfilePage } from '../pages/profile/profile';
+import { GuestLunchPage } from "../pages/guest-lunch/guest-lunch";
+import { VisitingCardPage } from "../pages/visiting-card/visiting-card";
+import { StationeryRequestPage } from "../pages/stationery-request/stationery-request";
+import { MaintenanceRequestPage } from "../pages/maintenance-request/maintenance-request";
+import { AccessCardRequestPage } from "../pages/access-card-request/access-card-request";
+import { GuestRoomRequestPage } from "../pages/guest-room-request/guest-room-request";
+import { CanteenFacilityPage } from "../pages/canteen-facility/canteen-facility";
+import { GuestRoomRequestShowPage } from "../pages/guest-room-request-show/guest-room-request-show";
+import { ParakhDashboardPage } from "../pages/parakh-dashboard/parakh-dashboard";
 
 
 
@@ -73,57 +73,20 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   loggedInPages: PageInterface[] = [
-    {title: 'Dashboard', name: 'HomePage', component: HomePage, icon: 'home'}
+    { title: 'Dashboard', name: 'HomePage', component: HomePage, icon: 'home' }
   ];
 
   myVoicePages: PageInterface[] = [
-    {title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'people', countName: 'Idea'},
-    {title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box'},
-    {title: 'KYC', name: "GrievancePage", component: GrievancePage, icon: 'body', countName: 'Grievance'}
+    { title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'people', countName: 'Idea' },
+    { title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box' },
+    { title: 'KYC', name: "GrievancePage", component: GrievancePage, icon: 'body', countName: 'Grievance' }
 
   ];
 
-  // itPages: PageInterface[] = [
-  //   {
-  //     title: 'Tech Support',
-  //     name: 'ServiceRequestPage',
-  //     component: ServiceRequestPage,
-  //     icon: 'construct',
-  //     countName: 'ServiceRequest'
-  //   }
-  // ];
-
-  // hrPages: PageInterface[] = [
-  //   {title: 'Attendance', name: "CalendarViewPage", component: CalendarViewPage, icon: 'calendar'},
-  //   {title: 'Leaves', name: 'LeavesShowPage', component: LeavesShowPage, icon: 'paper-plane'},
-  //   {title: 'Parakh Dashboard', name: 'ParakhDashboardPage', component: ParakhDashboardPage, icon: 'trophy'}
-  // ];
-
-  // companyPages: PageInterface[] = [
-  //   {title: 'Articles', name: "ArticleIndexPage", component: ArticleIndexPage, icon: 'easel', countName: 'Articles'},
-  //   {title: 'Policies', name: "PoliciesPage", component: PoliciesPage, icon: 'document'},
-  //   {title: 'Directory', name: "DirectoryPage", component: DirectoryPage, icon: 'book'}
-  // ];
-
-  // servicesPages: PageInterface[] = [
-  //   {title: 'Visiting Card Requests', name: "VisitingCardPage", component: VisitingCardPage, icon: 'person'},
-  //   {title: 'Guest Lunch Requests', name: "GuestLunchPage", component: GuestLunchPage, icon: 'pizza'},
-  //   {
-  //     title: 'Facility Requests',
-  //     name: "MaintenanceRequestPage",
-  //     component: MaintenanceRequestPage,
-  //     icon: 'build'
-  //   },
-  //   {title: 'ID / Access Card Requests', name: "AccessCardRequestPage", component: AccessCardRequestPage, icon: 'card'},
-  //   {title: 'Stationery Requests', name: "StationeryRequestPage", component: StationeryRequestPage, icon: 'clipboard'},
-  //   {title: 'Guest House Requests', name: "GuestRoomRequestPage", component: GuestRoomRequestPage, icon: 'home'},
-  //   {title: 'Canteen Facility', name: "CanteenFacilityPage", component: CanteenFacilityPage, icon: 'pizza'}
-  // ];
-
   loggedOutPages: PageInterface[] = [
-    {title: 'Sync', name: 'SyncPage', component: SyncPage, icon: 'sync'},
-    {title: 'Logout', name: 'LogoutPage', component: LogoutPage, icon: 'log-out', logsOut: true}
-    
+    { title: 'Sync', name: 'SyncPage', component: SyncPage, icon: 'sync' },
+    { title: 'Logout', name: 'LogoutPage', component: LogoutPage, icon: 'log-out', logsOut: true }
+
   ];
 
   rootPage: any;
@@ -133,39 +96,30 @@ export class MyApp {
   lastBack: any;
   allowClose: any;
   pagesCounts: any = [];
-  userprofile_sample : any = "assets/img/user_sample.jpg"
-
-  //Counts Variables
-  // ServiceRequest:number;
-  // Idea:number;
-  // Grievance:number;
-  // Articles:number;
-  // pages: Array<{title: string, component: any}>;
-
-
+  userprofile_sample: any = "assets/img/user_sample.jpg"
   constructor(private translate: TranslateService,
-              public app: App,
-              public platform: Platform,
-              public splashScreen: SplashScreen,
-              private config: Config,
-              public plt: Platform,
-              public events: Events,
-              public userData: UserData,
-              public fcm: FCM,
-              private localNotifications: LocalNotifications,
-              public appGlobal: AppGlobalProvider,
-              public dataGetter: DataGetterServiceProvider,
-              public dataSetter: DataSetterProvider,
-              public vibrationCtrl: Vibration,
-              public toastCtrl: ToastController,
-              public appVersion: AppVersion,
-              public network: Network,
-              public menuCtrl: MenuController,
-              public alertCtrl: AlertController,
-             
-             ) {
-               
-               
+    public app: App,
+    public platform: Platform,
+    public splashScreen: SplashScreen,
+    private config: Config,
+    public plt: Platform,
+    public events: Events,
+    public userData: UserData,
+    public fcm: FCM,
+    private localNotifications: LocalNotifications,
+    public appGlobal: AppGlobalProvider,
+    public dataGetter: DataGetterServiceProvider,
+    public dataSetter: DataSetterProvider,
+    public vibrationCtrl: Vibration,
+    public toastCtrl: ToastController,
+    public appVersion: AppVersion,
+    public network: Network,
+    public menuCtrl: MenuController,
+    public alertCtrl: AlertController,
+
+  ) {
+
+
 
     this.userData.getHasLoggedIn().then((hasLoggedIn) => {
       if (hasLoggedIn) {
@@ -214,7 +168,7 @@ export class MyApp {
       this.appGlobal.applicationVersion = data;
       this.applicationVersion = "1.1s";
       this.appGlobal.applicationVersion = "1.1s";
-      
+
     });
 
     this.appVersion.getAppName().then((data: any) => {
@@ -246,7 +200,7 @@ export class MyApp {
         console.log("Notification", data);
         if (data.wasTapped) {
           console.log("Received in background", JSON.stringify(data));
-            this.processNotification(data);
+          this.processNotification(data);
         } else {
           console.log("Received in foreground", JSON.stringify(data));
           this.localNotifications.schedule({
@@ -291,19 +245,19 @@ export class MyApp {
         page = GuestLunchPage;
         reloadType = 'reload:guest-lunch';
         break;
-       case "visiting_card_requests":
+      case "visiting_card_requests":
         page = VisitingCardPage;
         reloadType = 'reload:visiting-card';
         break;
-       case "maintenance_requests":
+      case "maintenance_requests":
         page = MaintenanceRequestPage;
         reloadType = 'reload:maintenance-request';
         break;
-       case "room_requests":
+      case "room_requests":
         page = GuestRoomRequestShowPage;
         reloadType = 'reload:guest-room-request';
         break;
-       case "stationery_requests":
+      case "stationery_requests":
         page = StationeryRequestPage;
         reloadType = 'reload:stationery-request';
         break;
@@ -321,7 +275,7 @@ export class MyApp {
       if (this.nav.getActive().instance instanceof page) {
         this.events.publish(reloadType, true, data.uid);
       } else {
-        this.nav.push(page, {isNotification: true, id: data.uid});
+        this.nav.push(page, { isNotification: true, id: data.uid });
       }
     }
   }
@@ -343,7 +297,7 @@ export class MyApp {
         // this.askForLunch();
       }
       //if (!this.appGlobal.isOnline ) {
-      if (false ) {
+      if (false) {
         // if (pageName instanceof this.rootPage) {
         //   this.nav.push(OfflinePage);
         // }
@@ -375,7 +329,7 @@ export class MyApp {
   }
 
   getCount(countName) {
-    let object: any = _.find(this.pagesCounts, {name: countName});
+    let object: any = _.find(this.pagesCounts, { name: countName });
     if (object !== undefined) {
       return object.count;
     } else {
