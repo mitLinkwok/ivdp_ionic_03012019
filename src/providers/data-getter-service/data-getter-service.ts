@@ -34,8 +34,8 @@ export class DataGetterServiceProvider {
   }
 
   getSurveys() {
-    console.log(this.user.userData.auth_token)
-    console.log("%%%%%%%%%%%%% surveyUrl "+ this.appGlobal.allSurveysURL);
+    // console.log(this.user.userData.auth_token)
+    // console.log("%%%%%%%%%%%%% surveyUrl "+ this.appGlobal.allSurveysURL);
     return this.http.get(this.appGlobal.allSurveysURL, this.getHTTPOptions());
   }
 

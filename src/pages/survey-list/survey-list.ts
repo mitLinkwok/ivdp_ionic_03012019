@@ -112,15 +112,17 @@ export class SurveyListPage {
 
   StartSurvey(ProjectId,suervtId,qId){
 // this.navCtrl.push(SuervyPage,{qindex: 0});
-
-this.navCtrl.push(SuervyPage,{
-  project_id:ProjectId,
-  survey_id:suervtId,
-  question_id:qId,
-  qindex: 0});
-}
+alert("project_id : " +ProjectId +" survey_id: " + suervtId +" question_id:  " + qId)
+this.sqldatabasegetter.getQuestionsfroloddata();
+// this.navCtrl.push(SuervyPage,{
+//   project_id:ProjectId,
+//   survey_id:suervtId,
+//   question_id:qId,
+//   qindex: 0});
+// }
 
 
   
 
+  }
 }

@@ -59,8 +59,6 @@ export class MaintenanceRequestPage {
 
   ionViewDidEnter() {
     this.loadMaintenanceRequests(null);
-
-
   }
 
   refreshMaintenanceRequestList(reference) {
@@ -108,16 +106,13 @@ export class MaintenanceRequestPage {
       Surveyor: this.UserId
     });
   }
-
   EditUserProfile(id) {
     console.log("UserID :- " + this.UserId + "  ID ::-" + id);
     this.navCtrl.push(GrievancePage, {
       beneficiary_id: id
     })
-
   }
   call(num) {
     this.callNumber.callNumber(num, true)
-
   }
 }

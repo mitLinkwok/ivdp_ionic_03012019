@@ -61,7 +61,7 @@ export class HomePage {
      this.db.getsurvey();
      }
      if(this.db.isqurestatus){
-      console.log(" true for question ")
+    alert(" true for question ")
        this.db.getQuestion();
      }
 

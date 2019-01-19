@@ -32,6 +32,7 @@ export class GrievancePage {
   order: number = -1;
   field: string = 'updated_at';
   UserId;
+ 
   
   
 
@@ -44,13 +45,15 @@ export class GrievancePage {
     public toastCtrl: ToastController,
     public appGlobal: AppGlobalProvider,
     public sqldatabasegetter: DatabaseProvider) {
-
+    let beneficiary_id=navParams.get('beneficiary_id');
+   
 
 
     this.events.subscribe('reload:grievance', () => {
       this.refreshSRList(null);
     });
-    this.sqldatabasegetter.getKycsdata();
+    alert("in kycs beneficiary_id :="+ beneficiary_id);
+    this.sqldatabasegetter.getKycsdata(beneficiary_id);
   }
 
   sort() {

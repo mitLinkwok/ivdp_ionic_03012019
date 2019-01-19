@@ -122,7 +122,7 @@ export class AppGlobalProvider {
   public loginURL = this.intranetBaseURL + '/auth/login';
   public getsuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
   public answersrequest = this.intranetBaseURL + '/answer/';
-  public getquestionrequest = "http://172.16.17.146:8000/api/v1/surveys/getsurvey"
+  //public getquestionrequest = "http://172.16.17.146:8000/api/v1/surveys/getsurvey"
   public allSurveysURL = this.intranetBaseURL + '/surveys';
   public allGrievancesURL = this.intranetBaseURL + '/kyc';
   public createGrievancesURL = this.intranetBaseURL + '/kyc';
@@ -130,13 +130,13 @@ export class AppGlobalProvider {
   public createMaintenanceRequest = this.intranetBaseURL + '/beneficiaries';
   // -------------------------------CREATE DATABASE FROM LOGIN TIME-----------------------------
 
-  public createtable = ["CREATE TABLE beneficiaries(id INTEGER PRIMARY KEY AUTOINCREMENT,code TEXT,beneficiary_name TEXT,gender NUMBER,date_of_birth TEXT,contact_number NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,family_head_id TEXT,firstname TEXT,middlename TEXT,lastname TEXT,household_id NUMBER,village_id NUMBER,user_id NUMBER,age NUMBER,family_head_relation TEXT,whatsapp_number NUMBER)",
-    , "CREATE TABLE kycs(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,created_at TIMESTAMP,updated_at TIMESTAMP)"
-    , "CREATE TABLE `survey` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `project_id` INTEGER, `title` TEXT, `description` TEXT, `start_date` TEXT, `created_at` TEXT, `updated_at` TEXT )"
-    , "CREATE TABLE `questions` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `survey_id` INTEGER, `section_id` INTEGER, `order` INTEGER, `text` TEXT, `type` TEXT, `language_json` TEXT, `rule_json` TEXT, `created_at` TEXT, `updated_at` INTEGER )"
-    , "CREATE TABLE `options` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `question_id` INTEGER, `type` TEXT, `order` INTEGER, `text` TEXT, `language_json` TEXT, `created_at` TEXT, `updated_at` TEXT )"
-    , "CREATE TABLE `answers` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `beneficiarie_id` INTEGER, `survey_id` INTEGER, `question_id` INTEGER, `language_id` INTEGER, `option_id` INTEGER, `option_text` TEXT, `other_text` TEXT, `created_at` TEXT, `updated_at` TEXT )"
-    , "CREATE TABLE Updated_beneficiaries(id INTEGER PRIMARY KEY AUTOINCREMENT,code TEXT,beneficiary_name TEXT,gender NUMBER,date_of_birth TEXT,contact_number NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,family_head_id TEXT,firstname TEXT,middlename TEXT,lastname TEXT,household_id NUMBER,village_id NUMBER,user_id NUMBER,age NUMBER,family_head_relation TEXT,whatsapp_number NUMBER)"
+  public createtable = ["CREATE TABLE beneficiaries(id NUMBER,code TEXT,beneficiary_name TEXT,gender NUMBER,date_of_birth TEXT,contact_number NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,family_head_id TEXT,firstname TEXT,middlename TEXT,lastname TEXT,household_id NUMBER,village_id NUMBER,user_id NUMBER,age NUMBER,family_head_relation TEXT,whatsapp_number NUMBER)",
+    , "CREATE TABLE kycs(id NUMBER,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,created_at TIMESTAMP,updated_at TIMESTAMP)"
+    , "CREATE TABLE `survey` ( `id` NUMBER, `project_id` INTEGER, `title` TEXT, `description` TEXT, `start_date` TEXT, `created_at` TEXT, `updated_at` TEXT )"
+    , "CREATE TABLE `questions` ( `id` NUMBER, `survey_id` INTEGER, `section_id` INTEGER, `order` INTEGER, `text` TEXT, `type` TEXT, `language_json` TEXT, `rule_json` TEXT, `created_at` TEXT, `updated_at` INTEGER )"
+    , "CREATE TABLE `options` ( `id` NUMBER, `question_id` INTEGER, `type` TEXT, `order` INTEGER, `text` TEXT, `language_json` TEXT, `created_at` TEXT, `updated_at` TEXT )"
+    , "CREATE TABLE `answers` ( `id` NUMBER, `beneficiarie_id` INTEGER, `survey_id` INTEGER, `question_id` INTEGER, `language_id` INTEGER, `option_id` INTEGER, `option_text` TEXT, `other_text` TEXT, `created_at` TEXT, `updated_at` TEXT )"
+    , "CREATE TABLE Updated_beneficiaries(id NUMBER,code TEXT,beneficiary_name TEXT,gender NUMBER,date_of_birth TEXT,contact_number NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,family_head_id TEXT,firstname TEXT,middlename TEXT,lastname TEXT,household_id NUMBER,village_id NUMBER,user_id NUMBER,age NUMBER,family_head_relation TEXT,whatsapp_number NUMBER)"
 
   ]
 }

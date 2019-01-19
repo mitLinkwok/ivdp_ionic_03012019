@@ -1,11 +1,11 @@
-import {LoadingController} from 'ionic-angular/components/loading/loading-controller';
-import {UserData} from './../user-data-ts';
-import {HttpClient} from '@angular/common/http';
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
+import { UserData } from './../user-data-ts';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {HttpHeaders} from '@angular/common/http';
-import {AppGlobalProvider} from '../app-global/app-global';
-import {Events, ToastController} from 'ionic-angular';
-import {FileTransfer, FileUploadOptions, FileTransferObject} from '@ionic-native/file-transfer';
+import { HttpHeaders } from '@angular/common/http';
+import { AppGlobalProvider } from '../app-global/app-global';
+import { Events, ToastController } from 'ionic-angular';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
 /*
   Generated class for the DataSetterProvider provider.
@@ -17,25 +17,23 @@ import {FileTransfer, FileUploadOptions, FileTransferObject} from '@ionic-native
 export class DataSetterProvider {
 
   constructor(public http: HttpClient,
-              public events: Events,
-              public appGlobal: AppGlobalProvider, public user: UserData,
-              public loadingCtrl: LoadingController, public toastCtrl: ToastController,
-              public transfer: FileTransfer) {
+    public events: Events,
+    public appGlobal: AppGlobalProvider, public user: UserData,
+    public loadingCtrl: LoadingController, public toastCtrl: ToastController,
+    public transfer: FileTransfer) {
     console.log('Hello DataSetterProvider Provider');
   }
-  Authorization
+
   getHTTPOptions() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-      
-        'Authorization': 'Bearer '+ this.user.userData.auth_token
-        // 'Version': this.appGlobal.applicationVersion
+        'Authorization': 'Bearer ' + this.user.userData.auth_token
       })
     };
     return httpOptions;
   }
-sendNotificationToken() {
+  sendNotificationToken() {
     // console.log("sendNotificationToken Called",this.appGlobal.fcmToken,this.user.hasLoggedIn,this.appGlobal.fcmTokenStatus);
     if (this.user.fcmToken !== '' && this.user.hasLoggedIn && !this.user.fcmTokenStatus) {
       const body = {
@@ -142,7 +140,7 @@ sendNotificationToken() {
       }
     };
 
-    console.log("File Upload Options",options);
+    console.log("File Upload Options", options);
     return fileTransfer.upload(filePath, this.appGlobal.profilePictureImageURL, options, true);
   }
 
@@ -163,12 +161,12 @@ sendNotificationToken() {
 
   // Maintenance Request
   createMaintenanceRequest(data) {
-    try{
-    return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions());
-  }catch (ErrorHandler ){
-    console.log("#####################",ErrorHandler)
-    
-  }
+    try {
+      return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions());
+    } catch (ErrorHandler) {
+      console.log("#####################", ErrorHandler)
+
+    }
   }
 
   // Access Card Request
@@ -187,17 +185,17 @@ sendNotificationToken() {
 
 
 
-  gatquestionrequest(){
-    return this.http.post(this.appGlobal.getquestionrequest,this.getHTTPOptions());
+  gatquestionrequest() {
+    
+    return this.http.post(this.appGlobal.getsuervyrequest,this.getHTTPOptions());
   }
-  submitanswerrequest(data){
-    return this.http.post(this.appGlobal.answersrequest,data,this.getHTTPOptions());
+  submitanswerrequest(data) {
+    return this.http.post(this.appGlobal.answersrequest, data, this.getHTTPOptions());
   }
 
 
 
 
-  
+
 
 }
- 

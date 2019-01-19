@@ -104,33 +104,41 @@ export class DBmaneger {
             });
 
     }
-    public async getQuestion() {
+    public getQuestion() {
+         alert("!!!!!!!!!!!!!!!!");
+        console.log('Question');
         this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
-           
-            let a = true
-            if (data.success || a) {
-             
-                for (let i = 0; i <= data.questions.length; i++) {
-                    let object = data.questions[i]
-                    console.log("dadaobject ##### " + object);
-                    this.db.insertQuestinsdata(data.questions[i]);
-                }
+            alert(" in ========= "+data.data.questions);
 
-                return this.isqurestatus = true
-
-            } else {
-                alert("cannot get questions data for insert");
-            }
-            return this.isqurestatus = false
-            // this.db.getbeneficiarydata();
-        }, err => {
-            console.log(err);
-            const toast = this.toastCtrl.create({
-                message: this.appGlobal.ServerError,
-                duration: 3000
-            });
-            toast.present();
+        }, (error) => { 
+            alert("error in getting questions " + error);
         });
+
+
+        // alert(" in getquestions  @@@@@@");
+        // this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
+        //     alert(" in getquestions  #####");
+        //     let a = true
+        //     if (data.success || a) {
+        //         for (let i = 0; i <= data.questions.length; i++) {
+        //             let object = data.questions[i]
+        //             alert(" Questions ##### " + object);
+        //             this.db.insertQuestinsdata(data.questions[i]);
+        //         }
+        //         return this.isqurestatus = true
+        //     } else {
+        //         alert("cannot get questions data for insert");
+        //     }
+        //     return this.isqurestatus = false
+
+        // }, err => {
+        //     console.log(err);
+        //     const toast = this.toastCtrl.create({
+        //         message: this.appGlobal.ServerError,
+        //         duration: 3000
+        //     });
+        //     toast.present();
+        // });
 
     }
 

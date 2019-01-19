@@ -110,16 +110,16 @@ export class DatabaseProvider {
   }
   public insertQuestinsdata(objCase: any) {
     console.log(objCase);
-    // alert("in questions insert")
+    alert("I am in insrt questions")
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO `questions`(`id`,`survey_id`,`section_id`,`order`,`text`,`type`,`language_json`,`rule_json`,`created_at`,`updated_at`) VALUES (?,?,?,?,?,?,?,?,?,?)",
         [objCase.id, objCase.survey_id, objCase.section_id, objCase.order, objCase.text, objCase.type, objCase.language_json, objCase.rule_json, objCase.created_at, objCase.updated_at])
         .then((data) => {
           resolve(data);
-          console.log("insert @@@@@@@@@@@@@ questions ")
+          alert("insert @@@@@@@@@@@@@ questions ")
         }, (error) => {
           reject(error);
-          console.log("insert @@@@@@@@@@@@@ questions " + error)
+          alert("insert @@@@@@@@@@@@@ questions " + error)
           console.log("ERROR: @@@@@@@@@@@@@ insertCase" + JSON.stringify(error));
         });
     });
@@ -133,7 +133,7 @@ export class DatabaseProvider {
         console.log(" new benificialy data  " + data.rows.length)
       }, (error) => {
 
-       console.log("ERROR: getAllCase " + JSON.stringify(error));
+        console.log("ERROR: getAllCase " + JSON.stringify(error));
       });
     console.log(objCase);
     return new Promise((resolve, reject) => {
@@ -195,11 +195,9 @@ export class DatabaseProvider {
         console.log("ERROR: getAllCase " + JSON.stringify(error));
       });
   }
-  public getKycsdata() {
-    let query = '';
-    query = 'SELECT * FROM kycs';
+  public getKycsdata(kyc_person_id: string) {
     this.offlineCasekycs = [];
-    this.dbobject.executeSql(query, {})
+    this.dbobject.executeSql("SELECT * FROM kycs WHERE kyc_person_id = ?", [kyc_person_id])
       .then((data) => {
         // alert(" red kycs " + data.rows.length);
         if (data.rows.length > 0) {
@@ -216,9 +214,10 @@ export class DatabaseProvider {
               created_at: data.rows.item(i).created_at,
               updated_at: data.rows.item(i).updated_at
             });
-            // alert("i am in red kycs for loop   " + data.rows.item(i).id)
           }
-        } else { alert("error in getting kyc data from database !!!!") }
+        } else {
+          alert("No kyc data In record")
+        }
       }, (error) => {
         console.log("ERROR: getAllCase " + JSON.stringify(error));
       });
@@ -235,7 +234,7 @@ export class DatabaseProvider {
           for (var i = 0; i < data.rows.length; i++) {
             alert("i am in red survey for loop   " + data.rows.item(i).id)
             this.offlineCase.push({
-              
+
               id: data.rows.item(i).id,
               project_id: data.rows.item(i).project_id,
               title: data.rows.item(i).title,
@@ -244,7 +243,7 @@ export class DatabaseProvider {
               created_at: data.rows.item(i).created_at,
               updated_at: data.rows.item(i).updated_at
             });
-            
+
           }
         } else { alert("error in getting survey data from database !!!!") }
       }, (error) => {
@@ -253,38 +252,46 @@ export class DatabaseProvider {
   }
   public getQuestionsfroloddata() {
     let query = '';
-    query = 'SELECT * FROM questions';
-  
-
-    this.offlineCase = [];
+    query = 'SELECT * FROM `questions`';
     this.dbobject.executeSql(query, {})
       .then((data) => {
-        // alert(" red survey " + data.rows.length);
-        if (data.rows.length > 0) {
-        
-          for (var i = 0; i < data.rows.length; i++) {
+        alert("total questions" + data.rows.length)
+      }, (erro) => {
+        alert("error in geeting questions" + erro)
+      })
 
-            this.appGlobal.questionsList.push(
-              data.rows[i]
-            )
 
-            // this.appGlobal.questionsList.push({
-            //   id: data.rows.item(i).id,
-            //   survey_id: data.rows.item(i).survey_id,
-            //   section_id: data.rows.item(i).section_id,
-            //   order: data.rows.item(i).order,
-            //   text: data.rows.item(i).text,
-            //   type: data.rows.item(i).type,
-            //   language_json: data.rows.item(i).language_json,
-            //   rule_json: data.rows.item(i).rule_json,
-            //   created_at: data.rows.item(i).created_at,
-            //   updated_at: data.rows.item(i).updated_at,
-            // });
-          }
-        } else { alert("error in getting questions data from database !!!!") }
-      }, (error) => {
-        console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
-      });
+
+
+    // this.offlineCase = [];
+    // this.dbobject.executeSql(query, {})
+    //   .then((data) => {
+    //     // alert(" red survey " + data.rows.length);
+    //     if (data.rows.length > 0) {
+
+    //       for (var i = 0; i < data.rows.length; i++) {
+
+    //         this.appGlobal.questionsList.push(
+    //           data.rows[i]
+    //         )
+
+    //         // this.appGlobal.questionsList.push({
+    //         //   id: data.rows.item(i).id,
+    //         //   survey_id: data.rows.item(i).survey_id,
+    //         //   section_id: data.rows.item(i).section_id,
+    //         //   order: data.rows.item(i).order,
+    //         //   text: data.rows.item(i).text,
+    //         //   type: data.rows.item(i).type,
+    //         //   language_json: data.rows.item(i).language_json,
+    //         //   rule_json: data.rows.item(i).rule_json,
+    //         //   created_at: data.rows.item(i).created_at,
+    //         //   updated_at: data.rows.item(i).updated_at,
+    //         // });
+    //       }
+    //     } else { alert("error in getting questions data from database !!!!") }
+    //   }, (error) => {
+    //     console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
+    //   });
   }
 
 
