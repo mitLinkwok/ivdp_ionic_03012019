@@ -1,0 +1,34 @@
+<!--
+  Generated template for the QuestionTextboxPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar hideBackButton>
+    <ion-title text-center>Survey Started</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <h1><strong>
+      <p>{{question}}</p>
+    </strong>
+  </h1>
+  <form #form="ngForm">
+    <div>
+      <hr>
+      <ion-item>
+        <ion-input name="option_text" type="text" placeholder="" [(ngModel)]="answer.option_text" required></ion-input>
+      </ion-item>
+      <hr>
+      <button ion-button *ngIf="is_last == 1" type="submit" [disabled]="!form.valid" (click)="submit()">Submit</button>
+      <button ion-button *ngIf="is_last == 0" type="submit" [disabled]="!form.valid" (click)="goToNext()">Next</button>
+      <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
+    </div>
+  </form>
+
+  <div> <button ion-button  (click)="goTosurveylist()">Back To Survey List </button></div> 
+</ion-content>

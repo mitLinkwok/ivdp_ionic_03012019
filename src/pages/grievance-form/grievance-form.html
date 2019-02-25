@@ -20,20 +20,23 @@
 
 
       <ion-item>
-        <ion-label stacked floating color="primary">kyc Person ID</ion-label>
+        <ion-label stacked floating color="primary">Person ID</ion-label>
         <ion-input name="kyc_person_id" type="number" [(ngModel)]="AddKyc.kyc_person_id" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label stacked floating color="primary">User ID</ion-label>
-        <ion-input name="user_id"  [readonly]="isReadonly"  [(ngModel)]="AddKyc.user_id" required></ion-input>
+        <ion-input name="user_id" [readonly]="isReadonly" [(ngModel)]="AddKyc.user_id" required></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label stacked floating color="primary">Person Type</ion-label>
+      <!-- <ion-item>
+        <ion-label stacked floating color="primary">Person Occupation</ion-label>
         <ion-input name="kyc_person_type" type="text" [(ngModel)]="AddKyc.kyc_person_type" required></ion-input>
-      </ion-item>
+      </ion-item> -->
       <ion-item>
         <ion-label stacked floating color="primary">Document Name</ion-label>
-        <ion-input name="kyc_name" type="text" [(ngModel)]="AddKyc.kyc_name" required></ion-input>
+        <!-- <ion-input name="kyc_name" type="text" [(ngModel)]="AddKyc.kyc_name" required></ion-input> -->
+        <ion-select [(ngModel)]="AddKyc.kyc_name" name="kyc_name" required>
+          <ion-option value="{{v.name}}" *ngFor="let v of kyc_name">{{v.name}}</ion-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label stacked floating color="primary">Document Details</ion-label>
@@ -44,14 +47,10 @@
         <ion-input name="kyc_number" type="text" [(ngModel)]="AddKyc.kyc_number" required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label stacked floating color="primary">Document Image</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-label>Document Image</ion-label>
       </ion-item>
     </ion-list>
-   
-
-    <ion-item  *ngIf="imageURI"  required>
-
+    <ion-item *ngIf="imageURI" required>
       <img src="{{imageURI}}" *ngIf="imageURI" alt="Ionic File" width="300" />
     </ion-item>
     <ion-buttons>
@@ -66,15 +65,6 @@
         </ion-row>
       </ion-grid>
     </ion-buttons>
-     <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit </button>
+    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>submit </button>
   </form>
 </ion-content>
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 import { DatabaseProvider } from './../../providers/database/database';
 import { AppGlobalProvider } from './../../providers/app-global/app-global';
-import { GrievanceFilterPage } from './../grievance-filter/grievance-filter';
+
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams, Events, ModalController, ToastController } from 'ionic-angular';
 import { DataGetterServiceProvider } from '../../providers/data-getter-service/data-getter-service';
@@ -32,9 +32,11 @@ export class GrievancePage {
   order: number = -1;
   field: string = 'updated_at';
   UserId;
- 
-  
-  
+  beneficiary_id: string;
+  autoincrement_id: string;
+
+
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public dataGetterService: DataGetterServiceProvider,
@@ -45,30 +47,43 @@ export class GrievancePage {
     public toastCtrl: ToastController,
     public appGlobal: AppGlobalProvider,
     public sqldatabasegetter: DatabaseProvider) {
-    let beneficiary_id=navParams.get('beneficiary_id');
+    this.beneficiary_id = navParams.get('beneficiary_id');
+    this.autoincrement_id = navParams.get('auto_increment_id');
+    this.sqldatabasegetter.getKycsdata(this.beneficiary_id, this.autoincrement_id, this.ccallBack, this);
    
 
-
-    this.events.subscribe('reload:grievance', () => {
-      this.refreshSRList(null);
+    this.events.subscribe('reload:page-grievance', () => {
+      this.loadGrievances(null)
     });
-    alert("in kycs beneficiary_id :="+ beneficiary_id);
-    this.sqldatabasegetter.getKycsdata(beneficiary_id);
+
+
+  }
+  dorefresher(ev) {
+    setTimeout(() => {
+      this.loadGrievances(ev);
+
+      ev.complete();
+    }, 1000);
   }
 
-  sort() {
-    this.descending = !this.descending;
-    this.order = this.descending ? 1 : -1;
+  ionViewDidEnter() {
+    this.loadGrievances(null);
+   // alert("ionViewDidEnter")
+   this.sqldatabasegetter.getKycsdata(this.beneficiary_id, this.autoincrement_id, this.ccallBack, this);
   }
+
+  ionViewDidLoad() {
+    this.loadGrievances(null);
+    //alert("ionViewDidLoad")
+    console.log('ionViewDidLoad GrievancePage');
+  }
+  ccallBack(t) {
+    t.loadGrievances(null)
+  }
+
 
   loadGrievances(ref) {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    if (ref === null) {
-      loading.present();
-    }
+   
     if (this.sqldatabasegetter.offlineCasekycs.length > 0) {
       this.grievance_m = [];
 
@@ -81,7 +96,7 @@ export class GrievancePage {
           );
         }
       }
-      loading.dismiss();
+  
       if (ref != null) {
         ref.complete();
       }
@@ -90,74 +105,25 @@ export class GrievancePage {
     } else {
       this.grievance_m = [];
       console.log("No data i array")
-      loading.dismiss();
+  
       if (ref != null) {
         ref.complete();
       }
     }
   }
 
-  ionViewDidEnter() {
-    this.loadGrievances(null);
-  }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad GrievancePage');
-  }
 
-  refreshSRList(ev) {
-    this.loadGrievances(ev);
-  }
 
   goToSRForm() {
     this.UserId = this.user.userData.id;
     this.navCtrl.push(GrievanceFormPage, {
-      Surveyor: this.UserId
+      Surveyor: this.UserId,
+      beneficiary_id: this.beneficiary_id,
+      auto_increment_id: this.autoincrement_id
     });
   }
 
-  goToGrievance(id) {
-    console.log("@@click" + id)
-
-    // this.navCtrl.push(GrievanceShowPage,{
-    //   id:id,
-    // });
-
-  }
-
-  presentFilter() {
-    let modal = this.modalCtrl.create(GrievanceFilterPage, { excludeWhoseGrievances: this.excludeWhoseGrievances, grievanceWhoseList: this.grievanceWhoseList });
-    modal.present();
-
-    modal.onWillDismiss((grievanceWhose: any[]) => {
-      if (grievanceWhose) {
-        this.excludeWhoseGrievances = grievanceWhose;
-      }
-      this.updateGrievances();
-    });
-  }
-
-  updateGrievances() {
-    this.grievance_m.shownGrievances = 0;
-    this.grievance_m.forEach((grievance: any) => {
-      this.filterGrievances(grievance, this.excludeWhoseGrievances);
-      if (!grievance.hide) {
-        this.grievance_m.shownGrievances++;
-      }
-    });
-    console.log("Final Showing", this.grievance_m);
-
-  }
-
-  filterGrievances(grievance: any, excludeWhoseGrievances: any[]) {
-
-    let excludeWhoseGrievance = false;
-    if (excludeWhoseGrievances.indexOf(grievance.whose) !== -1) {
-      excludeWhoseGrievance = true;
-    }
-
-    grievance.hide = !(excludeWhoseGrievance);
-  }
 
   getLastActivity(updated_at) {
     return moment(updated_at).format("MMMM DD,YYYY hh:mm A");

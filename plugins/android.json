@@ -7,81 +7,93 @@
     "files": {}
   },
   "installed_plugins": {
+    "call-number": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
     "cordova-android-support-gradle-release": {
       "ANDROID_SUPPORT_VERSION": "27.+",
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-advanced-http": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-allow-backup": {
       "BACKUP": "false",
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-app-version": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-badge": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-calendar": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-camera": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-crop": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-fcm-with-dependecy-updated": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-file-transfer": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-filepath": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-image-picker": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-ionic-keyboard": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-ionic-webview": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-local-notification": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-network-information": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
+    "cordova-plugin-qrscanner": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
+    "cordova-plugin-uniquedeviceid": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-vibration": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-sqlite-storage": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
-    "call-number": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+    "cordova-plugin-progress": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
+    "cordova-plugin-background-mode": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.linkwok.empower"
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
     }
   }
 }

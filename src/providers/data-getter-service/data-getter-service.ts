@@ -160,8 +160,25 @@ export class DataGetterServiceProvider {
     return this.http.get(this.appGlobal.getMaintenanceAssets, this.getHTTPOptions());
   }
 
-  public getAllMaintenanceRequests() {
-    return this.http.get(this.appGlobal.getAllMaintenanceRequests, this.getHTTPOptions());
+  public getAllMaintenanceRequests(data) {
+
+    return this.http.get(this.appGlobal.getAllMaintenanceRequests +'?user_id='+data, this.getHTTPOptions());
+
+
+
+  }
+
+  public paggination(page: any) {
+    var url = "http://165.227.139.76:8080/api/v1/beneficiaries?page=" + page;
+    //alert(url)
+   
+
+    return   this.http.get(url,this.getHTTPOptions())
+  }
+
+  public paggination_hh(page:any){
+    var url =" http://165.227.139.76:8080/api/v1/household?page="+page;
+    return   this.http.get(url,this.getHTTPOptions())
   }
 
   // Access Card Request
@@ -199,8 +216,12 @@ export class DataGetterServiceProvider {
   public getMyAwards() {
     return this.http.get(this.appGlobal.getMyAwards, this.getHTTPOptions());
   }
-
+ public gathouseholsrequest() {
   
+    let data = {}
+    return this.http.get(this.appGlobal.gethouseholdrequest, this.getHTTPOptions());
+  }
+
 
 
 

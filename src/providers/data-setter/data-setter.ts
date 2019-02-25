@@ -25,14 +25,14 @@ export class DataSetterProvider {
   }
 
   getHTTPOptions() {
-    console.log("token:-"+ this.user.userData.auth_token);
+    console.log("token:-" + this.user.userData.auth_token);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + this.user.userData.auth_token
       })
     };
-   
+
     return httpOptions;
   }
   sendNotificationToken() {
@@ -163,13 +163,30 @@ export class DataSetterProvider {
 
   // Maintenance Request
   createMaintenanceRequest(data) {
+   // alert("  ff     " + JSON.stringify(this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions())));
+    return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions())
+   
+    // var obsRequest =this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions())
+    // .catch( (error: any) => {alert ( error.json().error)} );
+
+
+
+  }
+
+  syncAnswersRequest(data) {
     try {
-      return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions());
+      return this.http.post(this.appGlobal.answersrequest, data, this.getHTTPOptions());
     } catch (ErrorHandler) {
       console.log("#####################", ErrorHandler)
 
     }
   }
+
+  syncKycsRequest(data) {
+    return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions());
+  
+  }
+
 
   // Access Card Request
   createAccessCardRequest(data) {
@@ -188,14 +205,22 @@ export class DataSetterProvider {
 
 
   gatquestionrequest() {
-
-    let data={}
-    return this.http.post(this.appGlobal.getsuervyrequest,data,this.getHTTPOptions());
+   
+    let data = {}
+    return this.http.post(this.appGlobal.getsuervyrequest, data, this.getHTTPOptions());
   }
+ 
   submitanswerrequest(data) {
     return this.http.post(this.appGlobal.answersrequest, data, this.getHTTPOptions());
   }
+  public getAllMaintenanceRequests(data) {
+    alert("data    " + JSON.stringify(data) )
 
+    return this.http.post(this.appGlobal.getAllMaintenanceRequests,data ,this.getHTTPOptions());
+
+
+
+  }
 
 
 

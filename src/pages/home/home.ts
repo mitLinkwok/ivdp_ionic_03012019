@@ -1,21 +1,21 @@
-import { DBmaneger } from './../../providers/database/Dbmaneger';
+import { Observable } from 'rxjs/Observable';
+import { DatabaseProvider } from './../../providers/database/database';
+
+
 import { AppGlobalProvider } from './../../providers/app-global/app-global';
 import * as _ from 'lodash';
 import { DataSetterProvider } from './../../providers/data-setter/data-setter';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { Network } from '@ionic-native/network';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ItemSliding, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, Events, LoadingController } from 'ionic-angular';
 import { DataGetterServiceProvider } from "../../providers/data-getter-service/data-getter-service";
-import { IdeaShowPage } from "../idea-show/idea-show";
-import { GrievanceShowPage } from "../grievance-show/grievance-show";
-import { ArticleShowPage } from "../article-show/article-show";
+
 import { Storage } from '@ionic/storage';
 import { IntroPage } from "../intro/intro";
 
+import 'rxjs/add/observable/interval';
 
-
-import { MaintenanceRequestPage } from "../maintenance-request/maintenance-request";
 
 
 
@@ -30,6 +30,17 @@ export class HomePage {
   public notification;
   databaseobj: any;
   public notifications: any = [];
+  totalbeneficiary: any
+  totalcount_benificiary: string
+  totalsurvey: string
+  total_count: string
+  sync_status: string
+  live_dataLoade: any
+  sub: any
+  actual: any
+  total: any
+  aactual_hhc:any
+
 
   descending: boolean = false;
   order: number = -1;
@@ -41,103 +52,63 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public appGlobal: AppGlobalProvider,
     public storage: Storage,
-    public db:DBmaneger
-  
+    public events: Events,
+    public sqldatabasegetter: DatabaseProvider,
+
   ) {
 
-    this.db.getbenificialydata();
-   
-    if(this.db.isqurestatus){
-     this.db.getkycsdata();
+    this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
+    this.totalsurvey = this.sqldatabasegetter.total_surveys;
+    this.totalcount_benificiary = this.appGlobal.totalcount_bene;
+    this.sync_status = this.appGlobal.sync_status
+    this.actual = this.appGlobal.actual;
+    this.total = this.appGlobal.total;
+    this.aactual_hhc=this.appGlobal.actual_hh;
+
+    storage.get('total_count_beneficiary').then((val) => {
+      this.totalcount_benificiary = val;
+
+    });
+    if (this.totalbeneficiary == this.totalcount_benificiary) {
+      this.sync_status = "Sync Done"
+
+    } else {
+      this.sync_status = "Sync is going ... "
     }
-    if(this.db.isqurestatus){
-      console.log(" true for surey ")
-     this.db.getsurvey();
-     }
-     if(this.db.isqurestatus){
-    console.log(" true for question ")
-       this.db.getQuestion();
-     }
 
+    this.events.subscribe('reload:page-home', () => {
+      this.loadtotalbeneficialy();
+      this.reloadfunction();
 
-  }
-  sort() {
-    this.descending = !this.descending;
-    this.order = this.descending ? 1 : -1;
-  }
-
-  loadNotifications(ref) {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
     });
 
-    if (ref === null) {
-      loading.present();
-    }
-
-    this.dataGetterService.getAllNotifications()
-      .subscribe((data: any) => {
-        console.log("Notifications Loaded", data);
-
-        if (data.success) {
-          this.notifications = data.notification;
-        } else {
-          this.notifications = [];
-        }
-
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
-        }
-      }, err => {
-        console.log(err);
-        this.notifications = [];
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
-        }
-      });
+  }
+  reloadfunction() {
+    this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
+    this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
   }
 
-  goToPage(id, association) {
-    console.log(this.notification)
-    switch (association) {
-      case "idea": {
-        this.navCtrl.push(IdeaShowPage, { id: id })
-        break;
-      }
-      case "grievance": {
-        this.navCtrl.push(GrievanceShowPage, { id: id })
-        break;
-      }
-      case "cms": {
-        this.navCtrl.push(ArticleShowPage, { id: id })
-        break;
-      }
-      case "maintenance_requests": {
-        this.navCtrl.push(MaintenanceRequestPage, { id: id });
-        break;
-      }
-
-
-
-
-
-
-
-
-      default: {
-        console.log("default")
-      }
-    }
+  ccallBack(t) {
+    t.loadtotalbeneficialy();
+    t.loading_livedata();
   }
+
+
+
+
   ionViewDidLoad() {
+    this.loadtotalbeneficialy()
+    this.loading_livedata()
 
+    // this.sub = Observable.interval(2000)
+    //   .subscribe((val) => {
+    //     this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
+    //     this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
+    //     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
+    //     this.totalsurvey = this.sqldatabasegetter.total_surveys;
+    //     this.loadtotalbeneficialy()
+    //     this.loading_livedata()
+    //   });
 
     this.storage.get('intro-done').then(done => {
       if (!done) {
@@ -145,104 +116,72 @@ export class HomePage {
         this.navCtrl.setRoot(IntroPage);
       }
     });
+
   }
 
   ionViewDidEnter() {
-    this.loadNotifications(null)
+    this.loadtotalbeneficialy()
+    this.loading_livedata()
   }
 
-  refreshPage(ev) {
-    this.loadNotifications(ev);
+  refreshHomepage(ev) {
+
+    this.dataget();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      this.loadtotalbeneficialy()
+      this.loading_livedata()
+      ev.complete();
+    }, 2000);
+   // this.percentincrease();
+   // alert("Home page is reloading");
+  }
+  // percentincrease()
+  // {
+  //   this.live_dataLoade = this.live_dataLoade + 1;
+  //   if(this.live_dataLoade < 100){
+  //   setTimeout(this.percentincrease,500);
+  //   }
+  // }
+
+  dataget() {
+    this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
+    this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
   }
 
-  onSnooze(slidingItem: ItemSliding, notification: any) {
-    slidingItem.close();
+  loadtotalbeneficialy() {
 
-    const request = {
-      id: notification.id
-    };
-
-    console.log("Snooze Notification Request", request);
-
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+    this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
+    this.totalsurvey = this.sqldatabasegetter.total_surveys;
+    this.storage.get('total_count_beneficiary').then((val) => {
+      this.totalcount_benificiary = val;
     });
 
-    loading.present();
+    if (this.totalbeneficiary == this.totalcount_benificiary) {
+      this.sync_status = "Sync Done"
+      // this.sub.unsubscribe();
+    } else {
+      this.sync_status = "Sync is going ... "
+    }
 
-    this.dataSetterService.snoozeNotification(request)
-      .subscribe((data: any) => {
-        console.log("Snooze Notification Response", data);
-
-        loading.dismiss();
-
-        if (data.success) {
-          _.pull(this.notifications, notification);
-          const toast = this.toastCtrl.create({
-            message: data.message,
-            duration: 3000
-          });
-          toast.present();
-          // this.vibration.vibrate(this.appGlobal.vibrationTimings);
-        } else {
-          const toast = this.toastCtrl.create({
-            message: data.message,
-            duration: 3000
-          });
-          toast.present();
-        }
-
-      }, err => {
-        loading.dismiss();
-        console.log(err);
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-      });
   }
 
-  onDismiss(slidingItem: ItemSliding, notification: any) {
-    slidingItem.close();
+  loading_livedata() {
 
-    const request = {
-      id: notification.id
-    };
 
-    console.log("Mark as Read Notification Request", request);
+    this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
 
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
+    // this.storage.get('total_count_beneficiary').then((val) => {
+    //   this.totalcount_benificiary = val;
 
-    loading.present();
 
-    this.dataSetterService.markReadNotification(request)
-      .subscribe((data: any) => {
-        console.log("Mark as Read Notification Response", data);
+    // });
 
-        loading.dismiss();
 
-        if (data.success) {
-          _.pull(this.notifications, notification);
-          // this.vibration.vibrate(this.appGlobal.vibrationTimings);
-        } else {
-          const toast = this.toastCtrl.create({
-            message: data.message,
-            duration: 3000
-          });
-          toast.present();
-        }
 
-      }, err => {
-        loading.dismiss();
-        console.log(err);
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-      });
   }
+
+
+
+
 }

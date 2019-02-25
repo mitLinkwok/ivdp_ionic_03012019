@@ -1,92 +1,99 @@
+
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Synchronisation</ion-title>
-  </ion-navbar>
-
-  <ion-toolbar no-border-top>
-    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>
-  </ion-toolbar>
-</ion-header>
-
-
-
-
-<ion-content padding>
-  <ion-list>
-    <ion-card>
-     
-        <ion-card-header >
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Synchronisation</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  
+  
+  
+  <ion-content padding>
+    <ion-refresher (ionRefresh)="dorefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list>
+      <ion-card>
+  
+        <ion-card-header>
           <h1>Beneficiaries </h1>
         </ion-card-header>
-
+  
         <ion-card-content>
           <p>No of Records pending:<strong>{{pending_beneficiaries}}</strong></p>
-          <p>Last Update: <strong type="number">12 Jan 2019, 11:34PM</strong></p>
-          
-
+          <p>Last Update: <strong type="number">{{last_syncBeneficiariesTime}}</strong></p>
+  
+  
         </ion-card-content>
-
-        <ion-row >
+  
+        <ion-row>
           <ion-col>
             <div class="pull-right">
-            <button  class='big-round-btn'><ion-icon name="sync" style="font-size:5em" (click)='syncBeneficiaries()'></ion-icon></button>
+              <button class='big-round-btn'>
+                <ion-icon name="sync" style="font-size:5em" (click)='syncBeneficiaries()'></ion-icon>
+              </button>
             </div>
           </ion-col>
         </ion-row>
-
+  
       </ion-card>
-
-    <ion-card>
-     
-        <ion-card-header >
+  
+      <ion-card>
+  
+        <ion-card-header>
           <h1>KYC </h1>
         </ion-card-header>
-
+  
         <ion-card-content>
-          <p>No of Records pending:<strong>123</strong></p>
-          <p>Last Update: <strong type="number">12 Jan 2019, 11:34PM</strong></p>
-          
-
+          <p>No of Records pending:<strong>{{pending_kycs}}</strong></p>
+          <p>Last Update: <strong type="number">{{last_syncsurveyskycs}}</strong></p>
+  
+  
         </ion-card-content>
-
-        <ion-row >
+  
+        <ion-row>
           <ion-col>
             <div class="pull-right">
-            <button class='big-round-btn'><ion-icon name="sync" style="font-size:5em"></ion-icon></button>
+              <button class='big-round-btn'>
+                <ion-icon name="sync" style="font-size:5em" (click)="syncsurveyskycs()"></ion-icon>
+              </button>
             </div>
           </ion-col>
         </ion-row>
-
+  
       </ion-card>
-
-    <ion-card>
-     
-        <ion-card-header >
+  
+      <ion-card>
+  
+        <ion-card-header>
           <h1>Surveys </h1>
         </ion-card-header>
-
+  
         <ion-card-content>
-          <p>No of Records pending:<strong>123</strong></p>
-          <p>Last Update: <strong type="number">12 Jan 2019, 11:34PM</strong></p>
-          
-
+          <p>No of Records pending:<strong>{{pending_answers}}</strong></p>
+          <p>Last Update: <strong type="number">{{last_syncsurveysanswerTime}}</strong></p>
+  
+  
         </ion-card-content>
-
-        <ion-row >
+  
+        <ion-row>
           <ion-col>
             <div class="pull-right">
-            <button  class='big-round-btn'><ion-icon name="sync" style="font-size:5em"></ion-icon></button>
+              <button class='big-round-btn'>
+                <ion-icon name="sync" style="font-size:5em" (click)="syncsurveysanswer()"></ion-icon>
+              </button>
             </div>
           </ion-col>
         </ion-row>
-
+  
       </ion-card>
-
-
-
-  </ion-list>
-
-</ion-content>
+  
+  
+  
+  
+    </ion-list>
+  
+  </ion-content>

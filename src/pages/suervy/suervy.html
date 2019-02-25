@@ -5,23 +5,25 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>SuervyPage</ion-title>
+  <ion-navbar hideBackButton *navbar>
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>SurveyPage</ion-title> -->
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
-  <p>{{question}}</p>
+
+  <!-- <p>{{question}}</p> -->
 
   <hr>
-  <!-- <ion-input type="text" placeholder="Test Placeholder" ></ion-input> -->
-  <ion-input type="text" placeholder="Test Placeholder" [(ngModel)]="answer.option_text"></ion-input>
+  <!-- <ion-input name="anser_input" type="text" placeholder="Test Placeholder" [(ngModel)]="answer.option_text"></ion-input> -->
   <hr>
-  <button ion-button *ngIf="is_last == 1" (click)="submit()"  >Submit</button> 
-  
-  <button ion-button  *ngIf="is_last == 0" (click)="goToNext('a')" >Next</button>
-  <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
+  <!-- <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>
+  <button ion-button *ngIf="is_last == 0 " (click)="goToNext('a')">Next</button>
+  <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button> -->
+
+
 </ion-content>

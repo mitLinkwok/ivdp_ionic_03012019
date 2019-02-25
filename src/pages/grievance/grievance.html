@@ -15,57 +15,57 @@
   <ion-toolbar no-border-top>
     <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search">
     </ion-searchbar>
-    <ion-buttons end>
-      <button ion-button icon-only [disabled]="grievance_m.length === 0" (click)="presentFilter()">
-        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
-      </button>
-    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-  <ion-refresher (ionRefresh)="refreshSRList($event)">
+  <ion-refresher (ionRefresh)="dorefresher($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
 
   <!-- <ion-list *ngIf="grievance_m.shownGrievances > 0"> -->
-      <ion-list>
-          <ion-card *ngFor="let grievance of grievance_m | search : {term:queryText,fields:['id','kyc_number','state']} | sort: {property: field, order: order}" (click)="goToGrievance(grievance.id)" [hidden]="grievance.hide">
-            <div class="{{'gr_state_sidebar_'+ grievance.state}}">
-      
-            <!--<ion-card>-->
-            <ion-card-header>
-             
-              {{grievance.kyc_name}}
-              <span class="pull-right sr-age"> {{grievance.kyc_person_id}}</span>
-      
-            </ion-card-header>
-            <ion-card-content>
-                <p>Kyc Person Type:  <strong>{{grievance.kyc_person_type}}</strong></p>
-                <p>Kyc Details:      <strong>{{grievance.kyc_detail}}</strong></p>
-                <p>Kyc Number:       <strong>{{grievance.kyc_number}}</strong></p>
-                <p>Kyc File:        <strong>{{grievance.kyc_file}}</strong></p>
-               
-      
-            </ion-card-content>
-            <ion-row *ngIf="grievance_m.updated_at">
-              <ion-col>
-                <ion-note class="pull-right" style="color:black;">
-                  Last Activity: <b>{{getLastActivity(grievance_m.updated_at)}}</b>
-                </ion-note>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-badge class="pull-right">{{grievance_m.state}}</ion-badge>
-              </ion-col>
-            </ion-row>
-           
-            </div>
-          </ion-card>
-        </ion-list>
+  <ion-list>
+    <ion-card
+      *ngFor="let grievance of grievance_m | search : {term:queryText,fields:['id','kyc_number','state']} | sort: {property: field, order: order}"
+      [hidden]="grievance.hide">
+      <div class="{{'gr_state_sidebar_'+ grievance.state}}">
+
+        <!--<ion-card>-->
+        <ion-card-header>
+
+          {{grievance.kyc_name}}
+          <span class="pull-right sr-age"> {{grievance.kyc_person_id}}</span>
+
+        </ion-card-header>
+        <ion-card-content>
+          <p>Kyc Person Type: <strong>{{grievance.kyc_person_type}}</strong></p>
+          <p>Kyc Details: <strong>{{grievance.kyc_detail}}</strong></p>
+          <p>Kyc Number: <strong>{{grievance.kyc_number}}</strong></p>
+          <p>Kyc File: <a href="{{grievance.kyc_file}}"> <strong>Download</strong> </a></p>
+
+          <img src="{{grievance.kyc_image}}" alt="">
+
+
+        </ion-card-content>
+        <ion-row *ngIf="grievance_m.updated_at">
+          <ion-col>
+            <ion-note class="pull-right" style="color:black;">
+              Last Activity: <b>{{getLastActivity(grievance_m.updated_at)}}</b>
+            </ion-note>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-badge class="pull-right">{{grievance_m.state}}</ion-badge>
+          </ion-col>
+        </ion-row>
+
+      </div>
+    </ion-card>
+  </ion-list>
 
 
 
@@ -99,7 +99,7 @@
 
 
 
-    <!-- <ion-list>
+  <!-- <ion-list>
     <ion-card *ngFor="let grievance of grievance_m | search : {term:queryText,fields:['uid','content','state']} | sort: {property: field, order: order}" (click)="goToGrievance(grievance.uid)" [hidden]="grievance.hide">
       <div class="{{'gr_state_sidebar_'+grievance.state}}">
 
@@ -132,7 +132,9 @@
     </ion-card>
   </ion-list> -->
   <ion-fab right bottom>
-    <button ion-fab (click)="goToSRForm()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab (click)="goToSRForm()">
+      <ion-icon name="add"></ion-icon>
+    </button>
   </ion-fab>
 
   <ion-item *ngIf="grievance_m.shownGrievances === 0" text-center>

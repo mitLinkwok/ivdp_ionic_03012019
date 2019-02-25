@@ -10,38 +10,61 @@
 </ion-header>
 
 <ion-content>
-  <ion-refresher (ionRefresh)="refreshPage($event)">
+  <ion-refresher (ionRefresh)="refreshHomepage($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <ion-label><strong>{{sync_status}} </strong> </ion-label>
 
-  <ion-list *ngIf="notifications.length > 0">
-    <ion-item-sliding #item *ngFor="let notification of notifications | sort: {property: field, order: order}">
-      <ion-item no-lines class="bottom-border"
-                (click)="goToPage(notification.associated_item_id, notification.associated_item_type)"
-                [ngStyle]="{'background-color': notification.background_color}">
-        <ion-avatar item-start>
-          <img src="{{notification.profile}}" style="border:2px solid gray;width:3.5em;height:3.5em;">
-        </ion-avatar>
+  <ion-card>
+    <ion-card-header>
+      <div><strong>Total Number of Beneficiary :- </strong></div>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Count: <strong>{{appGlobal.actual}} / {{appGlobal.total}}</strong></p>
 
-        <ion-card-header [ngStyle]="{'font-weight': bold, 'color': notification.font_color}">
-          {{notification.title}}
-        </ion-card-header>
+        <!-- <div class="progerss">
+          <div class="loader" style="width:{{live_dataLoade}}%;">
+            <p class="percent">{{live_dataLoade}}%</p>
+          </div>
+        </div> -->
+      <p><strong>{{live_dataLoade}}<label>%</label> </strong></p>
+    </ion-card-content>
+  </ion-card>
 
-        <ion-card-content [ngStyle]="{'text-align':left, 'color': notification.font_color}">
-          {{notification.message}}
-        </ion-card-content>
-      </ion-item>
+  <ion-card>
+    <ion-card-header>
+      <div><strong>Total Number of HouseHold :- </strong></div>
+    </ion-card-header>
+    <ion-card-content>
+     
+      <p> Count: <strong>{{appGlobal.actual_hh}}</strong></p>
+    </ion-card-content>
+  </ion-card>
 
-      <ion-item-options side="left">
-        <button ion-button (click)="onSnooze(item,notification)">Snooze</button>
-      </ion-item-options>
+  <ion-card>
+    <ion-card-header>
+      <div><strong>Total Number of Survey :- </strong></div>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Count: <strong>{{totalsurvey}}</strong></p>
 
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="onDismiss(item,notification)">Dismiss</button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-  <ion-item no-lines class="bottom-border" *ngIf="notifications.length === 0" text-center>
-    No Notifications Available
-  </ion-item>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
+
+<!-- <script>
+var ele = document.getElementsByClassName("loader");
+var width = 0;
+var id = setInterval(frame, 1000);
+
+function frame(){
+  alrt("hi");
+  if(width >= 100){
+    clearInterval(id);
+  }else{
+    width++;
+    ele.style.width = width + '%';
+  }
+}
+</script> -->

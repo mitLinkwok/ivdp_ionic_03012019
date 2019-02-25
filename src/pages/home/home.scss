@@ -14,3 +14,20 @@ h3{
   display: block;
   top:50%;
 }
+
+
+.progerss{
+  width: 100%;
+  background-color: #ddd;
+  border-radius:100px;
+  .loader{
+    background: #f20d49 !important;
+    height:20px;
+    width: 1%;
+    p{
+      text-align:center;
+      color:white !important;
+      text-align:center;
+    }
+  }
+}

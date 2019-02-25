@@ -13,129 +13,170 @@
 </ion-header>
 
 <ion-content>
-  <form #form="ngForm"  >
+  <form #form="ngForm">
     <ion-list>
 
 
-        <ion-item>
-            <ion-label stacked floating color="primary" >Code</ion-label>
-           <ion-input name="code" type="number" [(ngModel)]="Addbeneficiary.code" required></ion-input>
-         </ion-item>
-         <ion-item>
-            <ion-label stacked floating color="primary">Surveyor ID</ion-label>
-           <ion-input name="user_id"  [readonly]="isReadonly"  [(ngModel)]="Addbeneficiary.user_id" required></ion-input>
-         </ion-item>
-        <ion-item>
-            <ion-label stacked floating color="primary">Firstname</ion-label>
-           <ion-input name="firstname" type="text" [(ngModel)]="Addbeneficiary.firstname" required></ion-input>
-         </ion-item>
-         <ion-item>
-            <ion-label stacked floating color="primary">Middlename</ion-label>
-           <ion-input name="middlename" type="text" [(ngModel)]="Addbeneficiary.middlename" required></ion-input>
-         </ion-item>
-         <ion-item>
-            <ion-label stacked floating color="primary">Lastname</ion-label>
-           <ion-input name="lastname" type="text" [(ngModel)]="Addbeneficiary.lastname" required></ion-input>
-         </ion-item>
-          <ion-item> 
-          <ion-label stacked floating color="primary">Age</ion-label>
-          <ion-input name="age" type="number" [(ngModel)]="Addbeneficiary.age" required></ion-input>
+      <!-- <ion-item>
+        <ion-label stacked floating color="primary">Code</ion-label>
+        <ion-input name="code" type="number" [(ngModel)]="Addbeneficiary.code" required></ion-input>
+      </ion-item> -->
+      <ion-item>
+        <ion-label stacked floating color="primary">Surveyor ID</ion-label>
+        <ion-input name="user_id" [readonly]="isReadonly" [(ngModel)]="Addbeneficiary.user_id" required></ion-input>
       </ion-item>
-
-
-
-      <ion-list  radio-group [(ngModel)]="Addbeneficiary.gender" name="gender" >
+      <ion-item>
+        <ion-label stacked floating color="primary">Beneficiary name</ion-label>
+        <ion-input name="beneficiary_name" type="text" [(ngModel)]="Addbeneficiary.beneficiary_name" required>
+        </ion-input>
+      </ion-item>
+      <!-- <ion-item>
+        <ion-label stacked floating color="primary">Firstname</ion-label>
+        <ion-input name="firstname" type="text" [(ngModel)]="Addbeneficiary.firstname" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Middlename</ion-label>
+        <ion-input name="middlename" type="text" [(ngModel)]="Addbeneficiary.middlename" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Lastname</ion-label>
+        <ion-input name="lastname" type="text" [(ngModel)]="Addbeneficiary.lastname" required></ion-input>
+      </ion-item> -->
+      <ion-list radio-group [(ngModel)]="Addbeneficiary.gender" name="gender">
         <ion-list-header><strong>Gender</strong></ion-list-header>
-          <ion-item >
-              <ion-label>Male</ion-label>
-              <ion-radio value="Male"></ion-radio>
-          </ion-item>
-          <ion-item >
-              <ion-label>Female</ion-label>
-              <ion-radio value="FeMale"></ion-radio>
-          </ion-item>
-          <ion-item >
-              <ion-label>Other</ion-label>
-              <ion-radio value="other"></ion-radio>
-          </ion-item>
+        <ion-item>
+          <ion-label>Male</ion-label>
+          <ion-radio value="Male"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Female</ion-label>
+          <ion-radio value="FeMale"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Other</ion-label>
+          <ion-radio value="other"></ion-radio>
+        </ion-item>
       </ion-list>
+      <ion-item>
+        <ion-label stacked floating color="primary">Age</ion-label>
+        <ion-input name="age" type="number" [(ngModel)]="Addbeneficiary.age"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Birth Date</ion-label>
+        <ion-datetime name="date_of_birth" displayFormat="DD/MMM/YYYY" [(ngModel)]="Addbeneficiary.date_of_birth">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Marital Status </ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.marital_status" name="marital_status" required>
+          <ion-option value="{{v.name}}" *ngFor="let v of marital_status">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Caste</ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.caste" name="caste" required>
+          <ion-option value="{{v.name}}" *ngFor="let v of castes">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Religion</ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.religion" name="religion" required>
+          <ion-option value="{{v.name}}" *ngFor="let v of religions">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Primary Occupation</ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.primary_occupation" name="primary_occupation" required>
+          <ion-option value="{{v.name}}" *ngFor="let v of primary_occupation">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Ownership Of Land</ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.ownership_of_land" name="ownership_of_land">
+          <ion-option value="{{v.name}}" *ngFor="let v of ownership_of_land">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Total Land Holding In Acre </ion-label>
+        <ion-input name="total_land_holding" type="number" [(ngModel)]="Addbeneficiary.total_land_holding"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Total Family Income Average Monthly</ion-label>
+        <ion-input name="total_family_income_average_monthly" type="number"
+          [(ngModel)]="Addbeneficiary.total_family_income_average_monthly" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Education Status</ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.education_status" name="education_status" required>
+          <ion-option value="{{v.name}}" *ngFor="let v of education_status">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Height In Cms</ion-label>
+        <ion-input name="height_in_cms" type="number" [(ngModel)]="Addbeneficiary.height_in_cms" required></ion-input>
+
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary">Weight In Kgs</ion-label>
+        <ion-input name="Weight_in_kgs" type="number" [(ngModel)]="Addbeneficiary.Weight_in_kgs" required></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Village ID</ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.village_id" name="village_id" (ionChange)="select_village($event)"
+          required>
+          <ion-option value="{{v.id}}" *ngFor="let v of villages">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="household_id">
+        <ion-label stacked floating color="primary">House Hold ID </ion-label>
+        <!-- <ion-input name="household_id" type="number" [(ngModel)]="Addbeneficiary.household_id" required></ion-input> -->
+        <ion-select [(ngModel)]="Addbeneficiary.household_id" name="household_id" required >
+          <ion-option value="{{v.server_id}}" *ngFor="let v of household_id">{{v.hh_number}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+
+        <ion-label stacked floating color="primary">Family Head Id</ion-label>
+        <ion-input name="family_head_id" type="number" [(ngModel)]="Addbeneficiary.family_head_id" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Ration Card Type</ion-label>
+        <ion-select [(ngModel)]="Addbeneficiary.type_of_rationa_card" name="type_of_rationa_card" required>
+          <ion-option value="{{v.name}}" *ngFor="let v of type_of_rationa_card">{{v.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked floating color="primary">Contact Number</ion-label>
+        <ion-input name="contact_number" type="number" [(ngModel)]="Addbeneficiary.contact_number" maxlength="10"
+          pattern="[0-9]{10}" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked floating color="primary"> Whatsapp Number</ion-label>
+        <ion-input name="whatsapp_number" type="number" [(ngModel)]="Addbeneficiary.whatsapp_number" maxlength="10"
+          pattern="[0-9]{10}"></ion-input>
+      </ion-item>
+      <ion-item>
+
+        <ion-label stacked floating color="primary">Relation With Family head </ion-label>
+        <ion-input name="family_head_relation" type="text" [(ngModel)]="Addbeneficiary.family_head_relation" required>
+        </ion-input>
+      </ion-item>
 
 
 
 
-
-    <ion-item> 
-          <ion-label stacked floating color="primary">Birth Date</ion-label>
-          <ion-datetime  name="date_of_birth"  displayFormat="MM/DD/YYYY"  [(ngModel)]="Addbeneficiary.date_of_birth" ></ion-datetime>
-      </ion-item>
-      <ion-item> 
-          <ion-label stacked floating color="primary">House Hold ID  </ion-label>
-          <ion-input name="household_id" type="number" [(ngModel)]="Addbeneficiary.household_id" required></ion-input>
-      </ion-item>
-      <ion-item> 
-          <ion-label stacked floating color="primary">Village ID</ion-label>
-          <ion-input name="village_id" type="number" [(ngModel)]="Addbeneficiary.village_id" required></ion-input>
-      </ion-item>
-      <ion-item> 
-          <ion-label stacked floating color="primary">Family Head Id</ion-label>
-          <ion-input name="family_head_id" type="number" [(ngModel)]="Addbeneficiary.family_head_id" required></ion-input>
-      </ion-item>
-      <ion-item> 
-          <ion-label stacked floating color="primary">Contact Number</ion-label>
-          <ion-input name="contact_number" type="number" [(ngModel)]="Addbeneficiary.contact_number" required></ion-input>
-      </ion-item>
-      <ion-item> 
-          <ion-label stacked floating color="primary"> Whatsapp Number</ion-label>
-          <ion-input name="whatsapp_number" type="number" [(ngModel)]="Addbeneficiary.whatsapp_number" required></ion-input>
-      </ion-item>
-      <ion-item> 
-        <ion-label stacked floating color="primary">Relation With Family head  </ion-label>
-        <ion-input name="family_head_relation" type="text" [(ngModel)]="Addbeneficiary.family_head_relation" required></ion-input>
-    </ion-item>
     </ion-list>
-    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Beneficiary 
-      </button>  
-  
+    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Beneficiary
+    </button>
+
   </form>
 </ion-content>
-
-
-
-
-
-
-<!-- <ion-content padding>
-  <form #form="ngForm">
-    <ion-item>
-      <ion-label color="primary" stacked>Assets</ion-label>
-      <ion-select [(ngModel)]="maintenanceRequest.maintenanceasset_id" name="maintenanceasset_id"
-                  placeholder="Select Asset"
-                  required interface="popover"><button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request
-    </button>
-        <ion-option value={{asset.uid}} *ngFor="let asset of assets">{{asset.name}}</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Location</ion-label>
-      <ion-select  [(ngModel)]="maintenanceRequest.location" name="location">
-        <ion-option *ngFor="let l of locations" [value]="l">{{l}}</ion-option>
-      </ion-select>
-    </ion-item>
-
-
-
-    <ion-item>
-      <ion-label color="primary" stacked>Details</ion-label>
-      <ion-textarea autoresize [(ngModel)]="maintenanceRequest.detail" name="detail" required minLength="1"></ion-textarea>
-    </ion-item>
-
-    <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Facility Request
-    </button>
-  </form>
-</ion-content> -->
-
-
-
-
-

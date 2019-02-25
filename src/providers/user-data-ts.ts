@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+
 /*
   Generated class for the UserDataTsProvider provider.
 
@@ -49,6 +50,7 @@ export class UserData {
           this.hasLoggedIn = true;
           this.setUserData(data);
           this.events.publish('user:login');
+         
         } else {
           this.events.publish('user:error');
           let alert = this.alertCtrl.create({
@@ -61,7 +63,7 @@ export class UserData {
 
       });
   };
-
+  
   logout(): void {
     this.storage.clear();
     this.hasLoggedIn = false;

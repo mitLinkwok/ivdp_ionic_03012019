@@ -1,0 +1,74 @@
+{
+  "_from": "cordova-plugin-progress",
+  "_id": "cordova-plugin-progress@0.3.0",
+  "_inBundle": false,
+  "_integrity": "sha1-e1S7ZjHnVuHidiMjEtAOG1B26Pk=",
+  "_location": "/cordova-plugin-progress",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-progress",
+    "name": "cordova-plugin-progress",
+    "escapedName": "cordova-plugin-progress",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-progress/-/cordova-plugin-progress-0.3.0.tgz",
+  "_shasum": "7b54bb6631e756e1e276232312d00e1b5076e8f9",
+  "_spec": "cordova-plugin-progress",
+  "_where": "/home/linkwok/Documents/13022019/ivdp_ionic_03012019",
+  "author": {
+    "name": "Lee Crossley",
+    "email": "leee@hotmail.co.uk",
+    "url": "http://ilee.co.uk/"
+  },
+  "bugs": {
+    "url": "https://github.com/leecrossley/cordova-plugin-progress/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-progress",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova / PhoneGap Plugin for Progress HUD Notifications via KVNProgress",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    },
+    {
+      "name": "apple-ios",
+      "version": ">=8.2.0"
+    }
+  ],
+  "homepage": "https://github.com/leecrossley/cordova-plugin-progress#readme",
+  "keywords": [
+    "cordova",
+    "progress",
+    "hud",
+    "notification",
+    "message",
+    "toast",
+    "status",
+    "overlay",
+    "loader",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-progress",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leecrossley/cordova-plugin-progress.git"
+  },
+  "version": "0.3.0"
+}

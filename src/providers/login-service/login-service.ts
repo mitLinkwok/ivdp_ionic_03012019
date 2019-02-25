@@ -30,7 +30,6 @@ export class LoginServiceProvider {
 
   doLogin(username: string, password: string) {
     console.log(this.http.get("http://google.com"));
-
     return new Promise(resolve => {
       let loading = this.loadingCtrl.create({
         content: 'Please wait...'
@@ -67,6 +66,7 @@ export class LoginServiceProvider {
       });
     });
   }
+
 
   doForgotPassword(email: string) {
     return new Promise(resolve => {

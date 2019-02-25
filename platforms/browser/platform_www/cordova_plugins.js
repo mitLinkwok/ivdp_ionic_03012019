@@ -416,6 +416,20 @@ module.exports = [
         "runs": true
     },
     {
+        "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
+        "id": "cordova-plugin-qrscanner.QRScanner",
+        "pluginId": "cordova-plugin-qrscanner",
+        "clobbers": [
+            "QRScanner"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-qrscanner/src/browser/plugin.min.js",
+        "id": "cordova-plugin-qrscanner.QRScannerProxy",
+        "pluginId": "cordova-plugin-qrscanner",
+        "runs": true
+    },
+    {
         "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
         "id": "cordova-plugin-splashscreen.SplashScreen",
         "pluginId": "cordova-plugin-splashscreen",
@@ -428,6 +442,14 @@ module.exports = [
         "id": "cordova-plugin-splashscreen.SplashScreenProxy",
         "pluginId": "cordova-plugin-splashscreen",
         "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-uniquedeviceid/www/uniqueid.js",
+        "id": "cordova-plugin-uniquedeviceid.UniqueDeviceID",
+        "pluginId": "cordova-plugin-uniquedeviceid",
+        "merges": [
+            "window.plugins.uniqueDeviceID"
+        ]
     },
     {
         "file": "plugins/cordova-plugin-vibration/src/browser/Vibration.js",
@@ -460,6 +482,29 @@ module.exports = [
         "clobbers": [
             "SQLitePlugin"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-progress/www/progress.js",
+        "id": "cordova-plugin-progress.Progress",
+        "pluginId": "cordova-plugin-progress",
+        "clobbers": [
+            "progress"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-background-mode/www/background-mode.js",
+        "id": "cordova-plugin-background-mode.BackgroundMode",
+        "pluginId": "cordova-plugin-background-mode",
+        "clobbers": [
+            "cordova.plugins.backgroundMode",
+            "plugin.backgroundMode"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-background-mode/src/browser/BackgroundModeProxy.js",
+        "id": "cordova-plugin-background-mode.BackgroundMode.Proxy",
+        "pluginId": "cordova-plugin-background-mode",
+        "runs": true
     }
 ];
 module.exports.metadata = 
@@ -484,11 +529,15 @@ module.exports.metadata =
     "cordova-plugin-ionic-webview": "1.2.1",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
     "cordova-plugin-network-information": "2.0.1",
+    "cordova-plugin-qrscanner": "2.6.0",
     "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-uniquedeviceid": "1.3.2",
     "cordova-plugin-vibration": "3.1.0",
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-plugin-x-toast": "2.7.2",
-    "cordova-sqlite-storage": "2.6.0"
+    "cordova-sqlite-storage": "2.6.0",
+    "cordova-plugin-progress": "0.3.0",
+    "cordova-plugin-background-mode": "0.7.2"
 }
 // BOTTOM OF METADATA
 });

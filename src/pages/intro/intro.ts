@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 
 import {HomePage} from '../home/home';
+import { DBmaneger } from './../../providers/database/Dbmaneger';
 
 
 /**
@@ -19,8 +20,16 @@ import {HomePage} from '../home/home';
 export class IntroPage {
   public introContent: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public db: DBmaneger) {
     this.setIntroContent();
+    this.db.getbenificialydata()
+    this.db.getkycsdata();
+    this.db.getsurvey();
+    this.db.gethousehold()
+    this.db.getQuestion();
+   this.db.getOpections();
+  
+
   }
 
   navHome() {

@@ -121,9 +121,12 @@
     <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="2.4.0" />
     <allow-navigation href="http://172.16.20.195:8100" />
     <plugin name="cordova-plugin-x-toast" spec="2.7.2" />
-    <plugin name="cordova-sqlite-storage" spec="2.6.0" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
+    <plugin name="cordova-plugin-qrscanner" spec="2.6.0" />
+    <plugin name="cordova-sqlite-storage" spec="2.6.0" />
+    <plugin name="cordova-plugin-progress" spec="^0.3.0" />
+    <plugin name="cordova-plugin-background-mode" spec="0.7.2" />
     <engine name="ios" spec="^4.5.5" />
-    <engine name="browser" spec="~5.0.4" />
-    <engine name="android" spec="~6.4.0" />
+    <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="^6.4.0" />
 </widget>

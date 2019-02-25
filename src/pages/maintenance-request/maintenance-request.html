@@ -1,9 +1,3 @@
-<!--
-  Generated template for the MaintenanceRequestPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -17,29 +11,29 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
   <ion-refresher (ionRefresh)="refreshMaintenanceRequestList($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
-    <ion-card
-      *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:['beneficiary_name']}"  (click)="EditUserProfile(maintenanceRequest.id)" [hidden]="maintenanceRequests.hide">
-      <div class="{{'maintenance_request_state_sidebar_'+maintenanceRequest.state}}">
-        <ion-card-header >
-          CODE: {{maintenanceRequest.code}} 
-          <span class="pull-right sr-age"><p>Age: <strong type="number">{{maintenanceRequest.age}}</strong></p></span>
-        </ion-card-header>
 
+  <ion-list>
+    <ion-card *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:['beneficiary_name','code']}"
+      (click)="EditUserProfile(maintenanceRequest.server_id,maintenanceRequest.id,maintenanceRequest.code)" [hidden]="maintenanceRequests.hide">
+      <div class="{{'maintenance_request_state_sidebar_'+maintenanceRequest.state}}">
+        <ion-card-header>
+          CODE: {{maintenanceRequest.code}}
+          <span class="pull-right sr-age">
+            <p>Age: <strong type="number">{{maintenanceRequest.age}}</strong></p>
+          </span>
+        </ion-card-header>
         <ion-card-content>
-          <p>Name:           <strong>{{maintenanceRequest.beneficiary_name}}</strong></p>
-          <p>Gender:         <strong>{{maintenanceRequest.gender}}</strong></p>
-          <p>DOB:  <strong>{{maintenanceRequest.date_of_birth}}</strong></p>
+          <p>Name: <strong>{{maintenanceRequest.beneficiary_name}}</strong></p>
+          <p>Gender: <strong>{{maintenanceRequest.gender}}</strong></p>
+          <p >DOB: <strong>{{maintenanceRequest.date_of_birth | date: 'dd MMM yyyy'}}</strong></p>
           <p>Contact Number: <strong><a href="#" (click)='call(maintenanceRequest.contact_number)'>{{maintenanceRequest.contact_number}}</a></strong></p>
           <p>Whatsapp Number:<strong>{{maintenanceRequest.whatsapp_number}}</strong> </p>
-          <p>Household ID:   <strong>{{maintenanceRequest.household_id}}</strong> </p>
-
+          <p>Household ID: <strong>{{maintenanceRequest.hh_number}}</strong> </p>
         </ion-card-content>
 
         <ion-row *ngIf="maintenanceRequest.resolved">
@@ -59,9 +53,17 @@
       </div>
     </ion-card>
   </ion-list>
-  <ion-fab right bottom>
+  <!-- ------------------infinite-scroll------------------ -->
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <!-- <ion-fab right bottom>
     <button ion-fab (click)="goToMaintenanceRequestForm()">
       <ion-icon name="add"></ion-icon>
     </button>
+  </ion-fab> -->
+  <ion-fab left bottom>
+    <ion-label>{{total_data}}</ion-label>
   </ion-fab>
+
 </ion-content>

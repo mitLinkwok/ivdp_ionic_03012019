@@ -15,26 +15,25 @@
 
 
 <ion-content>
+ 
   <ion-refresher (ionRefresh)="refreshSurveys($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
   <ion-list>
-    <ion-card *ngFor="let survey of surveys" (click)="StartSurvey(survey.project_id,survey.id,1)"  >
+    <ion-card *ngFor="let survey of surveys" (click)="StartSurvey(survey.project_id,survey.server_id,survey.type, 1)">
       <ion-card-header>{{survey.title}}
-          <span class="pull-right sr-age"><p>Project ID: <strong>{{survey.project_id}}</strong></p></span>
+        <span class="pull-right sr-age">
+          <p>Project ID: <strong>{{survey.project_id}}</strong></p>
+        </span>
       </ion-card-header>
       <ion-card-content>
-          <p>Survey Description:<strong>{{survey.description}}</strong></p>
-          <p>Duration:<strong>{{survey.duration_months}}</strong></p>
-          <p>Start Date:<strong>{{survey.start_date}}</strong></p>
+        <p>Survey Description:<strong>{{survey.description}}</strong></p>
+        <p>Duration:<strong>{{survey.duration_months}}</strong></p>
+        <p>Start Date:<strong>{{survey.start_date}}</strong></p>
 
       </ion-card-content>
     </ion-card>
   </ion-list>
 
 </ion-content>
-
-
-
-

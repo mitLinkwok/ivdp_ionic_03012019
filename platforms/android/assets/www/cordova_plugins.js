@@ -388,11 +388,27 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-qrscanner.QRScanner",
+    "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
+    "pluginId": "cordova-plugin-qrscanner",
+    "clobbers": [
+      "QRScanner"
+    ]
+  },
+  {
     "id": "cordova-plugin-splashscreen.SplashScreen",
     "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
     "pluginId": "cordova-plugin-splashscreen",
     "clobbers": [
       "navigator.splashscreen"
+    ]
+  },
+  {
+    "id": "cordova-plugin-uniquedeviceid.UniqueDeviceID",
+    "file": "plugins/cordova-plugin-uniquedeviceid/www/uniqueid.js",
+    "pluginId": "cordova-plugin-uniquedeviceid",
+    "merges": [
+      "window.plugins.uniqueDeviceID"
     ]
   },
   {
@@ -409,6 +425,23 @@ module.exports = [
     "pluginId": "cordova-sqlite-storage",
     "clobbers": [
       "SQLitePlugin"
+    ]
+  },
+  {
+    "id": "cordova-plugin-progress.Progress",
+    "file": "plugins/cordova-plugin-progress/www/progress.js",
+    "pluginId": "cordova-plugin-progress",
+    "clobbers": [
+      "progress"
+    ]
+  },
+  {
+    "id": "cordova-plugin-background-mode.BackgroundMode",
+    "file": "plugins/cordova-plugin-background-mode/www/background-mode.js",
+    "pluginId": "cordova-plugin-background-mode",
+    "clobbers": [
+      "cordova.plugins.backgroundMode",
+      "plugin.backgroundMode"
     ]
   }
 ];
@@ -434,11 +467,15 @@ module.exports.metadata =
   "cordova-plugin-ionic-webview": "1.2.1",
   "cordova-plugin-local-notification": "0.9.0-beta.2",
   "cordova-plugin-network-information": "2.0.1",
+  "cordova-plugin-qrscanner": "2.6.0",
   "cordova-plugin-splashscreen": "5.0.2",
+  "cordova-plugin-uniquedeviceid": "1.3.2",
   "cordova-plugin-vibration": "3.1.0",
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-plugin-x-toast": "2.7.2",
-  "cordova-sqlite-storage": "2.6.0"
+  "cordova-sqlite-storage": "2.6.0",
+  "cordova-plugin-progress": "0.3.0",
+  "cordova-plugin-background-mode": "0.7.2"
 };
 // BOTTOM OF METADATA
 });

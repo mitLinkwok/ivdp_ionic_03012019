@@ -1,3 +1,4 @@
+import { QuestionDropdownPage } from './../question-dropdown/question-dropdown';
 import { UserData } from './../../providers/user-data-ts';
 import { DataGetterServiceProvider } from './../../providers/data-getter-service/data-getter-service';
 import { Component } from '@angular/core';
@@ -23,6 +24,8 @@ export class SurveyListPage {
   surveys: any = [];
   user: any;
   loading: any;
+  beneficiary_id: string
+  auto_increment_id: string
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -33,52 +36,49 @@ export class SurveyListPage {
     public appGlobal: AppGlobalProvider,
     public sqldatabasegetter: DatabaseProvider,
     public toastCtrl: ToastController) {
+
+    this.beneficiary_id = navParams.get('beneficiary_id');
+    this.auto_increment_id = navParams.get('auto_increment_id');
     this.user = userData.userData;
+    this.sqldatabasegetter.getsureydatalode(this.ccallBack, this);
+    this.appGlobal.questionsList = []
     this.events.subscribe('reload:surveys', () => {
-      this.refreshSurveysList(null);
       this.loadSurveys(null);
     });
-    this.sqldatabasegetter.getsureydatalode();
+    this.appGlobal.answers = []
+    this.appGlobal.options = []
+    this.appGlobal.selectedCheckId = [];
+    this.appGlobal.selectedCheckbox = [];
+
   }
 
 
-  refreshSurveysList(refrence) {
-    this.loadSurveys(refrence);
-  }
+
   ionViewDidLoad() {
     this.loadSurveys(null);
-    // this.presentLoading();
+
+  }
+  ccallBack(t) {
+    t.loadSurveys(null)
   }
 
   ionViewDidEnter() {
+    this.appGlobal.answers = []
+    this.appGlobal.options = []
     console.log('ionViewDidEnter SurveyListPage');
-    this.loadSurveys(null);
   }
 
-  presentLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
 
-    this.loading.present();
+
+  refreshSurveys(reference) {
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      this.loadSurveys(null);
+      reference.complete();
+    }, 1000);
+
   }
-
-  dismissLoading() {
-    this.loading.dismiss();
-  }
-
-  refreshSurveys(ev) {
-    this.loadSurveys(ev);
-  }
-
   loadSurveys(ref) {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    if (ref === null) {
-      loading.present();
-    }
 
     if (this.sqldatabasegetter.offlineCase.length > 0) {
       this.surveys = [];
@@ -92,16 +92,14 @@ export class SurveyListPage {
           );
         }
       }
-      loading.dismiss();
+      // loading.dismiss();
       if (ref != null) {
         ref.complete();
       }
-
-
     } else {
       this.surveys = [];
       console.log("No data i array")
-      loading.dismiss();
+      //  loading.dismiss();
       if (ref != null) {
         ref.complete();
       }
@@ -110,21 +108,46 @@ export class SurveyListPage {
   }
 
 
-  StartSurvey(ProjectId, suervtId, qId) {
-    
+  StartSurvey(ProjectId, suervtId, type, qId) {
 
-   
-    this.navCtrl.push(SuervyPage, {
-      project_id: ProjectId,
-      survey_id: suervtId,
-      question_id: qId,
-      qindex: 0
-    });
-   
-    // this.navCtrl.push(SuervyPage,{qindex: 0});
-    //alert("project_id : " + ProjectId + " survey_id: " + suervtId + " question_id:  " + qId)
+    if (type == "Group") {
+      this.appGlobal.selectedCheckId = [];
+      this.appGlobal.selectedCheckbox = [];
+      this.navCtrl.push(QuestionDropdownPage, {
+        project_id: ProjectId,
+        survey_id: suervtId,
+        gId: qId
+      });
+    } else if (type == "Single") {
+      this.appGlobal.selectedCheckId = [];
+      this.appGlobal.selectedCheckbox = [];
+
+      this.navCtrl.push(QuestionDropdownPage, {
+        project_id: ProjectId,
+        survey_id: suervtId,
+        gId: qId
+      });
+      //this.sqldatabasegetter.getQuestionsfroloddata(suervtId, this.callsurveypage(ProjectId, suervtId, qId), this);
+    } else {
+      this.appGlobal.selectedCheckId = [];
+    this.appGlobal.selectedCheckbox = [];
+    alert("can not read survey type!!!  " + type);
+    }
+
 
   }
+  // callsurveypage(ProjectId, suervtId, qId) {
+  //   if (this.appGlobal.questionsList != null && this.appGlobal.questionsList != undefined) {
+  //     this.navCtrl.push(SuervyPage, {
+  //       project_id: ProjectId,
+  //       survey_id: suervtId,
+  //       question_id: qId,
+  //       beneficiary_id: this.beneficiary_id,
+  //       auto_increment_id: this.auto_increment_id,
+  //       qindex: 0
+  //     });
+  //   }
+  // }
 
 
 

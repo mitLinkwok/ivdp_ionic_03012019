@@ -17,25 +17,26 @@ import { AppGlobalProvider } from '../../providers/app-global/app-global';
 })
 export class OfflinePage {
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public network:Network,
-    public appGlobal:AppGlobalProvider,
-    public events:Events,
+    public network: Network,
+    public appGlobal: AppGlobalProvider,
+    public events: Events,
     public menuCtrl: MenuController) {
-       
-    console.log("TYPE: ",this.network.type);
+
+    console.log("TYPE: ", this.network.type);
   }
 
-  ionViewDidEnter(){
-    this.appGlobal.isOnline = false;
+  ionViewDidEnter() {
+    //this.appGlobal.isOnline = false;
+    this.appGlobal.isOnline = true;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OfflinePage');
-    if(this.menuCtrl.isOpen()){
-      this.menuCtrl.close();
-    }
+    // console.log('ionViewDidLoad OfflinePage');
+    // if(this.menuCtrl.isOpen()){
+    //   this.menuCtrl.close();
+    // }
   }
 
   ionViewCanLeave(): boolean {
@@ -44,19 +45,20 @@ export class OfflinePage {
     // depending on if we want to leave this view
   }
 
-  refresh(refresher){
-    setTimeout(() => {
-      let network_type = this.network.type;
-      if (network_type != "none"){
-        this.appGlobal.isOnline = true;
-        if (this.navCtrl.canGoBack){
-          this.navCtrl.pop();
-        } else {
-          this.events.publish('app:setRootAsHome');
-        }
-      }
-      refresher.complete();
-    }, 2000);
-  }
+  // refresh(refresher) {
+  //   setTimeout(() => {
+  //     //   let network_type = this.network.type;
+  //     //   if (network_type != "none"){
+  //     //     this.appGlobal.isOnline = false;
+  //     //     if (this.navCtrl.canGoBack){
+  //     //       this.navCtrl.pop();
+  //     //     } else {
+  //     //       this.events.publish('app:setRootAsHome');
+  //     //     }
+  //     //   }
+  //     //   refresher.complete();
+  //     // }, 2000);
+  //   }
+  // }
 
 }

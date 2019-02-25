@@ -1,3 +1,4 @@
+import { DatabaseProvider } from './../../providers/database/database';
 import { Vibration } from '@ionic-native/vibration';
 import { AppGlobalProvider } from './../../providers/app-global/app-global';
 import { NgForm } from '@angular/forms';
@@ -30,12 +31,15 @@ export class GrievanceFormPage {
     category: ''
   }
   imageURI: any;
+  imageuri:any
   imageFileName: any;
   grievance_categories: any;
   public grievanceTypes: any;
   AddKyc: any = [];
-  SurveyorID : string;
-
+  SurveyorID: string;
+  beneficiary_id: string;
+  autoincrement_id: string;
+  kyc_name:any=[]
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public dataSetterService: DataSetterProvider,
@@ -46,62 +50,68 @@ export class GrievanceFormPage {
     public appGlobal: AppGlobalProvider,
     private camera: Camera,
     public platform: Platform,
+    public sqldatabasegetter: DatabaseProvider,
     public vibration: Vibration) {
-      this.SurveyorID = navParams.get('Surveyor');
+    this.SurveyorID = navParams.get('Surveyor');
+    this.beneficiary_id = navParams.get('beneficiary_id');
+    this.autoincrement_id = navParams.get('auto_increment_id');
+    this.kyc_name=[{ 'id': 1, 'name': 'Aadhar Card front' },{ 'id': 2, 'name': 'Aadhar Card back' },{ 'id': 3, 'name': 'PAN Card' },{ 'id': 4, 'name': 'BPL Card' },{ 'id': 5, 'name': 'Ration Card' },{ 'id': 6, 'name': 'Bank Account' }]
+    //alert("@@@@@@@@@@@@    "  + this.beneficiary_id +"                " + this.autoincrement_id+"                      "+ this.SurveyorID)
     this.initMaintenanceRequest();
+    // alert("kycs form " +this.beneficiary_id  + "   AND    "  +"AUTO INCRMENT  " +this.autoincrement_id   )
 
   }
 
   initMaintenanceRequest() {
     this.AddKyc = {
-      kyc_person_id: '',
+      kyc_person_id: this.beneficiary_id,
       kyc_person_type: '',
       kyc_name: '',
       kyc_detail: '',
       kyc_number: '',
       kyc_file: '',
-      user_id: this.SurveyorID
+      user_id: this.SurveyorID,
+      server_id: this.autoincrement_id
     };
 
   }
 
   loadGrievanceCategories(ref) {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
+    // let loading = this.loadingCtrl.create({
+    //   content: 'Please wait...'
+    // });
 
-    if (ref === null) {
-      loading.present();
-    }
+    // if (ref === null) {
+    //   loading.present();
+    // }
+    // this.dataGetterService.getGrievanceCategories()
+    //   .subscribe((data: any) => {
+    //     console.log("Grievance Categories Loaded", data);
 
-    this.dataGetterService.getGrievanceCategories()
-      .subscribe((data: any) => {
-        console.log("Grievance Categories Loaded", data);
+    //     if (data.success) {
+    //       this.grievance_categories = data.grievanceTypes;
+    //     } else {
+    //       this.grievance_categories = [];
+    //     }
 
-        if (data.success) {
-          this.grievance_categories = data.grievanceTypes;
-        } else {
-          this.grievance_categories = [];
-        }
+    //     loading.dismiss();
+    //     if (ref != null) {
+    //       ref.complete();
+    //     }
+    //   }, err => {
+    //     console.log(err);
+    //     this.grievance_categories = [];
+    //     const toast = this.toastCtrl.create({
+    //       message: this.appGlobal.ServerError,
+    //       duration: 3000
+    //     });
+    //     toast.present();
+    //     loading.dismiss();
+    //     if (ref != null) {
+    //       ref.complete();
+    //     }
 
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
-        }
-      }, err => {
-        console.log(err);
-        this.grievance_categories = [];
-        const toast = this.toastCtrl.create({
-          message: this.appGlobal.ServerError,
-          duration: 3000
-        });
-        toast.present();
-        loading.dismiss();
-        if (ref != null) {
-          ref.complete();
-        }
-
-      });
+    //   });
   }
 
   ionViewDidEnter() {
@@ -109,71 +119,92 @@ export class GrievanceFormPage {
   }
 
   submitSR(d) {
-    d["kyc_file"] = this.imageURI
-
-    console.log("Create Grievance Request", d);
-
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loading.present();
-
-    this.dataSetterService.createGrievance(d)
-      .subscribe((data: any) => {
-        console.log("Create Grievance Response", data);
-
-        loading.dismiss();
-
-        if (data.success) {
-          this.events.publish('reload:grievance');
-          const toast = this.toastCtrl.create({
-            message: data.message,
-            duration: 3000
-          });
-          toast.present();
-          if (this.navCtrl.canGoBack) {
-            this.navCtrl.pop();
-          }
-          this.vibration.vibrate(this.appGlobal.vibrationTimings);
-        } else {
-          const toast = this.toastCtrl.create({
-            message: data.errors,
-            duration: 3000
-          });
-          toast.present();
-        }
-
-      }, err => {
-        loading.dismiss();
-        console.log(err);
+    d["kyc_image"] = this.imageuri
+    // d["kyc_file"] =this.imageURI
+    this.sqldatabasegetter.insertkycsdata(d, this.beneficiary_id, this.autoincrement_id);
+  
+    if (this.sqldatabasegetter.insertkycsdata) {
+      if (this.navCtrl.canGoBack) {
+        this.navCtrl.pop();
+      } else {
         const toast = this.toastCtrl.create({
           message: this.appGlobal.ServerError,
           duration: 3000
         });
         toast.present();
-      });
+
+      }
+    }
+    //  alert("Create Grievance Request  " + 
+    //  JSON.stringify(d));
+
+
+
+
+
+    // let loading = this.loadingCtrl.create({
+    //   content: 'Please wait...'
+    // });
+
+    // loading.present();
+
+
+    // -------------------------FOR ONLINE------------------------
+    // this.dataSetterService.createGrievance(d)
+    //   .subscribe((data: any) => {
+    //     alert("Create Grievance Response       " + data);
+
+    //     loading.dismiss();
+
+    //     if (data.success) {
+    //       this.events.publish('reload:grievance');
+    //       const toast = this.toastCtrl.create({
+    //         message: data.message,
+    //         duration: 3000
+    //       });
+    //       toast.present();
+    //       if (this.navCtrl.canGoBack) {
+    //         this.navCtrl.pop();
+    //       }
+    //       this.vibration.vibrate(this.appGlobal.vibrationTimings);
+    //     } else {
+    //       const toast = this.toastCtrl.create({
+    //         message: data.errors,
+    //         duration: 3000
+    //       });
+    //       toast.present();
+    //     }
+
+    //   }, err => {
+    //     loading.dismiss();
+    //     alert(JSON.stringify(err));
+    //     const toast = this.toastCtrl.create({
+    //       message: this.appGlobal.ServerError,
+    //       duration: 3000
+    //     });
+    //     toast.present();
+    //   });
   }
 
   getImageFromCamera() {
     const options: CameraOptions = {
-     quality: 50,
+      quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
       saveToPhotoAlbum: true,
       cameraDirection: 0
-     
+
 
     };
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
         this.camera.getPicture(options).then((imageData) => {
-          console.log("@@@@@@@@" + imageData);
-          this.imageURI = 'data:image/jpeg;base64,' + imageData;
+           this.imageURI = 'data:image/jpeg;base64,' + imageData;
+          this.imageuri = imageData;
 
-          alert(this.imageURI);
+          //alert(this.imageURI);
         }, (err) => {
           console.log(err);
           // this.presentToast(err);
@@ -184,14 +215,15 @@ export class GrievanceFormPage {
 
   getImageFromFS() {
     const options: CameraOptions = {
-      quality: 60,
+      quality: 20,
       destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       correctOrientation: true
     };
 
     this.camera.getPicture(options).then((imageData) => {
-      this.imageURI = 'data:image/jpeg;base64,' + imageData;
+       this.imageURI = 'data:image/jpeg;base64,' + imageData;
+      this.imageuri = imageData;
     }, (err) => {
       console.log(err);
       // this.presentToast(err);
@@ -200,7 +232,7 @@ export class GrievanceFormPage {
 
   logForm(form: NgForm) {
     this.submitSR(form.value);
-   
+
   }
 
   ionViewDidLoad() {
@@ -209,7 +241,7 @@ export class GrievanceFormPage {
 
 
 
-  isReadonly() {return true;}
+  isReadonly() { return true; }
 
 
 

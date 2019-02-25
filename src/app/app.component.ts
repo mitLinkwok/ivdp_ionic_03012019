@@ -1,10 +1,11 @@
-import { DatabaseProvider } from './../providers/database/database';
-
-
+import { QuestionTextboxPage } from './../pages/question-textbox/question-textbox';
+import { SearchBeneficiryPage } from './../pages/search-beneficiry/search-beneficiry';
+//import { DatabaseProvider } from './../providers/database/database';
 import { UserblockPage } from './../pages/userblock/userblock';
-import { DirectoryPage } from './../pages/directory/directory';
+//import { DirectoryPage } from './../pages/directory/directory';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { SurveyListPage } from './../pages/survey-list/survey-list';
+import { SearchbeneficiryPage } from '../pages/searchbeneficiry/searchbeneficiry';
 import { ArticleShowPage } from './../pages/article-show/article-show';
 import { GrievanceShowPage } from './../pages/grievance-show/grievance-show';
 import { IdeaShowPage } from './../pages/idea-show/idea-show';
@@ -13,7 +14,7 @@ import { OfflinePage } from './../pages/offline/offline';
 import { Network } from '@ionic-native/network';
 import { AppVersion } from '@ionic-native/app-version';
 import { Vibration } from '@ionic-native/vibration';
-import { ArticleIndexPage } from './../pages/article-index/article-index';
+//import { ArticleIndexPage } from './../pages/article-index/article-index';
 import { DataSetterProvider } from './../providers/data-setter/data-setter';
 import { LogoutPage } from './../pages/logout/logout';
 import { SyncPage } from './../pages/sync/sync';
@@ -23,7 +24,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { TranslateService } from '@ngx-translate/core';
 
-import { GrievancePage } from "../pages/grievance/grievance";
+
+//import { GrievancePage } from "../pages/grievance/grievance";
 import { LoginPage } from '../pages/login/login';
 import { UserData } from '../providers/user-data-ts';
 import { FCM } from "@ionic-native/fcm";
@@ -32,6 +34,7 @@ import { DataGetterServiceProvider } from '../providers/data-getter-service/data
 import * as _ from "lodash";
 import { ProfilePage } from '../pages/profile/profile';
 import { MaintenanceRequestPage } from "../pages/maintenance-request/maintenance-request";
+
 
 
 
@@ -62,17 +65,21 @@ export class MyApp {
   loggedInPages: PageInterface[] = [
     { title: 'Dashboard', name: 'HomePage', component: HomePage, icon: 'home' }
   ];
-
+  // { title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'people', countName: 'Idea' },
+  // { title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box' },
   myVoicePages: PageInterface[] = [
-    { title: 'Beneficiary', name: "IdeaPage", component: MaintenanceRequestPage, icon: 'people', countName: 'Idea' },
-    { title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box' },
-    { title: 'KYC', name: "GrievancePage", component: GrievancePage, icon: 'body', countName: 'Grievance' }
+    { title: 'Beneficiary', name: "SearchbeneficiryPage", component: SearchbeneficiryPage, icon: 'people', countName: 'Idea' },
+   
+    { title: 'Search', name: "Search", component:SearchBeneficiryPage, icon: 'search' },
+    { title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box' }
 
   ];
+  //{ title: 'KYC', name: "GrievancePage", component: GrievancePage, icon: 'body', countName: 'Grievance' }
 
   loggedOutPages: PageInterface[] = [
     { title: 'Sync', name: 'SyncPage', component: SyncPage, icon: 'sync' },
     { title: 'Logout', name: 'LogoutPage', component: LogoutPage, icon: 'log-out', logsOut: true }
+  
 
   ];
 
@@ -102,11 +109,8 @@ export class MyApp {
     public appVersion: AppVersion,
     public network: Network,
     public menuCtrl: MenuController,
-    public alertCtrl: AlertController,
-
+    public alertCtrl: AlertController
   ) {
-
-
 
     this.userData.getHasLoggedIn().then((hasLoggedIn) => {
       if (hasLoggedIn) {
@@ -228,8 +232,8 @@ export class MyApp {
         page = MaintenanceRequestPage;
         reloadType = 'reload:maintenance-request';
         break;
-      
-      
+
+
       default:
         console.log("Notification TYPE NOT FOUND");
         break;
@@ -250,8 +254,8 @@ export class MyApp {
       console.log("viewDidEnter", view.instance);
       let pageName = view.instance;
       if (!(pageName instanceof LoginPage) && !(pageName instanceof OfflinePage) && !(pageName instanceof UserblockPage)) {
-        this.updateMenuCounts();
-        this.updateUserProfile();
+        //this.updateMenuCounts();
+        //this.updateUserProfile();
         this.username = this.userData.userData.name;
         this.userprofile = this.userData.userData.profile;
         if (this.userData.userData.new_user) {
@@ -356,7 +360,7 @@ export class MyApp {
       console.log("onDisconnect", this.appGlobal.isOnline);
       if (this.appGlobal.isOnline) {
         this.appGlobal.isOnline = false;
-        this.nav.push(OfflinePage);
+        //this.nav.push(OfflinePage);
       }
     });
 
@@ -422,7 +426,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.initAppVersion();
       // this.initBackgroundGeolocation();
-      this.listenToNetworkEvents();
+      //this.listenToNetworkEvents();
       this.initializeFCM();
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

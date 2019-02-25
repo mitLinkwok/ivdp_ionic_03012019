@@ -1,7 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Device } from '@ionic-native/device';
+
 
 @Injectable()
 export class AppGlobalProvider {
+
+  public device_id: string
+
+
+  constructor(private device: Device) {
+    console.log('Hello AppGlobalProvider Provider');
+    this.device_id = this.device.uuid;
+  }
 
   applicationVersion: '1.1s';
   generatedSqlQuery: string
@@ -107,38 +117,75 @@ export class AppGlobalProvider {
   //rewards and redemption 
   public getMyAwards = this.intranetBaseURL + "/get_user_awards"
 
-  constructor() {
-    console.log('Hello AppGlobalProvider Provider');
-
-  }
-
-
   // ERRORs
   public ServerError = "We're sorry, but something went wrong.";
   public OrangeNoUserAvailable = 'No User Available';
   public vibrationTimings = 500;
   public answers = {};
   public questionsList = [];
+  public benefeciaries = [];
+  public syncanswers = [];
+  public synckycs = [];
+  public HouseHold = [];
+  public options = [];
+  public seletgroup = [];
+  public selectedCheckbox = []
+  public selectedCheckId = []
+  // public radio_opction = [{
+  //   question_id: 1,
+  //   type: "radio",
+  //   val: 'no'
+
+  // }, {
+  //   question_id: 1,
+  //   type: "radio",
+  //   val: 'yes'
+
+  // }
+
+
+  public totalcount_bene;
+  public sync_status;
+  public groupsurveybeneficiaries = []
   public loginURL = this.intranetBaseURL + '/auth/login';
   public getsuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
-  public answersrequest = this.intranetBaseURL + '/answer/';
+  public gethouseholdrequest = this.intranetBaseURL + '/household';
+  public answersrequest = "http://165.227.139.76:8080/api/v1/answer";
+  // public answersrequest = "http://165.227.139.76:8080/api/v1/answer/postanswers";
+
   //public getquestionrequest = "http://172.16.17.146:8000/api/v1/surveys/getsurvey"
   public allSurveysURL = this.intranetBaseURL + '/surveys';
   public allGrievancesURL = this.intranetBaseURL + '/kyc';
   public createGrievancesURL = this.intranetBaseURL + '/kyc';
   public getAllMaintenanceRequests = this.intranetBaseURL + '/beneficiaries';
-  public createMaintenanceRequest = this.intranetBaseURL + '/beneficiaries';
+  //public getAllMaintenanceRequests = this.intranetBaseURL+'/beneficiaries/getusersbeneficiary';
+  public getAllMaintenanceRequestspaggination = this.intranetBaseURL + '/beneficiaries?page=';
+  //public createMaintenanceRequest = this.intranetBaseURL + '/beneficiaries';
+  // http://165.227.139.76:8080/api/v1/beneficiaries/postUsersbeneficiary
+  // public createMaintenanceRequest = this.intranetBaseURL + 'beneficiaries/postUsersbeneficiary';
+  public createMaintenanceRequest = "http://165.227.139.76:8080/api/v1/beneficiaries/postusersbeneficiary"
   // -------------------------------CREATE DATABASE FROM LOGIN TIME-----------------------------
 
-  public createtable = ["CREATE TABLE beneficiaries(id NUMBER,code TEXT,beneficiary_name TEXT,gender NUMBER,date_of_birth TEXT,contact_number NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,family_head_id TEXT,firstname TEXT,middlename TEXT,lastname TEXT,household_id NUMBER,village_id NUMBER,user_id NUMBER,age NUMBER,family_head_relation TEXT,whatsapp_number NUMBER)",
-    , "CREATE TABLE kycs(id NUMBER,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,created_at TIMESTAMP,updated_at TIMESTAMP)"
-    , "CREATE TABLE `survey` ( `id` NUMBER, `project_id` INTEGER, `title` TEXT, `description` TEXT, `start_date` TEXT, `created_at` TEXT, `updated_at` TEXT )"
-    , "CREATE TABLE `questions` ( `id` NUMBER, `survey_id` INTEGER, `section_id` INTEGER, `order` INTEGER, `text` TEXT, `type` TEXT, `language_json` TEXT, `rule_json` TEXT, `created_at` TEXT, `updated_at` INTEGER )"
-    , "CREATE TABLE `options` ( `id` NUMBER, `question_id` INTEGER, `type` TEXT, `order` INTEGER, `text` TEXT, `language_json` TEXT, `created_at` TEXT, `updated_at` TEXT )"
-    , "CREATE TABLE `answers` ( `id` NUMBER, `beneficiarie_id` INTEGER, `survey_id` INTEGER, `question_id` INTEGER, `language_id` INTEGER, `option_id` INTEGER, `option_text` TEXT, `other_text` TEXT, `created_at` TEXT, `updated_at` TEXT )"
-    , "CREATE TABLE Updated_beneficiaries(id NUMBER,code TEXT,beneficiary_name TEXT,gender NUMBER,date_of_birth TEXT,contact_number NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,family_head_id TEXT,firstname TEXT,middlename TEXT,lastname TEXT,household_id NUMBER,village_id NUMBER,user_id NUMBER,age NUMBER,family_head_relation TEXT,whatsapp_number NUMBER)"
+  public createtable = [
+
+    "CREATE TABLE beneficiaries(id INTEGER PRIMARY KEY AUTOINCREMENT,server_id INTEGER type UNIQUE,device_id TEXT,code TEXT,beneficiary_name TEXT,gender TEXT,age NUMBER,date_of_birth TEXT,marital_status TEXT,caste TEXT,religion TEXT,primary_occupation TEXT,ownership_of_land TEXT,total_land_holding TEXT,total_family_income_average_monthly NUMBER,education_status TEXT,height_in_cms NUMBER,Weight_in_kgs NUMBER,village_id NUMBER,household_id NUMBER,family_head_id NUMBER,type_of_rationa_card TEXT,family_head_relation TEXT,contact_number NUMBER,whatsapp_number NUMBER,user_id NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,sync_status INTEGER)"
+    , "CREATE TABLE kycs(id INTEGER PRIMARY KEY AUTOINCREMENT,server_id INTEGER type UNIQUE,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,kyc_image BLOB,created_at TIMESTAMP,updated_at TIMESTAMP,device_id TEXT,sync_status INTEGER)"
+    , "CREATE TABLE `survey` ( id INTEGER PRIMARY KEY AUTOINCREMENT, server_id INTEGER type UNIQUE, `project_id` INTEGER, `title` TEXT, `description` TEXT,`type` TEXT , `start_date` TEXT, `created_at` TEXT, `updated_at` TEXT,`sync_status` INTEGER )"
+    , "CREATE TABLE `questions` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER type UNIQUE, `survey_id` INTEGER, `section_id` INTEGER, `order` INTEGER, `text` TEXT, `type` TEXT, `language_json` TEXT, `rule_json` TEXT, `created_at` TEXT, `updated_at` INTEGER ,`sync_status` INTEGER)"
+    , "CREATE TABLE `options` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER type UNIQUE, `question_id` INTEGER, `type` TEXT, `order` INTEGER, `text` TEXT, `language_json` TEXT, `created_at` TEXT, `updated_at` TEXT ,`sync_status` INTEGER)"
+    , "CREATE TABLE `answers` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER ,`beneficiarie_id` INTEGER, `survey_id` INTEGER, `question_id` INTEGER, `language_id` INTEGER, `option_id` INTEGER, `option_text` TEXT,`image` BLOB,`other_text` TEXT, `created_at` TEXT, `updated_at` TEXT ,sync_status INTEGER)"
+    , "CREATE TABLE Updated_beneficiaries(id INTEGER PRIMARY KEY AUTOINCREMENT,server_id INTEGER,device_id TEXT,code TEXT,beneficiary_name TEXT,gender TEXT,age NUMBER,date_of_birth TEXT,marital_status TEXT,caste TEXT,religion TEXT,primary_occupation TEXT,ownership_of_land TEXT,total_land_holding TEXT,total_family_income_average_monthly NUMBER,education_status TEXT,height_in_cms NUMBER,Weight_in_kgs NUMBER,village_id NUMBER,household_id NUMBER,family_head_id NUMBER,type_of_rationa_card TEXT,family_head_relation TEXT,contact_number NUMBER,whatsapp_number NUMBER,user_id NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,sync_status INTEGER)"
+    , "CREATE TABLE Updated_kycs(id INTEGER PRIMARY KEY AUTOINCREMENT,server_id INTEGER,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,kyc_image BLOB,created_at TIMESTAMP,updated_at TIMESTAMP sync_status INTEGER)"
+    , "CREATE TABLE `households` (`id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER type UNIQUE,`village_id` NUMBER,`user_id` NUMBER,`hh_number` NUMBER,`faliya_name` TEXT,`landmark` TEXT,`sync_status` INTEGER)"
+    , "CREATE TABLE `villages`(`id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER,`talukablock_id` INTEGER,`name` TEXT,`sync_status` INTEGER)"
+    , "CREATE TABLE `talukas`(`id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER,`parent_id` INTEGER,`district_id` INTEGER,`name` TEXT,`sync_status` INTEGER)"
+
 
   ]
+  public actual = 0;
+  public total = 0;
+  public actual_hh = 0
+
 }
 
 
