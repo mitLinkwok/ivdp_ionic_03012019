@@ -131,19 +131,6 @@ export class AppGlobalProvider {
   public seletgroup = [];
   public selectedCheckbox = []
   public selectedCheckId = []
-  // public radio_opction = [{
-  //   question_id: 1,
-  //   type: "radio",
-  //   val: 'no'
-
-  // }, {
-  //   question_id: 1,
-  //   type: "radio",
-  //   val: 'yes'
-
-  // }
-
-
   public totalcount_bene;
   public sync_status;
   public groupsurveybeneficiaries = []
@@ -151,20 +138,13 @@ export class AppGlobalProvider {
   public getsuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
   public gethouseholdrequest = this.intranetBaseURL + '/household';
   public answersrequest = "http://165.227.139.76:8080/api/v1/answer";
-  // public answersrequest = "http://165.227.139.76:8080/api/v1/answer/postanswers";
-
-  //public getquestionrequest = "http://172.16.17.146:8000/api/v1/surveys/getsurvey"
   public allSurveysURL = this.intranetBaseURL + '/surveys';
   public allGrievancesURL = this.intranetBaseURL + '/kyc';
   public createGrievancesURL = this.intranetBaseURL + '/kyc';
   public getAllMaintenanceRequests = this.intranetBaseURL + '/beneficiaries';
-  //public getAllMaintenanceRequests = this.intranetBaseURL+'/beneficiaries/getusersbeneficiary';
   public getAllMaintenanceRequestspaggination = this.intranetBaseURL + '/beneficiaries?page=';
-  //public createMaintenanceRequest = this.intranetBaseURL + '/beneficiaries';
-  // http://165.227.139.76:8080/api/v1/beneficiaries/postUsersbeneficiary
-  // public createMaintenanceRequest = this.intranetBaseURL + 'beneficiaries/postUsersbeneficiary';
   public createMaintenanceRequest = "http://165.227.139.76:8080/api/v1/beneficiaries/postusersbeneficiary"
-  // -------------------------------CREATE DATABASE FROM LOGIN TIME-----------------------------
+
 
   public createtable = [
 
