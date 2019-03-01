@@ -42,7 +42,7 @@
     "@ionic-native/in-app-browser": "^4.5.3",
     "@ionic-native/local-notifications": "^4.5.3",
     "@ionic-native/network": "^4.5.3",
-    "@ionic-native/qr-scanner": "^5.0.0",
+    "@ionic-native/qr-scanner": "^5.2.0",
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/sqlite": "^4.20.0",
     "@ionic-native/status-bar": "4.4.0",
@@ -91,6 +91,7 @@
     "moment": "^2.20.1",
     "mx.ferreyra.callnumber": "0.0.2",
     "ng-http-loader": "^0.7.1",
+    "ng-phonegap-plugin-barcodescanner": "^5.0.0",
     "ngx-chips": "^1.8.0",
     "npm": "^6.5.0",
     "rxjs": "5.5.2",
@@ -140,8 +141,7 @@
     },
     "platforms": [
       "ios",
-      "browser",
-      "android"
+      "browser"
     ]
   }
 }

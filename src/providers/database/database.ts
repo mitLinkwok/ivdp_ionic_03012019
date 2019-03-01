@@ -609,6 +609,7 @@ export class DatabaseProvider {
         this.appGlobal.benefeciaries = []
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
+            console.log("  %%%%%%  "+JSON.stringify(data.rows.item(i)));
             this.appGlobal.benefeciaries.push({
               client_id: data.rows.item(i).id,
               code: data.rows.item(i).code,
@@ -655,7 +656,7 @@ export class DatabaseProvider {
         this.appGlobal.syncanswers = []
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
-            console.log(" @@@@@@@@@      " + JSON.stringify(data.rows.item(i)))
+            // console.log(" @@@@@@@@@      " + JSON.stringify(data.rows.item(i)))
             this.appGlobal.syncanswers.push({
               client_id: data.rows.item(i).id,
               beneficiarie_id: data.rows.item(i).beneficiarie_id,

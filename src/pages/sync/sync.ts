@@ -36,10 +36,10 @@ export class SyncPage {
 		public dataSetterService: DataSetterProvider, public sqldatabasegetter: DatabaseProvider,
 		public toastCtrl: ToastController,
 		public db: DBmaneger) {
-		
-		this.sqldatabasegetter.syncbeneficiarydata();
+
+		//	this.sqldatabasegetter.syncbeneficiarydata();
 		this.sqldatabasegetter.syncanswersdata();
-		this.sqldatabasegetter.synckycsdata();
+		//this.sqldatabasegetter.synckycsdata();
 
 		this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
 		this.pending_answers = this.appGlobal.syncanswers.length
@@ -47,6 +47,12 @@ export class SyncPage {
 
 	}
 	dorefresh(ev) {
+
+
+		for (let i = 0; i <= this.appGlobal.syncanswers.length; i++) {
+			console.log("@@@    "+JSON.stringify(this.appGlobal.syncanswers[i]))
+		}
+
 
 		this.datareload(ev)
 		setTimeout(() => {
@@ -107,7 +113,7 @@ export class SyncPage {
 		const js_arr = { "answer": m.appGlobal.syncanswers };
 		//	loading.present();
 		m.dataSetterService.syncAnswersRequest(js_arr).subscribe((data: any) => {
-		
+
 			if (data.status) {
 				alert("Answers sync done")
 
@@ -129,7 +135,7 @@ export class SyncPage {
 
 	}
 
-	updaterdbanswers(object: any, t){
+	updaterdbanswers(object: any, t) {
 		for (let i = 0; i < object.length; i++) {
 			this.sqldatabasegetter.updateanswers(object[i], t);
 		}

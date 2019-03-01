@@ -24,6 +24,9 @@
     "cordova-plugin-app-version": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
+    "cordova-plugin-background-mode": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
     "cordova-plugin-badge": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
@@ -63,6 +66,9 @@
     "cordova-plugin-network-information": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
+    "cordova-plugin-progress": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
     "cordova-plugin-qrscanner": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
@@ -82,12 +88,6 @@
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
     "cordova-sqlite-storage": {
-      "PACKAGE_NAME": "com.linkwok.dfivdp"
-    },
-    "cordova-plugin-progress": {
-      "PACKAGE_NAME": "com.linkwok.dfivdp"
-    },
-    "cordova-plugin-background-mode": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     }
   },

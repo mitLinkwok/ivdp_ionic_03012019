@@ -76,30 +76,24 @@ export class SurveyListPage {
       this.loadSurveys(null);
       reference.complete();
     }, 1000);
-
   }
   loadSurveys(ref) {
-
     if (this.sqldatabasegetter.offlineCase.length > 0) {
       this.surveys = [];
-
       for (let i = 0; i <= this.sqldatabasegetter.offlineCase.length; i++) {
         if (this.sqldatabasegetter.offlineCase[i] != undefined) {
           console.log(this.sqldatabasegetter.offlineCase[i]);
-
           this.surveys.push(
             this.sqldatabasegetter.offlineCase[i]
           );
         }
       }
-      // loading.dismiss();
       if (ref != null) {
         ref.complete();
       }
     } else {
       this.surveys = [];
       console.log("No data i array")
-      //  loading.dismiss();
       if (ref != null) {
         ref.complete();
       }
@@ -116,7 +110,8 @@ export class SurveyListPage {
       this.navCtrl.push(QuestionDropdownPage, {
         project_id: ProjectId,
         survey_id: suervtId,
-        gId: qId
+        gId: qId,
+        type: "Group"
       });
     } else if (type == "Single") {
       this.appGlobal.selectedCheckId = [];
@@ -125,32 +120,17 @@ export class SurveyListPage {
       this.navCtrl.push(QuestionDropdownPage, {
         project_id: ProjectId,
         survey_id: suervtId,
-        gId: qId
+        gId: qId,
+        type: "Single"
       });
       //this.sqldatabasegetter.getQuestionsfroloddata(suervtId, this.callsurveypage(ProjectId, suervtId, qId), this);
     } else {
       this.appGlobal.selectedCheckId = [];
-    this.appGlobal.selectedCheckbox = [];
-    alert("can not read survey type!!!  " + type);
+      this.appGlobal.selectedCheckbox = [];
+      alert("can not read survey type!!!  " + type);
     }
 
 
   }
-  // callsurveypage(ProjectId, suervtId, qId) {
-  //   if (this.appGlobal.questionsList != null && this.appGlobal.questionsList != undefined) {
-  //     this.navCtrl.push(SuervyPage, {
-  //       project_id: ProjectId,
-  //       survey_id: suervtId,
-  //       question_id: qId,
-  //       beneficiary_id: this.beneficiary_id,
-  //       auto_increment_id: this.auto_increment_id,
-  //       qindex: 0
-  //     });
-  //   }
-  // }
-
-
-
-
 }
 

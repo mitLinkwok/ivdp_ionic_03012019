@@ -233,6 +233,23 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-device.device",
+    "file": "plugins/cordova-plugin-device/www/device.js",
+    "pluginId": "cordova-plugin-device",
+    "clobbers": [
+      "device"
+    ]
+  },
+  {
+    "id": "cordova-plugin-background-mode.BackgroundMode",
+    "file": "plugins/cordova-plugin-background-mode/www/background-mode.js",
+    "pluginId": "cordova-plugin-background-mode",
+    "clobbers": [
+      "cordova.plugins.backgroundMode",
+      "plugin.backgroundMode"
+    ]
+  },
+  {
     "id": "cordova-plugin-badge.Badge",
     "file": "plugins/cordova-plugin-badge/www/badge.js",
     "pluginId": "cordova-plugin-badge",
@@ -286,14 +303,6 @@ module.exports = [
     "pluginId": "cordova-plugin-crop",
     "clobbers": [
       "plugins.crop"
-    ]
-  },
-  {
-    "id": "cordova-plugin-device.device",
-    "file": "plugins/cordova-plugin-device/www/device.js",
-    "pluginId": "cordova-plugin-device",
-    "clobbers": [
-      "device"
     ]
   },
   {
@@ -388,6 +397,14 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-progress.Progress",
+    "file": "plugins/cordova-plugin-progress/www/progress.js",
+    "pluginId": "cordova-plugin-progress",
+    "clobbers": [
+      "progress"
+    ]
+  },
+  {
     "id": "cordova-plugin-qrscanner.QRScanner",
     "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
     "pluginId": "cordova-plugin-qrscanner",
@@ -426,23 +443,6 @@ module.exports = [
     "clobbers": [
       "SQLitePlugin"
     ]
-  },
-  {
-    "id": "cordova-plugin-progress.Progress",
-    "file": "plugins/cordova-plugin-progress/www/progress.js",
-    "pluginId": "cordova-plugin-progress",
-    "clobbers": [
-      "progress"
-    ]
-  },
-  {
-    "id": "cordova-plugin-background-mode.BackgroundMode",
-    "file": "plugins/cordova-plugin-background-mode/www/background-mode.js",
-    "pluginId": "cordova-plugin-background-mode",
-    "clobbers": [
-      "cordova.plugins.backgroundMode",
-      "plugin.backgroundMode"
-    ]
   }
 ];
 module.exports.metadata = 
@@ -454,11 +454,12 @@ module.exports.metadata =
   "cordova-plugin-advanced-http": "1.11.1",
   "cordova-plugin-allow-backup": "0.0.2",
   "cordova-plugin-app-version": "0.1.9",
+  "cordova-plugin-device": "2.0.2",
+  "cordova-plugin-background-mode": "0.7.2",
   "cordova-plugin-badge": "0.8.8",
   "cordova-plugin-calendar": "5.1.3",
   "cordova-plugin-camera": "4.0.3",
   "cordova-plugin-crop": "0.3.1",
-  "cordova-plugin-device": "2.0.2",
   "cordova-plugin-fcm-with-dependecy-updated": "2.4.0",
   "cordova-plugin-file-transfer": "1.7.1",
   "cordova-plugin-filepath": "1.4.2",
@@ -467,15 +468,14 @@ module.exports.metadata =
   "cordova-plugin-ionic-webview": "1.2.1",
   "cordova-plugin-local-notification": "0.9.0-beta.2",
   "cordova-plugin-network-information": "2.0.1",
+  "cordova-plugin-progress": "0.3.0",
   "cordova-plugin-qrscanner": "2.6.0",
   "cordova-plugin-splashscreen": "5.0.2",
   "cordova-plugin-uniquedeviceid": "1.3.2",
   "cordova-plugin-vibration": "3.1.0",
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-plugin-x-toast": "2.7.2",
-  "cordova-sqlite-storage": "2.6.0",
-  "cordova-plugin-progress": "0.3.0",
-  "cordova-plugin-background-mode": "0.7.2"
+  "cordova-sqlite-storage": "2.6.0"
 };
 // BOTTOM OF METADATA
 });

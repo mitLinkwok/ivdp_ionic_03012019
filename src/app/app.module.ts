@@ -1,3 +1,4 @@
+import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 
 import { SearchBeneficiryPageModule } from './../pages/search-beneficiry/search-beneficiry.module';
 import { DirectivesModule } from './../directives/directives.module';
@@ -94,7 +95,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { SearchbeneficiryPage } from '../pages/searchbeneficiry/searchbeneficiry';
 import { SearchbeneficiryPageModule } from '../pages/searchbeneficiry/searchbeneficiry.module';
 import { SearchBeneficiryPage } from './../pages/search-beneficiry/search-beneficiry';
-import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+
 import { QuestionTextboxPageModule } from './../pages/question-textbox/question-textbox.module';
 import { QuestionRadiobuttonPageModule } from './../pages/question-radiobutton/question-radiobutton.module';
 import { QuestionDropdownPageModule } from './../pages/question-dropdown/question-dropdown.module';
@@ -197,7 +198,6 @@ export function createTranslateLoader(http: HttpClient) {
   entryComponents: [
     MyApp,
     HomePage,
-
     IdeaFormPage,
     IdeaPage,
     GrievancePage,
@@ -259,6 +259,7 @@ export function createTranslateLoader(http: HttpClient) {
     CallNumber,
     DBmaneger,
     QRScanner
+
 
   ]
 })

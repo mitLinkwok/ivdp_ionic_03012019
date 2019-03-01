@@ -206,7 +206,7 @@
   "cordova-plugin-qrscanner": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-qrscanner"
+      "id": "cordova-plugin-qrscanner@2.6.0"
     },
     "is_top_level": true,
     "variables": {}
@@ -225,6 +225,14 @@
       "id": "cordova-plugin-background-mode"
     },
     "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-compat": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-compat@^1.0.0"
+    },
+    "is_top_level": false,
     "variables": {}
   }
 }

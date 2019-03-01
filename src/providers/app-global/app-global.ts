@@ -137,7 +137,8 @@ export class AppGlobalProvider {
   public loginURL = this.intranetBaseURL + '/auth/login';
   public getsuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
   public gethouseholdrequest = this.intranetBaseURL + '/household';
-  public answersrequest = "http://165.227.139.76:8080/api/v1/answer";
+  public answersrequest = this.intranetBaseURL + '/answer/postanswers';
+  // public answersrequest = "http://165.227.139.76:8080/api/v1/answer";
   public allSurveysURL = this.intranetBaseURL + '/surveys';
   public allGrievancesURL = this.intranetBaseURL + '/kyc';
   public createGrievancesURL = this.intranetBaseURL + '/kyc';

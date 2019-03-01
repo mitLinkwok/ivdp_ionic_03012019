@@ -28,7 +28,6 @@ export class QuestionImagePage {
   is_last: number = 0;
   key: string;
   imageURI: any;
-  imageuri: any
   answer: any;
   question_id: string
   project_id: string
@@ -81,7 +80,7 @@ export class QuestionImagePage {
       if (this.platform.is('cordova')) {
         this.camera.getPicture(options).then((imageData) => {
           this.imageURI = 'data:image/jpeg;base64,' + imageData;
-          this.imageuri = imageData;
+         
         }, (err) => {
           console.log(err);
         });
@@ -100,7 +99,7 @@ export class QuestionImagePage {
 
     this.camera.getPicture(options).then((imageData) => {
       this.imageURI = 'data:image/jpeg;base64,' + imageData;
-      this.imageuri = imageData;
+     
     }, (err) => {
       console.log(err);
     });

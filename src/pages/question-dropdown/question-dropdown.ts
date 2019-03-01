@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppGlobalProvider } from "../../providers/app-global/app-global";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
+import { elementAt } from 'rxjs/operator/elementAt';
 
 
 
@@ -28,21 +29,22 @@ export class QuestionDropdownPage {
   answer: any;
   project_id: string
   survey_id: string
+  survey_type: string
   beneficiary_id: string
-  auto_increment_id: string
-  selectedCheckbox: any
-  group: any = []
-  qId: any
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
+  auto_increment_id: string;
+  selectedCheckbox: any;
+  group: any = [];
+  qId: any;
+  numberOfChecks: number = 1;
+  checkBoxLimit: any = 1;
+constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
     this.sqldatabasegetter.getdataforgroupsurvey(this.ccallBack, this)
     this.project_id = navParams.get("project_id");
     this.survey_id = navParams.get("survey_id");
     this.qId = navParams.get("qId");
-    //this.appGlobal.selectedCheckbox = {};
+    this.survey_type = navParams.get("type");
   }
   ionViewDidLoad() {
-
     console.log('ionViewDidLoad QuestionDropdownPage');
     console.log("@@@    " + this.appGlobal.groupsurveybeneficiaries)
   }
@@ -59,26 +61,25 @@ export class QuestionDropdownPage {
     return e != null
   }
   ccallBack(t) {
-    t.group = t.appGlobal.groupsurveybeneficiaries
+    t.group = t.appGlobal.groupsurveybeneficiaries;
+    t.group[0].isChecked = true;
   }
 
 
 
   getChanged(e) {
-  
-    console.log("Selected Checkbox:" + JSON.stringify(this.appGlobal.selectedCheckbox));
-    console.log("Selected Checkbox:" + JSON.stringify(this.group));
-    this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
-    this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
-    // console.log("Selected Checkbox array:" + JSON.stringify(this.appGlobal.selectedCheckbox));
-    // console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckbox).replace(/\[|\]|"|"/g, ""))
-
-    for (let i = 0; i < this.appGlobal.selectedCheckbox.length; i++) {
-      console.log("Selected Checkbox array:" + JSON.stringify(this.appGlobal.selectedCheckbox[i]));
+    if (this.survey_type === "Single") {
+      if (e.isChecked === true) {
+        this.numberOfChecks++;
+        this.Selection()
+      } else {
+        this.numberOfChecks--;
+      }
     }
-
-    console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckId).replace(/\[|\]|"|"/g, ""))
-    this.answer.option_text = JSON.stringify(this.appGlobal.selectedCheckbox).replace(/\[|\]|"|"/g, "");
+    else {
+      this.checkBoxLimit = 2;
+      this.Selection();
+    }
   }
   startsurvey() {
     this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
@@ -95,6 +96,13 @@ export class QuestionDropdownPage {
       });
     }
   }
-
+  Selection() {
+    // console.log("Selected Checkbox:" + JSON.stringify(this.appGlobal.selectedCheckbox));
+    // console.log("Selected Checkbox:" + JSON.stringify(this.group));
+    this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
+    this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
+    console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckId).replace(/\[|\]|"|"/g, ""))
+    this.answer.option_text = JSON.stringify(this.appGlobal.selectedCheckbox).replace(/\[|\]|"|"/g, "");
+  }
 }
 
