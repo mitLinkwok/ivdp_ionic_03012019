@@ -105,6 +105,7 @@ export class SurveyListPage {
   StartSurvey(ProjectId, suervtId, type, qId) {
 
     if (type == "Group") {
+      alert("This is Group survey,so you should select more then one beneficiary.")
       this.appGlobal.selectedCheckId = [];
       this.appGlobal.selectedCheckbox = [];
       this.navCtrl.push(QuestionDropdownPage, {
@@ -113,6 +114,7 @@ export class SurveyListPage {
         gId: qId,
         type: "Group"
       });
+
     } else if (type == "Single") {
       this.appGlobal.selectedCheckId = [];
       this.appGlobal.selectedCheckbox = [];

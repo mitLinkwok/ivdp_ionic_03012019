@@ -409,7 +409,7 @@ export class DatabaseProvider {
 
   public getsureydatalode(cb, t) {
     let query = '';
-    query = 'SELECT * FROM survey';
+    query = 'SELECT * FROM survey ORDER BY server_id ASC' ;
     this.offlineCase = [];
     this.dbobject.executeSql(query, {})
       .then((data) => {

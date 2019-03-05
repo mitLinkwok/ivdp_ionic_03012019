@@ -1,12 +1,676 @@
 webpackJsonp([0],{
 
+/***/ 103:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArticleShowPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_user_data_ts__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_vibration__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__comments_comments__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+/**
+ * Generated class for the ArticleShowPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var ArticleShowPage = /** @class */ (function () {
+    function ArticleShowPage(navCtrl, navParams, dataGetterService, dataSetterService, events, modalCtrl, loadingCtrl, toastCtrl, appGlobal, vibration, userData) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.dataGetterService = dataGetterService;
+        this.dataSetterService = dataSetterService;
+        this.events = events;
+        this.modalCtrl = modalCtrl;
+        this.loadingCtrl = loadingCtrl;
+        this.toastCtrl = toastCtrl;
+        this.appGlobal = appGlobal;
+        this.vibration = vibration;
+        this.userData = userData;
+        this.intialArticle = {
+            title: "",
+            content: "",
+            created_at: "",
+            user_id: "",
+            creator: "",
+            comments: [],
+            courasel_attachments: [],
+        };
+        this.article_id = this.navParams.get('id');
+        this.user = userData.userData;
+        this.events.subscribe('reload:articleShow', function (isNotification, id) {
+            _this.article_id = id;
+            _this.refreshPage(null);
+        });
+    }
+    ArticleShowPage.prototype.ionViewDidEnter = function () {
+        this.loadArticle(null, this.article_id);
+    };
+    ArticleShowPage.prototype.loadArticle = function (ref, id) {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        if (ref === null) {
+            loading.present();
+        }
+        this.dataGetterService.getArticle(id)
+            .subscribe(function (data) {
+            console.log("Article Details Loaded", data);
+            if (data.success) {
+                _this.article = data.article;
+            }
+            else {
+                // this.article = this.intialArticle;
+                if (_this.navCtrl.canGoBack()) {
+                    _this.navCtrl.pop();
+                }
+                var toast = _this.toastCtrl.create({
+                    message: data.message,
+                    duration: 3000
+                });
+                toast.present();
+            }
+            loading.dismiss();
+            if (ref != null) {
+                ref.complete();
+            }
+        }, function (err) {
+            console.log(err);
+            // this.article = this.intialArticle;
+            var toast = _this.toastCtrl.create({
+                message: _this.appGlobal.ServerError,
+                duration: 3000
+            });
+            toast.present();
+            loading.dismiss();
+            if (ref != null) {
+                ref.complete();
+            }
+            if (_this.navCtrl.canGoBack()) {
+                _this.navCtrl.pop();
+            }
+        });
+    };
+    ArticleShowPage.prototype.refreshPage = function (event) {
+        this.loadArticle(event, this.article_id);
+    };
+    ArticleShowPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad ArticleShowPage');
+    };
+    ArticleShowPage.prototype.like = function () {
+        var _this = this;
+        var request = {
+            item_type: "Cm",
+            item_id: this.article.id,
+        };
+        console.log("Like Article Request", request);
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        loading.present();
+        this.dataSetterService.likeArticle(request)
+            .subscribe(function (data) {
+            console.log("Like Article Response", data);
+            loading.dismiss();
+            if (data.success) {
+                _this.article.likes = data.likes_count;
+                _this.article.liked_by_me = data.liked_by_me;
+                _this.vibration.vibrate(_this.appGlobal.vibrationTimings);
+            }
+            // else {
+            //   const toast = this.toastCtrl.create({
+            //     message: data.message,
+            //     duration: 3000
+            //   });
+            //   toast.present();
+            // }
+        }, function (err) {
+            loading.dismiss();
+            console.log(err);
+            var toast = _this.toastCtrl.create({
+                message: _this.appGlobal.ServerError,
+                duration: 3000
+            });
+            toast.present();
+        });
+    };
+    ArticleShowPage.prototype.comment = function () {
+        var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_4__comments_comments__["a" /* CommentsPage */], { rootItem: this.article });
+        modal.present();
+        modal.onWillDismiss(function () {
+            console.log("Comment Modal Closed");
+        });
+    };
+    ArticleShowPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_6__angular_core__["m" /* Component */])({
+            selector: 'page-article-show',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/article-show/article-show.html"*/'<!--\n  Generated template for the ArticleShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Article</ion-title>\n    <ion-buttons end *ngIf="article" >\n      <button ion-button icon-only clear (click)="like()">\n        <ion-icon [name]="article.liked_by_me ? \'heart\' : \'heart-outline\'" isActive="true" [class.liked]="article.liked_by_me"></ion-icon>\n        {{article.likes}}\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="article.can_comment">\n        <ion-icon name=\'chatbubbles\' isActive="true"></ion-icon>\n        {{article.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="article">\n    <div *ngIf="article.showHeader">\n      <h1>{{article.title}}</h1>\n      <hr>\n    </div>\n    <ion-slides *ngIf="article.courasel_attachments.length > 0" [autoplay]="5000" [pager]="true" [loop]="true" style="height: auto;">\n      <ion-slide *ngFor="let slide of article.courasel_attachments">\n        <img [src]="slide.url">\n      </ion-slide>\n    </ion-slides>\n    <hr *ngIf="article.courasel_attachments.length > 0" >\n    <div [innerHtml]="article.content | safeHtml">\n      <!--{{idea.content}}-->\n    </div>\n    <div *ngIf="article.showFooter">\n      <hr>\n      <h5 *ngIf="article.date">Created on: {{article.date}}</h5>\n      <h5 *ngIf="article.creator">Created by: {{article.creator}}</h5>\n    </div>\n  </div>\n  <hr>\n  <!-- <comment [rootItem]="article" [user]="user"></comment> -->\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/article-show/article-show.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_8__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__["a" /* DataSetterProvider */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["m" /* ModalController */],
+            __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["k" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__["a" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+            __WEBPACK_IMPORTED_MODULE_1__ionic_native_vibration__["a" /* Vibration */],
+            __WEBPACK_IMPORTED_MODULE_0__providers_user_data_ts__["a" /* UserData */]])
+    ], ArticleShowPage);
+    return ArticleShowPage;
+}());
+
+//# sourceMappingURL=article-show.js.map
+
+/***/ }),
+
+/***/ 104:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommentsPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_user_data_ts__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the CommentsPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var CommentsPage = /** @class */ (function () {
+    function CommentsPage(navCtrl, navParams, viewCtrl, userData, events, dataSetter) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.viewCtrl = viewCtrl;
+        this.userData = userData;
+        this.events = events;
+        this.dataSetter = dataSetter;
+        this.rootItem = {};
+        this.editorComment = '';
+        this.rootItem = this.navParams.data.rootItem;
+        this.user = userData.userData;
+        if (this.rootItem.comments) {
+            this.scrollToBottom();
+        }
+    }
+    CommentsPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad CommentsPage');
+    };
+    CommentsPage.prototype.ionViewWillLeave = function () {
+        // unsubscribe
+        this.events.unsubscribe('comment:received');
+    };
+    CommentsPage.prototype.ionViewDidEnter = function () {
+        var _this = this;
+        // Subscribe to received  new message events
+        this.events.subscribe('comment:received', function (comment) {
+            _this.pushNewComment(comment);
+        });
+    };
+    CommentsPage.prototype.dismiss = function () {
+        this.viewCtrl.dismiss();
+    };
+    CommentsPage.prototype.onFocus = function () {
+        // this.showEmojiPicker = false;
+        this.content.resize();
+        this.scrollToBottom();
+    };
+    CommentsPage.prototype.switchEmojiPicker = function () {
+        // this.showEmojiPicker = !this.showEmojiPicker;
+        // if (!this.showEmojiPicker) {
+        //   this.focus();
+        // } else {
+        //   this.setTextareaScroll();
+        // }
+        // this.content.resize();
+        // this.scrollToBottom();
+    };
+    CommentsPage.prototype.sendComment = function () {
+        var _this = this;
+        if (!this.editorComment.trim())
+            return;
+        // Mock message
+        var id = Date.now().toString();
+        var time = __WEBPACK_IMPORTED_MODULE_4_moment__().format("DD/MM/YY HH:mm");
+        var comment = {
+            messageId: id,
+            comment_time: time,
+            comment_by: this.user.id,
+            content: this.editorComment,
+            created_at: Date.now().toString(),
+            item_id: this.rootItem.id,
+            item_type: this.rootItem.item_type,
+            user_ids: '',
+            user: this.user.name,
+            id: '',
+            profile_pic: this.user.profile,
+            status: 'pending'
+        };
+        this.pushNewComment(comment);
+        this.editorComment = '';
+        this.focus();
+        console.log("Comments Request", comment);
+        this.dataSetter.sendComment(comment)
+            .subscribe(function (data) {
+            console.log("Comments Response", data);
+            var index = _this.getMsgIndexById(id);
+            if (index !== -1) {
+                if (data.success) {
+                    _this.rootItem.comments[index].status = 'success';
+                }
+                else {
+                    _this.rootItem.comments[index].status = 'failed';
+                }
+            }
+        }, function (err) {
+            console.log(err);
+            var index = _this.getMsgIndexById(id);
+            if (index !== -1) {
+                _this.rootItem.comments[index].status = 'failed';
+            }
+        });
+    };
+    CommentsPage.prototype.pushNewComment = function (comment) {
+        this.rootItem.comments.push(comment);
+        this.scrollToBottom();
+    };
+    CommentsPage.prototype.getMsgIndexById = function (id) {
+        return this.rootItem.comments.findIndex(function (e) { return e.messageId === id; });
+    };
+    CommentsPage.prototype.scrollToBottom = function () {
+        var _this = this;
+        setTimeout(function () {
+            if (_this.content.scrollToBottom) {
+                _this.content.scrollToBottom();
+            }
+        }, 400);
+    };
+    CommentsPage.prototype.focus = function () {
+        if (this.messageInput && this.messageInput.nativeElement) {
+            this.messageInput.nativeElement.focus();
+        }
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["e" /* Content */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["e" /* Content */])
+    ], CommentsPage.prototype, "content", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_8" /* ViewChild */])('comment_input'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* ElementRef */])
+    ], CommentsPage.prototype, "messageInput", void 0);
+    CommentsPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
+            selector: 'page-comments',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/comments/comments.html"*/'<!--\n  Generated template for the CommentsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="dismiss()">\n        <ion-icon name="close-circle"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>Comments ({{rootItem.comments.length}})</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n  <div class="message-wrap">\n\n    <div *ngFor="let comment of rootItem.comments" class="message" [class.left]="comment.comment_by !== user.id" [class.right]="comment.comment_by === user.id">\n      <img class="user-img" [src]="comment.profile_pic ? comment.profile_pic : \'https://intranetstaging.herokuapp.com/assets/user_pic_missing.png\'" alt="" src="">\n      <ion-spinner name="dots" *ngIf="comment.status === \'pending\'"></ion-spinner>\n      <label *ngIf="comment.status === \'failed\'" class=\'status liked\'>Failed</label>\n      <div class="msg-detail">\n        <!-- <div class="msg-info">\n          <p>{{comment.user}}</p>\n        </div> -->\n        <div class="msg-content">\n          <span class="triangle"></span>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right\':\'msg-info-left\'">\n            <p>{{comment.user}}</p>\n          </div>\n          <p class="line-breaker " [innerHTML]=\'comment.content\'></p>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right-time\':\'msg-info-left-time\'">\n            <p>{{comment.comment_time}}</p>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n\n  </div>\n\n</ion-content>\n\n<ion-footer no-border [style.height]="\'55px\'">\n  <div class="input-wrap">\n    <!-- <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">\n      <ion-icon name="md-happy"></ion-icon>\n    </button> -->\n    <ion-textarea name="comment_input" #comment_input placeholder="Type your comment" [(ngModel)]="editorComment" (focusin)="onFocus()"></ion-textarea>\n    <button ion-button clear icon-only item-right (click)="sendComment()">\n      <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n    </button>\n  </div>\n  <!-- <emoji-picker [(ngModel)]="editorMsg"></emoji-picker> -->\n</ion-footer>\n\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/comments/comments.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ViewController */],
+            __WEBPACK_IMPORTED_MODULE_1__providers_user_data_ts__["a" /* UserData */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__["a" /* DataSetterProvider */]])
+    ], CommentsPage);
+    return CommentsPage;
+}());
+
+//# sourceMappingURL=comments.js.map
+
+/***/ }),
+
+/***/ 105:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfilePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_loading_loading_controller__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_user_data_ts__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_transfer__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__ = __webpack_require__(489);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_crop__ = __webpack_require__(490);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_camera__ = __webpack_require__(79);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Generated class for the ProfilePage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var ProfilePage = /** @class */ (function () {
+    function ProfilePage(navCtrl, navParams, userdata, dataSetter, dataGetter, loadingCtrl, toastCtrl, appGlobal, imagePicker, cropService, camera, transfer, actionSheetCtrl) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.userdata = userdata;
+        this.dataSetter = dataSetter;
+        this.dataGetter = dataGetter;
+        this.loadingCtrl = loadingCtrl;
+        this.toastCtrl = toastCtrl;
+        this.appGlobal = appGlobal;
+        this.imagePicker = imagePicker;
+        this.cropService = cropService;
+        this.camera = camera;
+        this.transfer = transfer;
+        this.actionSheetCtrl = actionSheetCtrl;
+        this.edit = false;
+        this.showEditBtn = true;
+        this.edit = false;
+    }
+    ProfilePage.prototype.onSubmit = function (toggle) {
+        var _this = this;
+        if (this.edit) {
+            delete this.edit_profile.auth_token;
+            delete this.edit_profile.created_at;
+            delete this.edit_profile.updated_at;
+            delete this.edit_profile.success;
+            delete this.edit_profile.new_user;
+            delete this.edit_profile.id;
+            console.log("User Profile Update", this.edit_profile);
+            if (this.edit_profile.mobile.trim().length != 10) {
+                alert("Please fill a valid Mobile number");
+                return false;
+            }
+            if (this.edit_profile.name.trim().length == 0) {
+                alert("Please fill Name");
+                return false;
+            }
+            if (this.edit_profile.designation.trim().length == 0) {
+                alert("Please fill Designation");
+                return false;
+            }
+            if (this.edit_profile.department.trim().length == 0) {
+                alert("Please fill Department");
+                return false;
+            }
+            if (this.edit_profile.about_me.trim().length == 0) {
+                alert("Please fill About me");
+                return false;
+            }
+            if (this.profile.profile !== this.edit_profile.profile) {
+                var loading_1 = this.loadingCtrl.create({
+                    content: 'Please while we update your profile picture..!!'
+                });
+                loading_1.present();
+                this.dataSetter.fileTransfer(this.edit_profile.profile).then(function (data) {
+                    data = JSON.parse(data.response);
+                    console.log(data);
+                    loading_1.dismiss();
+                    if (data.success) {
+                        _this.edit_profile.profile = data.url;
+                        var toast = _this.toastCtrl.create({
+                            message: data.message,
+                            duration: 5000
+                        });
+                        toast.present();
+                        _this.updateProfile(toggle);
+                    }
+                    else {
+                        var toast = _this.toastCtrl.create({
+                            message: data.message,
+                            duration: 5000
+                        });
+                        toast.present();
+                    }
+                }).catch(function (error) {
+                    console.log("File Transfer Error", error);
+                    loading_1.dismiss();
+                    var toast = _this.toastCtrl.create({
+                        message: _this.appGlobal.ServerError,
+                        duration: 5000
+                    });
+                    toast.present();
+                });
+            }
+            else {
+                this.updateProfile(toggle);
+            }
+        }
+        else {
+            this.edit = toggle;
+        }
+    };
+    ProfilePage.prototype.updateProfile = function (toggle) {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please while we update your profile..!!'
+        });
+        loading.present();
+        this.dataSetter.setUpdatedUserProfile(this.edit_profile)
+            .subscribe(function (data) {
+            console.log("User Profile Update Response", data);
+            loading.dismiss();
+            if (data.success) {
+                var toast = _this.toastCtrl.create({
+                    message: data.message,
+                    duration: 5000
+                });
+                toast.present();
+                _this.profile = Object.assign({}, _this.edit_profile);
+                _this.edit = toggle;
+            }
+            else {
+                var toast = _this.toastCtrl.create({
+                    message: data.message,
+                    duration: 5000
+                });
+                toast.present();
+            }
+        }, function (err) {
+            loading.dismiss();
+            console.log(err);
+            var toast = _this.toastCtrl.create({
+                message: _this.appGlobal.ServerError,
+                duration: 5000
+            });
+            toast.present();
+        });
+    };
+    ProfilePage.prototype.editImage = function () {
+        var _this = this;
+        // const toast = this.toastCtrl.create({
+        //   message: "Feature Coming Soon",
+        //   duration: 5000
+        // });
+        // toast.present();
+        var actionSheet = this.actionSheetCtrl.create({
+            title: 'Choose or take a picture',
+            buttons: [
+                {
+                    text: 'Take a picture',
+                    handler: function () {
+                        _this.takePicture();
+                    }
+                },
+                {
+                    text: 'Choose pictures',
+                    handler: function () {
+                        _this.openImagePicker();
+                    }
+                }
+            ]
+        });
+        actionSheet.present();
+    };
+    ProfilePage.prototype.takePicture = function () {
+        var _this = this;
+        var options = {
+            quality: 100,
+            correctOrientation: true
+        };
+        this.camera.getPicture(options)
+            .then(function (data) {
+            _this.cropService
+                .crop(data, { quality: 75 })
+                .then(function (newImage) {
+                _this.edit_profile.profile = newImage;
+            }, function (error) { return console.error("Error cropping image", error); });
+        }, function (error) {
+            console.log(error);
+        });
+    };
+    ProfilePage.prototype.openImagePicker = function () {
+        var _this = this;
+        var options = {
+            maximumImagesCount: 1,
+        };
+        this.imagePicker.getPictures(options)
+            .then(function (results) {
+            _this.reduceImages(results).then(function () {
+                console.log('all images cropped!!');
+            });
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    ProfilePage.prototype.reduceImages = function (selected_pictures) {
+        var _this = this;
+        return selected_pictures.reduce(function (promise, item) {
+            return promise.then(function (result) {
+                return _this.cropService.crop(item, { quality: 75 })
+                    .then(function (cropped_image) {
+                    _this.edit_profile.profile = cropped_image;
+                });
+            });
+        }, Promise.resolve());
+    };
+    ProfilePage.prototype.resetProfile = function () {
+        this.profile = {};
+        this.showEditBtn = false;
+    };
+    ProfilePage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad ProfilePage');
+        if (this.navParams.get('user_id') != undefined)
+            this.getUserProfile(this.navParams.get('user_id'));
+        else {
+            this.profile = Object.assign({}, this.userdata.userData);
+            if (!this.profile.skill_set) {
+                this.profile.skill_set = [];
+            }
+            this.showEditBtn = true;
+        }
+        this.edit_profile = Object.assign({}, this.profile);
+    };
+    ProfilePage.prototype.ionViewDidLeave = function () {
+        this.resetProfile();
+    };
+    ProfilePage.prototype.getUserProfile = function (uid) {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        loading.present();
+        this.dataGetter.getUserProfile(uid).subscribe(function (data) {
+            if (data.success) {
+                _this.profile = data;
+                _this.showEditBtn = false;
+            }
+            loading.dismiss();
+        }, function (error) {
+            console.log(error);
+            _this.resetProfile();
+            var toast = _this.toastCtrl.create({
+                message: _this.appGlobal.ServerError,
+                duration: 3000
+            });
+            toast.present();
+            loading.dismiss();
+            _this.navCtrl.pop();
+        });
+    };
+    ProfilePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_5__angular_core__["m" /* Component */])({
+            selector: 'page-profile',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/profile/profile.html"*/'<!--\n  Generated template for the ProfilePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>PROFILE</ion-title>\n\n    <ion-buttons end *ngIf="showEditBtn">\n      <button ion-button icon-only clear (click)="onSubmit(!edit)">\n        <ion-icon [name]="edit ? \'checkmark\' : \'create\'"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <div *ngIf="profile && !edit">\n    <ion-card class="blurred-title-card">\n      <!-- <div class="card-image" [style.background-image]="\'url(\' + profile.profile + \')\'"></div> -->\n\n      <div class="card-title-background">\n        <span [style.background-image]="\'url(\' + profile.profile + \')\'"></span>\n      </div>\n      <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n        <ion-avatar>\n          <img [src]="profile.profile" style="width:8em;height:8em;">\n        </ion-avatar>\n      </div>\n    </ion-card>\n    <ion-card text-center>\n      <ion-card-content>\n        <p *ngIf="profile.name" style="font-size: 2rem;">\n          <b>{{profile.name ? profile.name : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.designation">\n          <b>{{profile.designation ? profile.designation : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.department">\n          <b>{{profile.department ? profile.department : \'\'}}</b>\n        </p>\n        <hr style="width: 50%"/>\n        <p *ngIf="profile.location">\n          <ion-icon name="pin"></ion-icon>\n          {{profile.location ? profile.location : \'\'}}\n        </p>\n        <p *ngIf="profile.mobile">\n          <ion-icon name="phone-portrait"></ion-icon>\n          {{profile.mobile ? profile.mobile:\'\'}}\n        </p>\n        <p *ngIf="profile.extension">\n          <ion-icon name="call"></ion-icon>\n          {{profile.extension ? profile.extension : \'\'}}\n        </p>\n      </ion-card-content>\n    </ion-card>\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n           About Me\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.about_me" >\n        {{profile.about_me}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.about_me">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Experience\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.experience" >\n        {{profile.experience}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.experience">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Skill Set\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.skill_set.length > 0" >\n        <ion-tags-input\n          [(ngModel)]="profile.skill_set"\n          [mode]="\'ios\'"\n          [readonly]="true">\n        </ion-tags-input>\n      </ion-card-content>\n      <ion-card-content *ngIf="profile.skill_set.length === 0">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Learning and Development\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.learning_and_development" >\n        {{profile.learning_and_development}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.learning_and_development" >\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n  </div>\n\n  <div *ngIf="edit_profile && edit">\n      <!-- <div class="item item-block item-md" style="justify-content: center;">\n        <ion-avatar item-start>\n          <img [src]="edit_profile.profile" style="width:120px;height:120px;">\n        </ion-avatar>\n      </div> -->\n      <ion-card class="blurred-title-card" (click)="editImage()">\n        <div class="card-title-background">\n          <span [style.background-image]="\'url(\' + edit_profile.profile + \')\'"></span>\n        </div>\n        <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n          <ion-avatar>\n            <img [src]="edit_profile.profile" style="width:8em;height:8em;">\n          </ion-avatar>\n          <ion-icon name="create"></ion-icon>\n        </div>\n      </ion-card>\n      <ion-list padding>\n        <ion-item>\n          <ion-label for="name" stacked>Name</ion-label>\n          <ion-input type="text" name="name" [(ngModel)]="edit_profile.name" autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="department" stacked>Department</ion-label>\n          <ion-input type="text" name="department" [(ngModel)]="edit_profile.department"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="designation" stacked>Designation</ion-label>\n          <ion-input type="text" name="designation" [(ngModel)]="edit_profile.designation"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="mobile" stacked>Mobile</ion-label>\n          <ion-input type="tel" name="mobile" [(ngModel)]="edit_profile.mobile"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="extension" stacked>Extension Number</ion-label>\n          <ion-input type="tel" name="extension" [(ngModel)]="edit_profile.extension"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="location" stacked>Location</ion-label>\n          <ion-input type="text" name="location" [(ngModel)]="edit_profile.location"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="about_me" stacked>About Me</ion-label>\n          <ion-textarea autoresize name="about_me" [(ngModel)]="edit_profile.about_me"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-label for="experience" stacked>Experience</ion-label>\n          <ion-textarea autoresize name="experience" [(ngModel)]="edit_profile.experience"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-label class="item-md" style="color: #999;" stacked>Skill Set</ion-label>\n\n        <ion-tags-input style="margin-left: 16px;"\n            [(ngModel)]="edit_profile.skill_set"\n            [once]="\'true\'"\n            [mode]="\'ios\'"\n            [placeholder]="\'Add Skills\'"\n            [canBackspaceRemove]="true"\n            [canEnterAdd]="true"\n            [readonly]="false">\n          </ion-tags-input>\n        <ion-item>\n          <ion-label for="learning_and_development" stacked>Learning and Development</ion-label>\n          <ion-textarea autoresize name="learning_and_development" [(ngModel)]="edit_profile.learning_and_development"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-buttons text-center>\n            <button ion-button block round color="primary" (click)="onSubmit(!edit)">{{edit? "Update" : "Edit"}}</button>\n          </ion-buttons>\n        </ion-item>\n      </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/profile/profile.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["o" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["p" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_4__providers_user_data_ts__["a" /* UserData */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_loading_loading_controller__["a" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["r" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+            __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__["a" /* ImagePicker */],
+            __WEBPACK_IMPORTED_MODULE_9__ionic_native_crop__["a" /* Crop */],
+            __WEBPACK_IMPORTED_MODULE_10__ionic_native_camera__["a" /* Camera */],
+            __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_transfer__["a" /* FileTransfer */],
+            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["a" /* ActionSheetController */]])
+    ], ProfilePage);
+    return ProfilePage;
+}());
+
+//# sourceMappingURL=profile.js.map
+
+/***/ }),
+
 /***/ 11:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppGlobalProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_device__ = __webpack_require__(381);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_device__ = __webpack_require__(481);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -122,6 +786,7 @@ var AppGlobalProvider = /** @class */ (function () {
         this.syncanswers = [];
         this.synckycs = [];
         this.HouseHold = [];
+        this.Quesion_number = 1;
         this.options = [];
         this.seletgroup = [];
         this.selectedCheckbox = [];
@@ -130,7 +795,8 @@ var AppGlobalProvider = /** @class */ (function () {
         this.loginURL = this.intranetBaseURL + '/auth/login';
         this.getsuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
         this.gethouseholdrequest = this.intranetBaseURL + '/household';
-        this.answersrequest = "http://165.227.139.76:8080/api/v1/answer";
+        this.answersrequest = this.intranetBaseURL + '/answer/postanswers';
+        // public answersrequest = "http://165.227.139.76:8080/api/v1/answer";
         this.allSurveysURL = this.intranetBaseURL + '/surveys';
         this.allGrievancesURL = this.intranetBaseURL + '/kyc';
         this.createGrievancesURL = this.intranetBaseURL + '/kyc';
@@ -175,10 +841,10 @@ var AppGlobalProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_data_ts__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_sqlite__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_sqlite__ = __webpack_require__(167);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_http__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_app_global_app_global__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_database_database__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
@@ -573,11 +1239,11 @@ var DBmaneger = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IdeaShowPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_native_vibration__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comments_comments__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comments_comments__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_data_setter_data_setter__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter__ = __webpack_require__(489);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_filter__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ionic_angular__ = __webpack_require__(3);
@@ -929,15 +1595,15 @@ var IdeaShowPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 151:
+/***/ 164:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ComponentsModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeline_timeline__ = __webpack_require__(604);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__comment_comment__ = __webpack_require__(605);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeline_timeline__ = __webpack_require__(877);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__comment_comment__ = __webpack_require__(878);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -977,12 +1643,12 @@ var ComponentsModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 152:
+/***/ 165:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BeneficiaryProfilePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grievance_grievance__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grievance_grievance__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(27);
@@ -1098,7 +1764,7 @@ var BeneficiaryProfilePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 153:
+/***/ 166:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1108,7 +1774,7 @@ var BeneficiaryProfilePage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__grievance_form_grievance_form__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__grievance_form_grievance_form__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_data_ts__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_moment__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_moment__);
@@ -1235,7 +1901,7 @@ var GrievancePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 155:
+/***/ 168:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1244,7 +1910,7 @@ var GrievancePage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_vibration__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_app_global_app_global__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_data_setter_data_setter__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
@@ -1476,14 +2142,14 @@ var GrievanceFormPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 156:
+/***/ 169:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrievanceShowPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_native_vibration__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comments_comments__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comments_comments__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
@@ -1858,7 +2524,7 @@ var IntroPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2107,54 +2773,6 @@ var LoginPage = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LogoutPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-/**
- * Generated class for the LogoutPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var LogoutPage = /** @class */ (function () {
-    function LogoutPage(navCtrl, navParams, db) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.db = db;
-    }
-    LogoutPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad LogoutPage');
-    };
-    LogoutPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-logout',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/logout/logout.html"*/'<!--\n  Generated template for the LogoutPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>logout</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/logout/logout.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__["a" /* DataSetterProvider */]])
-    ], LogoutPage);
-    return LogoutPage;
-}());
-
-//# sourceMappingURL=logout.js.map
-
-/***/ }),
-
-/***/ 174:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MaintenanceRequestFormPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_database_database__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
@@ -2361,7 +2979,628 @@ var MaintenanceRequestFormPage = /** @class */ (function () {
 
 /***/ }),
 
+/***/ 174:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionCheckboxPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__suervy_suervy__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_database_database__ = __webpack_require__(27);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+/**
+ * Generated class for the QuestionCheckboxPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var QuestionCheckboxPage = /** @class */ (function () {
+    function QuestionCheckboxPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.appGlobal = appGlobal;
+        this.toastCtrl = toastCtrl;
+        this.sqldatabasegetter = sqldatabasegetter;
+        this.options = [];
+        this.is_last = 0;
+        this.beneficiary_id = [];
+        this.auto_increment_id = [];
+        this.qindex = navParams.get("qindex");
+        this.question_id = navParams.get("question_id");
+        this.project_id = navParams.get("project_id");
+        this.survey_id = navParams.get("survey_id");
+        this.beneficiary_id = navParams.get('beneficiary_id');
+        this.auto_increment_id = navParams.get('auto_increment_id');
+        this.options = this.appGlobal.options;
+        this.cbChecked = [];
+        this.selectedCheckbox = {};
+        this.Quesion_number = this.appGlobal.Quesion_number;
+        this.loadQuestions();
+    }
+    QuestionCheckboxPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad QuestionCheckboxPage');
+    };
+    QuestionCheckboxPage.prototype.loadQuestions = function () {
+        this.question = this.appGlobal.questionsList[this.qindex].text;
+        this.key = this.appGlobal.questionsList[this.qindex].server_id;
+        if (this.appGlobal.answers[this.key] != undefined) {
+            this.answer = this.appGlobal.answers[this.key];
+        }
+        else {
+            this.answer = {
+                beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
+                language_id: 2, option_id: 2, option_text: "", image: "N/A", other_text: "no"
+            };
+        }
+    };
+    QuestionCheckboxPage.prototype.goToNext = function (e) {
+        this.appGlobal.answers[this.key] = (this.answer);
+        if (this.qindex == this.appGlobal.questionsList.length - 1) {
+            this.is_last = 1;
+            alert("Last Question");
+            return;
+        }
+        var nq = this.qindex + 1;
+        this.appGlobal.Quesion_number++;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
+            project_id: this.project_id,
+            survey_id: this.survey_id,
+            question_id: this.question_id,
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+            qindex: (nq)
+        });
+    };
+    QuestionCheckboxPage.prototype.goToPrev = function (e) {
+        if (this.qindex == 0) {
+            alert("First Question");
+            return;
+        }
+        var nq = this.qindex - 1;
+        this.appGlobal.Quesion_number--;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
+            project_id: this.project_id,
+            survey_id: this.survey_id,
+            question_id: this.question_id,
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+            qindex: (nq)
+        });
+    };
+    QuestionCheckboxPage.prototype.submit = function () {
+        var data = this.appGlobal.answers;
+        var key = Object.keys(data);
+        for (var i = 0; i <= key.length; i++) {
+            if (this.appGlobal.answers[key[i]] != undefined) {
+                this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]]);
+            }
+            if (i == key.length) {
+                alert("submit scussfully");
+                if (this.navCtrl.canGoBack) {
+                    this.navCtrl.pop();
+                    this.appGlobal.answers = [];
+                    this.appGlobal.questionsList = [];
+                    this.beneficiary_id = [];
+                    this.auto_increment_id = [];
+                    this.appGlobal.Quesion_number = 1;
+                    this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */]);
+                    // this.navCtrl.setRoot(QuestionDropdownPage)
+                }
+                else {
+                    var toast = this.toastCtrl.create({
+                        message: this.appGlobal.ServerError,
+                        duration: 3000
+                    });
+                    toast.present();
+                }
+            }
+        }
+    };
+    QuestionCheckboxPage.prototype.updateOptions = function () {
+        console.log(this.cbChecked);
+    };
+    QuestionCheckboxPage.prototype.getSelectedBen = function (e, i, a) {
+        if (e.isChecked)
+            return e.text;
+    };
+    QuestionCheckboxPage.prototype.removeNull = function (e, i, a) {
+        return e != null;
+    };
+    QuestionCheckboxPage.prototype.getChanged = function (e) {
+        console.log("Selected Checkbox:" + JSON.stringify(this.selectedCheckbox));
+        console.log("Selected Checkbox:" + JSON.stringify(this.options));
+        this.selectedCheckbox = this.options.map(this.getSelectedBen).filter(this.removeNull);
+        console.log("Selected Checkbox:" + JSON.stringify(this.selectedCheckbox));
+        console.log("Final String :" + JSON.stringify(this.selectedCheckbox).replace(/\[|\]|"|"/g, ""));
+        this.answer.option_text = JSON.stringify(this.selectedCheckbox).replace(/\[|\]|"|"/g, "");
+    };
+    QuestionCheckboxPage.prototype.goTosurveylist = function () {
+        this.appGlobal.answers = [];
+        this.beneficiary_id = [];
+        this.auto_increment_id = [];
+        this.appGlobal.options = [];
+        this.options = [];
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */], {
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+        });
+    };
+    QuestionCheckboxPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
+            selector: 'page-question-checkbox',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-checkbox/question-checkbox.html"*/'<!--\n  Generated template for the QuestionCheckboxPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <h1><strong>\n      <p>{{Quesion_number}}. {{question}}</p>\n    </strong>\n  </h1>\n  <ion-list>\n    <ion-item *ngFor="let entry of options ;let i = index">\n      <ion-label> {{entry.text}}</ion-label>\n\n      <ion-checkbox slot="end" *ngIf="entry.text != \'\'" [(ngModel)]="entry.isChecked"\n        (ionChange)="getChanged(entry.text)"></ion-checkbox>\n    </ion-item>\n  </ion-list>\n  <div class="prv">\n    <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n  </div>\n  <div class="next">\n    <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>\n  </div>\n  <div class="bckSurveyPage">\n    <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>\n  </div>\n\n  <div class="submit">\n      <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>\n  </div>\n  \n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-checkbox/question-checkbox.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_6__providers_database_database__["a" /* DatabaseProvider */]])
+    ], QuestionCheckboxPage);
+    return QuestionCheckboxPage;
+}());
+
+//# sourceMappingURL=question-checkbox.js.map
+
+/***/ }),
+
 /***/ 175:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionDropdownPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_database_database__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__suervy_suervy__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+/**
+ * Generated class for the QuestionDropdownPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var QuestionDropdownPage = /** @class */ (function () {
+    function QuestionDropdownPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.appGlobal = appGlobal;
+        this.toastCtrl = toastCtrl;
+        this.sqldatabasegetter = sqldatabasegetter;
+        this.queryText = '';
+        this.is_last = 0;
+        this.group = [];
+        this.numberOfChecks = 1;
+        this.checkBoxLimit = 1;
+        this.sqldatabasegetter.getdataforgroupsurvey(this.ccallBack, this);
+        this.project_id = navParams.get("project_id");
+        this.survey_id = navParams.get("survey_id");
+        this.qId = navParams.get("qId");
+        this.survey_type = navParams.get("type");
+    }
+    QuestionDropdownPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad QuestionDropdownPage');
+        console.log("@@@    " + this.appGlobal.groupsurveybeneficiaries);
+    };
+    QuestionDropdownPage.prototype.getSelectedBen = function (e, i, a) {
+        if (e.isChecked)
+            return e.server_id;
+    };
+    QuestionDropdownPage.prototype.getSelectid = function (e, i, a) {
+        if (e.isChecked)
+            return e.id;
+    };
+    QuestionDropdownPage.prototype.removeNull = function (e, i, a) {
+        return e != null;
+    };
+    QuestionDropdownPage.prototype.ccallBack = function (t) {
+        t.group = t.appGlobal.groupsurveybeneficiaries;
+        t.group[0].isChecked = true;
+    };
+    QuestionDropdownPage.prototype.getChanged = function (e) {
+        if (this.survey_type === "Single") {
+            if (e.isChecked === true) {
+                this.numberOfChecks++;
+                this.Selection();
+            }
+            else {
+                this.numberOfChecks--;
+            }
+        }
+        else {
+            this.checkBoxLimit = 2;
+            this.Selection();
+        }
+    };
+    QuestionDropdownPage.prototype.startsurvey = function () {
+        this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
+    };
+    QuestionDropdownPage.prototype.callsurveypage = function (ProjectId, suervtId, qId) {
+        if (this.appGlobal.questionsList != null && this.appGlobal.questionsList != undefined) {
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
+                project_id: ProjectId,
+                survey_id: suervtId,
+                question_id: qId,
+                beneficiary_id: this.beneficiary_id,
+                auto_increment_id: this.auto_increment_id,
+                qindex: 0
+            });
+        }
+    };
+    QuestionDropdownPage.prototype.Selection = function () {
+        this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
+        this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
+        console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckId).replace(/\[|\]|"|"/g, ""));
+        this.answer.option_text = JSON.stringify(this.appGlobal.selectedCheckbox).replace(/\[|\]|"|"/g, "");
+    };
+    QuestionDropdownPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
+            selector: 'page-question-dropdown',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-dropdown/question-dropdown.html"*/'<!--\n  Generated template for the QuestionDropdownPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n    <ion-item *ngFor="let entry of group | search : {term:queryText,fields:[\'beneficiary_name\',\'household_id\']};let i = index">\n      <ion-label>{{entry.household_id}} - <label><strong>{{entry.beneficiary_name}}</strong></label> </ion-label>\n\n      <ion-checkbox slot="end" *ngIf="entry.id != \'\' && entry.surver_id !=\'\'"  [disabled]="entry.isChecked==false && numberOfChecks>=checkBoxLimit && survey_type==\'Single\'" [(ngModel)]="entry.isChecked"\n        (ionChange)="getChanged(entry)"></ion-checkbox>\n    </ion-item>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab mini (click)="startsurvey()">\n      <ion-icon name="arrow-forward"></ion-icon>\n    </button>\n\n  </ion-fab>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-dropdown/question-dropdown.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_0__providers_database_database__["a" /* DatabaseProvider */]])
+    ], QuestionDropdownPage);
+    return QuestionDropdownPage;
+}());
+
+//# sourceMappingURL=question-dropdown.js.map
+
+/***/ }),
+
+/***/ 176:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionTextboxPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__survey_list_survey_list__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__suervy_suervy__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_database_database__ = __webpack_require__(27);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+/**
+ * Generated class for the QuestionTextboxPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var QuestionTextboxPage = /** @class */ (function () {
+    function QuestionTextboxPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.appGlobal = appGlobal;
+        this.toastCtrl = toastCtrl;
+        this.sqldatabasegetter = sqldatabasegetter;
+        this.opctions = [];
+        this.is_last = 0;
+        // beneficiary_id: string
+        // auto_increment_id: string
+        this.beneficiary_id = [];
+        this.auto_increment_id = [];
+        this.qindex = navParams.get("qindex");
+        this.question_id = navParams.get("question_id");
+        this.project_id = navParams.get("project_id");
+        this.survey_id = navParams.get("survey_id");
+        this.beneficiary_id = navParams.get('beneficiary_id');
+        this.auto_increment_id = navParams.get('auto_increment_id');
+        this.Quesion_number = this.appGlobal.Quesion_number;
+        this.loadQuestions();
+        this.validatror = new __WEBPACK_IMPORTED_MODULE_0__angular_forms__["c" /* FormGroup */]({
+            answers: new __WEBPACK_IMPORTED_MODULE_0__angular_forms__["b" /* FormControl */]('ddd', __WEBPACK_IMPORTED_MODULE_0__angular_forms__["h" /* Validators */].required)
+        });
+    }
+    QuestionTextboxPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad QuestionTextboxPage');
+    };
+    QuestionTextboxPage.prototype.loadQuestions = function () {
+        this.question = this.appGlobal.questionsList[this.qindex].text;
+        this.key = this.appGlobal.questionsList[this.qindex].server_id;
+        if (this.appGlobal.answers[this.key] != undefined) {
+            this.answer = this.appGlobal.answers[this.key];
+        }
+        else {
+            this.answer = {
+                beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
+                language_id: 2, option_id: 2, option_text: "", image: "N/A", other_text: "no"
+            };
+        }
+    };
+    QuestionTextboxPage.prototype.goToNext = function (e) {
+        this.appGlobal.answers[this.key] = (this.answer);
+        if (this.qindex == this.appGlobal.questionsList.length - 1) {
+            this.is_last = 1;
+            alert("Last Question");
+            return;
+        }
+        var nq = this.qindex + 1;
+        this.appGlobal.Quesion_number++;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__suervy_suervy__["a" /* SuervyPage */], {
+            project_id: this.project_id,
+            survey_id: this.survey_id,
+            question_id: this.question_id,
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+            qindex: (nq)
+        });
+    };
+    QuestionTextboxPage.prototype.goToPrev = function (e) {
+        if (this.qindex == 0) {
+            alert("First Question");
+            return;
+        }
+        var nq = this.qindex - 1;
+        this.appGlobal.Quesion_number--;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__suervy_suervy__["a" /* SuervyPage */], {
+            project_id: this.project_id,
+            survey_id: this.survey_id,
+            question_id: this.question_id,
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+            qindex: (nq)
+        });
+    };
+    QuestionTextboxPage.prototype.submit = function () {
+        var data = this.appGlobal.answers;
+        var key = Object.keys(data);
+        for (var i = 0; i <= key.length; i++) {
+            if (this.appGlobal.answers[key[i]] != undefined) {
+                this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]]);
+            }
+            if (i == key.length) {
+                alert("submit scussfully");
+                if (this.navCtrl.canGoBack) {
+                    // this.navCtrl.pop();
+                    this.appGlobal.answers = [];
+                    this.appGlobal.questionsList = [];
+                    this.beneficiary_id = [];
+                    this.auto_increment_id = [];
+                    this.appGlobal.Quesion_number = 1;
+                    this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__survey_list_survey_list__["a" /* SurveyListPage */]);
+                }
+                else {
+                    var toast = this.toastCtrl.create({
+                        message: this.appGlobal.ServerError,
+                        duration: 3000
+                    });
+                    toast.present();
+                }
+            }
+        }
+    };
+    QuestionTextboxPage.prototype.goTosurveylist = function () {
+        this.appGlobal.answers = [];
+        this.beneficiary_id = [];
+        this.auto_increment_id = [];
+        this.appGlobal.options = [];
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__survey_list_survey_list__["a" /* SurveyListPage */], {
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+        });
+    };
+    QuestionTextboxPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
+            selector: 'page-question-textbox',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-textbox/question-textbox.html"*/'<!--\n  Generated template for the QuestionTextboxPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n  <h1><strong>\n      <p>{{Quesion_number}}. {{question}}</p>\n    </strong>\n  </h1>\n  <form #form="ngForm">\n\n    <hr>\n    <ion-item>\n      <ion-input name="option_text" type="text" placeholder="" [(ngModel)]="answer.option_text" required></ion-input>\n    </ion-item>\n    <hr>\n    <div class="prv">\n      <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n    </div>\n    <div class="next">\n      <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>\n    </div>\n\n\n    <div class="submit">\n      <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>\n    </div>\n  </form>\n\n  <div class="bckSurveyPage">\n    <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>\n  </div>\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-textbox/question-textbox.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_5__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_6_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_7__providers_database_database__["a" /* DatabaseProvider */]])
+    ], QuestionTextboxPage);
+    return QuestionTextboxPage;
+}());
+
+//# sourceMappingURL=question-textbox.js.map
+
+/***/ }),
+
+/***/ 177:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionRadiobuttonPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__suervy_suervy__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_database_database__ = __webpack_require__(27);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+/**
+ * Generated class for the QuestionRadiobuttonPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var QuestionRadiobuttonPage = /** @class */ (function () {
+    function QuestionRadiobuttonPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.appGlobal = appGlobal;
+        this.toastCtrl = toastCtrl;
+        this.sqldatabasegetter = sqldatabasegetter;
+        this.opctions = [];
+        this.is_last = 0;
+        this.beneficiary_id = [];
+        this.auto_increment_id = [];
+        this.qindex = navParams.get("qindex");
+        this.question_id = navParams.get("question_id");
+        this.project_id = navParams.get("project_id");
+        this.survey_id = navParams.get("survey_id");
+        this.beneficiary_id = navParams.get('beneficiary_id');
+        this.auto_increment_id = navParams.get('auto_increment_id');
+        this.opctions = this.appGlobal.options;
+        this.Quesion_number = this.appGlobal.Quesion_number;
+        this.loadQuestions();
+    }
+    QuestionRadiobuttonPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad QuestionRadiobuttonPage');
+    };
+    QuestionRadiobuttonPage.prototype.loadQuestions = function () {
+        this.question = this.appGlobal.questionsList[this.qindex].text;
+        this.key = this.appGlobal.questionsList[this.qindex].server_id;
+        if (this.appGlobal.answers[this.key] != undefined) {
+            this.answer = this.appGlobal.answers[this.key];
+        }
+        else {
+            this.answer = {
+                beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
+                language_id: 2, option_id: 2, option_text: "", image: "N/A", other_text: "no"
+            };
+        }
+    };
+    QuestionRadiobuttonPage.prototype.goToNext = function (e) {
+        {
+            this.appGlobal.answers[this.key] = (this.answer);
+            if (this.qindex == this.appGlobal.questionsList.length - 1) {
+                this.is_last = 1;
+                alert("Last Question");
+                return;
+            }
+            var nq = this.qindex + 1;
+            this.appGlobal.Quesion_number++;
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
+                project_id: this.project_id,
+                survey_id: this.survey_id,
+                question_id: this.question_id,
+                beneficiary_id: this.beneficiary_id,
+                auto_increment_id: this.auto_increment_id,
+                qindex: (nq)
+            });
+        }
+    };
+    QuestionRadiobuttonPage.prototype.select = function (item) {
+        this.answer.option_text = item;
+        // this.select_radio=item
+    };
+    QuestionRadiobuttonPage.prototype.goToPrev = function (e) {
+        if (this.qindex == 0) {
+            alert("First Question");
+            return;
+        }
+        var nq = this.qindex - 1;
+        this.appGlobal.Quesion_number--;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
+            project_id: this.project_id,
+            survey_id: this.survey_id,
+            question_id: this.question_id,
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+            qindex: (nq)
+        });
+    };
+    QuestionRadiobuttonPage.prototype.submit = function () {
+        var data = this.appGlobal.answers;
+        var key = Object.keys(data);
+        for (var i = 0; i <= key.length; i++) {
+            if (this.appGlobal.answers[key[i]] != undefined) {
+                this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]]);
+            }
+            if (i == key.length) {
+                alert("submit scussfully");
+                if (this.navCtrl.canGoBack) {
+                    // this.navCtrl.pop();
+                    this.appGlobal.answers = [];
+                    this.appGlobal.questionsList = [];
+                    this.beneficiary_id = [];
+                    this.auto_increment_id = [];
+                    this.appGlobal.Quesion_number = 1;
+                    this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */]);
+                    // this.navCtrl.setRoot(QuestionDropdownPage)
+                }
+                else {
+                    var toast = this.toastCtrl.create({
+                        message: this.appGlobal.ServerError,
+                        duration: 3000
+                    });
+                    toast.present();
+                }
+            }
+        }
+    };
+    QuestionRadiobuttonPage.prototype.goTosurveylist = function () {
+        this.appGlobal.answers = [];
+        this.beneficiary_id = [];
+        this.auto_increment_id = [];
+        this.appGlobal.options = [];
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */], {
+            beneficiary_id: this.beneficiary_id,
+            auto_increment_id: this.auto_increment_id,
+        });
+    };
+    QuestionRadiobuttonPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
+            selector: 'page-question-radiobutton',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-radiobutton/question-radiobutton.html"*/'<!--\n  Generated template for the QuestionRadiobuttonPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <h1><strong>\n      <p>{{Quesion_number}}. {{question}}</p>\n    </strong>\n  </h1>\n  <ion-list radio-group>\n\n    <ion-item *ngFor="let entry of opctions">\n      <ion-label>{{entry.text}}</ion-label>\n      <ion-radio slot="start" value="{{entry.text}}" (ionSelect)="select(entry.text)"></ion-radio>\n    </ion-item>\n\n  </ion-list>\n  <div class="prv">\n      <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n    </div>\n    <div class="next">\n      <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>\n    </div>\n    <div class="bckSurveyPage">\n      <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>\n    </div>\n  \n    <div class="submit">\n        <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>\n    </div>\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-radiobutton/question-radiobutton.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_6__providers_database_database__["a" /* DatabaseProvider */]])
+    ], QuestionRadiobuttonPage);
+    return QuestionRadiobuttonPage;
+}());
+
+//# sourceMappingURL=question-radiobutton.js.map
+
+/***/ }),
+
+/***/ 178:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2371,7 +3610,7 @@ var MaintenanceRequestFormPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_app_global_app_global__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_database_database__ = __webpack_require__(27);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2419,6 +3658,7 @@ var QuestionImagePage = /** @class */ (function () {
         this.survey_id = navParams.get("survey_id");
         this.beneficiary_id = navParams.get('beneficiary_id');
         this.auto_increment_id = navParams.get('auto_increment_id');
+        this.Quesion_number = this.appGlobal.Quesion_number;
         this.loadQuestions();
     }
     QuestionImagePage.prototype.ionViewDidLoad = function () {
@@ -2481,6 +3721,7 @@ var QuestionImagePage = /** @class */ (function () {
             return;
         }
         var nq = this.qindex + 1;
+        this.appGlobal.Quesion_number++;
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
             project_id: this.project_id,
             survey_id: this.survey_id,
@@ -2496,6 +3737,7 @@ var QuestionImagePage = /** @class */ (function () {
             return;
         }
         var nq = this.qindex - 1;
+        this.appGlobal.Quesion_number--;
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
             project_id: this.project_id,
             survey_id: this.survey_id,
@@ -2520,6 +3762,7 @@ var QuestionImagePage = /** @class */ (function () {
                     this.appGlobal.questionsList = [];
                     this.beneficiary_id = [];
                     this.auto_increment_id = [];
+                    this.appGlobal.Quesion_number = 1;
                     this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */]);
                     //this.navCtrl.setRoot(QuestionDropdownPage)
                 }
@@ -2545,7 +3788,7 @@ var QuestionImagePage = /** @class */ (function () {
     };
     QuestionImagePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
-            selector: 'page-question-image',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-image/question-image.html"*/'<!--\n  Generated template for the QuestionImagePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton >\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n    <h1><strong>\n        <p>{{question}}</p>\n      </strong>\n    </h1>\n  <form #form="ngForm">\n\n    <ion-item *ngIf="imageURI" required>\n      <img src="{{imageURI}}"   name="image"  alt="Ionic File" width="300" [(ngModel)]="answer.image" />\n    </ion-item>\n    <ion-buttons>\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromCamera()" ><ion-icon name="camera"></ion-icon></button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromFS()" ><ion-icon name="image"></ion-icon></button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-buttons>\n    <div>\n        <button ion-button *ngIf="is_last == 1" type="submit" [disabled]="!form.valid" (click)="submit(\'a\')">Submit</button>\n        <button ion-button *ngIf="is_last == 0"  type="submit" [disabled]="!form.valid" (click)="goToNext(\'a\')">Next</button>\n        <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n       \n\n       \n    </div>\n  </form>\n  <div> <button ion-button  (click)="goTosurveylist()">Back To Survey List </button></div> \n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-image/question-image.html"*/,
+            selector: 'page-question-image',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-image/question-image.html"*/'<!--\n  Generated template for the QuestionImagePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <h1><strong>\n      <p>{{Quesion_number}}.{{question}}</p>\n    </strong>\n  </h1>\n  <form #form="ngForm">\n\n    <ion-item *ngIf="imageURI" required>\n      <img src="{{imageURI}}" name="image" alt="Ionic File" width="300" [(ngModel)]="answer.image" />\n    </ion-item>\n    <ion-buttons>\n      <ion-grid>\n        <ion-row>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromCamera()">\n              <ion-icon name="camera"></ion-icon>\n            </button>\n          </ion-col>\n          <ion-col>\n            <button ion-button color="secondary" round (click)="getImageFromFS()">\n              <ion-icon name="image"></ion-icon>\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-buttons>\n\n    <div class="next">\n      <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>\n    </div>\n    <div class="prv">\n      <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n    </div>\n    <div class="submit">\n      <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>\n    </div>\n\n  </form>\n  <div class="bckSurveyPage">\n    <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>\n  </div>\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-image/question-image.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__["a" /* Camera */],
             __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["q" /* Platform */], __WEBPACK_IMPORTED_MODULE_6_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_7__providers_database_database__["a" /* DatabaseProvider */]])
@@ -2557,614 +3800,7 @@ var QuestionImagePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 176:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionDropdownPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_database_database__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__suervy_suervy__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-/**
- * Generated class for the QuestionDropdownPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var QuestionDropdownPage = /** @class */ (function () {
-    function QuestionDropdownPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.appGlobal = appGlobal;
-        this.toastCtrl = toastCtrl;
-        this.sqldatabasegetter = sqldatabasegetter;
-        this.queryText = '';
-        this.is_last = 0;
-        this.group = [];
-        this.sqldatabasegetter.getdataforgroupsurvey(this.ccallBack, this);
-        this.project_id = navParams.get("project_id");
-        this.survey_id = navParams.get("survey_id");
-        this.qId = navParams.get("qId");
-        //this.appGlobal.selectedCheckbox = {};
-    }
-    QuestionDropdownPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad QuestionDropdownPage');
-        console.log("@@@    " + this.appGlobal.groupsurveybeneficiaries);
-    };
-    QuestionDropdownPage.prototype.getSelectedBen = function (e, i, a) {
-        if (e.isChecked)
-            return e.server_id;
-    };
-    QuestionDropdownPage.prototype.getSelectid = function (e, i, a) {
-        if (e.isChecked)
-            return e.id;
-    };
-    QuestionDropdownPage.prototype.removeNull = function (e, i, a) {
-        return e != null;
-    };
-    QuestionDropdownPage.prototype.ccallBack = function (t) {
-        t.group = t.appGlobal.groupsurveybeneficiaries;
-    };
-    QuestionDropdownPage.prototype.getChanged = function (e) {
-        console.log("Selected Checkbox:" + JSON.stringify(this.appGlobal.selectedCheckbox));
-        console.log("Selected Checkbox:" + JSON.stringify(this.group));
-        this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
-        this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
-        // console.log("Selected Checkbox array:" + JSON.stringify(this.appGlobal.selectedCheckbox));
-        // console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckbox).replace(/\[|\]|"|"/g, ""))
-        for (var i = 0; i < this.appGlobal.selectedCheckbox.length; i++) {
-            console.log("Selected Checkbox array:" + JSON.stringify(this.appGlobal.selectedCheckbox[i]));
-        }
-        console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckId).replace(/\[|\]|"|"/g, ""));
-        this.answer.option_text = JSON.stringify(this.appGlobal.selectedCheckbox).replace(/\[|\]|"|"/g, "");
-    };
-    QuestionDropdownPage.prototype.startsurvey = function () {
-        this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
-    };
-    QuestionDropdownPage.prototype.callsurveypage = function (ProjectId, suervtId, qId) {
-        if (this.appGlobal.questionsList != null && this.appGlobal.questionsList != undefined) {
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
-                project_id: ProjectId,
-                survey_id: suervtId,
-                question_id: qId,
-                beneficiary_id: this.beneficiary_id,
-                auto_increment_id: this.auto_increment_id,
-                qindex: 0
-            });
-        }
-    };
-    QuestionDropdownPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-question-dropdown',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-dropdown/question-dropdown.html"*/'<!--\n  Generated template for the QuestionDropdownPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n    <ion-item *ngFor="let entry of group | search : {term:queryText,fields:[\'beneficiary_name\',\'household_id\']}">\n      <ion-label>{{entry.household_id}} - <label><strong>{{entry.beneficiary_name}}</strong></label> </ion-label>\n\n      <ion-checkbox slot="end" *ngIf="entry.id != \'\' && entry.surver_id !=\'\'" [(ngModel)]="entry.isChecked"\n        (ionChange)="getChanged(entry)"></ion-checkbox>\n    </ion-item>\n  </ion-list>\n  <ion-fab right bottom>\n    <button ion-fab mini (click)="startsurvey()">\n      <ion-icon name="arrow-forward"></ion-icon>\n    </button>\n\n  </ion-fab>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-dropdown/question-dropdown.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_0__providers_database_database__["a" /* DatabaseProvider */]])
-    ], QuestionDropdownPage);
-    return QuestionDropdownPage;
-}());
-
-//# sourceMappingURL=question-dropdown.js.map
-
-/***/ }),
-
-/***/ 177:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionTextboxPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__survey_list_survey_list__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__suervy_suervy__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_database_database__ = __webpack_require__(27);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-/**
- * Generated class for the QuestionTextboxPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var QuestionTextboxPage = /** @class */ (function () {
-    function QuestionTextboxPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.appGlobal = appGlobal;
-        this.toastCtrl = toastCtrl;
-        this.sqldatabasegetter = sqldatabasegetter;
-        this.opctions = [];
-        this.is_last = 0;
-        // beneficiary_id: string
-        // auto_increment_id: string
-        this.beneficiary_id = [];
-        this.auto_increment_id = [];
-        this.qindex = navParams.get("qindex");
-        this.question_id = navParams.get("question_id");
-        this.project_id = navParams.get("project_id");
-        this.survey_id = navParams.get("survey_id");
-        this.beneficiary_id = navParams.get('beneficiary_id');
-        this.auto_increment_id = navParams.get('auto_increment_id');
-        this.loadQuestions();
-        this.validatror = new __WEBPACK_IMPORTED_MODULE_0__angular_forms__["c" /* FormGroup */]({
-            answers: new __WEBPACK_IMPORTED_MODULE_0__angular_forms__["b" /* FormControl */]('ddd', __WEBPACK_IMPORTED_MODULE_0__angular_forms__["h" /* Validators */].required)
-        });
-    }
-    QuestionTextboxPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad QuestionTextboxPage');
-    };
-    QuestionTextboxPage.prototype.loadQuestions = function () {
-        this.question = this.appGlobal.questionsList[this.qindex].text;
-        this.key = this.appGlobal.questionsList[this.qindex].server_id;
-        if (this.appGlobal.answers[this.key] != undefined) {
-            this.answer = this.appGlobal.answers[this.key];
-        }
-        else {
-            this.answer = {
-                beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
-                language_id: 2, option_id: 2, option_text: "", image: "N/A", other_text: "no"
-            };
-        }
-    };
-    QuestionTextboxPage.prototype.goToNext = function (e) {
-        this.appGlobal.answers[this.key] = (this.answer);
-        if (this.qindex == this.appGlobal.questionsList.length - 1) {
-            this.is_last = 1;
-            alert("Last Question");
-            return;
-        }
-        var nq = this.qindex + 1;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__suervy_suervy__["a" /* SuervyPage */], {
-            project_id: this.project_id,
-            survey_id: this.survey_id,
-            question_id: this.question_id,
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-            qindex: (nq)
-        });
-    };
-    QuestionTextboxPage.prototype.goToPrev = function (e) {
-        if (this.qindex == 0) {
-            alert("First Question");
-            return;
-        }
-        var nq = this.qindex - 1;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__suervy_suervy__["a" /* SuervyPage */], {
-            project_id: this.project_id,
-            survey_id: this.survey_id,
-            question_id: this.question_id,
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-            qindex: (nq)
-        });
-    };
-    QuestionTextboxPage.prototype.submit = function () {
-        var data = this.appGlobal.answers;
-        var key = Object.keys(data);
-        for (var i = 0; i <= key.length; i++) {
-            if (this.appGlobal.answers[key[i]] != undefined) {
-                this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]]);
-            }
-            if (i == key.length) {
-                alert("submit scussfully");
-                if (this.navCtrl.canGoBack) {
-                    // this.navCtrl.pop();
-                    this.appGlobal.answers = [];
-                    this.appGlobal.questionsList = [];
-                    this.beneficiary_id = [];
-                    this.auto_increment_id = [];
-                    this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__survey_list_survey_list__["a" /* SurveyListPage */]);
-                }
-                else {
-                    var toast = this.toastCtrl.create({
-                        message: this.appGlobal.ServerError,
-                        duration: 3000
-                    });
-                    toast.present();
-                }
-            }
-        }
-    };
-    QuestionTextboxPage.prototype.goTosurveylist = function () {
-        this.appGlobal.answers = [];
-        this.beneficiary_id = [];
-        this.auto_increment_id = [];
-        this.appGlobal.options = [];
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__survey_list_survey_list__["a" /* SurveyListPage */], {
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-        });
-    };
-    QuestionTextboxPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
-            selector: 'page-question-textbox',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-textbox/question-textbox.html"*/'<!--\n  Generated template for the QuestionTextboxPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n  <h1><strong>\n      <p>{{question}}</p>\n    </strong>\n  </h1>\n  <form #form="ngForm">\n    <div>\n      <hr>\n      <ion-item>\n        <ion-input name="option_text" type="text" placeholder="" [(ngModel)]="answer.option_text" required></ion-input>\n      </ion-item>\n      <hr>\n      <button ion-button *ngIf="is_last == 1" type="submit" [disabled]="!form.valid" (click)="submit()">Submit</button>\n      <button ion-button *ngIf="is_last == 0" type="submit" [disabled]="!form.valid" (click)="goToNext()">Next</button>\n      <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n    </div>\n  </form>\n\n  <div> <button ion-button  (click)="goTosurveylist()">Back To Survey List </button></div> \n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-textbox/question-textbox.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_5__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_6_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_7__providers_database_database__["a" /* DatabaseProvider */]])
-    ], QuestionTextboxPage);
-    return QuestionTextboxPage;
-}());
-
-//# sourceMappingURL=question-textbox.js.map
-
-/***/ }),
-
-/***/ 178:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionRadiobuttonPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__suervy_suervy__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_database_database__ = __webpack_require__(27);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-/**
- * Generated class for the QuestionRadiobuttonPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var QuestionRadiobuttonPage = /** @class */ (function () {
-    // public isChecked
-    function QuestionRadiobuttonPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.appGlobal = appGlobal;
-        this.toastCtrl = toastCtrl;
-        this.sqldatabasegetter = sqldatabasegetter;
-        this.opctions = [];
-        this.is_last = 0;
-        // beneficiary_id: string
-        // auto_increment_id: string
-        this.beneficiary_id = [];
-        this.auto_increment_id = [];
-        this.qindex = navParams.get("qindex");
-        this.question_id = navParams.get("question_id");
-        this.project_id = navParams.get("project_id");
-        this.survey_id = navParams.get("survey_id");
-        this.beneficiary_id = navParams.get('beneficiary_id');
-        this.auto_increment_id = navParams.get('auto_increment_id');
-        this.opctions = this.appGlobal.options;
-        this.loadQuestions();
-    }
-    QuestionRadiobuttonPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad QuestionRadiobuttonPage');
-    };
-    QuestionRadiobuttonPage.prototype.loadQuestions = function () {
-        this.question = this.appGlobal.questionsList[this.qindex].text;
-        this.key = this.appGlobal.questionsList[this.qindex].server_id;
-        if (this.appGlobal.answers[this.key] != undefined) {
-            this.answer = this.appGlobal.answers[this.key];
-        }
-        else {
-            this.answer = {
-                beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
-                language_id: 2, option_id: 2, option_text: "", image: "N/A", other_text: "no"
-            };
-        }
-    };
-    QuestionRadiobuttonPage.prototype.goToNext = function (e) {
-        {
-            this.appGlobal.answers[this.key] = (this.answer);
-            if (this.qindex == this.appGlobal.questionsList.length - 1) {
-                this.is_last = 1;
-                alert("Last Question");
-                return;
-            }
-            var nq = this.qindex + 1;
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
-                project_id: this.project_id,
-                survey_id: this.survey_id,
-                question_id: this.question_id,
-                beneficiary_id: this.beneficiary_id,
-                auto_increment_id: this.auto_increment_id,
-                qindex: (nq)
-            });
-        }
-    };
-    QuestionRadiobuttonPage.prototype.select = function (item) {
-        this.answer.option_text = item;
-        // this.select_radio=item
-    };
-    QuestionRadiobuttonPage.prototype.goToPrev = function (e) {
-        if (this.qindex == 0) {
-            alert("First Question");
-            return;
-        }
-        var nq = this.qindex - 1;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
-            project_id: this.project_id,
-            survey_id: this.survey_id,
-            question_id: this.question_id,
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-            qindex: (nq)
-        });
-    };
-    QuestionRadiobuttonPage.prototype.submit = function () {
-        var data = this.appGlobal.answers;
-        var key = Object.keys(data);
-        for (var i = 0; i <= key.length; i++) {
-            if (this.appGlobal.answers[key[i]] != undefined) {
-                this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]]);
-            }
-            if (i == key.length) {
-                alert("submit scussfully");
-                if (this.navCtrl.canGoBack) {
-                    // this.navCtrl.pop();
-                    this.appGlobal.answers = [];
-                    this.appGlobal.questionsList = [];
-                    this.beneficiary_id = [];
-                    this.auto_increment_id = [];
-                    this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */]);
-                    // this.navCtrl.setRoot(QuestionDropdownPage)
-                }
-                else {
-                    var toast = this.toastCtrl.create({
-                        message: this.appGlobal.ServerError,
-                        duration: 3000
-                    });
-                    toast.present();
-                }
-            }
-        }
-    };
-    QuestionRadiobuttonPage.prototype.goTosurveylist = function () {
-        this.appGlobal.answers = [];
-        this.beneficiary_id = [];
-        this.auto_increment_id = [];
-        this.appGlobal.options = [];
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */], {
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-        });
-    };
-    QuestionRadiobuttonPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-question-radiobutton',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-radiobutton/question-radiobutton.html"*/'<!--\n  Generated template for the QuestionRadiobuttonPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title text-center>Survey Started</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <h1><strong>\n      <p>{{question}}</p>\n    </strong>\n  </h1>\n  <ion-list radio-group>\n\n    <ion-item *ngFor="let entry of opctions">\n      <ion-label>{{entry.text}}</ion-label>\n      <ion-radio slot="start" value="{{entry.text}}" (ionSelect)="select(entry.text)"></ion-radio>\n    </ion-item>\n\n  </ion-list>\n  <button ion-button *ngIf="is_last == 1" (click)="submit(\'a\')">Submit</button>\n  <button ion-button *ngIf="is_last == 0" (click)="goToNext(\'a\')">Next</button>\n  <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n\n  <div> <button ion-button (click)="goTosurveylist()">Back To Survey List </button></div>\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-radiobutton/question-radiobutton.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_6__providers_database_database__["a" /* DatabaseProvider */]])
-    ], QuestionRadiobuttonPage);
-    return QuestionRadiobuttonPage;
-}());
-
-//# sourceMappingURL=question-radiobutton.js.map
-
-/***/ }),
-
 /***/ 179:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuestionCheckboxPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__suervy_suervy__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_database_database__ = __webpack_require__(27);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-/**
- * Generated class for the QuestionCheckboxPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var QuestionCheckboxPage = /** @class */ (function () {
-    function QuestionCheckboxPage(navCtrl, navParams, appGlobal, toastCtrl, sqldatabasegetter) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.appGlobal = appGlobal;
-        this.toastCtrl = toastCtrl;
-        this.sqldatabasegetter = sqldatabasegetter;
-        this.options = [];
-        this.is_last = 0;
-        // beneficiary_id: string
-        // auto_increment_id: string
-        this.beneficiary_id = [];
-        this.auto_increment_id = [];
-        this.qindex = navParams.get("qindex");
-        this.question_id = navParams.get("question_id");
-        this.project_id = navParams.get("project_id");
-        this.survey_id = navParams.get("survey_id");
-        this.beneficiary_id = navParams.get('beneficiary_id');
-        this.auto_increment_id = navParams.get('auto_increment_id');
-        this.options = this.appGlobal.options;
-        this.cbChecked = [];
-        this.selectedCheckbox = {};
-        this.loadQuestions();
-    }
-    QuestionCheckboxPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad QuestionCheckboxPage');
-    };
-    QuestionCheckboxPage.prototype.loadQuestions = function () {
-        this.question = this.appGlobal.questionsList[this.qindex].text;
-        this.key = this.appGlobal.questionsList[this.qindex].server_id;
-        if (this.appGlobal.answers[this.key] != undefined) {
-            this.answer = this.appGlobal.answers[this.key];
-        }
-        else {
-            this.answer = {
-                beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
-                language_id: 2, option_id: 2, option_text: "", image: "N/A", other_text: "no"
-            };
-        }
-    };
-    QuestionCheckboxPage.prototype.goToNext = function (e) {
-        this.appGlobal.answers[this.key] = (this.answer);
-        if (this.qindex == this.appGlobal.questionsList.length - 1) {
-            this.is_last = 1;
-            alert("Last Question");
-            return;
-        }
-        var nq = this.qindex + 1;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
-            project_id: this.project_id,
-            survey_id: this.survey_id,
-            question_id: this.question_id,
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-            qindex: (nq)
-        });
-    };
-    QuestionCheckboxPage.prototype.goToPrev = function (e) {
-        if (this.qindex == 0) {
-            alert("First Question");
-            return;
-        }
-        var nq = this.qindex - 1;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_1__suervy_suervy__["a" /* SuervyPage */], {
-            project_id: this.project_id,
-            survey_id: this.survey_id,
-            question_id: this.question_id,
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-            qindex: (nq)
-        });
-    };
-    QuestionCheckboxPage.prototype.submit = function () {
-        var data = this.appGlobal.answers;
-        var key = Object.keys(data);
-        for (var i = 0; i <= key.length; i++) {
-            if (this.appGlobal.answers[key[i]] != undefined) {
-                this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]]);
-            }
-            if (i == key.length) {
-                alert("submit scussfully");
-                if (this.navCtrl.canGoBack) {
-                    this.navCtrl.pop();
-                    this.appGlobal.answers = [];
-                    this.appGlobal.questionsList = [];
-                    this.beneficiary_id = [];
-                    this.auto_increment_id = [];
-                    // this.navCtrl.setRoot(SurveyListPage, {
-                    //   beneficiary_id: this.beneficiary_id,
-                    //   auto_increment_id: this.auto_increment_id,
-                    // })
-                    this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */]);
-                    // this.navCtrl.setRoot(QuestionDropdownPage)
-                }
-                else {
-                    var toast = this.toastCtrl.create({
-                        message: this.appGlobal.ServerError,
-                        duration: 3000
-                    });
-                    toast.present();
-                }
-            }
-        }
-    };
-    QuestionCheckboxPage.prototype.updateOptions = function () {
-        console.log(this.cbChecked);
-    };
-    QuestionCheckboxPage.prototype.getSelectedBen = function (e, i, a) {
-        if (e.isChecked)
-            return e.text;
-    };
-    QuestionCheckboxPage.prototype.removeNull = function (e, i, a) {
-        return e != null;
-    };
-    QuestionCheckboxPage.prototype.getChanged = function (e) {
-        console.log("Selected Checkbox:" + JSON.stringify(this.selectedCheckbox));
-        console.log("Selected Checkbox:" + JSON.stringify(this.options));
-        this.selectedCheckbox = this.options.map(this.getSelectedBen).filter(this.removeNull);
-        console.log("Selected Checkbox:" + JSON.stringify(this.selectedCheckbox));
-        console.log("Final String :" + JSON.stringify(this.selectedCheckbox).replace(/\[|\]|"|"/g, ""));
-        this.answer.option_text = JSON.stringify(this.selectedCheckbox).replace(/\[|\]|"|"/g, "");
-    };
-    QuestionCheckboxPage.prototype.goTosurveylist = function () {
-        this.appGlobal.answers = [];
-        this.beneficiary_id = [];
-        this.auto_increment_id = [];
-        this.appGlobal.options = [];
-        this.options = [];
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__survey_list_survey_list__["a" /* SurveyListPage */], {
-            beneficiary_id: this.beneficiary_id,
-            auto_increment_id: this.auto_increment_id,
-        });
-    };
-    QuestionCheckboxPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-question-checkbox',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/question-checkbox/question-checkbox.html"*/'<!--\n  Generated template for the QuestionCheckboxPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title  text-center>Survey Started</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <h1><strong>\n      <p>{{question}}</p>\n    </strong>\n  </h1>\n  <ion-list>\n    <ion-item *ngFor="let entry of options ;let i = index">\n      <ion-label>{{entry.text}}</ion-label>\n\n      <ion-checkbox slot="end" *ngIf="entry.text != \'\'" [(ngModel)]="entry.isChecked"\n        (ionChange)="getChanged(entry.text)"></ion-checkbox>\n    </ion-item>\n  </ion-list>\n\n  <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>\n  <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>\n  <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button>\n\n  <div> <button ion-button  (click)="goTosurveylist()">Back To Survey List </button></div> \n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/question-checkbox/question-checkbox.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__["a" /* AppGlobalProvider */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_6__providers_database_database__["a" /* DatabaseProvider */]])
-    ], QuestionCheckboxPage);
-    return QuestionCheckboxPage;
-}());
-
-//# sourceMappingURL=question-checkbox.js.map
-
-/***/ }),
-
-/***/ 180:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3172,7 +3808,7 @@ var QuestionCheckboxPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__maintenance_request_maintenance_request__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maintenance_request_form_maintenance_request_form__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maintenance_request_form_maintenance_request_form__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_user_data_ts__ = __webpack_require__(29);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3230,7 +3866,7 @@ var SearchbeneficiryPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 181:
+/***/ 180:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3313,14 +3949,17 @@ var SyncPage = /** @class */ (function () {
         this.sqldatabasegetter = sqldatabasegetter;
         this.toastCtrl = toastCtrl;
         this.db = db;
-        this.sqldatabasegetter.syncbeneficiarydata();
+        //	this.sqldatabasegetter.syncbeneficiarydata();
         this.sqldatabasegetter.syncanswersdata();
-        this.sqldatabasegetter.synckycsdata();
+        //this.sqldatabasegetter.synckycsdata();
         this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
         this.pending_answers = this.appGlobal.syncanswers.length;
         this.pending_kycs = this.appGlobal.synckycs.length;
     }
     SyncPage.prototype.dorefresh = function (ev) {
+        for (var i = 0; i <= this.appGlobal.syncanswers.length; i++) {
+            console.log("@@@    " + JSON.stringify(this.appGlobal.syncanswers[i]));
+        }
         this.datareload(ev);
         setTimeout(function () {
             console.log('Async operation has ended');
@@ -3456,7 +4095,7 @@ var SyncPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 182:
+/***/ 181:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3558,6 +4197,54 @@ var UserblockPage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=userblock.js.map
+
+/***/ }),
+
+/***/ 182:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LogoutPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+/**
+ * Generated class for the LogoutPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var LogoutPage = /** @class */ (function () {
+    function LogoutPage(navCtrl, navParams, db) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.db = db;
+    }
+    LogoutPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad LogoutPage');
+    };
+    LogoutPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
+            selector: 'page-logout',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/logout/logout.html"*/'<!--\n  Generated template for the LogoutPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>logout</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/logout/logout.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__["a" /* DataSetterProvider */]])
+    ], LogoutPage);
+    return LogoutPage;
+}());
+
+//# sourceMappingURL=logout.js.map
 
 /***/ }),
 
@@ -3814,7 +4501,7 @@ var SearchBeneficiryPage = /** @class */ (function () {
     };
     SearchBeneficiryPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-search-beneficiry',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/search-beneficiry/search-beneficiry.html"*/'<!--\n  Generated template for the SearchBeneficiryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>search beneficiry</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" name="search_name" [(ngModel)]="search.search_name" placeholder="Name For search"\n          required></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button (click)="searchdata(form)" [disabled]="!form.valid" type="submit" block>Search in database\n    </button>\n\n\n  </form>\n\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/search-beneficiry/search-beneficiry.html"*/,
+            selector: 'page-search-beneficiry',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/search-beneficiry/search-beneficiry.html"*/'<!--\n  Generated template for the SearchBeneficiryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>search beneficiry</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form #form="ngForm">\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" name="search_name" [(ngModel)]="search.search_name" placeholder="Name For search"\n          required></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button (click)="searchdata(form)" [disabled]="!form.valid" type="submit" block>Search in database\n    </button>\n  </form>\n\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/search-beneficiry/search-beneficiry.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* NavParams */]])
     ], SearchBeneficiryPage);
@@ -3842,44 +4529,6 @@ webpackEmptyAsyncContext.id = 215;
 
 /***/ }),
 
-/***/ 216:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SearchBeneficiryPageModule", function() { return SearchBeneficiryPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__search_beneficiry__ = __webpack_require__(203);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var SearchBeneficiryPageModule = /** @class */ (function () {
-    function SearchBeneficiryPageModule() {
-    }
-    SearchBeneficiryPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__search_beneficiry__["a" /* SearchBeneficiryPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__search_beneficiry__["a" /* SearchBeneficiryPage */]),
-            ],
-        })
-    ], SearchBeneficiryPageModule);
-    return SearchBeneficiryPageModule;
-}());
-
-//# sourceMappingURL=search-beneficiry.module.js.map
-
-/***/ }),
-
 /***/ 23:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3891,7 +4540,7 @@ var SearchBeneficiryPageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_global_app_global__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__ = __webpack_require__(163);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4099,174 +4748,13 @@ var DataSetterProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 258:
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"../pages/article-index/article-index.module": [
-		259
-	],
-	"../pages/article-show/article-show.module": [
-		389
-	],
-	"../pages/beneficiary-profile/beneficiary-profile.module": [
-		390
-	],
-	"../pages/comments/comments.module": [
-		391
-	],
-	"../pages/directory/directory.module": [
-		392
-	],
-	"../pages/grievance-filter/grievance-filter.module": [
-		396
-	],
-	"../pages/grievance-form/grievance-form.module": [
-		397
-	],
-	"../pages/grievance-show/grievance-show.module": [
-		398
-	],
-	"../pages/grievance/grievance.module": [
-		480
-	],
-	"../pages/home/home.module": [
-		481
-	],
-	"../pages/idea-filter/idea-filter.module": [
-		484
-	],
-	"../pages/idea-form/idea-form.module": [
-		486
-	],
-	"../pages/idea-show/idea-show.module": [
-		511
-	],
-	"../pages/idea/idea.module": [
-		487
-	],
-	"../pages/intro/intro.module": [
-		490
-	],
-	"../pages/login/login.module": [
-		491
-	],
-	"../pages/logout/logout.module": [
-		492
-	],
-	"../pages/maintenance-request-form/maintenance-request-form.module": [
-		493
-	],
-	"../pages/maintenance-request/maintenance-request.module": [
-		494
-	],
-	"../pages/offline/offline.module": [
-		498
-	],
-	"../pages/profile/profile.module": [
-		496
-	],
-	"../pages/question-checkbox/question-checkbox.module": [
-		512
-	],
-	"../pages/question-dropdown/question-dropdown.module": [
-		510
-	],
-	"../pages/question-image/question-image.module": [
-		500
-	],
-	"../pages/question-radiobutton/question-radiobutton.module": [
-		501
-	],
-	"../pages/question-textbox/question-textbox.module": [
-		502
-	],
-	"../pages/search-beneficiry/search-beneficiry.module": [
-		216
-	],
-	"../pages/searchbeneficiry/searchbeneficiry.module": [
-		503
-	],
-	"../pages/suervy/suervy.module": [
-		504
-	],
-	"../pages/survey-list/survey-list.module": [
-		505
-	],
-	"../pages/sync/sync.module": [
-		506
-	],
-	"../pages/tutorial/tutorial.module": [
-		507
-	],
-	"../pages/userblock/userblock.module": [
-		509
-	]
-};
-function webpackAsyncContext(req) {
-	var ids = map[req];
-	if(!ids)
-		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
-		return __webpack_require__(ids[0]);
-	});
-};
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-webpackAsyncContext.id = 258;
-module.exports = webpackAsyncContext;
-
-/***/ }),
-
-/***/ 259:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleIndexPageModule", function() { return ArticleIndexPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__article_index__ = __webpack_require__(380);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-var ArticleIndexPageModule = /** @class */ (function () {
-    function ArticleIndexPageModule() {
-    }
-    ArticleIndexPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_3__article_index__["a" /* ArticleIndexPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__article_index__["a" /* ArticleIndexPage */]),
-                __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__["a" /* PipesModule */],
-            ],
-        })
-    ], ArticleIndexPageModule);
-    return ArticleIndexPageModule;
-}());
-
-//# sourceMappingURL=article-index.module.js.map
-
-/***/ }),
-
 /***/ 27:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatabaseProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_sqlite__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_sqlite__ = __webpack_require__(167);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_app_global_app_global__ = __webpack_require__(11);
@@ -4626,7 +5114,7 @@ var DatabaseProvider = /** @class */ (function () {
     DatabaseProvider.prototype.getsureydatalode = function (cb, t) {
         var _this = this;
         var query = '';
-        query = 'SELECT * FROM survey';
+        query = 'SELECT * FROM survey ORDER BY server_id ASC';
         this.offlineCase = [];
         this.dbobject.executeSql(query, {})
             .then(function (data) {
@@ -4823,6 +5311,7 @@ var DatabaseProvider = /** @class */ (function () {
             _this.appGlobal.benefeciaries = [];
             if (data.rows.length > 0) {
                 for (var i = 0; i < data.rows.length; i++) {
+                    console.log("  %%%%%%  " + JSON.stringify(data.rows.item(i)));
                     _this.appGlobal.benefeciaries.push({
                         client_id: data.rows.item(i).id,
                         code: data.rows.item(i).code,
@@ -4869,7 +5358,7 @@ var DatabaseProvider = /** @class */ (function () {
             _this.appGlobal.syncanswers = [];
             if (data.rows.length > 0) {
                 for (var i = 0; i < data.rows.length; i++) {
-                    console.log(" @@@@@@@@@      " + JSON.stringify(data.rows.item(i)));
+                    // console.log(" @@@@@@@@@      " + JSON.stringify(data.rows.item(i)))
                     _this.appGlobal.syncanswers.push({
                         client_id: data.rows.item(i).id,
                         beneficiarie_id: data.rows.item(i).beneficiarie_id,
@@ -5186,11 +5675,11 @@ var DatabaseProvider = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserData; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__login_service_login_service__ = __webpack_require__(385);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__login_service_login_service__ = __webpack_require__(482);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(78);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5414,7 +5903,206 @@ var UserData = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 380:
+/***/ 320:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SearchBeneficiryPageModule", function() { return SearchBeneficiryPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__search_beneficiry__ = __webpack_require__(203);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var SearchBeneficiryPageModule = /** @class */ (function () {
+    function SearchBeneficiryPageModule() {
+    }
+    SearchBeneficiryPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__search_beneficiry__["a" /* SearchBeneficiryPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__search_beneficiry__["a" /* SearchBeneficiryPage */]),
+            ],
+        })
+    ], SearchBeneficiryPageModule);
+    return SearchBeneficiryPageModule;
+}());
+
+//# sourceMappingURL=search-beneficiry.module.js.map
+
+/***/ }),
+
+/***/ 358:
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"../pages/article-index/article-index.module": [
+		359
+	],
+	"../pages/article-show/article-show.module": [
+		484
+	],
+	"../pages/beneficiary-profile/beneficiary-profile.module": [
+		485
+	],
+	"../pages/comments/comments.module": [
+		486
+	],
+	"../pages/directory/directory.module": [
+		487
+	],
+	"../pages/grievance-filter/grievance-filter.module": [
+		491
+	],
+	"../pages/grievance-form/grievance-form.module": [
+		492
+	],
+	"../pages/grievance-show/grievance-show.module": [
+		493
+	],
+	"../pages/grievance/grievance.module": [
+		494
+	],
+	"../pages/home/home.module": [
+		495
+	],
+	"../pages/idea-filter/idea-filter.module": [
+		496
+	],
+	"../pages/idea-form/idea-form.module": [
+		498
+	],
+	"../pages/idea-show/idea-show.module": [
+		523
+	],
+	"../pages/idea/idea.module": [
+		499
+	],
+	"../pages/intro/intro.module": [
+		501
+	],
+	"../pages/login/login.module": [
+		502
+	],
+	"../pages/logout/logout.module": [
+		522
+	],
+	"../pages/maintenance-request-form/maintenance-request-form.module": [
+		503
+	],
+	"../pages/maintenance-request/maintenance-request.module": [
+		504
+	],
+	"../pages/offline/offline.module": [
+		506
+	],
+	"../pages/profile/profile.module": [
+		508
+	],
+	"../pages/question-checkbox/question-checkbox.module": [
+		510
+	],
+	"../pages/question-dropdown/question-dropdown.module": [
+		511
+	],
+	"../pages/question-image/question-image.module": [
+		512
+	],
+	"../pages/question-radiobutton/question-radiobutton.module": [
+		513
+	],
+	"../pages/question-textbox/question-textbox.module": [
+		514
+	],
+	"../pages/search-beneficiry/search-beneficiry.module": [
+		320
+	],
+	"../pages/searchbeneficiry/searchbeneficiry.module": [
+		515
+	],
+	"../pages/suervy/suervy.module": [
+		516
+	],
+	"../pages/survey-list/survey-list.module": [
+		517
+	],
+	"../pages/sync/sync.module": [
+		518
+	],
+	"../pages/tutorial/tutorial.module": [
+		519
+	],
+	"../pages/userblock/userblock.module": [
+		521
+	]
+};
+function webpackAsyncContext(req) {
+	var ids = map[req];
+	if(!ids)
+		return Promise.reject(new Error("Cannot find module '" + req + "'."));
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
+		return __webpack_require__(ids[0]);
+	});
+};
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.id = 358;
+module.exports = webpackAsyncContext;
+
+/***/ }),
+
+/***/ 359:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleIndexPageModule", function() { return ArticleIndexPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__article_index__ = __webpack_require__(480);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var ArticleIndexPageModule = /** @class */ (function () {
+    function ArticleIndexPageModule() {
+    }
+    ArticleIndexPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_3__article_index__["a" /* ArticleIndexPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__article_index__["a" /* ArticleIndexPage */]),
+                __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__["a" /* PipesModule */],
+            ],
+        })
+    ], ArticleIndexPageModule);
+    return ArticleIndexPageModule;
+}());
+
+//# sourceMappingURL=article-index.module.js.map
+
+/***/ }),
+
+/***/ 480:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5424,7 +6112,7 @@ var UserData = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__article_show_article_show__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__article_show_article_show__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5526,7 +6214,7 @@ var ArticleIndexPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 385:
+/***/ 482:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5654,17 +6342,17 @@ var LoginServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 389:
+/***/ 484:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleShowPageModule", function() { return ArticleShowPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_components_module__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_components_module__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__article_show__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__article_show__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5698,7 +6386,7 @@ var ArticleShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 390:
+/***/ 485:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5706,7 +6394,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BeneficiaryProfilePageModule", function() { return BeneficiaryProfilePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__beneficiary_profile__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__beneficiary_profile__ = __webpack_require__(165);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5736,7 +6424,7 @@ var BeneficiaryProfilePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 391:
+/***/ 486:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5744,7 +6432,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CommentsPageModule", function() { return CommentsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comments__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comments__ = __webpack_require__(104);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5774,7 +6462,7 @@ var CommentsPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 392:
+/***/ 487:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5782,7 +6470,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DirectoryPageModule", function() { return DirectoryPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__directory__ = __webpack_require__(393);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__directory__ = __webpack_require__(488);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5812,7 +6500,7 @@ var DirectoryPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 393:
+/***/ 488:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5820,7 +6508,7 @@ var DirectoryPageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__profile_profile__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__profile_profile__ = __webpack_require__(105);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5907,7 +6595,7 @@ var DirectoryPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 396:
+/***/ 491:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5915,7 +6603,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceFilterPageModule", function() { return GrievanceFilterPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_filter__ = __webpack_require__(606);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_filter__ = __webpack_require__(879);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5945,7 +6633,7 @@ var GrievanceFilterPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 397:
+/***/ 492:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5953,7 +6641,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceFormPageModule", function() { return GrievanceFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_form__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_form__ = __webpack_require__(168);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5983,7 +6671,7 @@ var GrievanceFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 398:
+/***/ 493:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5991,10 +6679,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GrievanceShowPageModule", function() { return GrievanceShowPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_show__ = __webpack_require__(156);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_components_module__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grievance_show__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_components_module__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__(19);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6037,7 +6725,7 @@ var GrievanceShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 480:
+/***/ 494:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6046,7 +6734,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__grievance__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__grievance__ = __webpack_require__(166);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6078,7 +6766,7 @@ var GrievancePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 481:
+/***/ 495:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6119,7 +6807,7 @@ var HomePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 484:
+/***/ 496:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6127,7 +6815,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IdeaFilterPageModule", function() { return IdeaFilterPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_filter__ = __webpack_require__(485);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_filter__ = __webpack_require__(497);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6157,12 +6845,12 @@ var IdeaFilterPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 485:
+/***/ 497:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IdeaFilterPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6229,7 +6917,7 @@ var IdeaFilterPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 486:
+/***/ 498:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6267,7 +6955,7 @@ var IdeaFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 487:
+/***/ 499:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6276,7 +6964,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pipes_pipes_module__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__idea__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__idea__ = __webpack_require__(500);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6308,13 +6996,13 @@ var IdeaPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 488:
+/***/ 500:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IdeaPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__idea_filter_idea_filter__ = __webpack_require__(485);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__idea_filter_idea_filter__ = __webpack_require__(497);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
@@ -6484,7 +7172,7 @@ var IdeaPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 490:
+/***/ 501:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6522,7 +7210,7 @@ var IntroPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 491:
+/***/ 502:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6560,45 +7248,7 @@ var LoginPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 492:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LogoutPageModule", function() { return LogoutPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logout__ = __webpack_require__(173);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var LogoutPageModule = /** @class */ (function () {
-    function LogoutPageModule() {
-    }
-    LogoutPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__logout__["a" /* LogoutPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__logout__["a" /* LogoutPage */]),
-            ],
-        })
-    ], LogoutPageModule);
-    return LogoutPageModule;
-}());
-
-//# sourceMappingURL=logout.module.js.map
-
-/***/ }),
-
-/***/ 493:
+/***/ 503:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6606,7 +7256,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaintenanceRequestFormPageModule", function() { return MaintenanceRequestFormPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maintenance_request_form__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maintenance_request_form__ = __webpack_require__(173);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6636,7 +7286,7 @@ var MaintenanceRequestFormPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 494:
+/***/ 504:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6677,93 +7327,7 @@ var MaintenanceRequestPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 496:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfilePageModule", function() { return ProfilePageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__ = __webpack_require__(497);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__profile__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__(19);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-
-
-
-var ProfilePageModule = /** @class */ (function () {
-    function ProfilePageModule() {
-    }
-    ProfilePageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_3__profile__["a" /* ProfilePage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__profile__["a" /* ProfilePage */]),
-                __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__["a" /* DirectivesModule */],
-                __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__["a" /* IonTagsInputModule */],
-                __WEBPACK_IMPORTED_MODULE_5_ngx_chips__["a" /* TagInputModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["d" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["g" /* ReactiveFormsModule */]
-            ],
-        })
-    ], ProfilePageModule);
-    return ProfilePageModule;
-}());
-
-//# sourceMappingURL=profile.module.js.map
-
-/***/ }),
-
-/***/ 497:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DirectivesModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__ = __webpack_require__(623);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-var DirectivesModule = /** @class */ (function () {
-    function DirectivesModule() {
-    }
-    DirectivesModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [__WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__["a" /* AutoresizeDirective */]],
-            imports: [],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__["a" /* AutoresizeDirective */]]
-        })
-    ], DirectivesModule);
-    return DirectivesModule;
-}());
-
-//# sourceMappingURL=directives.module.js.map
-
-/***/ }),
-
-/***/ 498:
+/***/ 506:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6771,7 +7335,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OfflinePageModule", function() { return OfflinePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__offline__ = __webpack_require__(499);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__offline__ = __webpack_require__(507);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6804,7 +7368,7 @@ var OfflinePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 499:
+/***/ 507:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6875,7 +7439,171 @@ var OfflinePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 500:
+/***/ 508:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfilePageModule", function() { return ProfilePageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__profile__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_chips__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__(19);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+var ProfilePageModule = /** @class */ (function () {
+    function ProfilePageModule() {
+    }
+    ProfilePageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_3__profile__["a" /* ProfilePage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__profile__["a" /* ProfilePage */]),
+                __WEBPACK_IMPORTED_MODULE_0__directives_directives_module__["a" /* DirectivesModule */],
+                __WEBPACK_IMPORTED_MODULE_4_ionic_tags_input__["a" /* IonTagsInputModule */],
+                __WEBPACK_IMPORTED_MODULE_5_ngx_chips__["a" /* TagInputModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["d" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["g" /* ReactiveFormsModule */]
+            ],
+        })
+    ], ProfilePageModule);
+    return ProfilePageModule;
+}());
+
+//# sourceMappingURL=profile.module.js.map
+
+/***/ }),
+
+/***/ 509:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DirectivesModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__ = __webpack_require__(882);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var DirectivesModule = /** @class */ (function () {
+    function DirectivesModule() {
+    }
+    DirectivesModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [__WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__["a" /* AutoresizeDirective */]],
+            imports: [],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__autoresize_autoresize__["a" /* AutoresizeDirective */]]
+        })
+    ], DirectivesModule);
+    return DirectivesModule;
+}());
+
+//# sourceMappingURL=directives.module.js.map
+
+/***/ }),
+
+/***/ 510:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionCheckboxPageModule", function() { return QuestionCheckboxPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_checkbox__ = __webpack_require__(174);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var QuestionCheckboxPageModule = /** @class */ (function () {
+    function QuestionCheckboxPageModule() {
+    }
+    QuestionCheckboxPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__question_checkbox__["a" /* QuestionCheckboxPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__question_checkbox__["a" /* QuestionCheckboxPage */]),
+            ],
+        })
+    ], QuestionCheckboxPageModule);
+    return QuestionCheckboxPageModule;
+}());
+
+//# sourceMappingURL=question-checkbox.module.js.map
+
+/***/ }),
+
+/***/ 511:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionDropdownPageModule", function() { return QuestionDropdownPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_dropdown__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(52);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var QuestionDropdownPageModule = /** @class */ (function () {
+    function QuestionDropdownPageModule() {
+    }
+    QuestionDropdownPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__question_dropdown__["a" /* QuestionDropdownPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__question_dropdown__["a" /* QuestionDropdownPage */]), __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__["a" /* PipesModule */],
+            ],
+        })
+    ], QuestionDropdownPageModule);
+    return QuestionDropdownPageModule;
+}());
+
+//# sourceMappingURL=question-dropdown.module.js.map
+
+/***/ }),
+
+/***/ 512:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6883,7 +7611,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionImagePageModule", function() { return QuestionImagePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_image__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_image__ = __webpack_require__(178);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6913,7 +7641,7 @@ var QuestionImagePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 501:
+/***/ 513:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6921,7 +7649,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionRadiobuttonPageModule", function() { return QuestionRadiobuttonPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_radiobutton__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_radiobutton__ = __webpack_require__(177);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6951,7 +7679,7 @@ var QuestionRadiobuttonPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 502:
+/***/ 514:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6959,7 +7687,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionTextboxPageModule", function() { return QuestionTextboxPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_textbox__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_textbox__ = __webpack_require__(176);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6989,7 +7717,7 @@ var QuestionTextboxPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 503:
+/***/ 515:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6997,7 +7725,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SearchbeneficiryPageModule", function() { return SearchbeneficiryPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__searchbeneficiry__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__searchbeneficiry__ = __webpack_require__(179);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7027,7 +7755,7 @@ var SearchbeneficiryPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 504:
+/***/ 516:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7065,7 +7793,7 @@ var SuervyPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 505:
+/***/ 517:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7106,7 +7834,7 @@ var SurveyListPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 506:
+/***/ 518:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7114,7 +7842,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SyncPageModule", function() { return SyncPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sync__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sync__ = __webpack_require__(180);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7144,7 +7872,7 @@ var SyncPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 507:
+/***/ 519:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7152,7 +7880,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TutorialPageModule", function() { return TutorialPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tutorial__ = __webpack_require__(508);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tutorial__ = __webpack_require__(520);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__ = __webpack_require__(112);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -7188,7 +7916,51 @@ var TutorialPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 508:
+/***/ 52:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PipesModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__search_search__ = __webpack_require__(868);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__safe_safe__ = __webpack_require__(869);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sort_sort__ = __webpack_require__(870);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__ = __webpack_require__(872);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+var PipesModule = /** @class */ (function () {
+    function PipesModule() {
+    }
+    PipesModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [__WEBPACK_IMPORTED_MODULE_1__search_search__["a" /* SearchPipe */],
+                __WEBPACK_IMPORTED_MODULE_2__safe_safe__["a" /* SafePipe */],
+                __WEBPACK_IMPORTED_MODULE_3__sort_sort__["a" /* SortPipe */],
+                __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__["a" /* SafeHtmlPipe */]],
+            imports: [],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__search_search__["a" /* SearchPipe */],
+                __WEBPACK_IMPORTED_MODULE_2__safe_safe__["a" /* SafePipe */],
+                __WEBPACK_IMPORTED_MODULE_3__sort_sort__["a" /* SortPipe */],
+                __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__["a" /* SafeHtmlPipe */]]
+        })
+    ], PipesModule);
+    return PipesModule;
+}());
+
+//# sourceMappingURL=pipes.module.js.map
+
+/***/ }),
+
+/***/ 520:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7276,7 +8048,7 @@ var TutorialPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 509:
+/***/ 521:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7284,7 +8056,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserblockPageModule", function() { return UserblockPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__userblock__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__userblock__ = __webpack_require__(181);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7317,16 +8089,15 @@ var UserblockPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 510:
+/***/ 522:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionDropdownPageModule", function() { return QuestionDropdownPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LogoutPageModule", function() { return LogoutPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_dropdown__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logout__ = __webpack_require__(182);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7336,28 +8107,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-var QuestionDropdownPageModule = /** @class */ (function () {
-    function QuestionDropdownPageModule() {
+var LogoutPageModule = /** @class */ (function () {
+    function LogoutPageModule() {
     }
-    QuestionDropdownPageModule = __decorate([
+    LogoutPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__question_dropdown__["a" /* QuestionDropdownPage */],
+                __WEBPACK_IMPORTED_MODULE_2__logout__["a" /* LogoutPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__question_dropdown__["a" /* QuestionDropdownPage */]), __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__["a" /* PipesModule */],
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__logout__["a" /* LogoutPage */]),
             ],
         })
-    ], QuestionDropdownPageModule);
-    return QuestionDropdownPageModule;
+    ], LogoutPageModule);
+    return LogoutPageModule;
 }());
 
-//# sourceMappingURL=question-dropdown.module.js.map
+//# sourceMappingURL=logout.module.js.map
 
 /***/ }),
 
-/***/ 511:
+/***/ 523:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7366,8 +8136,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__idea_show__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_tags_input__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_chips__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_tags_input__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_chips__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_forms__ = __webpack_require__(19);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -7408,88 +8178,6 @@ var IdeaShowPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 512:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionCheckboxPageModule", function() { return QuestionCheckboxPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_checkbox__ = __webpack_require__(179);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var QuestionCheckboxPageModule = /** @class */ (function () {
-    function QuestionCheckboxPageModule() {
-    }
-    QuestionCheckboxPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__question_checkbox__["a" /* QuestionCheckboxPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__question_checkbox__["a" /* QuestionCheckboxPage */]),
-            ],
-        })
-    ], QuestionCheckboxPageModule);
-    return QuestionCheckboxPageModule;
-}());
-
-//# sourceMappingURL=question-checkbox.module.js.map
-
-/***/ }),
-
-/***/ 52:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PipesModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__search_search__ = __webpack_require__(590);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__safe_safe__ = __webpack_require__(591);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sort_sort__ = __webpack_require__(592);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__ = __webpack_require__(594);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-var PipesModule = /** @class */ (function () {
-    function PipesModule() {
-    }
-    PipesModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            declarations: [__WEBPACK_IMPORTED_MODULE_1__search_search__["a" /* SearchPipe */],
-                __WEBPACK_IMPORTED_MODULE_2__safe_safe__["a" /* SafePipe */],
-                __WEBPACK_IMPORTED_MODULE_3__sort_sort__["a" /* SortPipe */],
-                __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__["a" /* SafeHtmlPipe */]],
-            imports: [],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__search_search__["a" /* SearchPipe */],
-                __WEBPACK_IMPORTED_MODULE_2__safe_safe__["a" /* SafePipe */],
-                __WEBPACK_IMPORTED_MODULE_3__sort_sort__["a" /* SortPipe */],
-                __WEBPACK_IMPORTED_MODULE_4__safe_html_safe_html__["a" /* SafeHtmlPipe */]]
-        })
-    ], PipesModule);
-    return PipesModule;
-}());
-
-//# sourceMappingURL=pipes.module.js.map
-
-/***/ }),
-
 /***/ 565:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7512,7 +8200,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SurveyListPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__question_dropdown_question_dropdown__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__question_dropdown_question_dropdown__ = __webpack_require__(175);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_user_data_ts__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
@@ -7595,7 +8283,6 @@ var SurveyListPage = /** @class */ (function () {
                     this.surveys.push(this.sqldatabasegetter.offlineCase[i]);
                 }
             }
-            // loading.dismiss();
             if (ref != null) {
                 ref.complete();
             }
@@ -7603,7 +8290,6 @@ var SurveyListPage = /** @class */ (function () {
         else {
             this.surveys = [];
             console.log("No data i array");
-            //  loading.dismiss();
             if (ref != null) {
                 ref.complete();
             }
@@ -7611,12 +8297,14 @@ var SurveyListPage = /** @class */ (function () {
     };
     SurveyListPage.prototype.StartSurvey = function (ProjectId, suervtId, type, qId) {
         if (type == "Group") {
+            alert("This is Group survey,so you should select more then one beneficiary.");
             this.appGlobal.selectedCheckId = [];
             this.appGlobal.selectedCheckbox = [];
             this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_0__question_dropdown_question_dropdown__["a" /* QuestionDropdownPage */], {
                 project_id: ProjectId,
                 survey_id: suervtId,
-                gId: qId
+                gId: qId,
+                type: "Group"
             });
         }
         else if (type == "Single") {
@@ -7625,7 +8313,8 @@ var SurveyListPage = /** @class */ (function () {
             this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_0__question_dropdown_question_dropdown__["a" /* QuestionDropdownPage */], {
                 project_id: ProjectId,
                 survey_id: suervtId,
-                gId: qId
+                gId: qId,
+                type: "Single"
             });
             //this.sqldatabasegetter.getQuestionsfroloddata(suervtId, this.callsurveypage(ProjectId, suervtId, qId), this);
         }
@@ -7637,7 +8326,7 @@ var SurveyListPage = /** @class */ (function () {
     };
     SurveyListPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["m" /* Component */])({
-            selector: 'page-survey-list',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/survey-list/survey-list.html"*/'<!--\n  Generated template for the SurveyListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Survey</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n \n  <ion-refresher (ionRefresh)="refreshSurveys($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card *ngFor="let survey of surveys" (click)="StartSurvey(survey.project_id,survey.server_id,survey.type, 1)">\n      <ion-card-header>{{survey.title}}\n        <span class="pull-right sr-age">\n          <p>Project ID: <strong>{{survey.project_id}}</strong></p>\n        </span>\n      </ion-card-header>\n      <ion-card-content>\n        <p>Survey Description:<strong>{{survey.description}}</strong></p>\n        <p>Duration:<strong>{{survey.duration_months}}</strong></p>\n        <p>Start Date:<strong>{{survey.start_date}}</strong></p>\n\n      </ion-card-content>\n    </ion-card>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/survey-list/survey-list.html"*/,
+            selector: 'page-survey-list',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/survey-list/survey-list.html"*/'<!--\n  Generated template for the SurveyListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Survey</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n \n  <ion-refresher (ionRefresh)="refreshSurveys($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <ion-list>\n    <ion-card *ngFor="let survey of surveys" (click)="StartSurvey(survey.project_id,survey.server_id,survey.type, 1)">\n      <ion-card-header> {{survey.server_id}}. <strong>{{survey.title}}</strong>\n        <span class="pull-right sr-age">\n          <p>Project ID: <strong>{{survey.project_id}}</strong></p>\n        </span>\n      </ion-card-header>\n      <ion-card-content>\n        <p>Survey Description:<strong>{{survey.description}}</strong></p>\n        <p>Duration:<strong>{{survey.duration_months}}</strong></p>\n        <p>Start Date:<strong>{{survey.start_date}}</strong></p>\n\n      </ion-card-content>\n    </ion-card>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/survey-list/survey-list.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["o" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["p" /* NavParams */],
@@ -7662,109 +8351,109 @@ var SurveyListPage = /** @class */ (function () {
 "use strict";
 /* unused harmony export createTranslateLoader */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_search_beneficiry_search_beneficiry_module__ = __webpack_require__(216);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__directives_directives_module__ = __webpack_require__(497);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_userblock_userblock__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_directory_directory__ = __webpack_require__(393);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_grievance_filter_grievance_filter_module__ = __webpack_require__(396);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_idea_filter_idea_filter_module__ = __webpack_require__(484);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_survey_list_survey_list_module__ = __webpack_require__(505);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_home_home_module__ = __webpack_require__(481);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_tutorial_tutorial_module__ = __webpack_require__(507);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_logout_logout_module__ = __webpack_require__(492);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login_module__ = __webpack_require__(491);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_idea_form_idea_form_module__ = __webpack_require__(486);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_idea_idea_module__ = __webpack_require__(487);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_grievance_show_grievance_show_module__ = __webpack_require__(398);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_grievance_form_grievance_form_module__ = __webpack_require__(397);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_grievance_grievance_module__ = __webpack_require__(480);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_article_show_article_show_module__ = __webpack_require__(389);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_components_module__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_article_index_article_index_module__ = __webpack_require__(259);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_offline_offline_module__ = __webpack_require__(498);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_logout_logout__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__angular_platform_browser__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__app_component__ = __webpack_require__(640);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_home_home__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_login_login__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__ionic_native_splash_screen__ = __webpack_require__(552);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__angular_common_http__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__ngx_translate_core__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__ngx_translate_http_loader__ = __webpack_require__(641);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__ionic_native_in_app_browser__ = __webpack_require__(643);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_idea_idea__ = __webpack_require__(488);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_idea_form_idea_form__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_grievance_grievance__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_grievance_form_grievance_form__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__ionic_native_file_transfer__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__ionic_native_file__ = __webpack_require__(644);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__ionic_native_image_picker__ = __webpack_require__(394);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__ionic_native_crop__ = __webpack_require__(395);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__ionic_native_camera__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__ionic_native_file_path__ = __webpack_require__(645);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__pages_idea_show_idea_show__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__pages_grievance_show_grievance_show__ = __webpack_require__(156);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__providers_user_data_ts__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__ionic_storage__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__providers_login_service_login_service__ = __webpack_require__(385);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__providers_leave_data_leave_data__ = __webpack_require__(646);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__pages_tutorial_tutorial__ = __webpack_require__(508);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__pages_article_index_article_index__ = __webpack_require__(380);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__pages_article_show_article_show__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__ionic_native_vibration__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__ionic_native_fcm__ = __webpack_require__(553);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__ionic_native_local_notifications__ = __webpack_require__(550);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__ionic_native_app_version__ = __webpack_require__(551);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__ionic_native_network__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__pages_idea_show_idea_show_module__ = __webpack_require__(511);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__pages_survey_list_survey_list__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61_ionic2_calendar_en__ = __webpack_require__(648);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__pages_comments_comments_module__ = __webpack_require__(391);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63_ionic_tags_input__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64_ngx_chips__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__angular_platform_browser_animations__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__angular_forms__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__pages_directory_directory_module__ = __webpack_require__(392);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__pages_userblock_userblock_module__ = __webpack_require__(509);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__pages_profile_profile_module__ = __webpack_require__(496);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__pages_profile_profile__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__pages_maintenance_request_maintenance_request_module__ = __webpack_require__(494);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__pages_maintenance_request_form_maintenance_request_form_module__ = __webpack_require__(493);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__pages_maintenance_request_maintenance_request__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__pages_maintenance_request_form_maintenance_request_form__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__pages_intro_intro__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__pages_intro_intro_module__ = __webpack_require__(490);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__ionic_native_call_number__ = __webpack_require__(495);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__ionic_native_device__ = __webpack_require__(381);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__pages_sync_sync__ = __webpack_require__(181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__pages_sync_sync_module__ = __webpack_require__(506);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__pages_beneficiary_profile_beneficiary_profile__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_82__pages_beneficiary_profile_beneficiary_profile_module__ = __webpack_require__(390);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_83__pages_suervy_suervy__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_84__pages_suervy_suervy_module__ = __webpack_require__(504);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_85__providers_database_database__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_86__ionic_native_sqlite__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_87__providers_database_Dbmaneger__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__pages_tabs_tabs__ = __webpack_require__(652);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__pages_searchbeneficiry_searchbeneficiry__ = __webpack_require__(180);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_90__pages_searchbeneficiry_searchbeneficiry_module__ = __webpack_require__(503);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_91__pages_search_beneficiry_search_beneficiry__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_92__ionic_native_qr_scanner_ngx__ = __webpack_require__(653);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_93__pages_question_textbox_question_textbox_module__ = __webpack_require__(502);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_94__pages_question_radiobutton_question_radiobutton_module__ = __webpack_require__(501);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__pages_question_dropdown_question_dropdown_module__ = __webpack_require__(510);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__pages_question_checkbox_question_checkbox_module__ = __webpack_require__(512);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__pages_question_checkbox_question_checkbox__ = __webpack_require__(179);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__pages_question_dropdown_question_dropdown__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__pages_question_radiobutton_question_radiobutton__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__pages_question_textbox_question_textbox__ = __webpack_require__(177);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__pages_question_image_question_image__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__pages_question_image_question_image_module__ = __webpack_require__(500);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_native_qr_scanner_ngx__ = __webpack_require__(571);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_search_beneficiry_search_beneficiry_module__ = __webpack_require__(320);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__directives_directives_module__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_userblock_userblock__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_directory_directory__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_grievance_filter_grievance_filter_module__ = __webpack_require__(491);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_idea_filter_idea_filter_module__ = __webpack_require__(496);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_survey_list_survey_list_module__ = __webpack_require__(517);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_home_home_module__ = __webpack_require__(495);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_tutorial_tutorial_module__ = __webpack_require__(519);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_logout_logout_module__ = __webpack_require__(522);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_login_login_module__ = __webpack_require__(502);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_idea_form_idea_form_module__ = __webpack_require__(498);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_idea_idea_module__ = __webpack_require__(499);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_grievance_show_grievance_show_module__ = __webpack_require__(493);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_grievance_form_grievance_form_module__ = __webpack_require__(492);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_grievance_grievance_module__ = __webpack_require__(494);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_article_show_article_show_module__ = __webpack_require__(484);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_components_module__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_article_index_article_index_module__ = __webpack_require__(359);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_offline_offline_module__ = __webpack_require__(506);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_logout_logout__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__angular_platform_browser__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__app_component__ = __webpack_require__(899);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_home_home__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_login_login__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__ionic_native_splash_screen__ = __webpack_require__(563);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__angular_common_http__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__ngx_translate_core__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__ngx_translate_http_loader__ = __webpack_require__(900);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__ionic_native_in_app_browser__ = __webpack_require__(902);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__providers_data_setter_data_setter__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_idea_idea__ = __webpack_require__(500);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_idea_form_idea_form__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_grievance_grievance__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_grievance_form_grievance_form__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__ionic_native_file_transfer__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__ionic_native_file__ = __webpack_require__(903);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__ionic_native_image_picker__ = __webpack_require__(489);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__ionic_native_crop__ = __webpack_require__(490);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__ionic_native_camera__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__ionic_native_file_path__ = __webpack_require__(904);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__pages_idea_show_idea_show__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__pages_grievance_show_grievance_show__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__providers_user_data_ts__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__ionic_storage__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__providers_login_service_login_service__ = __webpack_require__(482);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__providers_leave_data_leave_data__ = __webpack_require__(905);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__pages_tutorial_tutorial__ = __webpack_require__(520);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__pages_article_index_article_index__ = __webpack_require__(480);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__pages_article_show_article_show__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__ionic_native_vibration__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__ionic_native_fcm__ = __webpack_require__(564);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__ionic_native_local_notifications__ = __webpack_require__(561);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__ionic_native_app_version__ = __webpack_require__(562);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__ionic_native_network__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__pages_idea_show_idea_show_module__ = __webpack_require__(523);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__pages_survey_list_survey_list__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62_ionic2_calendar_en__ = __webpack_require__(906);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__pages_comments_comments_module__ = __webpack_require__(486);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64_ionic_tags_input__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65_ngx_chips__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__angular_platform_browser_animations__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__angular_forms__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__pages_directory_directory_module__ = __webpack_require__(487);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__pages_userblock_userblock_module__ = __webpack_require__(521);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__pages_profile_profile_module__ = __webpack_require__(508);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__pages_profile_profile__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__pages_maintenance_request_maintenance_request_module__ = __webpack_require__(504);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__pages_maintenance_request_form_maintenance_request_form_module__ = __webpack_require__(503);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__pages_maintenance_request_maintenance_request__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__pages_maintenance_request_form_maintenance_request_form__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__pages_intro_intro__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__pages_intro_intro_module__ = __webpack_require__(501);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__ionic_native_call_number__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__ionic_native_device__ = __webpack_require__(481);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__pages_sync_sync__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__pages_sync_sync_module__ = __webpack_require__(518);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_82__pages_beneficiary_profile_beneficiary_profile__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_83__pages_beneficiary_profile_beneficiary_profile_module__ = __webpack_require__(485);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_84__pages_suervy_suervy__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_85__pages_suervy_suervy_module__ = __webpack_require__(516);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_86__providers_database_database__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_87__ionic_native_sqlite__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__providers_database_Dbmaneger__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__pages_tabs_tabs__ = __webpack_require__(910);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_90__pages_searchbeneficiry_searchbeneficiry__ = __webpack_require__(179);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_91__pages_searchbeneficiry_searchbeneficiry_module__ = __webpack_require__(515);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_92__pages_search_beneficiry_search_beneficiry__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_93__pages_question_textbox_question_textbox_module__ = __webpack_require__(514);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_94__pages_question_radiobutton_question_radiobutton_module__ = __webpack_require__(513);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__pages_question_dropdown_question_dropdown_module__ = __webpack_require__(511);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__pages_question_checkbox_question_checkbox_module__ = __webpack_require__(510);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__pages_question_checkbox_question_checkbox__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__pages_question_dropdown_question_dropdown__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__pages_question_radiobutton_question_radiobutton__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__pages_question_textbox_question_textbox__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__pages_question_image_question_image__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__pages_question_image_question_image_module__ = __webpack_require__(512);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7878,20 +8567,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 function createTranslateLoader(http) {
-    return new __WEBPACK_IMPORTED_MODULE_30__ngx_translate_http_loader__["a" /* TranslateHttpLoader */](http, './assets/i18n/', '.json');
+    return new __WEBPACK_IMPORTED_MODULE_31__ngx_translate_http_loader__["a" /* TranslateHttpLoader */](http, './assets/i18n/', '.json');
 }
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_22__angular_core__["I" /* NgModule */])({
+        Object(__WEBPACK_IMPORTED_MODULE_23__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_24__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_88__pages_tabs_tabs__["a" /* TabsPage */]
+                __WEBPACK_IMPORTED_MODULE_25__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_89__pages_tabs_tabs__["a" /* TabsPage */]
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_21__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_23_ionic_angular__["i" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_24__app_component__["a" /* MyApp */], {
+                __WEBPACK_IMPORTED_MODULE_22__angular_platform_browser__["a" /* BrowserModule */],
+                __WEBPACK_IMPORTED_MODULE_24_ionic_angular__["i" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_25__app_component__["a" /* MyApp */], {
                     preloadModules: true,
                     scrollPadding: false,
                     scrollAssist: true,
@@ -7913,11 +8602,12 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/idea/idea.module#IdeaPageModule', name: 'IdeaPage', segment: 'idea', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/intro/intro.module#IntroPageModule', name: 'IntroPage', segment: 'intro', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/logout/logout.module#LogoutPageModule', name: 'LogoutPage', segment: 'logout', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/maintenance-request-form/maintenance-request-form.module#MaintenanceRequestFormPageModule', name: 'MaintenanceRequestFormPage', segment: 'maintenance-request-form', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/maintenance-request/maintenance-request.module#MaintenanceRequestPageModule', name: 'MaintenanceRequestPage', segment: 'maintenance-request', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/offline/offline.module#OfflinePageModule', name: 'OfflinePage', segment: 'offline', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/question-checkbox/question-checkbox.module#QuestionCheckboxPageModule', name: 'QuestionCheckboxPage', segment: 'question-checkbox', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/question-dropdown/question-dropdown.module#QuestionDropdownPageModule', name: 'QuestionDropdownPage', segment: 'question-dropdown', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/question-image/question-image.module#QuestionImagePageModule', name: 'QuestionImagePage', segment: 'question-image', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/question-radiobutton/question-radiobutton.module#QuestionRadiobuttonPageModule', name: 'QuestionRadiobuttonPage', segment: 'question-radiobutton', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/question-textbox/question-textbox.module#QuestionTextboxPageModule', name: 'QuestionTextboxPage', segment: 'question-textbox', priority: 'low', defaultHistory: [] },
@@ -7928,127 +8618,126 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/sync/sync.module#SyncPageModule', name: 'SyncPage', segment: 'sync', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/tutorial/tutorial.module#TutorialPageModule', name: 'TutorialPage', segment: 'tutorial', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/userblock/userblock.module#UserblockPageModule', name: 'UserblockPage', segment: 'userblock', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/question-dropdown/question-dropdown.module#QuestionDropdownPageModule', name: 'QuestionDropdownPage', segment: 'question-dropdown', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/idea-show/idea-show.module#IdeaShowPageModule', name: 'IdeaShowPage', segment: 'idea-show', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/question-checkbox/question-checkbox.module#QuestionCheckboxPageModule', name: 'QuestionCheckboxPage', segment: 'question-checkbox', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/logout/logout.module#LogoutPageModule', name: 'LogoutPage', segment: 'logout', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/idea-show/idea-show.module#IdeaShowPageModule', name: 'IdeaShowPage', segment: 'idea-show', priority: 'low', defaultHistory: [] }
                     ]
                 }),
-                __WEBPACK_IMPORTED_MODULE_28__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_29__ngx_translate_core__["b" /* TranslateModule */].forRoot({
+                __WEBPACK_IMPORTED_MODULE_29__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_30__ngx_translate_core__["b" /* TranslateModule */].forRoot({
                     loader: {
-                        provide: __WEBPACK_IMPORTED_MODULE_29__ngx_translate_core__["a" /* TranslateLoader */],
+                        provide: __WEBPACK_IMPORTED_MODULE_30__ngx_translate_core__["a" /* TranslateLoader */],
                         useFactory: (createTranslateLoader),
-                        deps: [__WEBPACK_IMPORTED_MODULE_28__angular_common_http__["a" /* HttpClient */]]
+                        deps: [__WEBPACK_IMPORTED_MODULE_29__angular_common_http__["a" /* HttpClient */]]
                     }
                 }),
-                __WEBPACK_IMPORTED_MODULE_47__ionic_storage__["a" /* IonicStorageModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_19__pages_offline_offline_module__["OfflinePageModule"],
-                __WEBPACK_IMPORTED_MODULE_7__pages_home_home_module__["HomePageModule"],
-                __WEBPACK_IMPORTED_MODULE_17__components_components_module__["a" /* ComponentsModule */],
-                __WEBPACK_IMPORTED_MODULE_61_ionic2_calendar_en__["a" /* CalendarModule */],
-                __WEBPACK_IMPORTED_MODULE_18__pages_article_index_article_index_module__["ArticleIndexPageModule"],
-                __WEBPACK_IMPORTED_MODULE_16__pages_article_show_article_show_module__["ArticleShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_15__pages_grievance_grievance_module__["GrievancePageModule"],
-                __WEBPACK_IMPORTED_MODULE_14__pages_grievance_form_grievance_form_module__["GrievanceFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_13__pages_grievance_show_grievance_show_module__["GrievanceShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_4__pages_grievance_filter_grievance_filter_module__["GrievanceFilterPageModule"],
-                __WEBPACK_IMPORTED_MODULE_12__pages_idea_idea_module__["IdeaPageModule"],
-                __WEBPACK_IMPORTED_MODULE_11__pages_idea_form_idea_form_module__["IdeaFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_59__pages_idea_show_idea_show_module__["IdeaShowPageModule"],
-                __WEBPACK_IMPORTED_MODULE_5__pages_idea_filter_idea_filter_module__["IdeaFilterPageModule"],
-                __WEBPACK_IMPORTED_MODULE_10__pages_login_login_module__["LoginPageModule"],
-                __WEBPACK_IMPORTED_MODULE_9__pages_logout_logout_module__["LogoutPageModule"],
-                __WEBPACK_IMPORTED_MODULE_19__pages_offline_offline_module__["OfflinePageModule"],
-                __WEBPACK_IMPORTED_MODULE_8__pages_tutorial_tutorial_module__["TutorialPageModule"],
-                __WEBPACK_IMPORTED_MODULE_6__pages_survey_list_survey_list_module__["SurveyListPageModule"],
-                __WEBPACK_IMPORTED_MODULE_62__pages_comments_comments_module__["CommentsPageModule"],
-                __WEBPACK_IMPORTED_MODULE_67__pages_directory_directory_module__["DirectoryPageModule"],
-                __WEBPACK_IMPORTED_MODULE_68__pages_userblock_userblock_module__["UserblockPageModule"],
-                __WEBPACK_IMPORTED_MODULE_90__pages_searchbeneficiry_searchbeneficiry_module__["SearchbeneficiryPageModule"],
-                __WEBPACK_IMPORTED_MODULE_0__pages_search_beneficiry_search_beneficiry_module__["SearchBeneficiryPageModule"],
+                __WEBPACK_IMPORTED_MODULE_48__ionic_storage__["a" /* IonicStorageModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_20__pages_offline_offline_module__["OfflinePageModule"],
+                __WEBPACK_IMPORTED_MODULE_8__pages_home_home_module__["HomePageModule"],
+                __WEBPACK_IMPORTED_MODULE_18__components_components_module__["a" /* ComponentsModule */],
+                __WEBPACK_IMPORTED_MODULE_62_ionic2_calendar_en__["a" /* CalendarModule */],
+                __WEBPACK_IMPORTED_MODULE_19__pages_article_index_article_index_module__["ArticleIndexPageModule"],
+                __WEBPACK_IMPORTED_MODULE_17__pages_article_show_article_show_module__["ArticleShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_16__pages_grievance_grievance_module__["GrievancePageModule"],
+                __WEBPACK_IMPORTED_MODULE_15__pages_grievance_form_grievance_form_module__["GrievanceFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_14__pages_grievance_show_grievance_show_module__["GrievanceShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_5__pages_grievance_filter_grievance_filter_module__["GrievanceFilterPageModule"],
+                __WEBPACK_IMPORTED_MODULE_13__pages_idea_idea_module__["IdeaPageModule"],
+                __WEBPACK_IMPORTED_MODULE_12__pages_idea_form_idea_form_module__["IdeaFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_60__pages_idea_show_idea_show_module__["IdeaShowPageModule"],
+                __WEBPACK_IMPORTED_MODULE_6__pages_idea_filter_idea_filter_module__["IdeaFilterPageModule"],
+                __WEBPACK_IMPORTED_MODULE_11__pages_login_login_module__["LoginPageModule"],
+                __WEBPACK_IMPORTED_MODULE_10__pages_logout_logout_module__["LogoutPageModule"],
+                __WEBPACK_IMPORTED_MODULE_20__pages_offline_offline_module__["OfflinePageModule"],
+                __WEBPACK_IMPORTED_MODULE_9__pages_tutorial_tutorial_module__["TutorialPageModule"],
+                __WEBPACK_IMPORTED_MODULE_7__pages_survey_list_survey_list_module__["SurveyListPageModule"],
+                __WEBPACK_IMPORTED_MODULE_63__pages_comments_comments_module__["CommentsPageModule"],
+                __WEBPACK_IMPORTED_MODULE_68__pages_directory_directory_module__["DirectoryPageModule"],
+                __WEBPACK_IMPORTED_MODULE_69__pages_userblock_userblock_module__["UserblockPageModule"],
+                __WEBPACK_IMPORTED_MODULE_91__pages_searchbeneficiry_searchbeneficiry_module__["SearchbeneficiryPageModule"],
+                __WEBPACK_IMPORTED_MODULE_1__pages_search_beneficiry_search_beneficiry_module__["SearchBeneficiryPageModule"],
                 __WEBPACK_IMPORTED_MODULE_96__pages_question_checkbox_question_checkbox_module__["QuestionCheckboxPageModule"],
                 __WEBPACK_IMPORTED_MODULE_95__pages_question_dropdown_question_dropdown_module__["QuestionDropdownPageModule"],
                 __WEBPACK_IMPORTED_MODULE_94__pages_question_radiobutton_question_radiobutton_module__["QuestionRadiobuttonPageModule"],
                 __WEBPACK_IMPORTED_MODULE_93__pages_question_textbox_question_textbox_module__["QuestionTextboxPageModule"],
                 __WEBPACK_IMPORTED_MODULE_102__pages_question_image_question_image_module__["QuestionImagePageModule"],
-                __WEBPACK_IMPORTED_MODULE_71__pages_maintenance_request_maintenance_request_module__["MaintenanceRequestPageModule"],
-                __WEBPACK_IMPORTED_MODULE_72__pages_maintenance_request_form_maintenance_request_form_module__["MaintenanceRequestFormPageModule"],
-                __WEBPACK_IMPORTED_MODULE_63_ionic_tags_input__["a" /* IonTagsInputModule */],
-                __WEBPACK_IMPORTED_MODULE_64_ngx_chips__["a" /* TagInputModule */],
-                __WEBPACK_IMPORTED_MODULE_65__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_66__angular_forms__["d" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_66__angular_forms__["g" /* ReactiveFormsModule */],
-                __WEBPACK_IMPORTED_MODULE_69__pages_profile_profile_module__["ProfilePageModule"],
-                __WEBPACK_IMPORTED_MODULE_1__directives_directives_module__["a" /* DirectivesModule */],
-                __WEBPACK_IMPORTED_MODULE_76__pages_intro_intro_module__["IntroPageModule"],
-                __WEBPACK_IMPORTED_MODULE_84__pages_suervy_suervy_module__["SuervyPageModule"],
-                __WEBPACK_IMPORTED_MODULE_80__pages_sync_sync_module__["SyncPageModule"],
-                __WEBPACK_IMPORTED_MODULE_82__pages_beneficiary_profile_beneficiary_profile_module__["BeneficiaryProfilePageModule"]
+                __WEBPACK_IMPORTED_MODULE_72__pages_maintenance_request_maintenance_request_module__["MaintenanceRequestPageModule"],
+                __WEBPACK_IMPORTED_MODULE_73__pages_maintenance_request_form_maintenance_request_form_module__["MaintenanceRequestFormPageModule"],
+                __WEBPACK_IMPORTED_MODULE_64_ionic_tags_input__["a" /* IonTagsInputModule */],
+                __WEBPACK_IMPORTED_MODULE_65_ngx_chips__["a" /* TagInputModule */],
+                __WEBPACK_IMPORTED_MODULE_66__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_67__angular_forms__["d" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_67__angular_forms__["g" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_70__pages_profile_profile_module__["ProfilePageModule"],
+                __WEBPACK_IMPORTED_MODULE_2__directives_directives_module__["a" /* DirectivesModule */],
+                __WEBPACK_IMPORTED_MODULE_77__pages_intro_intro_module__["IntroPageModule"],
+                __WEBPACK_IMPORTED_MODULE_85__pages_suervy_suervy_module__["SuervyPageModule"],
+                __WEBPACK_IMPORTED_MODULE_81__pages_sync_sync_module__["SyncPageModule"],
+                __WEBPACK_IMPORTED_MODULE_83__pages_beneficiary_profile_beneficiary_profile_module__["BeneficiaryProfilePageModule"]
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_23_ionic_angular__["g" /* IonicApp */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_24_ionic_angular__["g" /* IonicApp */]],
             entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_24__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_25__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_35__pages_idea_form_idea_form__["a" /* IdeaFormPage */],
-                __WEBPACK_IMPORTED_MODULE_34__pages_idea_idea__["a" /* IdeaPage */],
-                __WEBPACK_IMPORTED_MODULE_36__pages_grievance_grievance__["a" /* GrievancePage */],
-                __WEBPACK_IMPORTED_MODULE_37__pages_grievance_form_grievance_form__["a" /* GrievanceFormPage */],
-                __WEBPACK_IMPORTED_MODULE_51__pages_tutorial_tutorial__["a" /* TutorialPage */],
-                __WEBPACK_IMPORTED_MODULE_44__pages_idea_show_idea_show__["a" /* IdeaShowPage */],
-                __WEBPACK_IMPORTED_MODULE_45__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
-                __WEBPACK_IMPORTED_MODULE_26__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_logout_logout__["a" /* LogoutPage */],
-                __WEBPACK_IMPORTED_MODULE_45__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
-                __WEBPACK_IMPORTED_MODULE_52__pages_article_index_article_index__["a" /* ArticleIndexPage */],
-                __WEBPACK_IMPORTED_MODULE_53__pages_article_show_article_show__["a" /* ArticleShowPage */],
-                __WEBPACK_IMPORTED_MODULE_60__pages_survey_list_survey_list__["a" /* SurveyListPage */],
-                __WEBPACK_IMPORTED_MODULE_3__pages_directory_directory__["a" /* DirectoryPage */],
-                __WEBPACK_IMPORTED_MODULE_2__pages_userblock_userblock__["a" /* UserblockPage */],
-                __WEBPACK_IMPORTED_MODULE_70__pages_profile_profile__["a" /* ProfilePage */],
-                __WEBPACK_IMPORTED_MODULE_75__pages_intro_intro__["a" /* IntroPage */],
-                __WEBPACK_IMPORTED_MODULE_89__pages_searchbeneficiry_searchbeneficiry__["a" /* SearchbeneficiryPage */],
-                __WEBPACK_IMPORTED_MODULE_91__pages_search_beneficiry_search_beneficiry__["a" /* SearchBeneficiryPage */],
+                __WEBPACK_IMPORTED_MODULE_25__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_26__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_36__pages_idea_form_idea_form__["a" /* IdeaFormPage */],
+                __WEBPACK_IMPORTED_MODULE_35__pages_idea_idea__["a" /* IdeaPage */],
+                __WEBPACK_IMPORTED_MODULE_37__pages_grievance_grievance__["a" /* GrievancePage */],
+                __WEBPACK_IMPORTED_MODULE_38__pages_grievance_form_grievance_form__["a" /* GrievanceFormPage */],
+                __WEBPACK_IMPORTED_MODULE_52__pages_tutorial_tutorial__["a" /* TutorialPage */],
+                __WEBPACK_IMPORTED_MODULE_45__pages_idea_show_idea_show__["a" /* IdeaShowPage */],
+                __WEBPACK_IMPORTED_MODULE_46__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
+                __WEBPACK_IMPORTED_MODULE_27__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_21__pages_logout_logout__["a" /* LogoutPage */],
+                __WEBPACK_IMPORTED_MODULE_46__pages_grievance_show_grievance_show__["a" /* GrievanceShowPage */],
+                __WEBPACK_IMPORTED_MODULE_53__pages_article_index_article_index__["a" /* ArticleIndexPage */],
+                __WEBPACK_IMPORTED_MODULE_54__pages_article_show_article_show__["a" /* ArticleShowPage */],
+                __WEBPACK_IMPORTED_MODULE_61__pages_survey_list_survey_list__["a" /* SurveyListPage */],
+                __WEBPACK_IMPORTED_MODULE_4__pages_directory_directory__["a" /* DirectoryPage */],
+                __WEBPACK_IMPORTED_MODULE_3__pages_userblock_userblock__["a" /* UserblockPage */],
+                __WEBPACK_IMPORTED_MODULE_71__pages_profile_profile__["a" /* ProfilePage */],
+                __WEBPACK_IMPORTED_MODULE_76__pages_intro_intro__["a" /* IntroPage */],
+                __WEBPACK_IMPORTED_MODULE_90__pages_searchbeneficiry_searchbeneficiry__["a" /* SearchbeneficiryPage */],
+                __WEBPACK_IMPORTED_MODULE_92__pages_search_beneficiry_search_beneficiry__["a" /* SearchBeneficiryPage */],
                 __WEBPACK_IMPORTED_MODULE_97__pages_question_checkbox_question_checkbox__["a" /* QuestionCheckboxPage */],
                 __WEBPACK_IMPORTED_MODULE_98__pages_question_dropdown_question_dropdown__["a" /* QuestionDropdownPage */],
                 __WEBPACK_IMPORTED_MODULE_99__pages_question_radiobutton_question_radiobutton__["a" /* QuestionRadiobuttonPage */],
                 __WEBPACK_IMPORTED_MODULE_100__pages_question_textbox_question_textbox__["a" /* QuestionTextboxPage */],
-                __WEBPACK_IMPORTED_MODULE_73__pages_maintenance_request_maintenance_request__["a" /* MaintenanceRequestPage */],
-                __WEBPACK_IMPORTED_MODULE_74__pages_maintenance_request_form_maintenance_request_form__["a" /* MaintenanceRequestFormPage */],
-                __WEBPACK_IMPORTED_MODULE_83__pages_suervy_suervy__["a" /* SuervyPage */],
-                __WEBPACK_IMPORTED_MODULE_79__pages_sync_sync__["a" /* SyncPage */],
-                __WEBPACK_IMPORTED_MODULE_81__pages_beneficiary_profile_beneficiary_profile__["a" /* BeneficiaryProfilePage */],
+                __WEBPACK_IMPORTED_MODULE_74__pages_maintenance_request_maintenance_request__["a" /* MaintenanceRequestPage */],
+                __WEBPACK_IMPORTED_MODULE_75__pages_maintenance_request_form_maintenance_request_form__["a" /* MaintenanceRequestFormPage */],
+                __WEBPACK_IMPORTED_MODULE_84__pages_suervy_suervy__["a" /* SuervyPage */],
+                __WEBPACK_IMPORTED_MODULE_80__pages_sync_sync__["a" /* SyncPage */],
+                __WEBPACK_IMPORTED_MODULE_82__pages_beneficiary_profile_beneficiary_profile__["a" /* BeneficiaryProfilePage */],
                 __WEBPACK_IMPORTED_MODULE_101__pages_question_image_question_image__["a" /* QuestionImagePage */]
             ],
             providers: [
                 // StatusBar,
-                __WEBPACK_IMPORTED_MODULE_27__ionic_native_splash_screen__["a" /* SplashScreen */],
-                { provide: __WEBPACK_IMPORTED_MODULE_22__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_23_ionic_angular__["h" /* IonicErrorHandler */] },
-                __WEBPACK_IMPORTED_MODULE_32__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_33__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
-                __WEBPACK_IMPORTED_MODULE_78__ionic_native_device__["a" /* Device */],
-                __WEBPACK_IMPORTED_MODULE_38__ionic_native_file_transfer__["b" /* FileTransferObject */],
-                __WEBPACK_IMPORTED_MODULE_39__ionic_native_file__["a" /* File */],
-                __WEBPACK_IMPORTED_MODULE_38__ionic_native_file_transfer__["a" /* FileTransfer */],
-                __WEBPACK_IMPORTED_MODULE_42__ionic_native_camera__["a" /* Camera */],
-                __WEBPACK_IMPORTED_MODULE_43__ionic_native_file_path__["a" /* FilePath */],
-                __WEBPACK_IMPORTED_MODULE_31__ionic_native_in_app_browser__["a" /* InAppBrowser */],
-                __WEBPACK_IMPORTED_MODULE_54__ionic_native_vibration__["a" /* Vibration */],
-                __WEBPACK_IMPORTED_MODULE_46__providers_user_data_ts__["a" /* UserData */],
-                __WEBPACK_IMPORTED_MODULE_48__providers_login_service_login_service__["a" /* LoginServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_49__providers_leave_data_leave_data__["a" /* LeaveDataProvider */],
-                __WEBPACK_IMPORTED_MODULE_50__providers_app_global_app_global__["a" /* AppGlobalProvider */],
-                __WEBPACK_IMPORTED_MODULE_55__ionic_native_fcm__["a" /* FCM */],
-                __WEBPACK_IMPORTED_MODULE_57__ionic_native_app_version__["a" /* AppVersion */],
-                __WEBPACK_IMPORTED_MODULE_58__ionic_native_network__["a" /* Network */],
-                __WEBPACK_IMPORTED_MODULE_56__ionic_native_local_notifications__["a" /* LocalNotifications */],
-                __WEBPACK_IMPORTED_MODULE_40__ionic_native_image_picker__["a" /* ImagePicker */],
-                __WEBPACK_IMPORTED_MODULE_41__ionic_native_crop__["a" /* Crop */],
-                __WEBPACK_IMPORTED_MODULE_42__ionic_native_camera__["a" /* Camera */],
-                __WEBPACK_IMPORTED_MODULE_85__providers_database_database__["a" /* DatabaseProvider */],
-                __WEBPACK_IMPORTED_MODULE_86__ionic_native_sqlite__["a" /* SQLite */],
-                __WEBPACK_IMPORTED_MODULE_77__ionic_native_call_number__["a" /* CallNumber */],
-                __WEBPACK_IMPORTED_MODULE_87__providers_database_Dbmaneger__["a" /* DBmaneger */],
-                __WEBPACK_IMPORTED_MODULE_92__ionic_native_qr_scanner_ngx__["a" /* QRScanner */]
+                __WEBPACK_IMPORTED_MODULE_28__ionic_native_splash_screen__["a" /* SplashScreen */],
+                { provide: __WEBPACK_IMPORTED_MODULE_23__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_24_ionic_angular__["h" /* IonicErrorHandler */] },
+                __WEBPACK_IMPORTED_MODULE_33__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_34__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
+                __WEBPACK_IMPORTED_MODULE_79__ionic_native_device__["a" /* Device */],
+                __WEBPACK_IMPORTED_MODULE_39__ionic_native_file_transfer__["b" /* FileTransferObject */],
+                __WEBPACK_IMPORTED_MODULE_40__ionic_native_file__["a" /* File */],
+                __WEBPACK_IMPORTED_MODULE_39__ionic_native_file_transfer__["a" /* FileTransfer */],
+                __WEBPACK_IMPORTED_MODULE_43__ionic_native_camera__["a" /* Camera */],
+                __WEBPACK_IMPORTED_MODULE_44__ionic_native_file_path__["a" /* FilePath */],
+                __WEBPACK_IMPORTED_MODULE_32__ionic_native_in_app_browser__["a" /* InAppBrowser */],
+                __WEBPACK_IMPORTED_MODULE_55__ionic_native_vibration__["a" /* Vibration */],
+                __WEBPACK_IMPORTED_MODULE_47__providers_user_data_ts__["a" /* UserData */],
+                __WEBPACK_IMPORTED_MODULE_49__providers_login_service_login_service__["a" /* LoginServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_50__providers_leave_data_leave_data__["a" /* LeaveDataProvider */],
+                __WEBPACK_IMPORTED_MODULE_51__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+                __WEBPACK_IMPORTED_MODULE_56__ionic_native_fcm__["a" /* FCM */],
+                __WEBPACK_IMPORTED_MODULE_58__ionic_native_app_version__["a" /* AppVersion */],
+                __WEBPACK_IMPORTED_MODULE_59__ionic_native_network__["a" /* Network */],
+                __WEBPACK_IMPORTED_MODULE_57__ionic_native_local_notifications__["a" /* LocalNotifications */],
+                __WEBPACK_IMPORTED_MODULE_41__ionic_native_image_picker__["a" /* ImagePicker */],
+                __WEBPACK_IMPORTED_MODULE_42__ionic_native_crop__["a" /* Crop */],
+                __WEBPACK_IMPORTED_MODULE_43__ionic_native_camera__["a" /* Camera */],
+                __WEBPACK_IMPORTED_MODULE_86__providers_database_database__["a" /* DatabaseProvider */],
+                __WEBPACK_IMPORTED_MODULE_87__ionic_native_sqlite__["a" /* SQLite */],
+                __WEBPACK_IMPORTED_MODULE_78__ionic_native_call_number__["a" /* CallNumber */],
+                __WEBPACK_IMPORTED_MODULE_88__providers_database_Dbmaneger__["a" /* DBmaneger */],
+                __WEBPACK_IMPORTED_MODULE_0__ionic_native_qr_scanner_ngx__["a" /* QRScanner */]
             ]
         })
     ], AppModule);
@@ -8064,17 +8753,17 @@ var AppModule = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SuervyPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__question_textbox_question_textbox__ = __webpack_require__(177);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__question_radiobutton_question_radiobutton__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_checkbox_question_checkbox__ = __webpack_require__(179);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__question_textbox_question_textbox__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__question_radiobutton_question_radiobutton__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__question_checkbox_question_checkbox__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_data_setter_data_setter__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_storage__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_storage__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_app_global_app_global__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__question_image_question_image__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__question_image_question_image__ = __webpack_require__(178);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8182,7 +8871,7 @@ var SuervyPage = /** @class */ (function () {
     SuervyPage.prototype.submit = function () { };
     SuervyPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_5__angular_core__["m" /* Component */])({
-            selector: 'page-suervy',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/suervy/suervy.html"*/'<!--\n  Generated template for the SuervyPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar hideBackButton *navbar>\n    <!-- <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>SurveyPage</ion-title> -->\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <!-- <p>{{question}}</p> -->\n\n  <hr>\n  <!-- <ion-input name="anser_input" type="text" placeholder="Test Placeholder" [(ngModel)]="answer.option_text"></ion-input> -->\n  <hr>\n  <!-- <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>\n  <button ion-button *ngIf="is_last == 0 " (click)="goToNext(\'a\')">Next</button>\n  <button ion-button *ngIf="is_last == 0" (click)="goToPrev(\'a\')">Previous</button> -->\n\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/suervy/suervy.html"*/,
+            selector: 'page-suervy',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/suervy/suervy.html"*/'<!--\n  Generated template for the SuervyPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar hideBackButton *navbar>\n    <!-- <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>SurveyPage</ion-title> -->\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n \n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/suervy/suervy.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["o" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["p" /* NavParams */],
@@ -8199,7 +8888,360 @@ var SuervyPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 590:
+/***/ 80:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_database_database__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_storage__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__intro_intro__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_observable_interval__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_observable_interval___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_add_observable_interval__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+var HomePage = /** @class */ (function () {
+    function HomePage(navCtrl, network, dataGetterService, toastCtrl, dataSetterService, loadingCtrl, appGlobal, storage, events, sqldatabasegetter) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.network = network;
+        this.dataGetterService = dataGetterService;
+        this.toastCtrl = toastCtrl;
+        this.dataSetterService = dataSetterService;
+        this.loadingCtrl = loadingCtrl;
+        this.appGlobal = appGlobal;
+        this.storage = storage;
+        this.events = events;
+        this.sqldatabasegetter = sqldatabasegetter;
+        this.notifications = [];
+        this.descending = false;
+        this.order = -1;
+        this.field = 'updated_at';
+        this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
+        this.totalsurvey = this.sqldatabasegetter.total_surveys;
+        this.totalcount_benificiary = this.appGlobal.totalcount_bene;
+        this.sync_status = this.appGlobal.sync_status;
+        this.actual = this.appGlobal.actual;
+        this.total = this.appGlobal.total;
+        this.aactual_hhc = this.appGlobal.actual_hh;
+        storage.get('total_count_beneficiary').then(function (val) {
+            _this.totalcount_benificiary = val;
+        });
+        if (this.totalbeneficiary == this.totalcount_benificiary) {
+            this.sync_status = "Sync Done";
+        }
+        else {
+            this.sync_status = "Sync is going ... ";
+        }
+        this.events.subscribe('reload:page-home', function () {
+            _this.loadtotalbeneficialy();
+            _this.reloadfunction();
+        });
+    }
+    HomePage.prototype.reloadfunction = function () {
+        this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
+        this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
+    };
+    HomePage.prototype.ccallBack = function (t) {
+        t.loadtotalbeneficialy();
+        t.loading_livedata();
+    };
+    HomePage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        this.loadtotalbeneficialy();
+        this.loading_livedata();
+        // this.sub = Observable.interval(2000)
+        //   .subscribe((val) => {
+        //     this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
+        //     this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
+        //     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
+        //     this.totalsurvey = this.sqldatabasegetter.total_surveys;
+        //     this.loadtotalbeneficialy()
+        //     this.loading_livedata()
+        //   });
+        this.storage.get('intro-done').then(function (done) {
+            if (!done) {
+                _this.storage.set('intro-done', true);
+                _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_9__intro_intro__["a" /* IntroPage */]);
+            }
+        });
+    };
+    HomePage.prototype.ionViewDidEnter = function () {
+        this.loadtotalbeneficialy();
+        this.loading_livedata();
+    };
+    HomePage.prototype.refreshHomepage = function (ev) {
+        var _this = this;
+        this.dataget();
+        setTimeout(function () {
+            console.log('Async operation has ended');
+            _this.loadtotalbeneficialy();
+            _this.loading_livedata();
+            ev.complete();
+        }, 2000);
+        // this.percentincrease();
+        // alert("Home page is reloading");
+    };
+    // percentincrease()
+    // {
+    //   this.live_dataLoade = this.live_dataLoade + 1;
+    //   if(this.live_dataLoade < 100){
+    //   setTimeout(this.percentincrease,500);
+    //   }
+    // }
+    HomePage.prototype.dataget = function () {
+        this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
+        this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
+    };
+    HomePage.prototype.loadtotalbeneficialy = function () {
+        var _this = this;
+        this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
+        this.totalsurvey = this.sqldatabasegetter.total_surveys;
+        this.storage.get('total_count_beneficiary').then(function (val) {
+            _this.totalcount_benificiary = val;
+        });
+        if (this.totalbeneficiary == this.totalcount_benificiary) {
+            this.sync_status = "Sync Done";
+            // this.sub.unsubscribe();
+        }
+        else {
+            this.sync_status = "Sync is going ... ";
+        }
+    };
+    HomePage.prototype.loading_livedata = function () {
+        this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
+        // this.storage.get('total_count_beneficiary').then((val) => {
+        //   this.totalcount_benificiary = val;
+        // });
+    };
+    HomePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_5__angular_core__["m" /* Component */])({
+            selector: 'page-home',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="DF IVDP">\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshHomepage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-label><strong>{{sync_status}} </strong> </ion-label>\n\n  <ion-card>\n    <ion-card-header>\n      <div><strong>Total Number of Beneficiary :- </strong></div>\n    </ion-card-header>\n    <ion-card-content>\n      <p>Count: <strong>{{appGlobal.actual}} / {{appGlobal.total}}</strong></p>\n\n        <!-- <div class="progerss">\n          <div class="loader" style="width:{{live_dataLoade}}%;">\n            <p class="percent">{{live_dataLoade}}%</p>\n          </div>\n        </div> -->\n      <p><strong>{{live_dataLoade}}<label>%</label> </strong></p>\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      <div><strong>Total Number of HouseHold :- </strong></div>\n    </ion-card-header>\n    <ion-card-content>\n     \n      <p> Count: <strong>{{appGlobal.actual_hh}}</strong></p>\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      <div><strong>Total Number of Survey :- </strong></div>\n    </ion-card-header>\n    <ion-card-content>\n      <p>Count: <strong>{{totalsurvey}}</strong></p>\n\n    </ion-card-content>\n  </ion-card>\n\n</ion-content>\n\n<!-- <script>\nvar ele = document.getElementsByClassName("loader");\nvar width = 0;\nvar id = setInterval(frame, 1000);\n\nfunction frame(){\n  alrt("hi");\n  if(width >= 100){\n    clearInterval(id);\n  }else{\n    width++;\n    ele.style.width = width + \'%\';\n  }\n}\n</script> -->'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/home/home.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */],
+            __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
+            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["k" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_1__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+            __WEBPACK_IMPORTED_MODULE_8__ionic_storage__["b" /* Storage */],
+            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_0__providers_database_database__["a" /* DatabaseProvider */]])
+    ], HomePage);
+    return HomePage;
+}());
+
+//# sourceMappingURL=home.js.map
+
+/***/ }),
+
+/***/ 82:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MaintenanceRequestPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_database_Dbmaneger__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_database_database__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_user_data_ts__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_app_global_app_global__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_call_number__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__beneficiary_profile_beneficiary_profile__ = __webpack_require__(165);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+/**
+ * Generated class for the MaintenanceRequestPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var MaintenanceRequestPage = /** @class */ (function () {
+    function MaintenanceRequestPage(navCtrl, navParams, dataGetterService, loadingCtrl, events, user, toastCtrl, appGlobal, sqldatabasegetter, db, dataSetter, callNumber) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.dataGetterService = dataGetterService;
+        this.loadingCtrl = loadingCtrl;
+        this.events = events;
+        this.user = user;
+        this.toastCtrl = toastCtrl;
+        this.appGlobal = appGlobal;
+        this.sqldatabasegetter = sqldatabasegetter;
+        this.db = db;
+        this.dataSetter = dataSetter;
+        this.callNumber = callNumber;
+        this.maintenanceRequests = [];
+        this.queryText = '';
+        this.counter = 0;
+        this.characterforSearch = navParams.get('characterforSearch');
+        if (this.characterforSearch == null && this.characterforSearch == undefined) {
+            this.sqldatabasegetter.getbeneficiarydata(null, this.ccallBack, this);
+        }
+        else {
+            this.sqldatabasegetter.showbeneficirybysearch(this.characterforSearch, this.ccallBack, this);
+        }
+        this.events.subscribe('reload:page-maintenance-request', function () {
+            _this.maintenanceRequests = [];
+            _this.loadMaintenanceRequests(null);
+            alert("constructor  page ref");
+        });
+    }
+    MaintenanceRequestPage.prototype.refreshMaintenanceRequestList = function (reference) {
+        var _this = this;
+        if (this.characterforSearch == null && this.characterforSearch == undefined) {
+            this.sqldatabasegetter.getbeneficiarydata(null, this.ccallBack, this);
+        }
+        else {
+            this.maintenanceRequests = [];
+            this.sqldatabasegetter.showbeneficirybysearch(this.characterforSearch, this.ccallBack, this);
+        }
+        setTimeout(function () {
+            console.log('Async operation has ended');
+            _this.loadMaintenanceRequests(null);
+            reference.complete();
+        }, 2000);
+    };
+    MaintenanceRequestPage.prototype.datareload = function (rf) {
+        this.loadMaintenanceRequests(rf);
+    };
+    MaintenanceRequestPage.prototype.ionViewDidLoad = function () {
+        this.maintenanceRequests = [];
+        this.loadMaintenanceRequests(null);
+        console.log('ionViewDidLoad MaintenanceRequestPage');
+    };
+    MaintenanceRequestPage.prototype.ionViewDidEnter = function () {
+        this.refreshMaintenanceRequestList(null);
+    };
+    MaintenanceRequestPage.prototype.ccallBack = function (t) {
+        t.loadMaintenanceRequests(null);
+    };
+    MaintenanceRequestPage.prototype.loadMaintenanceRequests = function (reference) {
+        // let loading = this.loadingCtrl.create({
+        //   content: 'Please wait...'
+        // });
+        // if (reference === null) {
+        //   loading.present();
+        // }
+        if (this.sqldatabasegetter.offlineCase.length > 0) {
+            this.maintenanceRequests = [];
+            for (var i = 0; i <= this.sqldatabasegetter.offlineCase.length; i++) {
+                if (this.sqldatabasegetter.offlineCase[i] != undefined) {
+                    console.log(this.sqldatabasegetter.offlineCase[i]);
+                    this.maintenanceRequests.push(this.sqldatabasegetter.offlineCase[i]);
+                }
+            }
+            //loading.dismiss();
+            this.total_data = this.maintenanceRequests.length;
+            if (reference != null) {
+                reference.complete();
+            }
+        }
+        else {
+            this.maintenanceRequests = [];
+            console.log("No data i array");
+            //loading.dismiss();
+            if (reference != null) {
+                reference.complete();
+            }
+        }
+    };
+    MaintenanceRequestPage.prototype.EditUserProfile = function (server_id, id, code) {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_9__beneficiary_profile_beneficiary_profile__["a" /* BeneficiaryProfilePage */], {
+            beneficiary_id: server_id,
+            user_id: this.UserId,
+            auto_increment_id: id
+        });
+    };
+    MaintenanceRequestPage.prototype.call = function (num) {
+        this.callNumber.callNumber(num, true);
+    };
+    MaintenanceRequestPage.prototype.doInfinite = function (e) {
+        this.datareloadforcounter(this.ccallBack, this);
+        console.log("Begin async operation");
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                resolve();
+            }, 500);
+        });
+    };
+    MaintenanceRequestPage.prototype.datareloadforcounter = function (ca, t) {
+        if (this.characterforSearch == null && this.characterforSearch == undefined) {
+            this.sqldatabasegetter.beneficiarypaggination(this.counter++, this.ccallBack, this);
+        }
+        else {
+            this.sqldatabasegetter.showbeneficirybysearch(this.characterforSearch, this.ccallBack, this);
+        }
+        ca(t);
+    };
+    MaintenanceRequestPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_4__angular_core__["m" /* Component */])({
+            selector: 'page-maintenance-request',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/maintenance-request/maintenance-request.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Beneficiaries</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshMaintenanceRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n\n  <ion-list>\n    <ion-card *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:[\'beneficiary_name\',\'code\']}"\n      (click)="EditUserProfile(maintenanceRequest.server_id,maintenanceRequest.id,maintenanceRequest.code)" [hidden]="maintenanceRequests.hide">\n      <div class="{{\'maintenance_request_state_sidebar_\'+maintenanceRequest.state}}">\n        <ion-card-header>\n          CODE: {{maintenanceRequest.code}}\n          <span class="pull-right sr-age">\n            <p>Age: <strong type="number">{{maintenanceRequest.age}}</strong></p>\n          </span>\n        </ion-card-header>\n        <ion-card-content>\n          <p>Name: <strong>{{maintenanceRequest.beneficiary_name}}</strong></p>\n          <p>Gender: <strong>{{maintenanceRequest.gender}}</strong></p>\n          <p >DOB: <strong>{{maintenanceRequest.date_of_birth | date: \'dd MMM yyyy\'}}</strong></p>\n          <p>Contact Number: <strong><a href="#" (click)=\'call(maintenanceRequest.contact_number)\'>{{maintenanceRequest.contact_number}}</a></strong></p>\n          <p>Whatsapp Number:<strong>{{maintenanceRequest.whatsapp_number}}</strong> </p>\n          <p>Household ID: <strong>{{maintenanceRequest.hh_number}}</strong> </p>\n        </ion-card-content>\n\n        <ion-row *ngIf="maintenanceRequest.resolved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{maintenanceRequest.resolver}}</strong></p>\n              <p>Closed At: <strong>{{maintenanceRequest.resolved_on}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{maintenanceRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <!-- ------------------infinite-scroll------------------ -->\n  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())">\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n  <!-- <ion-fab right bottom>\n    <button ion-fab (click)="goToMaintenanceRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab> -->\n  <ion-fab left bottom>\n    <ion-label>{{total_data}}</ion-label>\n  </ion-fab>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/maintenance-request/maintenance-request.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_5_ionic_angular__["o" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["p" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_6__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["k" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["f" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_user_data_ts__["a" /* UserData */],
+            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["r" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_7__providers_app_global_app_global__["a" /* AppGlobalProvider */],
+            __WEBPACK_IMPORTED_MODULE_1__providers_database_database__["a" /* DatabaseProvider */],
+            __WEBPACK_IMPORTED_MODULE_0__providers_database_Dbmaneger__["a" /* DBmaneger */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
+            __WEBPACK_IMPORTED_MODULE_8__ionic_native_call_number__["a" /* CallNumber */]])
+    ], MaintenanceRequestPage);
+    return MaintenanceRequestPage;
+}());
+
+//# sourceMappingURL=maintenance-request.js.map
+
+/***/ }),
+
+/***/ 868:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8265,7 +9307,7 @@ var SearchPipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 591:
+/***/ 869:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8311,7 +9353,7 @@ var SafePipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 592:
+/***/ 870:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8365,248 +9407,248 @@ var SortPipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 593:
+/***/ 871:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 261,
-	"./af.js": 261,
-	"./ar": 262,
-	"./ar-dz": 263,
-	"./ar-dz.js": 263,
-	"./ar-kw": 264,
-	"./ar-kw.js": 264,
-	"./ar-ly": 265,
-	"./ar-ly.js": 265,
-	"./ar-ma": 266,
-	"./ar-ma.js": 266,
-	"./ar-sa": 267,
-	"./ar-sa.js": 267,
-	"./ar-tn": 268,
-	"./ar-tn.js": 268,
-	"./ar.js": 262,
-	"./az": 269,
-	"./az.js": 269,
-	"./be": 270,
-	"./be.js": 270,
-	"./bg": 271,
-	"./bg.js": 271,
-	"./bm": 272,
-	"./bm.js": 272,
-	"./bn": 273,
-	"./bn.js": 273,
-	"./bo": 274,
-	"./bo.js": 274,
-	"./br": 275,
-	"./br.js": 275,
-	"./bs": 276,
-	"./bs.js": 276,
-	"./ca": 277,
-	"./ca.js": 277,
-	"./cs": 278,
-	"./cs.js": 278,
-	"./cv": 279,
-	"./cv.js": 279,
-	"./cy": 280,
-	"./cy.js": 280,
-	"./da": 281,
-	"./da.js": 281,
-	"./de": 282,
-	"./de-at": 283,
-	"./de-at.js": 283,
-	"./de-ch": 284,
-	"./de-ch.js": 284,
-	"./de.js": 282,
-	"./dv": 285,
-	"./dv.js": 285,
-	"./el": 286,
-	"./el.js": 286,
-	"./en-au": 287,
-	"./en-au.js": 287,
-	"./en-ca": 288,
-	"./en-ca.js": 288,
-	"./en-gb": 289,
-	"./en-gb.js": 289,
-	"./en-ie": 290,
-	"./en-ie.js": 290,
-	"./en-nz": 291,
-	"./en-nz.js": 291,
-	"./eo": 292,
-	"./eo.js": 292,
-	"./es": 293,
-	"./es-do": 294,
-	"./es-do.js": 294,
-	"./es-us": 295,
-	"./es-us.js": 295,
-	"./es.js": 293,
-	"./et": 296,
-	"./et.js": 296,
-	"./eu": 297,
-	"./eu.js": 297,
-	"./fa": 298,
-	"./fa.js": 298,
-	"./fi": 299,
-	"./fi.js": 299,
-	"./fo": 300,
-	"./fo.js": 300,
-	"./fr": 301,
-	"./fr-ca": 302,
-	"./fr-ca.js": 302,
-	"./fr-ch": 303,
-	"./fr-ch.js": 303,
-	"./fr.js": 301,
-	"./fy": 304,
-	"./fy.js": 304,
-	"./gd": 305,
-	"./gd.js": 305,
-	"./gl": 306,
-	"./gl.js": 306,
-	"./gom-latn": 307,
-	"./gom-latn.js": 307,
-	"./gu": 308,
-	"./gu.js": 308,
-	"./he": 309,
-	"./he.js": 309,
-	"./hi": 310,
-	"./hi.js": 310,
-	"./hr": 311,
-	"./hr.js": 311,
-	"./hu": 312,
-	"./hu.js": 312,
-	"./hy-am": 313,
-	"./hy-am.js": 313,
-	"./id": 314,
-	"./id.js": 314,
-	"./is": 315,
-	"./is.js": 315,
-	"./it": 316,
-	"./it.js": 316,
-	"./ja": 317,
-	"./ja.js": 317,
-	"./jv": 318,
-	"./jv.js": 318,
-	"./ka": 319,
-	"./ka.js": 319,
-	"./kk": 320,
-	"./kk.js": 320,
-	"./km": 321,
-	"./km.js": 321,
-	"./kn": 322,
-	"./kn.js": 322,
-	"./ko": 323,
-	"./ko.js": 323,
-	"./ky": 324,
-	"./ky.js": 324,
-	"./lb": 325,
-	"./lb.js": 325,
-	"./lo": 326,
-	"./lo.js": 326,
-	"./lt": 327,
-	"./lt.js": 327,
-	"./lv": 328,
-	"./lv.js": 328,
-	"./me": 329,
-	"./me.js": 329,
-	"./mi": 330,
-	"./mi.js": 330,
-	"./mk": 331,
-	"./mk.js": 331,
-	"./ml": 332,
-	"./ml.js": 332,
-	"./mr": 333,
-	"./mr.js": 333,
-	"./ms": 334,
-	"./ms-my": 335,
-	"./ms-my.js": 335,
-	"./ms.js": 334,
-	"./mt": 336,
-	"./mt.js": 336,
-	"./my": 337,
-	"./my.js": 337,
-	"./nb": 338,
-	"./nb.js": 338,
-	"./ne": 339,
-	"./ne.js": 339,
-	"./nl": 340,
-	"./nl-be": 341,
-	"./nl-be.js": 341,
-	"./nl.js": 340,
-	"./nn": 342,
-	"./nn.js": 342,
-	"./pa-in": 343,
-	"./pa-in.js": 343,
-	"./pl": 344,
-	"./pl.js": 344,
-	"./pt": 345,
-	"./pt-br": 346,
-	"./pt-br.js": 346,
-	"./pt.js": 345,
-	"./ro": 347,
-	"./ro.js": 347,
-	"./ru": 348,
-	"./ru.js": 348,
-	"./sd": 349,
-	"./sd.js": 349,
-	"./se": 350,
-	"./se.js": 350,
-	"./si": 351,
-	"./si.js": 351,
-	"./sk": 352,
-	"./sk.js": 352,
-	"./sl": 353,
-	"./sl.js": 353,
-	"./sq": 354,
-	"./sq.js": 354,
-	"./sr": 355,
-	"./sr-cyrl": 356,
-	"./sr-cyrl.js": 356,
-	"./sr.js": 355,
-	"./ss": 357,
-	"./ss.js": 357,
-	"./sv": 358,
-	"./sv.js": 358,
-	"./sw": 359,
-	"./sw.js": 359,
-	"./ta": 360,
-	"./ta.js": 360,
-	"./te": 361,
-	"./te.js": 361,
-	"./tet": 362,
-	"./tet.js": 362,
-	"./th": 363,
-	"./th.js": 363,
-	"./tl-ph": 364,
-	"./tl-ph.js": 364,
-	"./tlh": 365,
-	"./tlh.js": 365,
-	"./tr": 366,
-	"./tr.js": 366,
-	"./tzl": 367,
-	"./tzl.js": 367,
-	"./tzm": 368,
-	"./tzm-latn": 369,
-	"./tzm-latn.js": 369,
-	"./tzm.js": 368,
-	"./uk": 370,
-	"./uk.js": 370,
-	"./ur": 371,
-	"./ur.js": 371,
-	"./uz": 372,
-	"./uz-latn": 373,
-	"./uz-latn.js": 373,
-	"./uz.js": 372,
-	"./vi": 374,
-	"./vi.js": 374,
-	"./x-pseudo": 375,
-	"./x-pseudo.js": 375,
-	"./yo": 376,
-	"./yo.js": 376,
-	"./zh-cn": 377,
-	"./zh-cn.js": 377,
-	"./zh-hk": 378,
-	"./zh-hk.js": 378,
-	"./zh-tw": 379,
-	"./zh-tw.js": 379
+	"./af": 361,
+	"./af.js": 361,
+	"./ar": 362,
+	"./ar-dz": 363,
+	"./ar-dz.js": 363,
+	"./ar-kw": 364,
+	"./ar-kw.js": 364,
+	"./ar-ly": 365,
+	"./ar-ly.js": 365,
+	"./ar-ma": 366,
+	"./ar-ma.js": 366,
+	"./ar-sa": 367,
+	"./ar-sa.js": 367,
+	"./ar-tn": 368,
+	"./ar-tn.js": 368,
+	"./ar.js": 362,
+	"./az": 369,
+	"./az.js": 369,
+	"./be": 370,
+	"./be.js": 370,
+	"./bg": 371,
+	"./bg.js": 371,
+	"./bm": 372,
+	"./bm.js": 372,
+	"./bn": 373,
+	"./bn.js": 373,
+	"./bo": 374,
+	"./bo.js": 374,
+	"./br": 375,
+	"./br.js": 375,
+	"./bs": 376,
+	"./bs.js": 376,
+	"./ca": 377,
+	"./ca.js": 377,
+	"./cs": 378,
+	"./cs.js": 378,
+	"./cv": 379,
+	"./cv.js": 379,
+	"./cy": 380,
+	"./cy.js": 380,
+	"./da": 381,
+	"./da.js": 381,
+	"./de": 382,
+	"./de-at": 383,
+	"./de-at.js": 383,
+	"./de-ch": 384,
+	"./de-ch.js": 384,
+	"./de.js": 382,
+	"./dv": 385,
+	"./dv.js": 385,
+	"./el": 386,
+	"./el.js": 386,
+	"./en-au": 387,
+	"./en-au.js": 387,
+	"./en-ca": 388,
+	"./en-ca.js": 388,
+	"./en-gb": 389,
+	"./en-gb.js": 389,
+	"./en-ie": 390,
+	"./en-ie.js": 390,
+	"./en-nz": 391,
+	"./en-nz.js": 391,
+	"./eo": 392,
+	"./eo.js": 392,
+	"./es": 393,
+	"./es-do": 394,
+	"./es-do.js": 394,
+	"./es-us": 395,
+	"./es-us.js": 395,
+	"./es.js": 393,
+	"./et": 396,
+	"./et.js": 396,
+	"./eu": 397,
+	"./eu.js": 397,
+	"./fa": 398,
+	"./fa.js": 398,
+	"./fi": 399,
+	"./fi.js": 399,
+	"./fo": 400,
+	"./fo.js": 400,
+	"./fr": 401,
+	"./fr-ca": 402,
+	"./fr-ca.js": 402,
+	"./fr-ch": 403,
+	"./fr-ch.js": 403,
+	"./fr.js": 401,
+	"./fy": 404,
+	"./fy.js": 404,
+	"./gd": 405,
+	"./gd.js": 405,
+	"./gl": 406,
+	"./gl.js": 406,
+	"./gom-latn": 407,
+	"./gom-latn.js": 407,
+	"./gu": 408,
+	"./gu.js": 408,
+	"./he": 409,
+	"./he.js": 409,
+	"./hi": 410,
+	"./hi.js": 410,
+	"./hr": 411,
+	"./hr.js": 411,
+	"./hu": 412,
+	"./hu.js": 412,
+	"./hy-am": 413,
+	"./hy-am.js": 413,
+	"./id": 414,
+	"./id.js": 414,
+	"./is": 415,
+	"./is.js": 415,
+	"./it": 416,
+	"./it.js": 416,
+	"./ja": 417,
+	"./ja.js": 417,
+	"./jv": 418,
+	"./jv.js": 418,
+	"./ka": 419,
+	"./ka.js": 419,
+	"./kk": 420,
+	"./kk.js": 420,
+	"./km": 421,
+	"./km.js": 421,
+	"./kn": 422,
+	"./kn.js": 422,
+	"./ko": 423,
+	"./ko.js": 423,
+	"./ky": 424,
+	"./ky.js": 424,
+	"./lb": 425,
+	"./lb.js": 425,
+	"./lo": 426,
+	"./lo.js": 426,
+	"./lt": 427,
+	"./lt.js": 427,
+	"./lv": 428,
+	"./lv.js": 428,
+	"./me": 429,
+	"./me.js": 429,
+	"./mi": 430,
+	"./mi.js": 430,
+	"./mk": 431,
+	"./mk.js": 431,
+	"./ml": 432,
+	"./ml.js": 432,
+	"./mr": 433,
+	"./mr.js": 433,
+	"./ms": 434,
+	"./ms-my": 435,
+	"./ms-my.js": 435,
+	"./ms.js": 434,
+	"./mt": 436,
+	"./mt.js": 436,
+	"./my": 437,
+	"./my.js": 437,
+	"./nb": 438,
+	"./nb.js": 438,
+	"./ne": 439,
+	"./ne.js": 439,
+	"./nl": 440,
+	"./nl-be": 441,
+	"./nl-be.js": 441,
+	"./nl.js": 440,
+	"./nn": 442,
+	"./nn.js": 442,
+	"./pa-in": 443,
+	"./pa-in.js": 443,
+	"./pl": 444,
+	"./pl.js": 444,
+	"./pt": 445,
+	"./pt-br": 446,
+	"./pt-br.js": 446,
+	"./pt.js": 445,
+	"./ro": 447,
+	"./ro.js": 447,
+	"./ru": 448,
+	"./ru.js": 448,
+	"./sd": 449,
+	"./sd.js": 449,
+	"./se": 450,
+	"./se.js": 450,
+	"./si": 451,
+	"./si.js": 451,
+	"./sk": 452,
+	"./sk.js": 452,
+	"./sl": 453,
+	"./sl.js": 453,
+	"./sq": 454,
+	"./sq.js": 454,
+	"./sr": 455,
+	"./sr-cyrl": 456,
+	"./sr-cyrl.js": 456,
+	"./sr.js": 455,
+	"./ss": 457,
+	"./ss.js": 457,
+	"./sv": 458,
+	"./sv.js": 458,
+	"./sw": 459,
+	"./sw.js": 459,
+	"./ta": 460,
+	"./ta.js": 460,
+	"./te": 461,
+	"./te.js": 461,
+	"./tet": 462,
+	"./tet.js": 462,
+	"./th": 463,
+	"./th.js": 463,
+	"./tl-ph": 464,
+	"./tl-ph.js": 464,
+	"./tlh": 465,
+	"./tlh.js": 465,
+	"./tr": 466,
+	"./tr.js": 466,
+	"./tzl": 467,
+	"./tzl.js": 467,
+	"./tzm": 468,
+	"./tzm-latn": 469,
+	"./tzm-latn.js": 469,
+	"./tzm.js": 468,
+	"./uk": 470,
+	"./uk.js": 470,
+	"./ur": 471,
+	"./ur.js": 471,
+	"./uz": 472,
+	"./uz-latn": 473,
+	"./uz-latn.js": 473,
+	"./uz.js": 472,
+	"./vi": 474,
+	"./vi.js": 474,
+	"./x-pseudo": 475,
+	"./x-pseudo.js": 475,
+	"./yo": 476,
+	"./yo.js": 476,
+	"./zh-cn": 477,
+	"./zh-cn.js": 477,
+	"./zh-hk": 478,
+	"./zh-hk.js": 478,
+	"./zh-tw": 479,
+	"./zh-tw.js": 479
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -8622,11 +9664,11 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 593;
+webpackContext.id = 871;
 
 /***/ }),
 
-/***/ 594:
+/***/ 872:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8676,7 +9718,7 @@ var SafeHtmlPipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 604:
+/***/ 877:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8749,7 +9791,7 @@ var TimelineTimeComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 605:
+/***/ 878:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8918,12 +9960,12 @@ var CommentComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 606:
+/***/ 879:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrievanceFilterPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_components_alert_alert_controller__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(3);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -8990,7 +10032,7 @@ var GrievanceFilterPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 623:
+/***/ 882:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9067,40 +10109,40 @@ var AutoresizeDirective = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 640:
+/***/ 899:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_search_beneficiry_search_beneficiry__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_userblock_userblock__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular_components_alert_alert_controller__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_userblock_userblock__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular_components_alert_alert_controller__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_survey_list_survey_list__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_searchbeneficiry_searchbeneficiry__ = __webpack_require__(180);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_article_show_article_show__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_grievance_show_grievance_show__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_searchbeneficiry_searchbeneficiry__ = __webpack_require__(179);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_article_show_article_show__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_grievance_show_grievance_show__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_idea_show_idea_show__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_local_notifications__ = __webpack_require__(550);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_offline_offline__ = __webpack_require__(499);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_local_notifications__ = __webpack_require__(561);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_offline_offline__ = __webpack_require__(507);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_network__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_app_version__ = __webpack_require__(551);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_app_version__ = __webpack_require__(562);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_vibration__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_logout_logout__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_sync_sync__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_logout_logout__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_sync_sync__ = __webpack_require__(180);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__ionic_native_splash_screen__ = __webpack_require__(552);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__ionic_native_splash_screen__ = __webpack_require__(563);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_home_home__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__ngx_translate_core__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_login_login__ = __webpack_require__(172);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_user_data_ts__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__ionic_native_fcm__ = __webpack_require__(553);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__ionic_native_fcm__ = __webpack_require__(564);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_app_global_app_global__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_lodash__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_profile_profile__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_profile_profile__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_maintenance_request_maintenance_request__ = __webpack_require__(82);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9638,7 +10680,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 646:
+/***/ 905:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9649,11 +10691,11 @@ var MyApp = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_data_ts__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__(554);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__(266);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of__ = __webpack_require__(555);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of__ = __webpack_require__(227);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__ = __webpack_require__(556);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__ = __webpack_require__(236);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ionic_angular_components_loading_loading_controller__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash__ = __webpack_require__(62);
@@ -10095,7 +11137,7 @@ var LeaveDataProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 652:
+/***/ 910:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10134,1023 +11176,6 @@ var TabsPage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=tabs.js.map
-
-/***/ }),
-
-/***/ 80:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_database_database__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_storage__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__intro_intro__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_observable_interval__ = __webpack_require__(483);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_observable_interval___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_add_observable_interval__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl, network, dataGetterService, toastCtrl, dataSetterService, loadingCtrl, appGlobal, storage, events, sqldatabasegetter) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.network = network;
-        this.dataGetterService = dataGetterService;
-        this.toastCtrl = toastCtrl;
-        this.dataSetterService = dataSetterService;
-        this.loadingCtrl = loadingCtrl;
-        this.appGlobal = appGlobal;
-        this.storage = storage;
-        this.events = events;
-        this.sqldatabasegetter = sqldatabasegetter;
-        this.notifications = [];
-        this.descending = false;
-        this.order = -1;
-        this.field = 'updated_at';
-        this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
-        this.totalsurvey = this.sqldatabasegetter.total_surveys;
-        this.totalcount_benificiary = this.appGlobal.totalcount_bene;
-        this.sync_status = this.appGlobal.sync_status;
-        this.actual = this.appGlobal.actual;
-        this.total = this.appGlobal.total;
-        this.aactual_hhc = this.appGlobal.actual_hh;
-        storage.get('total_count_beneficiary').then(function (val) {
-            _this.totalcount_benificiary = val;
-        });
-        if (this.totalbeneficiary == this.totalcount_benificiary) {
-            this.sync_status = "Sync Done";
-        }
-        else {
-            this.sync_status = "Sync is going ... ";
-        }
-        this.events.subscribe('reload:page-home', function () {
-            _this.loadtotalbeneficialy();
-            _this.reloadfunction();
-        });
-    }
-    HomePage.prototype.reloadfunction = function () {
-        this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
-        this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
-    };
-    HomePage.prototype.ccallBack = function (t) {
-        t.loadtotalbeneficialy();
-        t.loading_livedata();
-    };
-    HomePage.prototype.ionViewDidLoad = function () {
-        var _this = this;
-        this.loadtotalbeneficialy();
-        this.loading_livedata();
-        // this.sub = Observable.interval(2000)
-        //   .subscribe((val) => {
-        //     this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
-        //     this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
-        //     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
-        //     this.totalsurvey = this.sqldatabasegetter.total_surveys;
-        //     this.loadtotalbeneficialy()
-        //     this.loading_livedata()
-        //   });
-        this.storage.get('intro-done').then(function (done) {
-            if (!done) {
-                _this.storage.set('intro-done', true);
-                _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_9__intro_intro__["a" /* IntroPage */]);
-            }
-        });
-    };
-    HomePage.prototype.ionViewDidEnter = function () {
-        this.loadtotalbeneficialy();
-        this.loading_livedata();
-    };
-    HomePage.prototype.refreshHomepage = function (ev) {
-        var _this = this;
-        this.dataget();
-        setTimeout(function () {
-            console.log('Async operation has ended');
-            _this.loadtotalbeneficialy();
-            _this.loading_livedata();
-            ev.complete();
-        }, 2000);
-        // this.percentincrease();
-        // alert("Home page is reloading");
-    };
-    // percentincrease()
-    // {
-    //   this.live_dataLoade = this.live_dataLoade + 1;
-    //   if(this.live_dataLoade < 100){
-    //   setTimeout(this.percentincrease,500);
-    //   }
-    // }
-    HomePage.prototype.dataget = function () {
-        this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
-        this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
-    };
-    HomePage.prototype.loadtotalbeneficialy = function () {
-        var _this = this;
-        this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
-        this.totalsurvey = this.sqldatabasegetter.total_surveys;
-        this.storage.get('total_count_beneficiary').then(function (val) {
-            _this.totalcount_benificiary = val;
-        });
-        if (this.totalbeneficiary == this.totalcount_benificiary) {
-            this.sync_status = "Sync Done";
-            // this.sub.unsubscribe();
-        }
-        else {
-            this.sync_status = "Sync is going ... ";
-        }
-    };
-    HomePage.prototype.loading_livedata = function () {
-        this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
-        // this.storage.get('total_count_beneficiary').then((val) => {
-        //   this.totalcount_benificiary = val;
-        // });
-    };
-    HomePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_5__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      <img src="assets/img/appicon.png" height="30" alt="DF IVDP">\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshHomepage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-label><strong>{{sync_status}} </strong> </ion-label>\n\n  <ion-card>\n    <ion-card-header>\n      <div><strong>Total Number of Beneficiary :- </strong></div>\n    </ion-card-header>\n    <ion-card-content>\n      <p>Count: <strong>{{appGlobal.actual}} / {{appGlobal.total}}</strong></p>\n\n        <!-- <div class="progerss">\n          <div class="loader" style="width:{{live_dataLoade}}%;">\n            <p class="percent">{{live_dataLoade}}%</p>\n          </div>\n        </div> -->\n      <p><strong>{{live_dataLoade}}<label>%</label> </strong></p>\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      <div><strong>Total Number of HouseHold :- </strong></div>\n    </ion-card-header>\n    <ion-card-content>\n     \n      <p> Count: <strong>{{appGlobal.actual_hh}}</strong></p>\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      <div><strong>Total Number of Survey :- </strong></div>\n    </ion-card-header>\n    <ion-card-content>\n      <p>Count: <strong>{{totalsurvey}}</strong></p>\n\n    </ion-card-content>\n  </ion-card>\n\n</ion-content>\n\n<!-- <script>\nvar ele = document.getElementsByClassName("loader");\nvar width = 0;\nvar id = setInterval(frame, 1000);\n\nfunction frame(){\n  alrt("hi");\n  if(width >= 100){\n    clearInterval(id);\n  }else{\n    width++;\n    ele.style.width = width + \'%\';\n  }\n}\n</script> -->'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/home/home.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */],
-            __WEBPACK_IMPORTED_MODULE_7__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__["a" /* ToastController */], __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
-            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["k" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1__providers_app_global_app_global__["a" /* AppGlobalProvider */],
-            __WEBPACK_IMPORTED_MODULE_8__ionic_storage__["b" /* Storage */],
-            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["f" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_database_database__["a" /* DatabaseProvider */]])
-    ], HomePage);
-    return HomePage;
-}());
-
-//# sourceMappingURL=home.js.map
-
-/***/ }),
-
-/***/ 82:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MaintenanceRequestPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_database_Dbmaneger__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_database_database__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_user_data_ts__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_call_number__ = __webpack_require__(495);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__beneficiary_profile_beneficiary_profile__ = __webpack_require__(152);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-/**
- * Generated class for the MaintenanceRequestPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var MaintenanceRequestPage = /** @class */ (function () {
-    function MaintenanceRequestPage(navCtrl, navParams, dataGetterService, loadingCtrl, events, user, toastCtrl, appGlobal, sqldatabasegetter, db, dataSetter, callNumber) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.dataGetterService = dataGetterService;
-        this.loadingCtrl = loadingCtrl;
-        this.events = events;
-        this.user = user;
-        this.toastCtrl = toastCtrl;
-        this.appGlobal = appGlobal;
-        this.sqldatabasegetter = sqldatabasegetter;
-        this.db = db;
-        this.dataSetter = dataSetter;
-        this.callNumber = callNumber;
-        this.maintenanceRequests = [];
-        this.queryText = '';
-        this.counter = 0;
-        this.characterforSearch = navParams.get('characterforSearch');
-        if (this.characterforSearch == null && this.characterforSearch == undefined) {
-            this.sqldatabasegetter.getbeneficiarydata(null, this.ccallBack, this);
-        }
-        else {
-            this.sqldatabasegetter.showbeneficirybysearch(this.characterforSearch, this.ccallBack, this);
-        }
-        this.events.subscribe('reload:page-maintenance-request', function () {
-            _this.maintenanceRequests = [];
-            _this.loadMaintenanceRequests(null);
-            alert("constructor  page ref");
-        });
-    }
-    MaintenanceRequestPage.prototype.refreshMaintenanceRequestList = function (reference) {
-        var _this = this;
-        if (this.characterforSearch == null && this.characterforSearch == undefined) {
-            this.sqldatabasegetter.getbeneficiarydata(null, this.ccallBack, this);
-        }
-        else {
-            this.maintenanceRequests = [];
-            this.sqldatabasegetter.showbeneficirybysearch(this.characterforSearch, this.ccallBack, this);
-        }
-        setTimeout(function () {
-            console.log('Async operation has ended');
-            _this.loadMaintenanceRequests(null);
-            reference.complete();
-        }, 2000);
-    };
-    MaintenanceRequestPage.prototype.datareload = function (rf) {
-        this.loadMaintenanceRequests(rf);
-    };
-    MaintenanceRequestPage.prototype.ionViewDidLoad = function () {
-        this.maintenanceRequests = [];
-        this.loadMaintenanceRequests(null);
-        console.log('ionViewDidLoad MaintenanceRequestPage');
-    };
-    MaintenanceRequestPage.prototype.ionViewDidEnter = function () {
-        this.refreshMaintenanceRequestList(null);
-    };
-    MaintenanceRequestPage.prototype.ccallBack = function (t) {
-        t.loadMaintenanceRequests(null);
-    };
-    MaintenanceRequestPage.prototype.loadMaintenanceRequests = function (reference) {
-        // let loading = this.loadingCtrl.create({
-        //   content: 'Please wait...'
-        // });
-        // if (reference === null) {
-        //   loading.present();
-        // }
-        if (this.sqldatabasegetter.offlineCase.length > 0) {
-            this.maintenanceRequests = [];
-            for (var i = 0; i <= this.sqldatabasegetter.offlineCase.length; i++) {
-                if (this.sqldatabasegetter.offlineCase[i] != undefined) {
-                    console.log(this.sqldatabasegetter.offlineCase[i]);
-                    this.maintenanceRequests.push(this.sqldatabasegetter.offlineCase[i]);
-                }
-            }
-            //loading.dismiss();
-            this.total_data = this.maintenanceRequests.length;
-            if (reference != null) {
-                reference.complete();
-            }
-        }
-        else {
-            this.maintenanceRequests = [];
-            console.log("No data i array");
-            //loading.dismiss();
-            if (reference != null) {
-                reference.complete();
-            }
-        }
-    };
-    MaintenanceRequestPage.prototype.EditUserProfile = function (server_id, id, code) {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_9__beneficiary_profile_beneficiary_profile__["a" /* BeneficiaryProfilePage */], {
-            beneficiary_id: server_id,
-            user_id: this.UserId,
-            auto_increment_id: id
-        });
-    };
-    MaintenanceRequestPage.prototype.call = function (num) {
-        this.callNumber.callNumber(num, true);
-    };
-    MaintenanceRequestPage.prototype.doInfinite = function (e) {
-        this.datareloadforcounter(this.ccallBack, this);
-        console.log("Begin async operation");
-        return new Promise(function (resolve) {
-            setTimeout(function () {
-                resolve();
-            }, 500);
-        });
-    };
-    MaintenanceRequestPage.prototype.datareloadforcounter = function (ca, t) {
-        if (this.characterforSearch == null && this.characterforSearch == undefined) {
-            this.sqldatabasegetter.beneficiarypaggination(this.counter++, this.ccallBack, this);
-        }
-        else {
-            this.sqldatabasegetter.showbeneficirybysearch(this.characterforSearch, this.ccallBack, this);
-        }
-        ca(t);
-    };
-    MaintenanceRequestPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_4__angular_core__["m" /* Component */])({
-            selector: 'page-maintenance-request',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/maintenance-request/maintenance-request.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Beneficiaries</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar no-border-top>\n    <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-refresher (ionRefresh)="refreshMaintenanceRequestList($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n\n  <ion-list>\n    <ion-card *ngFor="let maintenanceRequest of maintenanceRequests | search : {term:queryText,fields:[\'beneficiary_name\',\'code\']}"\n      (click)="EditUserProfile(maintenanceRequest.server_id,maintenanceRequest.id,maintenanceRequest.code)" [hidden]="maintenanceRequests.hide">\n      <div class="{{\'maintenance_request_state_sidebar_\'+maintenanceRequest.state}}">\n        <ion-card-header>\n          CODE: {{maintenanceRequest.code}}\n          <span class="pull-right sr-age">\n            <p>Age: <strong type="number">{{maintenanceRequest.age}}</strong></p>\n          </span>\n        </ion-card-header>\n        <ion-card-content>\n          <p>Name: <strong>{{maintenanceRequest.beneficiary_name}}</strong></p>\n          <p>Gender: <strong>{{maintenanceRequest.gender}}</strong></p>\n          <p >DOB: <strong>{{maintenanceRequest.date_of_birth | date: \'dd MMM yyyy\'}}</strong></p>\n          <p>Contact Number: <strong><a href="#" (click)=\'call(maintenanceRequest.contact_number)\'>{{maintenanceRequest.contact_number}}</a></strong></p>\n          <p>Whatsapp Number:<strong>{{maintenanceRequest.whatsapp_number}}</strong> </p>\n          <p>Household ID: <strong>{{maintenanceRequest.hh_number}}</strong> </p>\n        </ion-card-content>\n\n        <ion-row *ngIf="maintenanceRequest.resolved">\n          <ion-col>\n            <div class="pull-right">\n              <p>Closed By: <strong>{{maintenanceRequest.resolver}}</strong></p>\n              <p>Closed At: <strong>{{maintenanceRequest.resolved_on}}</strong></p>\n            </div>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col>\n            <ion-badge class="pull-right">{{maintenanceRequest.state}}</ion-badge>\n          </ion-col>\n        </ion-row>\n      </div>\n    </ion-card>\n  </ion-list>\n  <!-- ------------------infinite-scroll------------------ -->\n  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())">\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n  <!-- <ion-fab right bottom>\n    <button ion-fab (click)="goToMaintenanceRequestForm()">\n      <ion-icon name="add"></ion-icon>\n    </button>\n  </ion-fab> -->\n  <ion-fab left bottom>\n    <ion-label>{{total_data}}</ion-label>\n  </ion-fab>\n\n</ion-content>'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/maintenance-request/maintenance-request.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_5_ionic_angular__["o" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["p" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_6__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["k" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["f" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_user_data_ts__["a" /* UserData */],
-            __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["r" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_7__providers_app_global_app_global__["a" /* AppGlobalProvider */],
-            __WEBPACK_IMPORTED_MODULE_1__providers_database_database__["a" /* DatabaseProvider */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_database_Dbmaneger__["a" /* DBmaneger */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
-            __WEBPACK_IMPORTED_MODULE_8__ionic_native_call_number__["a" /* CallNumber */]])
-    ], MaintenanceRequestPage);
-    return MaintenanceRequestPage;
-}());
-
-//# sourceMappingURL=maintenance-request.js.map
-
-/***/ }),
-
-/***/ 94:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArticleShowPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_user_data_ts__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_vibration__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__comments_comments__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-/**
- * Generated class for the ArticleShowPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var ArticleShowPage = /** @class */ (function () {
-    function ArticleShowPage(navCtrl, navParams, dataGetterService, dataSetterService, events, modalCtrl, loadingCtrl, toastCtrl, appGlobal, vibration, userData) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.dataGetterService = dataGetterService;
-        this.dataSetterService = dataSetterService;
-        this.events = events;
-        this.modalCtrl = modalCtrl;
-        this.loadingCtrl = loadingCtrl;
-        this.toastCtrl = toastCtrl;
-        this.appGlobal = appGlobal;
-        this.vibration = vibration;
-        this.userData = userData;
-        this.intialArticle = {
-            title: "",
-            content: "",
-            created_at: "",
-            user_id: "",
-            creator: "",
-            comments: [],
-            courasel_attachments: [],
-        };
-        this.article_id = this.navParams.get('id');
-        this.user = userData.userData;
-        this.events.subscribe('reload:articleShow', function (isNotification, id) {
-            _this.article_id = id;
-            _this.refreshPage(null);
-        });
-    }
-    ArticleShowPage.prototype.ionViewDidEnter = function () {
-        this.loadArticle(null, this.article_id);
-    };
-    ArticleShowPage.prototype.loadArticle = function (ref, id) {
-        var _this = this;
-        var loading = this.loadingCtrl.create({
-            content: 'Please wait...'
-        });
-        if (ref === null) {
-            loading.present();
-        }
-        this.dataGetterService.getArticle(id)
-            .subscribe(function (data) {
-            console.log("Article Details Loaded", data);
-            if (data.success) {
-                _this.article = data.article;
-            }
-            else {
-                // this.article = this.intialArticle;
-                if (_this.navCtrl.canGoBack()) {
-                    _this.navCtrl.pop();
-                }
-                var toast = _this.toastCtrl.create({
-                    message: data.message,
-                    duration: 3000
-                });
-                toast.present();
-            }
-            loading.dismiss();
-            if (ref != null) {
-                ref.complete();
-            }
-        }, function (err) {
-            console.log(err);
-            // this.article = this.intialArticle;
-            var toast = _this.toastCtrl.create({
-                message: _this.appGlobal.ServerError,
-                duration: 3000
-            });
-            toast.present();
-            loading.dismiss();
-            if (ref != null) {
-                ref.complete();
-            }
-            if (_this.navCtrl.canGoBack()) {
-                _this.navCtrl.pop();
-            }
-        });
-    };
-    ArticleShowPage.prototype.refreshPage = function (event) {
-        this.loadArticle(event, this.article_id);
-    };
-    ArticleShowPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad ArticleShowPage');
-    };
-    ArticleShowPage.prototype.like = function () {
-        var _this = this;
-        var request = {
-            item_type: "Cm",
-            item_id: this.article.id,
-        };
-        console.log("Like Article Request", request);
-        var loading = this.loadingCtrl.create({
-            content: 'Please wait...'
-        });
-        loading.present();
-        this.dataSetterService.likeArticle(request)
-            .subscribe(function (data) {
-            console.log("Like Article Response", data);
-            loading.dismiss();
-            if (data.success) {
-                _this.article.likes = data.likes_count;
-                _this.article.liked_by_me = data.liked_by_me;
-                _this.vibration.vibrate(_this.appGlobal.vibrationTimings);
-            }
-            // else {
-            //   const toast = this.toastCtrl.create({
-            //     message: data.message,
-            //     duration: 3000
-            //   });
-            //   toast.present();
-            // }
-        }, function (err) {
-            loading.dismiss();
-            console.log(err);
-            var toast = _this.toastCtrl.create({
-                message: _this.appGlobal.ServerError,
-                duration: 3000
-            });
-            toast.present();
-        });
-    };
-    ArticleShowPage.prototype.comment = function () {
-        var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_4__comments_comments__["a" /* CommentsPage */], { rootItem: this.article });
-        modal.present();
-        modal.onWillDismiss(function () {
-            console.log("Comment Modal Closed");
-        });
-    };
-    ArticleShowPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_6__angular_core__["m" /* Component */])({
-            selector: 'page-article-show',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/article-show/article-show.html"*/'<!--\n  Generated template for the ArticleShowPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Article</ion-title>\n    <ion-buttons end *ngIf="article" >\n      <button ion-button icon-only clear (click)="like()">\n        <ion-icon [name]="article.liked_by_me ? \'heart\' : \'heart-outline\'" isActive="true" [class.liked]="article.liked_by_me"></ion-icon>\n        {{article.likes}}\n      </button>\n      <button ion-button icon-only clear (click)="comment()" *ngIf="article.can_comment">\n        <ion-icon name=\'chatbubbles\' isActive="true"></ion-icon>\n        {{article.comments.length}}\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-refresher (ionRefresh)="refreshPage($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <div *ngIf="article">\n    <div *ngIf="article.showHeader">\n      <h1>{{article.title}}</h1>\n      <hr>\n    </div>\n    <ion-slides *ngIf="article.courasel_attachments.length > 0" [autoplay]="5000" [pager]="true" [loop]="true" style="height: auto;">\n      <ion-slide *ngFor="let slide of article.courasel_attachments">\n        <img [src]="slide.url">\n      </ion-slide>\n    </ion-slides>\n    <hr *ngIf="article.courasel_attachments.length > 0" >\n    <div [innerHtml]="article.content | safeHtml">\n      <!--{{idea.content}}-->\n    </div>\n    <div *ngIf="article.showFooter">\n      <hr>\n      <h5 *ngIf="article.date">Created on: {{article.date}}</h5>\n      <h5 *ngIf="article.creator">Created by: {{article.creator}}</h5>\n    </div>\n  </div>\n  <hr>\n  <!-- <comment [rootItem]="article" [user]="user"></comment> -->\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/article-show/article-show.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7_ionic_angular__["o" /* NavController */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["p" /* NavParams */], __WEBPACK_IMPORTED_MODULE_8__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_5__providers_data_setter_data_setter__["a" /* DataSetterProvider */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["f" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["m" /* ModalController */],
-            __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["k" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular_components_toast_toast_controller__["a" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_app_global_app_global__["a" /* AppGlobalProvider */],
-            __WEBPACK_IMPORTED_MODULE_1__ionic_native_vibration__["a" /* Vibration */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_user_data_ts__["a" /* UserData */]])
-    ], ArticleShowPage);
-    return ArticleShowPage;
-}());
-
-//# sourceMappingURL=article-show.js.map
-
-/***/ }),
-
-/***/ 95:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommentsPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_user_data_ts__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the CommentsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var CommentsPage = /** @class */ (function () {
-    function CommentsPage(navCtrl, navParams, viewCtrl, userData, events, dataSetter) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.viewCtrl = viewCtrl;
-        this.userData = userData;
-        this.events = events;
-        this.dataSetter = dataSetter;
-        this.rootItem = {};
-        this.editorComment = '';
-        this.rootItem = this.navParams.data.rootItem;
-        this.user = userData.userData;
-        if (this.rootItem.comments) {
-            this.scrollToBottom();
-        }
-    }
-    CommentsPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad CommentsPage');
-    };
-    CommentsPage.prototype.ionViewWillLeave = function () {
-        // unsubscribe
-        this.events.unsubscribe('comment:received');
-    };
-    CommentsPage.prototype.ionViewDidEnter = function () {
-        var _this = this;
-        // Subscribe to received  new message events
-        this.events.subscribe('comment:received', function (comment) {
-            _this.pushNewComment(comment);
-        });
-    };
-    CommentsPage.prototype.dismiss = function () {
-        this.viewCtrl.dismiss();
-    };
-    CommentsPage.prototype.onFocus = function () {
-        // this.showEmojiPicker = false;
-        this.content.resize();
-        this.scrollToBottom();
-    };
-    CommentsPage.prototype.switchEmojiPicker = function () {
-        // this.showEmojiPicker = !this.showEmojiPicker;
-        // if (!this.showEmojiPicker) {
-        //   this.focus();
-        // } else {
-        //   this.setTextareaScroll();
-        // }
-        // this.content.resize();
-        // this.scrollToBottom();
-    };
-    CommentsPage.prototype.sendComment = function () {
-        var _this = this;
-        if (!this.editorComment.trim())
-            return;
-        // Mock message
-        var id = Date.now().toString();
-        var time = __WEBPACK_IMPORTED_MODULE_4_moment__().format("DD/MM/YY HH:mm");
-        var comment = {
-            messageId: id,
-            comment_time: time,
-            comment_by: this.user.id,
-            content: this.editorComment,
-            created_at: Date.now().toString(),
-            item_id: this.rootItem.id,
-            item_type: this.rootItem.item_type,
-            user_ids: '',
-            user: this.user.name,
-            id: '',
-            profile_pic: this.user.profile,
-            status: 'pending'
-        };
-        this.pushNewComment(comment);
-        this.editorComment = '';
-        this.focus();
-        console.log("Comments Request", comment);
-        this.dataSetter.sendComment(comment)
-            .subscribe(function (data) {
-            console.log("Comments Response", data);
-            var index = _this.getMsgIndexById(id);
-            if (index !== -1) {
-                if (data.success) {
-                    _this.rootItem.comments[index].status = 'success';
-                }
-                else {
-                    _this.rootItem.comments[index].status = 'failed';
-                }
-            }
-        }, function (err) {
-            console.log(err);
-            var index = _this.getMsgIndexById(id);
-            if (index !== -1) {
-                _this.rootItem.comments[index].status = 'failed';
-            }
-        });
-    };
-    CommentsPage.prototype.pushNewComment = function (comment) {
-        this.rootItem.comments.push(comment);
-        this.scrollToBottom();
-    };
-    CommentsPage.prototype.getMsgIndexById = function (id) {
-        return this.rootItem.comments.findIndex(function (e) { return e.messageId === id; });
-    };
-    CommentsPage.prototype.scrollToBottom = function () {
-        var _this = this;
-        setTimeout(function () {
-            if (_this.content.scrollToBottom) {
-                _this.content.scrollToBottom();
-            }
-        }, 400);
-    };
-    CommentsPage.prototype.focus = function () {
-        if (this.messageInput && this.messageInput.nativeElement) {
-            this.messageInput.nativeElement.focus();
-        }
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["e" /* Content */]),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["e" /* Content */])
-    ], CommentsPage.prototype, "content", void 0);
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_8" /* ViewChild */])('comment_input'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* ElementRef */])
-    ], CommentsPage.prototype, "messageInput", void 0);
-    CommentsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-comments',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/comments/comments.html"*/'<!--\n  Generated template for the CommentsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="dismiss()">\n        <ion-icon name="close-circle"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>Comments ({{rootItem.comments.length}})</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n  <div class="message-wrap">\n\n    <div *ngFor="let comment of rootItem.comments" class="message" [class.left]="comment.comment_by !== user.id" [class.right]="comment.comment_by === user.id">\n      <img class="user-img" [src]="comment.profile_pic ? comment.profile_pic : \'https://intranetstaging.herokuapp.com/assets/user_pic_missing.png\'" alt="" src="">\n      <ion-spinner name="dots" *ngIf="comment.status === \'pending\'"></ion-spinner>\n      <label *ngIf="comment.status === \'failed\'" class=\'status liked\'>Failed</label>\n      <div class="msg-detail">\n        <!-- <div class="msg-info">\n          <p>{{comment.user}}</p>\n        </div> -->\n        <div class="msg-content">\n          <span class="triangle"></span>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right\':\'msg-info-left\'">\n            <p>{{comment.user}}</p>\n          </div>\n          <p class="line-breaker " [innerHTML]=\'comment.content\'></p>\n          <div [class]="comment.comment_by === user.id ? \'msg-info-right-time\':\'msg-info-left-time\'">\n            <p>{{comment.comment_time}}</p>\n          </div>\n        </div>\n        \n      </div>\n    </div>\n\n  </div>\n\n</ion-content>\n\n<ion-footer no-border [style.height]="\'55px\'">\n  <div class="input-wrap">\n    <!-- <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">\n      <ion-icon name="md-happy"></ion-icon>\n    </button> -->\n    <ion-textarea name="comment_input" #comment_input placeholder="Type your comment" [(ngModel)]="editorComment" (focusin)="onFocus()"></ion-textarea>\n    <button ion-button clear icon-only item-right (click)="sendComment()">\n      <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n    </button>\n  </div>\n  <!-- <emoji-picker [(ngModel)]="editorMsg"></emoji-picker> -->\n</ion-footer>\n\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/comments/comments.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["p" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["s" /* ViewController */],
-            __WEBPACK_IMPORTED_MODULE_1__providers_user_data_ts__["a" /* UserData */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_data_setter_data_setter__["a" /* DataSetterProvider */]])
-    ], CommentsPage);
-    return CommentsPage;
-}());
-
-//# sourceMappingURL=comments.js.map
-
-/***/ }),
-
-/***/ 96:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfilePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_loading_loading_controller__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_user_data_ts__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_transfer__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__ = __webpack_require__(394);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_crop__ = __webpack_require__(395);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_camera__ = __webpack_require__(73);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Generated class for the ProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var ProfilePage = /** @class */ (function () {
-    function ProfilePage(navCtrl, navParams, userdata, dataSetter, dataGetter, loadingCtrl, toastCtrl, appGlobal, imagePicker, cropService, camera, transfer, actionSheetCtrl) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.userdata = userdata;
-        this.dataSetter = dataSetter;
-        this.dataGetter = dataGetter;
-        this.loadingCtrl = loadingCtrl;
-        this.toastCtrl = toastCtrl;
-        this.appGlobal = appGlobal;
-        this.imagePicker = imagePicker;
-        this.cropService = cropService;
-        this.camera = camera;
-        this.transfer = transfer;
-        this.actionSheetCtrl = actionSheetCtrl;
-        this.edit = false;
-        this.showEditBtn = true;
-        this.edit = false;
-    }
-    ProfilePage.prototype.onSubmit = function (toggle) {
-        var _this = this;
-        if (this.edit) {
-            delete this.edit_profile.auth_token;
-            delete this.edit_profile.created_at;
-            delete this.edit_profile.updated_at;
-            delete this.edit_profile.success;
-            delete this.edit_profile.new_user;
-            delete this.edit_profile.id;
-            console.log("User Profile Update", this.edit_profile);
-            if (this.edit_profile.mobile.trim().length != 10) {
-                alert("Please fill a valid Mobile number");
-                return false;
-            }
-            if (this.edit_profile.name.trim().length == 0) {
-                alert("Please fill Name");
-                return false;
-            }
-            if (this.edit_profile.designation.trim().length == 0) {
-                alert("Please fill Designation");
-                return false;
-            }
-            if (this.edit_profile.department.trim().length == 0) {
-                alert("Please fill Department");
-                return false;
-            }
-            if (this.edit_profile.about_me.trim().length == 0) {
-                alert("Please fill About me");
-                return false;
-            }
-            if (this.profile.profile !== this.edit_profile.profile) {
-                var loading_1 = this.loadingCtrl.create({
-                    content: 'Please while we update your profile picture..!!'
-                });
-                loading_1.present();
-                this.dataSetter.fileTransfer(this.edit_profile.profile).then(function (data) {
-                    data = JSON.parse(data.response);
-                    console.log(data);
-                    loading_1.dismiss();
-                    if (data.success) {
-                        _this.edit_profile.profile = data.url;
-                        var toast = _this.toastCtrl.create({
-                            message: data.message,
-                            duration: 5000
-                        });
-                        toast.present();
-                        _this.updateProfile(toggle);
-                    }
-                    else {
-                        var toast = _this.toastCtrl.create({
-                            message: data.message,
-                            duration: 5000
-                        });
-                        toast.present();
-                    }
-                }).catch(function (error) {
-                    console.log("File Transfer Error", error);
-                    loading_1.dismiss();
-                    var toast = _this.toastCtrl.create({
-                        message: _this.appGlobal.ServerError,
-                        duration: 5000
-                    });
-                    toast.present();
-                });
-            }
-            else {
-                this.updateProfile(toggle);
-            }
-        }
-        else {
-            this.edit = toggle;
-        }
-    };
-    ProfilePage.prototype.updateProfile = function (toggle) {
-        var _this = this;
-        var loading = this.loadingCtrl.create({
-            content: 'Please while we update your profile..!!'
-        });
-        loading.present();
-        this.dataSetter.setUpdatedUserProfile(this.edit_profile)
-            .subscribe(function (data) {
-            console.log("User Profile Update Response", data);
-            loading.dismiss();
-            if (data.success) {
-                var toast = _this.toastCtrl.create({
-                    message: data.message,
-                    duration: 5000
-                });
-                toast.present();
-                _this.profile = Object.assign({}, _this.edit_profile);
-                _this.edit = toggle;
-            }
-            else {
-                var toast = _this.toastCtrl.create({
-                    message: data.message,
-                    duration: 5000
-                });
-                toast.present();
-            }
-        }, function (err) {
-            loading.dismiss();
-            console.log(err);
-            var toast = _this.toastCtrl.create({
-                message: _this.appGlobal.ServerError,
-                duration: 5000
-            });
-            toast.present();
-        });
-    };
-    ProfilePage.prototype.editImage = function () {
-        var _this = this;
-        // const toast = this.toastCtrl.create({
-        //   message: "Feature Coming Soon",
-        //   duration: 5000
-        // });
-        // toast.present();
-        var actionSheet = this.actionSheetCtrl.create({
-            title: 'Choose or take a picture',
-            buttons: [
-                {
-                    text: 'Take a picture',
-                    handler: function () {
-                        _this.takePicture();
-                    }
-                },
-                {
-                    text: 'Choose pictures',
-                    handler: function () {
-                        _this.openImagePicker();
-                    }
-                }
-            ]
-        });
-        actionSheet.present();
-    };
-    ProfilePage.prototype.takePicture = function () {
-        var _this = this;
-        var options = {
-            quality: 100,
-            correctOrientation: true
-        };
-        this.camera.getPicture(options)
-            .then(function (data) {
-            _this.cropService
-                .crop(data, { quality: 75 })
-                .then(function (newImage) {
-                _this.edit_profile.profile = newImage;
-            }, function (error) { return console.error("Error cropping image", error); });
-        }, function (error) {
-            console.log(error);
-        });
-    };
-    ProfilePage.prototype.openImagePicker = function () {
-        var _this = this;
-        var options = {
-            maximumImagesCount: 1,
-        };
-        this.imagePicker.getPictures(options)
-            .then(function (results) {
-            _this.reduceImages(results).then(function () {
-                console.log('all images cropped!!');
-            });
-        }, function (err) {
-            console.log(err);
-        });
-    };
-    ProfilePage.prototype.reduceImages = function (selected_pictures) {
-        var _this = this;
-        return selected_pictures.reduce(function (promise, item) {
-            return promise.then(function (result) {
-                return _this.cropService.crop(item, { quality: 75 })
-                    .then(function (cropped_image) {
-                    _this.edit_profile.profile = cropped_image;
-                });
-            });
-        }, Promise.resolve());
-    };
-    ProfilePage.prototype.resetProfile = function () {
-        this.profile = {};
-        this.showEditBtn = false;
-    };
-    ProfilePage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad ProfilePage');
-        if (this.navParams.get('user_id') != undefined)
-            this.getUserProfile(this.navParams.get('user_id'));
-        else {
-            this.profile = Object.assign({}, this.userdata.userData);
-            if (!this.profile.skill_set) {
-                this.profile.skill_set = [];
-            }
-            this.showEditBtn = true;
-        }
-        this.edit_profile = Object.assign({}, this.profile);
-    };
-    ProfilePage.prototype.ionViewDidLeave = function () {
-        this.resetProfile();
-    };
-    ProfilePage.prototype.getUserProfile = function (uid) {
-        var _this = this;
-        var loading = this.loadingCtrl.create({
-            content: 'Please wait...'
-        });
-        loading.present();
-        this.dataGetter.getUserProfile(uid).subscribe(function (data) {
-            if (data.success) {
-                _this.profile = data;
-                _this.showEditBtn = false;
-            }
-            loading.dismiss();
-        }, function (error) {
-            console.log(error);
-            _this.resetProfile();
-            var toast = _this.toastCtrl.create({
-                message: _this.appGlobal.ServerError,
-                duration: 3000
-            });
-            toast.present();
-            loading.dismiss();
-            _this.navCtrl.pop();
-        });
-    };
-    ProfilePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_5__angular_core__["m" /* Component */])({
-            selector: 'page-profile',template:/*ion-inline-start:"/home/linkwok/Documents/ivdp/src/pages/profile/profile.html"*/'<!--\n  Generated template for the ProfilePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>PROFILE</ion-title>\n\n    <ion-buttons end *ngIf="showEditBtn">\n      <button ion-button icon-only clear (click)="onSubmit(!edit)">\n        <ion-icon [name]="edit ? \'checkmark\' : \'create\'"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <div *ngIf="profile && !edit">\n    <ion-card class="blurred-title-card">\n      <!-- <div class="card-image" [style.background-image]="\'url(\' + profile.profile + \')\'"></div> -->\n\n      <div class="card-title-background">\n        <span [style.background-image]="\'url(\' + profile.profile + \')\'"></span>\n      </div>\n      <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n        <ion-avatar>\n          <img [src]="profile.profile" style="width:8em;height:8em;">\n        </ion-avatar>\n      </div>\n    </ion-card>\n    <ion-card text-center>\n      <ion-card-content>\n        <p *ngIf="profile.name" style="font-size: 2rem;">\n          <b>{{profile.name ? profile.name : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.designation">\n          <b>{{profile.designation ? profile.designation : \'\'}}</b>\n        </p>\n        <p *ngIf="profile.department">\n          <b>{{profile.department ? profile.department : \'\'}}</b>\n        </p>\n        <hr style="width: 50%"/>\n        <p *ngIf="profile.location">\n          <ion-icon name="pin"></ion-icon>\n          {{profile.location ? profile.location : \'\'}}\n        </p>\n        <p *ngIf="profile.mobile">\n          <ion-icon name="phone-portrait"></ion-icon>\n          {{profile.mobile ? profile.mobile:\'\'}}\n        </p>\n        <p *ngIf="profile.extension">\n          <ion-icon name="call"></ion-icon>\n          {{profile.extension ? profile.extension : \'\'}}\n        </p>\n      </ion-card-content>\n    </ion-card>\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n           About Me\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.about_me" >\n        {{profile.about_me}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.about_me">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Experience\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.experience" >\n        {{profile.experience}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.experience">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Skill Set\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.skill_set.length > 0" >\n        <ion-tags-input\n          [(ngModel)]="profile.skill_set"\n          [mode]="\'ios\'"\n          [readonly]="true">\n        </ion-tags-input>\n      </ion-card-content>\n      <ion-card-content *ngIf="profile.skill_set.length === 0">\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n      <ion-card-header>\n        <ion-card-title>\n          Learning and Development\n        </ion-card-title>\n      </ion-card-header>\n      <ion-card-content *ngIf="profile.learning_and_development" >\n        {{profile.learning_and_development}}\n      </ion-card-content>\n      <ion-card-content *ngIf="!profile.learning_and_development" >\n        Details Not Updated\n      </ion-card-content>\n    </ion-card>\n  </div>\n\n  <div *ngIf="edit_profile && edit">\n      <!-- <div class="item item-block item-md" style="justify-content: center;">\n        <ion-avatar item-start>\n          <img [src]="edit_profile.profile" style="width:120px;height:120px;">\n        </ion-avatar>\n      </div> -->\n      <ion-card class="blurred-title-card" (click)="editImage()">\n        <div class="card-title-background">\n          <span [style.background-image]="\'url(\' + edit_profile.profile + \')\'"></span>\n        </div>\n        <div class="item-md" style="justify-content: center; display: flex; background: transparent;">\n          <ion-avatar>\n            <img [src]="edit_profile.profile" style="width:8em;height:8em;">\n          </ion-avatar>\n          <ion-icon name="create"></ion-icon>\n        </div>\n      </ion-card>\n      <ion-list padding>\n        <ion-item>\n          <ion-label for="name" stacked>Name</ion-label>\n          <ion-input type="text" name="name" [(ngModel)]="edit_profile.name" autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="department" stacked>Department</ion-label>\n          <ion-input type="text" name="department" [(ngModel)]="edit_profile.department"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="designation" stacked>Designation</ion-label>\n          <ion-input type="text" name="designation" [(ngModel)]="edit_profile.designation"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="mobile" stacked>Mobile</ion-label>\n          <ion-input type="tel" name="mobile" [(ngModel)]="edit_profile.mobile"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="extension" stacked>Extension Number</ion-label>\n          <ion-input type="tel" name="extension" [(ngModel)]="edit_profile.extension"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="location" stacked>Location</ion-label>\n          <ion-input type="text" name="location" [(ngModel)]="edit_profile.location"  autocomplete="on" autocorrect="on" required></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label for="about_me" stacked>About Me</ion-label>\n          <ion-textarea autoresize name="about_me" [(ngModel)]="edit_profile.about_me"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-label for="experience" stacked>Experience</ion-label>\n          <ion-textarea autoresize name="experience" [(ngModel)]="edit_profile.experience"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-label class="item-md" style="color: #999;" stacked>Skill Set</ion-label>\n\n        <ion-tags-input style="margin-left: 16px;"\n            [(ngModel)]="edit_profile.skill_set"\n            [once]="\'true\'"\n            [mode]="\'ios\'"\n            [placeholder]="\'Add Skills\'"\n            [canBackspaceRemove]="true"\n            [canEnterAdd]="true"\n            [readonly]="false">\n          </ion-tags-input>\n        <ion-item>\n          <ion-label for="learning_and_development" stacked>Learning and Development</ion-label>\n          <ion-textarea autoresize name="learning_and_development" [(ngModel)]="edit_profile.learning_and_development"  autocomplete="on" autocorrect="on" required></ion-textarea>\n        </ion-item>\n        <ion-item>\n          <ion-buttons text-center>\n            <button ion-button block round color="primary" (click)="onSubmit(!edit)">{{edit? "Update" : "Edit"}}</button>\n          </ion-buttons>\n        </ion-item>\n      </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/linkwok/Documents/ivdp/src/pages/profile/profile.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["o" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["p" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_4__providers_user_data_ts__["a" /* UserData */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_data_setter_data_setter__["a" /* DataSetterProvider */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_data_getter_service_data_getter_service__["a" /* DataGetterServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular_components_loading_loading_controller__["a" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["r" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_app_global_app_global__["a" /* AppGlobalProvider */],
-            __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__["a" /* ImagePicker */],
-            __WEBPACK_IMPORTED_MODULE_9__ionic_native_crop__["a" /* Crop */],
-            __WEBPACK_IMPORTED_MODULE_10__ionic_native_camera__["a" /* Camera */],
-            __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_transfer__["a" /* FileTransfer */],
-            __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["a" /* ActionSheetController */]])
-    ], ProfilePage);
-    return ProfilePage;
-}());
-
-//# sourceMappingURL=profile.js.map
 
 /***/ })
 

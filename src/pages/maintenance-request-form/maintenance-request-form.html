@@ -137,7 +137,7 @@
       <ion-item *ngIf="household_id">
         <ion-label stacked floating color="primary">House Hold ID </ion-label>
         <!-- <ion-input name="household_id" type="number" [(ngModel)]="Addbeneficiary.household_id" required></ion-input> -->
-        <ion-select [(ngModel)]="Addbeneficiary.household_id" name="household_id" required >
+        <ion-select  [(ngModel)]="Addbeneficiary.household_id" name="household_id" required >
           <ion-option value="{{v.server_id}}" *ngFor="let v of household_id">{{v.hh_number}}</ion-option>
         </ion-select>
       </ion-item>
@@ -170,9 +170,6 @@
         <ion-input name="family_head_relation" type="text" [(ngModel)]="Addbeneficiary.family_head_relation" required>
         </ion-input>
       </ion-item>
-
-
-
 
     </ion-list>
     <button ion-button (click)="logForm(form)" type="submit" [disabled]="!form.valid" block>Create Beneficiary

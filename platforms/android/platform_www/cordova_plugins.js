@@ -405,14 +405,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-qrscanner.QRScanner",
-    "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
-    "pluginId": "cordova-plugin-qrscanner",
-    "clobbers": [
-      "QRScanner"
-    ]
-  },
-  {
     "id": "cordova-plugin-splashscreen.SplashScreen",
     "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
     "pluginId": "cordova-plugin-splashscreen",
@@ -469,7 +461,6 @@ module.exports.metadata =
   "cordova-plugin-local-notification": "0.9.0-beta.2",
   "cordova-plugin-network-information": "2.0.1",
   "cordova-plugin-progress": "0.3.0",
-  "cordova-plugin-qrscanner": "2.6.0",
   "cordova-plugin-splashscreen": "5.0.2",
   "cordova-plugin-uniquedeviceid": "1.3.2",
   "cordova-plugin-vibration": "3.1.0",

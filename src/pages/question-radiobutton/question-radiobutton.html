@@ -15,7 +15,7 @@
 
 <ion-content padding>
   <h1><strong>
-      <p>{{question}}</p>
+      <p>{{Quesion_number}}. {{question}}</p>
     </strong>
   </h1>
   <ion-list radio-group>
@@ -26,9 +26,17 @@
     </ion-item>
 
   </ion-list>
-  <button ion-button *ngIf="is_last == 1" (click)="submit('a')">Submit</button>
-  <button ion-button *ngIf="is_last == 0" (click)="goToNext('a')">Next</button>
-  <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
-
-  <div buttom center> <button ion-button (click)="goTosurveylist()" >Back To Survey List </button></div>
+  <div class="prv">
+      <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
+    </div>
+    <div class="next">
+      <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>
+    </div>
+    <div class="bckSurveyPage">
+      <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>
+    </div>
+  
+    <div class="submit">
+        <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>
+    </div>
 </ion-content>

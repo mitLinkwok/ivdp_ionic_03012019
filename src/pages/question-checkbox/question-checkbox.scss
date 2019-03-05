@@ -1,3 +1,22 @@
 page-question-checkbox {
-
+    .next {
+        position: absolute;
+        top: 250px;
+        right: 0;
+    }
+    .prv {
+        position: absolute;
+        top: 250px;
+        left: 0;
+    }
+    .bckSurveyPage {
+        position: relative;
+        top: 50%;
+        text-align: center;
+    }
+    .submit {
+        position: relative;
+        top:30%;
+        text-align: center;
+    }
 }

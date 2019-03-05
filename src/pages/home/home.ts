@@ -39,7 +39,7 @@ export class HomePage {
   sub: any
   actual: any
   total: any
-  aactual_hhc:any
+  aactual_hhc: any
 
 
   descending: boolean = false;
@@ -63,7 +63,7 @@ export class HomePage {
     this.sync_status = this.appGlobal.sync_status
     this.actual = this.appGlobal.actual;
     this.total = this.appGlobal.total;
-    this.aactual_hhc=this.appGlobal.actual_hh;
+    this.aactual_hhc = this.appGlobal.actual_hh;
 
     storage.get('total_count_beneficiary').then((val) => {
       this.totalcount_benificiary = val;
@@ -75,7 +75,6 @@ export class HomePage {
     } else {
       this.sync_status = "Sync is going ... "
     }
-
     this.events.subscribe('reload:page-home', () => {
       this.loadtotalbeneficialy();
       this.reloadfunction();
@@ -100,16 +99,6 @@ export class HomePage {
     this.loadtotalbeneficialy()
     this.loading_livedata()
 
-    // this.sub = Observable.interval(2000)
-    //   .subscribe((val) => {
-    //     this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
-    //     this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
-    //     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
-    //     this.totalsurvey = this.sqldatabasegetter.total_surveys;
-    //     this.loadtotalbeneficialy()
-    //     this.loading_livedata()
-    //   });
-
     this.storage.get('intro-done').then(done => {
       if (!done) {
         this.storage.set('intro-done', true);
@@ -133,17 +122,7 @@ export class HomePage {
       this.loading_livedata()
       ev.complete();
     }, 2000);
-   // this.percentincrease();
-   // alert("Home page is reloading");
   }
-  // percentincrease()
-  // {
-  //   this.live_dataLoade = this.live_dataLoade + 1;
-  //   if(this.live_dataLoade < 100){
-  //   setTimeout(this.percentincrease,500);
-  //   }
-  // }
-
   dataget() {
     this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
     this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);

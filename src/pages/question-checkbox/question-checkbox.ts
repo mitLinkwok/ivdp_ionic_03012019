@@ -33,18 +33,11 @@ export class QuestionCheckboxPage {
   question_id: string
   project_id: string
   survey_id: string
-  // beneficiary_id: string
-
-  // auto_increment_id: string
-
   beneficiary_id: any = []
-
   auto_increment_id: any = []
-
-
   cbChecked: string[];
   selectedCheckbox: any;
-
+  Quesion_number:number;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
@@ -58,7 +51,10 @@ export class QuestionCheckboxPage {
     this.options = this.appGlobal.options;
     this.cbChecked = [];
     this.selectedCheckbox = {};
+    this.Quesion_number=this.appGlobal.Quesion_number;
     this.loadQuestions()
+   
+  
   }
 
   ionViewDidLoad() {
@@ -87,7 +83,7 @@ export class QuestionCheckboxPage {
       return
     }
     let nq = this.qindex + 1;
-
+    this.appGlobal.Quesion_number++;
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
       survey_id: this.survey_id,
@@ -104,6 +100,7 @@ export class QuestionCheckboxPage {
       return;
     }
     let nq = this.qindex - 1;
+    this.appGlobal.Quesion_number--;
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
       survey_id: this.survey_id,
@@ -131,10 +128,7 @@ export class QuestionCheckboxPage {
           this.appGlobal.questionsList = []
           this.beneficiary_id = []
           this.auto_increment_id = []
-          // this.navCtrl.setRoot(SurveyListPage, {
-          //   beneficiary_id: this.beneficiary_id,
-          //   auto_increment_id: this.auto_increment_id,
-          // })
+          this.appGlobal.Quesion_number = 1;
           this.navCtrl.setRoot(SurveyListPage)
 
           // this.navCtrl.setRoot(QuestionDropdownPage)
@@ -180,7 +174,7 @@ export class QuestionCheckboxPage {
     this.beneficiary_id = []
     this.auto_increment_id = []
     this.appGlobal.options = []
-    this.options=[]
+    this.options = []
     this.navCtrl.setRoot(SurveyListPage, {
       beneficiary_id: this.beneficiary_id,
       auto_increment_id: this.auto_increment_id,

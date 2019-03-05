@@ -203,14 +203,6 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-qrscanner": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-qrscanner@2.6.0"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-progress": {
     "source": {
       "type": "registry",

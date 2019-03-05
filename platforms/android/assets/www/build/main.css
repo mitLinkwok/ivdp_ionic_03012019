@@ -26874,6 +26874,102 @@ page-profile ion-card.blurred-title-card .card-title p {
   color: #fff !important;
 }
 
+page-question-checkbox .next {
+  position: absolute;
+  top: 250px;
+  right: 0;
+}
+
+page-question-checkbox .prv {
+  position: absolute;
+  top: 250px;
+  left: 0;
+}
+
+page-question-checkbox .bckSurveyPage {
+  position: relative;
+  top: 50%;
+  text-align: center;
+}
+
+page-question-checkbox .submit {
+  position: relative;
+  top: 30%;
+  text-align: center;
+}
+
+page-question-image .next {
+  position: absolute;
+  top: 250px;
+  right: 0;
+}
+
+page-question-image .prv {
+  position: absolute;
+  top: 250px;
+  left: 0;
+}
+
+page-question-image .bckSurveyPage {
+  position: relative;
+  top: 50%;
+  text-align: center;
+}
+
+page-question-image .submit {
+  position: relative;
+  top: 30%;
+  text-align: center;
+}
+
+page-question-radiobutton .next {
+  position: absolute;
+  top: 250px;
+  right: 0;
+}
+
+page-question-radiobutton .prv {
+  position: absolute;
+  top: 250px;
+  left: 0;
+}
+
+page-question-radiobutton .bckSurveyPage {
+  position: relative;
+  top: 50%;
+  text-align: center;
+}
+
+page-question-radiobutton .submit {
+  position: relative;
+  top: 30%;
+  text-align: center;
+}
+
+page-question-textbox .next {
+  position: absolute;
+  top: 250px;
+  right: 0;
+}
+
+page-question-textbox .prv {
+  position: absolute;
+  top: 250px;
+  left: 0;
+}
+
+page-question-textbox .bckSurveyPage {
+  position: relative;
+  top: 50%;
+  text-align: center;
+}
+
+page-question-textbox .submit {
+  position: relative;
+  top: 30%;
+  text-align: center;
+}
+
 page-sync .big-round-btn {
   border-radius: 50%;
   height: 5em;

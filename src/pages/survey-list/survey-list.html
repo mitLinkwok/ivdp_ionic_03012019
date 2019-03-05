@@ -22,7 +22,7 @@
 
   <ion-list>
     <ion-card *ngFor="let survey of surveys" (click)="StartSurvey(survey.project_id,survey.server_id,survey.type, 1)">
-      <ion-card-header>{{survey.title}}
+      <ion-card-header> {{survey.server_id}}. <strong>{{survey.title}}</strong>
         <span class="pull-right sr-age">
           <p>Project ID: <strong>{{survey.project_id}}</strong></p>
         </span>

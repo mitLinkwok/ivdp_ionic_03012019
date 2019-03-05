@@ -15,7 +15,7 @@
 
 <ion-content padding>
   <h1><strong>
-      <p>{{question}}</p>
+      <p>{{Quesion_number}}.{{question}}</p>
     </strong>
   </h1>
   <form #form="ngForm">
@@ -39,13 +39,19 @@
         </ion-row>
       </ion-grid>
     </ion-buttons>
-    <div>
-      <button ion-button *ngIf="is_last == 1" type="submit" [disabled]="!form.valid"
-        (click)="submit('a')">Submit</button>
-      <button ion-button *ngIf="is_last == 0" type="submit" [disabled]="!form.valid"
-        (click)="goToNext('a')">Next</button>
+
+    <div class="next">
+      <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>
+    </div>
+    <div class="prv">
       <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
     </div>
+    <div class="submit">
+      <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>
+    </div>
+
   </form>
-  <div> <button ion-button  buttom center (click)="goTosurveylist()">Back To Survey List </button></div>
+  <div class="bckSurveyPage">
+    <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>
+  </div>
 </ion-content>

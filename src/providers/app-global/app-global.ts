@@ -127,6 +127,7 @@ export class AppGlobalProvider {
   public syncanswers = [];
   public synckycs = [];
   public HouseHold = [];
+  public Quesion_number = 1;
   public options = [];
   public seletgroup = [];
   public selectedCheckbox = []

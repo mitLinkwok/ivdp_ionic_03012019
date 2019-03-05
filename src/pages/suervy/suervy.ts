@@ -14,7 +14,7 @@ import { Storage } from '@ionic/storage';
 import { AppGlobalProvider } from "../../providers/app-global/app-global";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+//import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 import { QuestionImagePage } from '../question-image/question-image';
 
 

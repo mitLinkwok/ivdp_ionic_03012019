@@ -37,7 +37,8 @@ export class QuestionDropdownPage {
   qId: any;
   numberOfChecks: number = 1;
   checkBoxLimit: any = 1;
-constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
     this.sqldatabasegetter.getdataforgroupsurvey(this.ccallBack, this)
     this.project_id = navParams.get("project_id");
     this.survey_id = navParams.get("survey_id");
@@ -97,8 +98,6 @@ constructor(public navCtrl: NavController, public navParams: NavParams, public a
     }
   }
   Selection() {
-    // console.log("Selected Checkbox:" + JSON.stringify(this.appGlobal.selectedCheckbox));
-    // console.log("Selected Checkbox:" + JSON.stringify(this.group));
     this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
     this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
     console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckId).replace(/\[|\]|"|"/g, ""))

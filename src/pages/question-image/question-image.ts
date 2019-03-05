@@ -36,6 +36,8 @@ export class QuestionImagePage {
   // auto_increment_id: string
   beneficiary_id: any = []
   auto_increment_id: any = []
+  Quesion_number:number;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, private camera: Camera,
     public platform: Platform, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
@@ -45,6 +47,7 @@ export class QuestionImagePage {
     this.survey_id = navParams.get("survey_id");
     this.beneficiary_id = navParams.get('beneficiary_id');
     this.auto_increment_id = navParams.get('auto_increment_id');
+    this.Quesion_number=this.appGlobal.Quesion_number;
     this.loadQuestions();
 
   }
@@ -116,6 +119,7 @@ export class QuestionImagePage {
       return
     }
     let nq = this.qindex + 1;
+    this.appGlobal.Quesion_number++;
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
       survey_id: this.survey_id,
@@ -132,6 +136,7 @@ export class QuestionImagePage {
       return;
     }
     let nq = this.qindex - 1;
+    this.appGlobal.Quesion_number--;
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
       survey_id: this.survey_id,
@@ -160,7 +165,9 @@ export class QuestionImagePage {
           this.appGlobal.questionsList = []
           this.beneficiary_id=[]
           this.auto_increment_id=[]
+          this.appGlobal.Quesion_number = 1;
           this.navCtrl.setRoot(SurveyListPage)
+         
           //this.navCtrl.setRoot(QuestionDropdownPage)
         } else {
           const toast = this.toastCtrl.create({

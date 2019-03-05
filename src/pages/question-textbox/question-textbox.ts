@@ -40,7 +40,9 @@ export class QuestionTextboxPage {
 
   auto_increment_id: any = []
 
-  validatror: any
+  validatror: any;
+  Quesion_number: number
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
 
@@ -50,8 +52,8 @@ export class QuestionTextboxPage {
     this.survey_id = navParams.get("survey_id");
     this.beneficiary_id = navParams.get('beneficiary_id');
     this.auto_increment_id = navParams.get('auto_increment_id');
+    this.Quesion_number = this.appGlobal.Quesion_number;
     this.loadQuestions();
-
     this.validatror = new FormGroup(
       {
         answers: new FormControl('ddd', Validators.required)
@@ -66,9 +68,7 @@ export class QuestionTextboxPage {
   }
 
   loadQuestions() {
-
     this.question = this.appGlobal.questionsList[this.qindex].text;
-
     this.key = this.appGlobal.questionsList[this.qindex].server_id;
     if (this.appGlobal.answers[this.key] != undefined) {
       this.answer = this.appGlobal.answers[this.key];
@@ -91,6 +91,7 @@ export class QuestionTextboxPage {
     }
 
     let nq = this.qindex + 1;
+    this.appGlobal.Quesion_number++
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
       survey_id: this.survey_id,
@@ -106,6 +107,7 @@ export class QuestionTextboxPage {
       return;
     }
     let nq = this.qindex - 1;
+    this.appGlobal.Quesion_number--;
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
       survey_id: this.survey_id,
@@ -126,7 +128,6 @@ export class QuestionTextboxPage {
         this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]])
       }
       if (i == key.length) {
-
         alert("submit scussfully")
         if (this.navCtrl.canGoBack) {
           // this.navCtrl.pop();
@@ -134,6 +135,7 @@ export class QuestionTextboxPage {
           this.appGlobal.questionsList = []
           this.beneficiary_id = []
           this.auto_increment_id = []
+          this.appGlobal.Quesion_number = 1;
           this.navCtrl.setRoot(SurveyListPage)
         } else {
           const toast = this.toastCtrl.create({

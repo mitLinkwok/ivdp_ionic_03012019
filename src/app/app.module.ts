@@ -1,4 +1,4 @@
-import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+//import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 
 import { SearchBeneficiryPageModule } from './../pages/search-beneficiry/search-beneficiry.module';
 import { DirectivesModule } from './../directives/directives.module';
@@ -257,8 +257,8 @@ export function createTranslateLoader(http: HttpClient) {
     DatabaseProvider,
     SQLite,
     CallNumber,
-    DBmaneger,
-    QRScanner
+    DBmaneger
+    //QRScanner
 
 
   ]

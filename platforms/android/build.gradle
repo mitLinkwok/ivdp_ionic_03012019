@@ -95,7 +95,6 @@ ext {
 apply from: "cordova-plugin-badge/dfivdp-badge.gradle"
 apply from: "cordova-plugin-fcm-with-dependecy-updated/dfivdp-FCMPlugin.gradle"
 apply from: "cordova-plugin-local-notification/dfivdp-localnotification.gradle"
-apply from: "cordova-plugin-qrscanner/dfivdp-qrscanner.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()

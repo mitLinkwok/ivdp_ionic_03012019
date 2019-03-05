@@ -1,3 +1,4 @@
+import { QuestionCheckboxPage } from './../question-checkbox/question-checkbox';
 import { QuestionDropdownPage } from './../question-dropdown/question-dropdown';
 import { SurveyListPage } from './../survey-list/survey-list';
 import { SuervyPage } from './../suervy/suervy';
@@ -30,13 +31,10 @@ export class QuestionRadiobuttonPage {
   question_id: string
   project_id: string
   survey_id: string
-  // beneficiary_id: string
-  // auto_increment_id: string
   beneficiary_id: any = []
-
   auto_increment_id: any = []
   select_radio: string
-  // public isChecked
+  Quesion_number: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
     this.qindex = navParams.get("qindex");
@@ -46,7 +44,7 @@ export class QuestionRadiobuttonPage {
     this.beneficiary_id = navParams.get('beneficiary_id');
     this.auto_increment_id = navParams.get('auto_increment_id');
     this.opctions = this.appGlobal.options;
-
+    this.Quesion_number = this.appGlobal.Quesion_number;
     this.loadQuestions()
   }
 
@@ -78,6 +76,7 @@ export class QuestionRadiobuttonPage {
         return
       }
       let nq = this.qindex + 1;
+      this.appGlobal.Quesion_number++
       this.navCtrl.push(SuervyPage, {
         project_id: this.project_id,
         survey_id: this.survey_id,
@@ -100,6 +99,7 @@ export class QuestionRadiobuttonPage {
       return;
     }
     let nq = this.qindex - 1;
+    this.appGlobal.Quesion_number--;
     this.navCtrl.push(SuervyPage, {
       project_id: this.project_id,
       survey_id: this.survey_id,
@@ -128,6 +128,7 @@ export class QuestionRadiobuttonPage {
           this.appGlobal.questionsList = []
           this.beneficiary_id = []
           this.auto_increment_id = []
+          this.appGlobal.Quesion_number = 1;
           this.navCtrl.setRoot(SurveyListPage)
           // this.navCtrl.setRoot(QuestionDropdownPage)
         } else {
@@ -148,7 +149,7 @@ export class QuestionRadiobuttonPage {
     this.beneficiary_id = []
     this.auto_increment_id = []
     this.appGlobal.options = []
-   
+
     this.navCtrl.setRoot(SurveyListPage, {
       beneficiary_id: this.beneficiary_id,
       auto_increment_id: this.auto_increment_id,

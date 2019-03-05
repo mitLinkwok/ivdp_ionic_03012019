@@ -5,32 +5,38 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar hideBackButton>
-    <ion-title  text-center>Survey Started</ion-title>
+    <ion-title text-center>Survey Started</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
   <h1><strong>
-      <p>{{question}}</p>
+      <p>{{Quesion_number}}. {{question}}</p>
     </strong>
   </h1>
   <ion-list>
     <ion-item *ngFor="let entry of options ;let i = index">
-      <ion-label>{{entry.text}}</ion-label>
+      <ion-label> {{entry.text}}</ion-label>
 
       <ion-checkbox slot="end" *ngIf="entry.text != ''" [(ngModel)]="entry.isChecked"
         (ionChange)="getChanged(entry.text)"></ion-checkbox>
     </ion-item>
   </ion-list>
+  <div class="prv">
+    <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
+  </div>
+  <div class="next">
+    <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>
+  </div>
+  <div class="bckSurveyPage">
+    <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>
+  </div>
 
-  <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>
-  <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>
-  <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
-
-  <div> <button ion-button  (click)="goTosurveylist()" buttom center>Back To Survey List </button></div> 
+  <div class="submit">
+      <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>
+  </div>
+  
 
 </ion-content>

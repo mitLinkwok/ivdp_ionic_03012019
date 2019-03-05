@@ -62,9 +62,6 @@
     "cordova-plugin-network-information": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
-    "cordova-plugin-qrscanner": {
-      "PACKAGE_NAME": "com.linkwok.dfivdp"
-    },
     "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
