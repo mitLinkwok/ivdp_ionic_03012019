@@ -36,24 +36,13 @@ export class SyncPage {
 		public dataSetterService: DataSetterProvider, public sqldatabasegetter: DatabaseProvider,
 		public toastCtrl: ToastController,
 		public db: DBmaneger) {
-
-		//	this.sqldatabasegetter.syncbeneficiarydata();
 		this.sqldatabasegetter.syncanswersdata();
-		//this.sqldatabasegetter.synckycsdata();
-
 		this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
 		this.pending_answers = this.appGlobal.syncanswers.length
 		this.pending_kycs = this.appGlobal.synckycs.length
 
 	}
 	dorefresh(ev) {
-
-
-		for (let i = 0; i <= this.appGlobal.syncanswers.length; i++) {
-			console.log("@@@    "+JSON.stringify(this.appGlobal.syncanswers[i]))
-		}
-
-
 		this.datareload(ev)
 		setTimeout(() => {
 			console.log('Async operation has ended');
@@ -70,7 +59,6 @@ export class SyncPage {
 	}
 
 	ionViewDidLoad() {
-
 		console.log('ionViewDidLoad SyncPage');
 	}
 	syncBeneficiaries() {

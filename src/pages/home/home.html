@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content>
+
   <ion-refresher (ionRefresh)="refreshHomepage($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -20,13 +21,9 @@
       <div><strong>Total Number of Beneficiary :- </strong></div>
     </ion-card-header>
     <ion-card-content>
+     
       <p>Count: <strong>{{appGlobal.actual}} / {{appGlobal.total}}</strong></p>
 
-        <!-- <div class="progerss">
-          <div class="loader" style="width:{{live_dataLoade}}%;">
-            <p class="percent">{{live_dataLoade}}%</p>
-          </div>
-        </div> -->
       <p><strong>{{live_dataLoade}}<label>%</label> </strong></p>
     </ion-card-content>
   </ion-card>
@@ -36,7 +33,8 @@
       <div><strong>Total Number of HouseHold :- </strong></div>
     </ion-card-header>
     <ion-card-content>
-     
+
+
       <p> Count: <strong>{{appGlobal.actual_hh}}</strong></p>
     </ion-card-content>
   </ion-card>
@@ -52,6 +50,7 @@
   </ion-card>
 
 </ion-content>
+
 
 <!-- <script>
 var ele = document.getElementsByClassName("loader");

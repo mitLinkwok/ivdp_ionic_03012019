@@ -26692,16 +26692,6 @@ page-home ion-card-content {
   white-space: normal !important;
 }
 
-h3 {
-  text-align: center;
-  font-size: xx-large;
-}
-
-.tags {
-  display: block;
-  top: 50%;
-}
-
 .progerss {
   width: 100%;
   background-color: #ddd;
@@ -26875,99 +26865,99 @@ page-profile ion-card.blurred-title-card .card-title p {
 }
 
 page-question-checkbox .next {
-  position: absolute;
-  top: 250px;
-  right: 0;
+  width: 40%;
+  float: right;
 }
 
 page-question-checkbox .prv {
-  position: absolute;
-  top: 250px;
-  left: 0;
+  width: 40%;
+  float: left;
 }
 
 page-question-checkbox .bckSurveyPage {
-  position: relative;
-  top: 50%;
+  width: 100%;
   text-align: center;
 }
 
 page-question-checkbox .submit {
-  position: relative;
-  top: 30%;
+  width: 100%;
   text-align: center;
 }
 
+page-question-checkbox .next-prv-div {
+  margin: 60px 15px;
+}
+
 page-question-image .next {
-  position: absolute;
-  top: 250px;
-  right: 0;
+  width: 40%;
+  float: right;
 }
 
 page-question-image .prv {
-  position: absolute;
-  top: 250px;
-  left: 0;
+  width: 40%;
+  float: left;
 }
 
 page-question-image .bckSurveyPage {
-  position: relative;
-  top: 50%;
+  width: 100%;
   text-align: center;
 }
 
 page-question-image .submit {
-  position: relative;
-  top: 30%;
+  width: 100%;
   text-align: center;
 }
 
+page-question-image .next-prv-div {
+  margin: 60px 15px;
+}
+
 page-question-radiobutton .next {
-  position: absolute;
-  top: 250px;
-  right: 0;
+  width: 40%;
+  float: right;
 }
 
 page-question-radiobutton .prv {
-  position: absolute;
-  top: 250px;
-  left: 0;
+  width: 40%;
+  float: left;
 }
 
 page-question-radiobutton .bckSurveyPage {
-  position: relative;
-  top: 50%;
+  width: 100%;
   text-align: center;
 }
 
 page-question-radiobutton .submit {
-  position: relative;
-  top: 30%;
+  width: 100%;
   text-align: center;
 }
 
+page-question-radiobutton .next-prv-div {
+  margin: 60px 15px;
+}
+
 page-question-textbox .next {
-  position: absolute;
-  top: 250px;
-  right: 0;
+  width: 40%;
+  float: right;
 }
 
 page-question-textbox .prv {
-  position: absolute;
-  top: 250px;
-  left: 0;
+  width: 40%;
+  float: left;
 }
 
 page-question-textbox .bckSurveyPage {
-  position: relative;
-  top: 50%;
+  width: 100%;
   text-align: center;
 }
 
 page-question-textbox .submit {
-  position: relative;
-  top: 30%;
+  width: 100%;
   text-align: center;
+}
+
+page-question-textbox .next-prv-div {
+  margin: 60px 15px;
 }
 
 page-sync .big-round-btn {

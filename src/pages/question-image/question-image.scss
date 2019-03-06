@@ -1,23 +1,22 @@
 page-question-image {
     .next {
-        position: absolute;
-        top: 250px;
-        right: 0;
+        width: 40%;
+        float: right;
     }
     .prv {
-        position: absolute;
-        top: 250px;
-        left: 0;
+        width: 40%;
+        float: left;
     }
     .bckSurveyPage {
-        position: relative;
-        top: 50%;
+        width: 100%;
         text-align: center;
     }
     .submit {
-        position: relative;
-        top:30%;
+        width: 100%;
         text-align: center;
+    }
+    .next-prv-div{
+        margin: 60px 15px;
     }
 
 }

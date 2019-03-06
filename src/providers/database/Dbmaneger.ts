@@ -42,39 +42,39 @@ export class DBmaneger {
     }
 
     public async getbenificialydata() {
-
-
+        
+        
         if (this.page_status == null && this.page_status == undefined && this.page_status == 0 || this.page_status == 1) {
-            this.dataGetterService.getAllMaintenanceRequests(this.data).subscribe((data: any) => {
-                let a = true
-                if (data.success || a) {
-                    this.appGlobal.actual = data.data.length + this.appGlobal.actual;
-                    for (let i = 0; i <= data.data.length; i++) {
-                        this.db.insertbeneficiarydata(data.data[i]);
-                        this.appGlobal.sync_status = "Sync is going on ...."
+                this.dataGetterService.getAllMaintenanceRequests(this.data).subscribe((data: any) => {
+                    let a = true
+                    if (data.success || a) {
+                        this.appGlobal.actual = data.data.length + this.appGlobal.actual;
+                        for (let i = 0; i <= data.data.length; i++) {
+                            this.db.insertbeneficiarydata(data.data[i]);
+                            this.appGlobal.sync_status = "Sync is going on ...."
+                        }
+                        this.total_datapage = JSON.stringify(data.meta.last_page);
+                        this.storage.set("total_count_beneficiary", JSON.stringify(data.meta.total))
+                        this.appGlobal.totalcount_bene = JSON.stringify(data.meta.total);
+                        this.appGlobal.total = data.meta.total;
+                        this.doInfinite(null);
+                        return this.isqurestatus = true
+                    } else {
+                        console.log("cannot get beneficiary  data for insert");
                     }
-                    this.total_datapage = JSON.stringify(data.meta.last_page);
-                    this.storage.set("total_count_beneficiary", JSON.stringify(data.meta.total))
-                    this.appGlobal.totalcount_bene = JSON.stringify(data.meta.total);
-                    this.appGlobal.total = data.meta.total;
-                    this.doInfinite(null);
-                    return this.isqurestatus = true
-                } else {
-                    console.log("cannot get beneficiary  data for insert");
-                }
-                return this.isqurestatus = false
-            }, error => {
-                console.log(JSON.stringify(error))
-                const toast = this.toastCtrl.create({
-                    message: this.appGlobal.ServerError,
-                    duration: 3000
+                    return this.isqurestatus = false
+                }, error => {
+                    console.log(JSON.stringify(error))
+                    const toast = this.toastCtrl.create({
+                        message: this.appGlobal.ServerError,
+                        duration: 3000
+                    });
+                    toast.present();
                 });
-                toast.present();
-            });
-        } else {
+            } else {
 
-            this.doInfinite(null);
-        }
+                this.doInfinite(null);
+            }
 
     }
 
@@ -145,7 +145,7 @@ export class DBmaneger {
     public async getsurvey() {
         await this.dataGetterService.getSurveys()
             .subscribe((data: any) => {
-            
+
                 let a = true
                 if (data.success || a) {
                     for (let i = 0; i <= data.data.length; i++) {
@@ -172,7 +172,7 @@ export class DBmaneger {
     public async getQuestion() {
         await this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
             let a = true
-          
+
             if (data.success || a) {
                 for (let i = 0; i <= data.questions.length; i++) {
                     //alert(" Questions ##### " + object);
@@ -197,10 +197,10 @@ export class DBmaneger {
     public async getOpections() {
         await this.dataSetterService.gatquestionrequest().subscribe((data: any) => {
             let a = true
-        
+
             if (data.success || a) {
                 for (let i = 0; i <= data.options.length; i++) {
-                
+
                     this.db.insertoptions(data.options[i]);
                 }
                 return this.isqurestatus = true

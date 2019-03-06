@@ -53,9 +53,8 @@
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
     "call-number": "1.0.1",
-    "cordova-android": "^6.4.0",
+    "cordova-android": "6.4.0",
     "cordova-android-support-gradle-release": "^1.4.7",
-    "cordova-browser": "5.0.4",
     "cordova-ios": "^4.5.5",
     "cordova-plugin-advanced-http": "^1.11.1",
     "cordova-plugin-allow-backup": "0.0.2",
@@ -99,7 +98,7 @@
     "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "^3.2.1",
+    "@ionic/app-scripts": "^3.2.3",
     "@types/lodash": "^4.14.106",
     "typescript": "^2.8.1"
   },
@@ -138,8 +137,7 @@
       "cordova-plugin-background-mode": {}
     },
     "platforms": [
-      "ios",
-      "browser"
+      "ios"
     ]
   }
 }

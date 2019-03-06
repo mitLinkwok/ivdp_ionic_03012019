@@ -35,11 +35,12 @@ export class HomePage {
   totalsurvey: string
   total_count: string
   sync_status: string
-  live_dataLoade: any
+  live_dataLoade: number
   sub: any
   actual: any
   total: any
   aactual_hhc: any
+  loading: any;
 
 
   descending: boolean = false;
@@ -55,6 +56,7 @@ export class HomePage {
     public events: Events,
     public sqldatabasegetter: DatabaseProvider,
 
+
   ) {
 
     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
@@ -67,14 +69,7 @@ export class HomePage {
 
     storage.get('total_count_beneficiary').then((val) => {
       this.totalcount_benificiary = val;
-
     });
-    if (this.totalbeneficiary == this.totalcount_benificiary) {
-      this.sync_status = "Sync Done"
-
-    } else {
-      this.sync_status = "Sync is going ... "
-    }
     this.events.subscribe('reload:page-home', () => {
       this.loadtotalbeneficialy();
       this.reloadfunction();
@@ -96,9 +91,6 @@ export class HomePage {
 
 
   ionViewDidLoad() {
-    this.loadtotalbeneficialy()
-    this.loading_livedata()
-
     this.storage.get('intro-done').then(done => {
       if (!done) {
         this.storage.set('intro-done', true);
@@ -136,30 +128,26 @@ export class HomePage {
       this.totalcount_benificiary = val;
     });
 
+
     if (this.totalbeneficiary == this.totalcount_benificiary) {
       this.sync_status = "Sync Done"
-      // this.sub.unsubscribe();
+      this.loading.dismiss();
     } else {
       this.sync_status = "Sync is going ... "
+      this.presentLoading();
     }
 
   }
 
   loading_livedata() {
-
-
     this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
-
-    // this.storage.get('total_count_beneficiary').then((val) => {
-    //   this.totalcount_benificiary = val;
-
-
-    // });
-
-
-
   }
-
+  async presentLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Sync is going on ... ',
+    });
+    this.loading.present();
+  }
 
 
 

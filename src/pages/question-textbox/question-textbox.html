@@ -24,20 +24,16 @@
       <ion-input name="option_text" type="text" placeholder="" [(ngModel)]="answer.option_text" required></ion-input>
     </ion-item>
     <hr>
-    <div class="prv">
-      <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')">Previous</button>
-    </div>
-    <div class="next">
-      <button ion-button *ngIf="is_last == 0" (click)="goToNext()">Next</button>
-    </div>
-
-
-    <div class="submit">
-      <button ion-button *ngIf="is_last == 1" (click)="submit()">Submit</button>
+    <div class="next-prv-div">
+      <button ion-button *ngIf="is_last == 0" (click)="goToPrev('a')" type="submit" [disabled]="!form.valid"class="prv">Previous</button>
+      <button ion-button *ngIf="is_last == 0" (click)="goToNext()" type="submit" [disabled]="!form.valid"  class="next">Next</button>
+      <button ion-button *ngIf="is_last == 1" (click)="submit()" class="submit">Submit</button>
     </div>
   </form>
 
-  <div class="bckSurveyPage">
-    <button ion-button (click)="goTosurveylist()" buttom center>Back To Survey List </button>
-  </div>
 </ion-content>
+<ion-footer>
+  <div class="bckSurveyPage">
+    <button ion-button (click)="goTosurveylist()" class="bckSurveyPage">Back To Survey List </button>
+  </div>
+</ion-footer>

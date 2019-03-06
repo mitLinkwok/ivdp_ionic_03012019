@@ -107,6 +107,7 @@ import { QuestionTextboxPage } from './../pages/question-textbox/question-textbo
 import { QuestionImagePage } from './../pages/question-image/question-image'
 import { QuestionImagePageModule } from './../pages/question-image/question-image.module'
 
+
 import { from } from 'rxjs/observable/from';
 
 
@@ -187,7 +188,8 @@ export function createTranslateLoader(http: HttpClient) {
     IntroPageModule,
     SuervyPageModule,
     SyncPageModule,
-    BeneficiaryProfilePageModule
+    BeneficiaryProfilePageModule,
+   
 
 
 
