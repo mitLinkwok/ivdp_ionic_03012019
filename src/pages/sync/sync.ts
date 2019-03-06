@@ -34,9 +34,11 @@ export class SyncPage {
 	constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
 		public appGlobal: AppGlobalProvider, public dataGetterService: DataGetterServiceProvider,
 		public dataSetterService: DataSetterProvider, public sqldatabasegetter: DatabaseProvider,
-		public toastCtrl: ToastController,
+		public toastCtrl: ToastController, 
 		public db: DBmaneger) {
+		this.sqldatabasegetter.syncbeneficiarydata();
 		this.sqldatabasegetter.syncanswersdata();
+		this.sqldatabasegetter.synckycsdata();
 		this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
 		this.pending_answers = this.appGlobal.syncanswers.length
 		this.pending_kycs = this.appGlobal.synckycs.length
@@ -71,6 +73,7 @@ export class SyncPage {
 			if (data[0].original.status) {
 				alert("beneficiry sync done")
 				this.last_syncBeneficiariesTime = new Date().toDateString();
+				
 				b_success.push(data)
 				this.appGlobal.benefeciaries == []
 				this.pending_beneficiaries == 0
@@ -113,7 +116,7 @@ export class SyncPage {
 				m.loading.dismiss();
 			}
 			else {
-				alert("error else  " + data.errors);
+				console.log("error in Answers sync" + data.errors);
 				//loading.dismiss();
 			}
 		}, (error) => {
@@ -137,8 +140,6 @@ export class SyncPage {
 
 			if (data[1].original.status) {
 				alert("kycs sync done ")
-
-				alert(JSON.stringify(data))
 				this.last_syncsurveyskycs = new Date().toDateString();
 				b_success.push(data)
 				this.appGlobal.synckycs = []

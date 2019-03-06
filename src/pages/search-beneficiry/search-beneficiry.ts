@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MaintenanceRequestPage } from './../maintenance-request/maintenance-request';
-import { NgForm } from "@angular/forms";
+import { NgForm } from "@angular/forms"
+
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 /**
  * Generated class for the SearchBeneficiryPage page.
@@ -16,12 +18,12 @@ import { NgForm } from "@angular/forms";
   templateUrl: 'search-beneficiry.html',
 })
 export class SearchBeneficiryPage {
-  search={
-    search_name:''
+  search = {
+    search_name: ''
   }
- 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public barcodeScanner: BarcodeScanner) {
+
   }
 
   ionViewDidLoad() {
@@ -29,10 +31,18 @@ export class SearchBeneficiryPage {
   }
 
   searchdata(form: NgForm) {
-    
+
     this.navCtrl.push(MaintenanceRequestPage, {
-      characterforSearch:form.value.search_name
+      characterforSearch: form.value.search_name
     })
+  }
+
+  scanQR() {
+    this.barcodeScanner.scan().then((barcodeData) => {
+    this.search.search_name=barcodeData.text
+    }, (err) => {
+      alert(err);
+    });
   }
 
 }

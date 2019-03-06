@@ -106,6 +106,7 @@ import { QuestionRadiobuttonPage } from './../pages/question-radiobutton/questio
 import { QuestionTextboxPage } from './../pages/question-textbox/question-textbox'
 import { QuestionImagePage } from './../pages/question-image/question-image'
 import { QuestionImagePageModule } from './../pages/question-image/question-image.module'
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 
 import { from } from 'rxjs/observable/from';
@@ -259,7 +260,8 @@ export function createTranslateLoader(http: HttpClient) {
     DatabaseProvider,
     SQLite,
     CallNumber,
-    DBmaneger
+    DBmaneger,
+    BarcodeScanner
     //QRScanner
 
 

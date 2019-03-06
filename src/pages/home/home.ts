@@ -21,6 +21,10 @@ import 'rxjs/add/observable/interval';
 
 
 
+
+
+
+
 @IonicPage()
 @Component({
   selector: 'page-home',
@@ -54,10 +58,16 @@ export class HomePage {
     public appGlobal: AppGlobalProvider,
     public storage: Storage,
     public events: Events,
-    public sqldatabasegetter: DatabaseProvider,
+    public sqldatabasegetter: DatabaseProvider
 
 
   ) {
+    this.storage.get('intro-done').then(done => {
+      if (!done) {
+        this.storage.set('intro-done', true);
+        this.navCtrl.setRoot(IntroPage);
+      }
+    });
 
     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
     this.totalsurvey = this.sqldatabasegetter.total_surveys;
@@ -69,6 +79,7 @@ export class HomePage {
 
     storage.get('total_count_beneficiary').then((val) => {
       this.totalcount_benificiary = val;
+
     });
     this.events.subscribe('reload:page-home', () => {
       this.loadtotalbeneficialy();
@@ -106,11 +117,10 @@ export class HomePage {
   }
 
   refreshHomepage(ev) {
-
-    this.dataget();
     setTimeout(() => {
       console.log('Async operation has ended');
-      this.loadtotalbeneficialy()
+      this.loadtotalbeneficialy();
+      this.dataget();
       this.loading_livedata()
       ev.complete();
     }, 2000);
@@ -124,6 +134,7 @@ export class HomePage {
 
     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
     this.totalsurvey = this.sqldatabasegetter.total_surveys;
+
     this.storage.get('total_count_beneficiary').then((val) => {
       this.totalcount_benificiary = val;
     });
@@ -148,7 +159,5 @@ export class HomePage {
     });
     this.loading.present();
   }
-
-
 
 }

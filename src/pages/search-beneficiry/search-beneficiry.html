@@ -18,14 +18,18 @@
 <ion-content padding>
   <form #form="ngForm">
     <ion-list>
+
       <ion-item>
         <ion-input type="text" name="search_name" [(ngModel)]="search.search_name" placeholder="Name For search"
           required></ion-input>
       </ion-item>
+     
     </ion-list>
 
     <button ion-button (click)="searchdata(form)" [disabled]="!form.valid" type="submit" block>Search in database
     </button>
+    <button ion-button (click)="scanQR()"  block>Search by QR
+      </button>
   </form>
 
 

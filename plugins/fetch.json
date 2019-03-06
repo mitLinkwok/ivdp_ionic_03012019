@@ -50,7 +50,7 @@
   "cordova-plugin-ionic-webview": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-ionic-webview@1.2.1"
+      "id": "cordova-plugin-ionic-webview@4.0.0"
     },
     "is_top_level": true,
     "variables": {}
@@ -226,5 +226,15 @@
     },
     "is_top_level": false,
     "variables": {}
+  },
+  "phonegap-plugin-barcodescanner": {
+    "source": {
+      "type": "registry",
+      "id": "phonegap-plugin-barcodescanner@^8.0.1"
+    },
+    "is_top_level": true,
+    "variables": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+"
+    }
   }
 }

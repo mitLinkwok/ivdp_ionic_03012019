@@ -118,6 +118,7 @@ export class QuestionCheckboxPage {
     let key = Object.keys(data);
     for (let i = 0; i <= key.length; i++) {
       if (this.appGlobal.answers[key[i]] != undefined) {
+       
         this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]])
       }
       if (i == key.length) {

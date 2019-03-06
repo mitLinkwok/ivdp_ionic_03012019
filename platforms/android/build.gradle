@@ -95,6 +95,7 @@ ext {
 apply from: "cordova-plugin-badge/dfivdp-badge.gradle"
 apply from: "cordova-plugin-fcm-with-dependecy-updated/dfivdp-FCMPlugin.gradle"
 apply from: "cordova-plugin-local-notification/dfivdp-localnotification.gradle"
+apply from: "phonegap-plugin-barcodescanner/dfivdp-barcodescanner.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()
@@ -263,6 +264,7 @@ dependencies {
     compile "com.android.support:support-v4:25.+"
     compile "com.android.support:appcompat-v7:25.+"
     compile "com.android.support:support-v4:26.+"
+    compile "com.android.support:support-v4:27.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 

@@ -69,8 +69,6 @@ export class DatabaseProvider {
 
   // --------------------------load-from-api------------------------
   public insertbeneficiarydata(objCase: any) {
-    // alert(" instrt    " + JSON.stringify(objCase))
-    console.log(objCase);
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("select server_id from beneficiaries where server_id = ? and code = ?  ", [objCase.id, objCase.code])
         .then((data) => {
@@ -97,7 +95,6 @@ export class DatabaseProvider {
     });
   }
   public insertkycsdatafromapi(objCase: any) {
-    //alert("kyc person  :-" + objCase.kyc_person_id)
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO kycs(server_id,user_id,kyc_person_id,kyc_person_type,kyc_name,kyc_detail,kyc_number,kyc_file,kyc_image,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
         [objCase.id, objCase.user_id, objCase.kyc_person_id, objCase.kyc_person_type, objCase.kyc_name, objCase.kyc_detail, objCase.kyc_number, objCase.kyc_file, objCase.kyc_image, objCase.created_at, objCase.updated_at])
@@ -145,23 +142,17 @@ export class DatabaseProvider {
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("select * from  `questions` where  `server_id` =? ", [objCase.id])
         .then((data) => {
-          //alert("   check question     " + data.rows.length);
           if (data.rows.length == 0) {
-
             this.dbobject.executeSql("INSERT INTO `questions`(`server_id`,`survey_id`,`section_id`,`order`,`text`,`type`,`language_json`,`rule_json`,`created_at`,`updated_at`) VALUES (?,?,?,?,?,?,?,?,?,?)",
               [objCase.id, objCase.survey_id, objCase.section_id, objCase.order, objCase.text, objCase.type, objCase.language_json, objCase.rule_json, objCase.created_at, objCase.updated_at])
               .then((data) => {
-
                 console.log("insert Questions Successfully")
                 resolve(data);
-
               }, (error) => {
                 reject(error);
                 console.log("ERROR IN GETTING QUESTIONS" + JSON.stringify(error));
               });
-
           }
-
         }, (error) => {
           console.log(error)
         });
@@ -174,7 +165,6 @@ export class DatabaseProvider {
         .then((data) => {
           console.log("insert Questions Successfully")
           resolve(data);
-
         }, (error) => {
           reject(error);
           console.log("ERROR IN GETTING QUESTIONS" + JSON.stringify(error));
@@ -192,17 +182,14 @@ export class DatabaseProvider {
 
         }, (error) => {
           reject(error);
-          alert("ERROR IN GETTING QUESTIONS" + JSON.stringify(error));
+          console.log("ERROR IN GETTING QUESTIONS" + JSON.stringify(error));
         });
     });
   }
 
 
   public inserthouseholds(objCase: any) {
-
-    //alert("in insert hh   " + JSON.stringify(objCase))
     return new Promise((resolve, reject) => {
-
       this.dbobject.executeSql("select server_id from `households` where server_id = ? ", [objCase.id])
         .then((data) => {
           if (data.rows.length == 0 && objCase.id != undefined && objCase.id != null && objCase != undefined) {
@@ -215,8 +202,6 @@ export class DatabaseProvider {
                 console.log("ERROR IN GETTING household" + JSON.stringify(error));
               });
           }
-
-
         });
     });
   }
@@ -241,16 +226,11 @@ export class DatabaseProvider {
   public getbeneficiarydata(ev, cb, t) {
     let query = '';
     query = 'SELECT * FROM beneficiaries ORDER BY id DESC LIMIT 100  '
-    // query = 'SELECT * FROM beneficiaries  where id BETWEEN ' + value1 + '  AND  ' + value2 + '  ORDER BY id DESC';
-
-    // alert(query)
     this.dbobject.executeSql(query, {})
       .then((data) => {
         this.offlineCase = []
-
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
-            // alert(JSON.stringify(data.rows.item(i)))
             this.offlineCase.push({
               id: data.rows.item(i).id,
               server_id: data.rows.item(i).server_id,
@@ -328,17 +308,13 @@ export class DatabaseProvider {
 
 
   public insertnewbeneficiary(objCase: any, timestamp: string) {
-    //alert(JSON.stringify(objCase));
-    console.log(objCase);
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO Updated_beneficiaries (server_id,device_id,code,beneficiary_name,gender,age,date_of_birth,marital_status,caste,religion,primary_occupation,ownership_of_land,total_land_holding,total_family_income_average_monthly,education_status,height_in_cms,Weight_in_kgs,village_id,household_id,family_head_id,type_of_rationa_card,family_head_relation,contact_number,whatsapp_number,user_id,created_at,updated_at,sync_status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [objCase.id, this.appGlobal.device_id, objCase.code, objCase.beneficiary_name, objCase.gender, objCase.age, objCase.date_of_birth, objCase.marital_status, objCase.caste, objCase.religion, objCase.primary_occupation, objCase.ownership_of_land, objCase.total_land_holding, objCase.total_family_income_average_monthly, objCase.education_status, objCase.height_in_cms, objCase.Weight_in_kgs, objCase.village_id, objCase.household_id, objCase.family_head_id, objCase.type_of_rationa_card, objCase.family_head_relation, objCase.contact_number, objCase.whatsapp_number, objCase.user_id, timestamp, objCase.updated_at, 0])
         .then((data) => {
-
           this.insertMainbeneficiary(objCase, timestamp)
           resolve(data);
           console.log("INSERTED: insertCase" + JSON.stringify(data));
-
 
         }, (error) => {
           reject(error);
@@ -351,16 +327,12 @@ export class DatabaseProvider {
   }
 
   public insertMainbeneficiary(objCase: any, timestamp: string) {
-    // alert("TIMESTAMP in insert beni  :- " + objCase.id)
-    //alert("divece in insert beni  :- " + this.appGlobal.device_id)
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO beneficiaries (server_id,device_id,code,beneficiary_name,gender,age,date_of_birth,marital_status,caste,religion,primary_occupation,ownership_of_land,total_land_holding,total_family_income_average_monthly,education_status,height_in_cms,Weight_in_kgs,village_id,household_id,family_head_id,type_of_rationa_card,family_head_relation,contact_number,whatsapp_number,user_id,created_at,updated_at,sync_status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [objCase.id, this.appGlobal.device_id, objCase.code, objCase.beneficiary_name, objCase.gender, objCase.age, objCase.date_of_birth, objCase.marital_status, objCase.caste, objCase.religion, objCase.primary_occupation, objCase.ownership_of_land, objCase.total_land_holding, objCase.total_family_income_average_monthly, objCase.education_status, objCase.height_in_cms, objCase.Weight_in_kgs, objCase.village_id, objCase.household_id, objCase.family_head_id, objCase.type_of_rationa_card, objCase.family_head_relation, objCase.contact_number, objCase.whatsapp_number, objCase.user_id, timestamp, objCase.updated_at, 0])
         .then((data) => {
-
           alert("Insert new Beneficiary successfully")
           resolve(data);
-
           return true
         }, (error) => {
           reject(error);
@@ -409,7 +381,7 @@ export class DatabaseProvider {
 
   public getsureydatalode(cb, t) {
     let query = '';
-    query = 'SELECT * FROM survey ORDER BY server_id ASC' ;
+    query = 'SELECT * FROM survey ORDER BY server_id ASC';
     this.offlineCase = [];
     this.dbobject.executeSql(query, {})
       .then((data) => {
@@ -442,7 +414,6 @@ export class DatabaseProvider {
         this.appGlobal.questionsList = [];
         if (data.rows.length > 0) {
           for (var i = 0; i <= data.rows.length; i++) {
-            // alert(JSON.stringify(data.rows.item(i)))
             this.appGlobal.questionsList.push({
               id: data.rows.item(i).id,
               server_id: data.rows.item(i).server_id,
@@ -462,20 +433,17 @@ export class DatabaseProvider {
           this.appGlobal.questionsList = [];
         }
       }, (error) => {
-        alert("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
+        console.log("ERROR: getAllCase @@@@@ survey " + JSON.stringify(error));
       });
   }
 
   public insertAnswer(objCase: any) {
 
     for (let i = 0; i < this.appGlobal.selectedCheckbox.length; i++) {
-      //  console.log("Selected Checkbox array in database :" + JSON.stringify(this.appGlobal.selectedCheckbox[i]));
-      // console.log("Selected Checkbox array in database :" + JSON.stringify(this.appGlobal.selectedCheckId[i]));
-
       objCase.server_id = this.appGlobal.selectedCheckbox[i];
       objCase.beneficiarie_id = this.appGlobal.selectedCheckId[i];
       this.insertseprateAns(objCase)
-      console.log("#########     " + JSON.stringify(objCase))
+      // console.log("#########     " + JSON.stringify(objCase))
     }
 
 
@@ -485,12 +453,7 @@ export class DatabaseProvider {
       this.dbobject.executeSql("INSERT INTO `answers` ( `server_id`, `beneficiarie_id`, `survey_id`, `question_id`, `language_id`, `option_id`,`option_text`,`image`,`other_text`,`created_at`,`updated_at`,`sync_status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         [objCase.server_id, objCase.beneficiarie_id, objCase.survey_id, objCase.question_id, objCase.language_id, objCase.option_id, objCase.option_text, objCase.image, objCase.other_text, objCase.created_at, objCase.updated_at, 0])
         .then((data) => {
-          console.log(JSON.stringify(data))
           resolve(data);
-          this.appGlobal.selectedCheckId = [];
-          this.appGlobal.selectedCheckbox = [];
-          // this.isinsertstatus = true
-          // return true
         }, (error) => {
           reject(error);
           console.log("ERROR: insertCase" + JSON.stringify(error));
@@ -502,7 +465,6 @@ export class DatabaseProvider {
   }
 
   public getbeneficiaryforprofile(id: string, autoincrement_id: string) {
-    //alert(id + "          " + autoincrement_id)
     let query = "SELECT * FROM beneficiaries WHERE server_id=?";
     if (id == undefined && id == null) {
       id = autoincrement_id
@@ -576,7 +538,7 @@ export class DatabaseProvider {
           });
       });
     } else {
-      alert("update else ");
+      console.log("update else ");
     }
   }
   updatebenenificialinsert(objCase: any, beneficiary_id: string) {
@@ -602,14 +564,13 @@ export class DatabaseProvider {
   }
   public syncbeneficiarydata() {
     let query = '';
-    //alert("in sync");
     query = 'SELECT * FROM beneficiaries where sync_status = 0 ';
     this.dbobject.executeSql(query, {})
       .then((data) => {
         this.appGlobal.benefeciaries = []
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
-            console.log("  %%%%%%  "+JSON.stringify(data.rows.item(i)));
+            console.log("  %%%%%%  " + JSON.stringify(data.rows.item(i)));
             this.appGlobal.benefeciaries.push({
               client_id: data.rows.item(i).id,
               code: data.rows.item(i).code,
@@ -643,7 +604,7 @@ export class DatabaseProvider {
           console.log("error in getting beneficiary data from database !!!!")
         }
       }, (error) => {
-        alert("ERROR: getAllCase " + JSON.stringify(error));
+        console.log("ERROR: getAllCase " + JSON.stringify(error));
       });
   }
 
@@ -656,7 +617,6 @@ export class DatabaseProvider {
         this.appGlobal.syncanswers = []
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
-            // console.log(" @@@@@@@@@      " + JSON.stringify(data.rows.item(i)))
             this.appGlobal.syncanswers.push({
               client_id: data.rows.item(i).id,
               beneficiarie_id: data.rows.item(i).beneficiarie_id,
@@ -713,8 +673,8 @@ export class DatabaseProvider {
   }
   showbeneficirybysearch(ev: any, cb, t) {
     let query = '';
-    query = 'SELECT beneficiaries.*,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id WHERE beneficiary_name LIKE ' + "'" + ev + "%' order by id desc";
-
+    query = 'SELECT beneficiaries.*,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id WHERE households.hh_number LIKE' + "'" + ev + "'" + ' OR  beneficiary_name LIKE ' + "'" + ev + "%'   order by id desc";
+    console.log(query)
     this.dbobject.executeSql(query, {})
       .then((data) => {
         this.offlineCase = []
@@ -785,7 +745,7 @@ export class DatabaseProvider {
           }, (error) => { console.log(JSON.stringify("error in getting beneficiaries" + error)) })
         }
       }, (error) => {
-        alert("ERROR : getAllCase " + JSON.stringify(error));
+        console.log("ERROR : getAllCase " + JSON.stringify(error));
         return false;
       });
   }
@@ -881,7 +841,6 @@ export class DatabaseProvider {
             })
           }
           mdl.household_id = this.appGlobal.HouseHold;
-
         }
       }, (error) => {
         console.log("errort in select  hh_number  " + error)
@@ -965,14 +924,21 @@ export class DatabaseProvider {
 
   }
 
-  public getdataforgroupsurvey(ca, t) {
+  public getdataforgroupsurvey(ev, ca, t) {
     let query = '';
-    query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id';
+    if (ev != null) { 
+      query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id  WHERE households.hh_number LIKE ' + "'" + ev + "'";
+    }else{
+      query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id ';
+    }
+
+   
     this.dbobject.executeSql(query, {})
       .then((data) => {
         if (data.rows.length > 0) {
-          this.appGlobal.groupsurveybeneficiaries = []
+          // this.appGlobal.groupsurveybeneficiaries = []
           for (var i = 0; i < data.rows.length; i++) {
+
             this.appGlobal.groupsurveybeneficiaries.push({
               id: data.rows.item(i).id,
               server_id: data.rows.item(i).server_id,

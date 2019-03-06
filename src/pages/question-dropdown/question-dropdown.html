@@ -11,6 +11,11 @@
   </ion-navbar>
   <ion-toolbar no-border-top>
     <ion-searchbar color="primary" [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="scanQR()">
+        <ion-icon name="qr-scanner"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-toolbar>
 
 </ion-header>
@@ -18,11 +23,13 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let entry of group | search : {term:queryText,fields:['beneficiary_name','household_id']};let i = index">
+    <ion-item
+      *ngFor="let entry of group | search : {term:queryText,fields:['beneficiary_name','household_id']};let i = index">
       <ion-label>{{entry.household_id}} - <label><strong>{{entry.beneficiary_name}}</strong></label> </ion-label>
 
-      <ion-checkbox slot="end" *ngIf="entry.id != '' && entry.surver_id !=''"  [disabled]="entry.isChecked==false && numberOfChecks>=checkBoxLimit && survey_type=='Single'" [(ngModel)]="entry.isChecked"
-        (ionChange)="getChanged(entry)"></ion-checkbox>
+      <ion-checkbox slot="end" *ngIf="entry.id != '' && entry.surver_id !=''"
+        [disabled]="entry.isChecked==false && numberOfChecks>=checkBoxLimit && survey_type=='Single'"
+        [(ngModel)]="entry.isChecked" (ionChange)="getChanged(entry)"></ion-checkbox>
     </ion-item>
   </ion-list>
   <ion-fab right bottom>

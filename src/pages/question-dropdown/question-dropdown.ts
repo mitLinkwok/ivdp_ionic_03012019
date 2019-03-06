@@ -6,6 +6,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppGlobalProvider } from "../../providers/app-global/app-global";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { elementAt } from 'rxjs/operator/elementAt';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 
 
@@ -38,14 +39,17 @@ export class QuestionDropdownPage {
   numberOfChecks: number = 1;
   checkBoxLimit: any = 1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
-    this.sqldatabasegetter.getdataforgroupsurvey(this.ccallBack, this)
+  constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider, public barcodeScanner: BarcodeScanner) {
+    this.sqldatabasegetter.getdataforgroupsurvey(null, this.ccallBack, this);
+
     this.project_id = navParams.get("project_id");
     this.survey_id = navParams.get("survey_id");
     this.qId = navParams.get("qId");
     this.survey_type = navParams.get("type");
+
   }
   ionViewDidLoad() {
+
     console.log('ionViewDidLoad QuestionDropdownPage');
     console.log("@@@    " + this.appGlobal.groupsurveybeneficiaries)
   }
@@ -64,6 +68,7 @@ export class QuestionDropdownPage {
   ccallBack(t) {
     t.group = t.appGlobal.groupsurveybeneficiaries;
     t.group[0].isChecked = true;
+   
   }
 
 
@@ -83,7 +88,26 @@ export class QuestionDropdownPage {
     }
   }
   startsurvey() {
-    this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
+
+    this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
+    this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
+
+    if (this.survey_type === "Single") {
+      if (this.appGlobal.selectedCheckbox.length == 1) {
+        this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
+      } else if (this.appGlobal.selectedCheckbox.length > 1 || this.appGlobal.selectedCheckbox.length < 1) {
+        alert("You should select only one beneficiary,Not less or not more ")
+      }
+    } else {
+      if (this.appGlobal.selectedCheckbox.length > 2) {
+        this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
+       }
+       //else{
+      //   alert("select beneficiary by scan QR code");
+      // }
+    }
+
+
   }
   callsurveypage(ProjectId, suervtId, qId) {
     if (this.appGlobal.questionsList != null && this.appGlobal.questionsList != undefined) {
@@ -98,10 +122,31 @@ export class QuestionDropdownPage {
     }
   }
   Selection() {
+
     this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
     this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
-    console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckId).replace(/\[|\]|"|"/g, ""))
+    console.log("Final String :" + JSON.stringify(this.appGlobal.selectedCheckId).replace(/\[|\]|"|"/g, ""));
+    console.log("Selected Checkbox:" + JSON.stringify(this.appGlobal.selectedCheckId));
     this.answer.option_text = JSON.stringify(this.appGlobal.selectedCheckbox).replace(/\[|\]|"|"/g, "");
+
+  }
+
+
+  scanQR() {
+    this.barcodeScanner.scan().then((barcodeData) => {
+      if (barcodeData.text != undefined) {
+        this.appGlobal.groupsurveybeneficiaries = []
+       
+        this.sqldatabasegetter.getdataforgroupsurvey(barcodeData.text, this.ccallBack, this);
+       
+
+      } else {
+        // this.appGlobal.groupsurveybeneficiaries = []
+        alert("Can not find House hold number.. ")
+      }
+    }, (err) => {
+      console.log("QR code cannot read Scuessfully.." + JSON.stringify(err))
+    });
   }
 }
 

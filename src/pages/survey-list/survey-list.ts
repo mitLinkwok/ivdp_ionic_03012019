@@ -108,6 +108,7 @@ export class SurveyListPage {
       alert("This is Group survey,so you should select more then one beneficiary.")
       this.appGlobal.selectedCheckId = [];
       this.appGlobal.selectedCheckbox = [];
+      this.appGlobal.groupsurveybeneficiaries=[]
       this.navCtrl.push(QuestionDropdownPage, {
         project_id: ProjectId,
         survey_id: suervtId,
@@ -118,7 +119,7 @@ export class SurveyListPage {
     } else if (type == "Single") {
       this.appGlobal.selectedCheckId = [];
       this.appGlobal.selectedCheckbox = [];
-
+      this.appGlobal.groupsurveybeneficiaries=[]
       this.navCtrl.push(QuestionDropdownPage, {
         project_id: ProjectId,
         survey_id: suervtId,
@@ -129,6 +130,7 @@ export class SurveyListPage {
     } else {
       this.appGlobal.selectedCheckId = [];
       this.appGlobal.selectedCheckbox = [];
+      this.appGlobal.groupsurveybeneficiaries=[]
       alert("can not read survey type!!!  " + type);
     }
 

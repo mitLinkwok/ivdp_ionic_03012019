@@ -133,7 +133,7 @@ Config.xml file:
     <plugin name="cordova-plugin-background-mode" spec="0.7.2" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="browser" spec="5.0.4" />
-    <plugin name="phonegap-plugin-barcodescanner" spec="8.0.1" />
+    
 </widget>
 
 
