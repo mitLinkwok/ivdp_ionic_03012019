@@ -14,16 +14,12 @@
   <ion-refresher (ionRefresh)="refreshHomepage($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-label><strong>{{sync_status}} </strong> </ion-label>
-
   <ion-card>
     <ion-card-header>
       <div><strong>Total Number of Beneficiary :- </strong></div>
     </ion-card-header>
     <ion-card-content>
-     
       <p>Count: <strong>{{appGlobal.actual}} / {{appGlobal.total}}</strong></p>
-
       <p><strong>{{live_dataLoade}}<label>%</label> </strong></p>
     </ion-card-content>
   </ion-card>
@@ -33,9 +29,7 @@
       <div><strong>Total Number of HouseHold :- </strong></div>
     </ion-card-header>
     <ion-card-content>
-
-
-      <p> Count: <strong>{{appGlobal.actual_hh}}</strong></p>
+      <p> Count: <strong>{{appGlobal.total_househ}}</strong></p>
     </ion-card-content>
   </ion-card>
 
@@ -48,24 +42,7 @@
 
     </ion-card-content>
   </ion-card>
- 
- 
+
+  <ion-label>{{appGlobal.insertcountbene}}</ion-label>
 
 </ion-content>
-
-
-<!-- <script>
-var ele = document.getElementsByClassName("loader");
-var width = 0;
-var id = setInterval(frame, 1000);
-
-function frame(){
-  alrt("hi");
-  if(width >= 100){
-    clearInterval(id);
-  }else{
-    width++;
-    ele.style.width = width + '%';
-  }
-}
-</script> -->

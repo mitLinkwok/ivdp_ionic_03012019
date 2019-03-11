@@ -22,7 +22,7 @@
 
     <ion-item *ngFor="let entry of opctions">
       <ion-label>{{entry.text}}</ion-label>
-      <ion-radio slot="start" value="{{entry.text}}" (ionSelect)="select(entry.text)"></ion-radio>
+      <ion-radio slot="start" value="{{entry.text}}" (ionSelect)="select(entry)"></ion-radio>
     </ion-item>
 
   </ion-list>

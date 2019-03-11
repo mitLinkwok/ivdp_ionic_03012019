@@ -1,3 +1,4 @@
+import { SearchBeneficiryPage } from './../search-beneficiry/search-beneficiry';
 import { Observable } from 'rxjs/Observable';
 import { DatabaseProvider } from './../../providers/database/database';
 
@@ -8,21 +9,13 @@ import { DataSetterProvider } from './../../providers/data-setter/data-setter';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { Network } from '@ionic-native/network';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, Events, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, Events, LoadingController, ViewController } from 'ionic-angular';
 import { DataGetterServiceProvider } from "../../providers/data-getter-service/data-getter-service";
 
 import { Storage } from '@ionic/storage';
 import { IntroPage } from "../intro/intro";
 
 import 'rxjs/add/observable/interval';
-
-
-
-
-
-
-
-
 
 
 @IonicPage()
@@ -34,19 +27,14 @@ export class HomePage {
   public notification;
   databaseobj: any;
   public notifications: any = [];
-  totalbeneficiary: any
-  totalcount_benificiary: string
-  totalsurvey: string
-  total_count: string
-  sync_status: string
-  live_dataLoade: number
-  sub: any
-  actual: any
-  total: any
-  aactual_hhc: any
+  totalbeneficiary: any;
+  totalcount_benificiary: number = 0;
+  totalsurvey: string = "0";
+  totalhousehold: number = 0;
+  total_count: string;
+  sync_status: string = "Sync is going on ...";
+  live_dataLoade: number = 0;
   loading: any;
-
-
   descending: boolean = false;
   order: number = -1;
   field: string = 'updated_at';
@@ -59,105 +47,89 @@ export class HomePage {
     public storage: Storage,
     public events: Events,
     public sqldatabasegetter: DatabaseProvider
-
-
   ) {
-    this.storage.get('intro-done').then(done => {
-      if (!done) {
-        this.storage.set('intro-done', true);
-        this.navCtrl.setRoot(IntroPage);
-      }
-    });
-
     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
     this.totalsurvey = this.sqldatabasegetter.total_surveys;
-    this.totalcount_benificiary = this.appGlobal.totalcount_bene;
-    this.sync_status = this.appGlobal.sync_status
-    this.actual = this.appGlobal.actual;
-    this.total = this.appGlobal.total;
-    this.aactual_hhc = this.appGlobal.actual_hh;
-
-    storage.get('total_count_beneficiary').then((val) => {
-      this.totalcount_benificiary = val;
-
-    });
+    this.totalcount_benificiary = this.appGlobal.total;
     this.events.subscribe('reload:page-home', () => {
-      this.loadtotalbeneficialy();
       this.reloadfunction();
+    });
 
+    this.loading = this.loadingCtrl.create({
+      content: 'Sync is going on ... ',
     });
 
   }
   reloadfunction() {
-    this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
-    this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
+    // console.log("Home   reloadfunction");
+    // this.dataget();
   }
-
-  ccallBack(t) {
-    t.loadtotalbeneficialy();
-    t.loading_livedata();
-  }
-
-
-
 
   ionViewDidLoad() {
     this.storage.get('intro-done').then(done => {
       if (!done) {
         this.storage.set('intro-done', true);
         this.navCtrl.setRoot(IntroPage);
+        this.loadincontrol();
+
       }
     });
-
+    console.log("Home   ionViewDidLoad")
   }
+  ionVieionViewDidEnterwDidEnter() {
 
-  ionViewDidEnter() {
-    this.loadtotalbeneficialy()
-    this.loading_livedata()
+    console.log("Home  ionViewDidEnter")
+    console.log("Home  ionViewDidEnter : " + this.totalcount_benificiary);
   }
 
   refreshHomepage(ev) {
+    console.log("Home  refreshHomepage")
     setTimeout(() => {
       console.log('Async operation has ended');
-      this.loadtotalbeneficialy();
-      this.dataget();
-      this.loading_livedata()
       ev.complete();
     }, 2000);
   }
+
   dataget() {
     this.sqldatabasegetter.getTotalcount(this.ccallBack, this);
     this.sqldatabasegetter.getTotalsurvey(this.ccallBack, this);
+    this.sqldatabasegetter.getTotalhh(this.ccallBack, this);
+    console.log("Home dataget");
   }
 
-  loadtotalbeneficialy() {
+  ccallBack(t) {
+    t.loadincontrol();
+  }
 
-    this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
+  loadincontrol() {
+    this.totalbeneficiary = this.getTotalcount(this.ccallBack, this);
     this.totalsurvey = this.sqldatabasegetter.total_surveys;
-
-    this.storage.get('total_count_beneficiary').then((val) => {
-      this.totalcount_benificiary = val;
-    });
-
-
-    if (this.totalbeneficiary == this.totalcount_benificiary) {
+    this.totalhousehold = this.sqldatabasegetter.total_Hh;
+    this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
+    if (this.totalbeneficiary == this.appGlobal.total && this.appGlobal.actual == this.appGlobal.total && this.appGlobal.total_househ == this.totalhousehold) {
       this.sync_status = "Sync Done"
       this.loading.dismiss();
     } else {
-      this.sync_status = "Sync is going ... "
-      this.presentLoading();
+      this.loading.present();
     }
-
+    this.live_dataLoade = Math.round(this.appGlobal.insertcountbene * (100) / this.appGlobal.total);
+    // console.log(this.appGlobal.insertcountbene + this.appGlobal.total)
+    // if (this.appGlobal.insertcountbene == this.appGlobal.total) {
+    //   this.sync_status = "Sync Done"
+    //   this.loading.dismiss();
+    // } else {
+    //  this.loading.present();
+    // }
   }
 
-  loading_livedata() {
-    this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
+  getTotalcount(cb, t) {
+    this.sqldatabasegetter.dbobject.executeSql("select * from beneficiaries", {})
+      .then((data) => {
+        console.log('bene length ' + data.rows.length)
+        cb(t)
+        return data.rows.length;
+      }, (error) => {
+        console.log(JSON.stringify(error))
+      })
   }
-  async presentLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Sync is going on ... ',
-    });
-    this.loading.present();
-  }
-
 }

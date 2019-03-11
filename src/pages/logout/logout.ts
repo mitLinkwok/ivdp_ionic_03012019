@@ -17,10 +17,10 @@ import { DatabaseProvider } from './../../providers/database/database';
 })
 export class LogoutPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public db:DataSetterProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public db: DataSetterProvider, public sqldatabasegetter: DatabaseProvider) {
 
+    this.sqldatabasegetter.deleteDb();
 
-  
 
   }
 

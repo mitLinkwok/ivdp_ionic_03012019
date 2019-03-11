@@ -132,7 +132,7 @@ export class AppGlobalProvider {
   public seletgroup = [];
   public selectedCheckbox = []
   public selectedCheckId = []
-  public totalcount_bene;
+
   public sync_status;
   public groupsurveybeneficiaries = []
   public loginURL = this.intranetBaseURL + '/auth/login';
@@ -165,8 +165,10 @@ export class AppGlobalProvider {
 
   ]
   public actual = 0;
+  public insertcountbene = 0;
   public total = 0;
-  public actual_hh = 0
+  public actual_hh = 0;
+  public total_househ = 0
 
 }
 

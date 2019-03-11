@@ -64,7 +64,7 @@ export class QuestionImagePage {
     else {
       this.answer = {
         beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
-        language_id: 2, option_id: 2, option_text: "N/A", image: "", other_text: "no"
+        language_id: 3, option_id: 2, option_text: "N/A", image: "", other_text: "no"
       };
     }
   }

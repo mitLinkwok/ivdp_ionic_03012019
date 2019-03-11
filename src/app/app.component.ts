@@ -69,8 +69,8 @@ export class MyApp {
   // { title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box' },
   myVoicePages: PageInterface[] = [
     { title: 'Beneficiary', name: "SearchbeneficiryPage", component: SearchbeneficiryPage, icon: 'people', countName: 'Idea' },
-   
-    { title: 'Search', name: "Search", component:SearchBeneficiryPage, icon: 'search' },
+
+    { title: 'Search', name: "Search", component: SearchBeneficiryPage, icon: 'search' },
     { title: 'Surveys', name: "SurveyListPage", component: SurveyListPage, icon: 'list-box' }
 
   ];
@@ -79,7 +79,7 @@ export class MyApp {
   loggedOutPages: PageInterface[] = [
     { title: 'Sync', name: 'SyncPage', component: SyncPage, icon: 'sync' },
     { title: 'Logout', name: 'LogoutPage', component: LogoutPage, icon: 'log-out', logsOut: true }
-  
+
 
   ];
 
@@ -505,14 +505,11 @@ export class MyApp {
           }
         });
       }
-      // this.backgroundGeolocation.start();
-      // this.nav.setRoot(HomePage);
       this.rootPage = HomePage;
       this.content.scrollToTop();
     });
 
     this.events.subscribe('user:logout', () => {
-      // this.nav.setRoot(LoginPage);
       this.username = '';
       this.userprofile = '';
       this.vibrationCtrl.vibrate(1000);

@@ -15,10 +15,10 @@ import { DataGetterServiceProvider } from "../../providers/data-getter-service/d
 export class DBmaneger {
 
     public isqurestatus: boolean = false;
-    total_datapage: any
+    total_datapage:number
     total_pageHH: any
-    page_status = 0
-    page_status_hh = 0
+    page_status = 0;
+    page_status_hh = 0;
     UserId: any
     data: any
     total_count_beneficiary: string
@@ -37,58 +37,61 @@ export class DBmaneger {
     ) {
 
         this.data = this.user.userData.id
-
+        this.page_status = 0;
 
     }
 
     public async getbenificialydata() {
-        
-        
-        if (this.page_status == null && this.page_status == undefined && this.page_status == 0 || this.page_status == 1) {
-                this.dataGetterService.getAllMaintenanceRequests(this.data).subscribe((data: any) => {
-                    let a = true
-                    if (data.success || a) {
-                        this.appGlobal.actual = data.data.length + this.appGlobal.actual;
-                        for (let i = 0; i <= data.data.length; i++) {
-                            this.db.insertbeneficiarydata(data.data[i]);
-                            this.appGlobal.sync_status = "Sync is going on ...."
-                        }
-                        this.total_datapage = JSON.stringify(data.meta.last_page);
-                        this.storage.set("total_count_beneficiary", JSON.stringify(data.meta.total))
-                        this.appGlobal.totalcount_bene = JSON.stringify(data.meta.total);
-                        this.appGlobal.total = data.meta.total;
-                        this.doInfinite(null);
-                        return this.isqurestatus = true
-                    } else {
-                        console.log("cannot get beneficiary  data for insert");
-                    }
-                    return this.isqurestatus = false
-                }, error => {
-                    console.log(JSON.stringify(error))
-                    const toast = this.toastCtrl.create({
-                        message: this.appGlobal.ServerError,
-                        duration: 3000
-                    });
-                    toast.present();
-                });
-            } else {
 
+
+        if (this.page_status == 0 || this.page_status == 1) {
+
+            console.log("page_status  in 1 Api call  " + this.page_status)
+            this.dataGetterService.getAllMaintenanceRequests(this.data).subscribe((data: any) => {
+                let a = true
+                if (data.success || a) {
+                    this.appGlobal.actual = data.data.length + this.appGlobal.actual;
+                    for (let i = 0; i <= data.data.length; i++) {
+                        this.db.insertbeneficiarydata(data.data[i]);
+                        this.appGlobal.sync_status = "Sync is going on ...."
+                    }
+                   // this.total_datapage = JSON.stringify(data.meta.last_page);
+                   this.total_datapage=data.meta.last_page
+                   console.log("page_status  in 1 Api call  total " + this.total_datapage)
+                    this.appGlobal.total = data.meta.total;
+                    this.doInfinite(null);
+                    return this.isqurestatus = true
+                } else {
+                    console.log("cannot get beneficiary  data for insert");
+                }
+                return this.isqurestatus = false
+            }, error => {
+                console.log(JSON.stringify(error))
+                const toast = this.toastCtrl.create({
+                    message: this.appGlobal.ServerError,
+                    duration: 3000
+                });
+                toast.present();
+            });
+        } else {
+
+
+            if (this.page_status != null && this.page_status != undefined && this.page_status <= this.total_datapage) {
                 this.doInfinite(null);
             }
+
+        }
 
     }
 
     doInfinite(e): Promise<any> {
-
-        if (this.page_status != null && this.page_status != undefined) {
+        if (this.page_status != null && this.page_status != undefined && this.page_status <= this.total_datapage) {
             this.paggination(null);
         }
-        // this.paggination(null);
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve();
                 this.getbenificialydata();
-
             }, 10000);
         });
     }
@@ -100,10 +103,10 @@ export class DBmaneger {
             let a = true
             this.appGlobal.actual = this.appGlobal.actual + data.data.length;
             if (data.success || a) {
-
                 for (let i = 0; i <= data.data.length; i++) {
                     this.db.insertbeneficiarydata(data.data[i]);
-                    this.appGlobal.sync_status = "Sync is going on ...."
+                    // this.appGlobal.sync_status = "Sync is going on ...."
+                    // console.log("@@@    paggination  beneficial " + this.page_status);
                 }
             }
         }, (error) => {
@@ -225,12 +228,13 @@ export class DBmaneger {
             await this.dataGetterService.gathouseholsrequest().subscribe((data: any) => {
                 let a = true
                 if (data.success || a) {
-                    this.appGlobal.actual_hh = data.data.length;
+
                     for (let i = 0; i <= data.data.length; i++) {
 
                         this.db.inserthouseholds(data.data[i]);
                     }
                     this.total_pageHH = JSON.stringify(data.meta.last_page);
+                    this.appGlobal.total_househ = data.meta.total;
                     this.doInfiniteHH(null);
                     return this.isqurestatus = true
                 } else {

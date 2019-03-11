@@ -20,6 +20,7 @@ export class DatabaseProvider {
   public dbobject: any;
   public db: null
   public total_beneficialy: string;
+  public total_Hh: number;
   public total_surveys: string;
   public offlineCase: any = [];
   public offlineCasekycs: any = [];
@@ -78,9 +79,11 @@ export class DatabaseProvider {
               .then((data) => {
                 resolve(data);
                 console.log("INSERTED: insertCase" + JSON.stringify(data));
+                this.appGlobal.insertcountbene = this.appGlobal.insertcountbene + 1;
               }, (error) => {
                 reject(error);
-                this.appGlobal.actual = this.appGlobal.actual - 1
+                 this.appGlobal.actual = this.appGlobal.actual - 1
+                //this.appGlobal.insertcountbene = this.appGlobal.insertcountbene - 1;
                 console.log("ERROR: insertCase" + JSON.stringify(error));
               });
           } else {
@@ -121,18 +124,14 @@ export class DatabaseProvider {
               .then((data) => {
                 resolve(data);
                 console.log("insert Survey Successfully")
-
               }, (error) => {
                 reject(error);
-
                 console.log("ERROR IN GETTING SURVEY: insertCase" + JSON.stringify(error));
               });
-
           }
           else {
             console.log("alredy")
           }
-
         }, (error) => {
           console.log(JSON.stringify(error))
         });
@@ -387,6 +386,7 @@ export class DatabaseProvider {
       .then((data) => {
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
+            console.log(JSON.stringify(data.rows.item(i)))
             this.offlineCase.push({
               id: data.rows.item(i).id,
               server_id: data.rows.item(i).server_id,
@@ -443,7 +443,7 @@ export class DatabaseProvider {
       objCase.server_id = this.appGlobal.selectedCheckbox[i];
       objCase.beneficiarie_id = this.appGlobal.selectedCheckId[i];
       this.insertseprateAns(objCase)
-      // console.log("#########     " + JSON.stringify(objCase))
+      console.log("server  ID     " + objCase.server_id + " B ID  " + objCase.beneficiarie_id)
     }
 
 
@@ -451,7 +451,7 @@ export class DatabaseProvider {
   insertseprateAns(objCase) {
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO `answers` ( `server_id`, `beneficiarie_id`, `survey_id`, `question_id`, `language_id`, `option_id`,`option_text`,`image`,`other_text`,`created_at`,`updated_at`,`sync_status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-        [objCase.server_id, objCase.beneficiarie_id, objCase.survey_id, objCase.question_id, objCase.language_id, objCase.option_id, objCase.option_text, objCase.image, objCase.other_text, objCase.created_at, objCase.updated_at, 0])
+        [objCase.server_id, objCase.server_id, objCase.survey_id, objCase.question_id, objCase.language_id, objCase.option_id, objCase.option_text, objCase.image, objCase.other_text, objCase.created_at, objCase.updated_at, 0])
         .then((data) => {
           resolve(data);
         }, (error) => {
@@ -759,7 +759,23 @@ export class DatabaseProvider {
         console.log(JSON.stringify(error))
       })
   }
-
+  getTotalhh(cb, t) {
+    this.dbobject.executeSql("select * from households", {})
+      .then((data) => {
+        this.total_Hh = data.rows.length;
+        cb(t)
+      }, (error) => {
+        console.log(JSON.stringify(error))
+      })
+  }
+  deleteDb() {
+    this.dbobject.executeSql("DROP DATABASE ivdp", {})
+      .then((data) => {
+        console.log('delete database');
+      }, (error) => {
+        console.log(JSON.stringify(JSON.stringify(error)));
+      });
+  }
 
 
 
@@ -926,9 +942,9 @@ export class DatabaseProvider {
 
   public getdataforgroupsurvey(ev, ca, t) {
     let query = '';
-    if (ev != null) { 
+    if (ev != null) {
       query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id  WHERE households.hh_number LIKE ' + "'" + ev + "'";
-    }else{
+    } else {
       query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id ';
     }
 
@@ -936,7 +952,7 @@ export class DatabaseProvider {
     this.dbobject.executeSql(query, {})
       .then((data) => {
         if (data.rows.length > 0) {
-          // this.appGlobal.groupsurveybeneficiaries = []
+          //  this.appGlobal.groupsurveybeneficiaries = []
           for (var i = 0; i < data.rows.length; i++) {
 
             this.appGlobal.groupsurveybeneficiaries.push({
@@ -950,6 +966,9 @@ export class DatabaseProvider {
             })
           }
           ca(t)
+        }
+        else {
+          alert("Data is not Available");
         }
       }, (error) => {
         console.log("errort in select  hh_number  " + error)

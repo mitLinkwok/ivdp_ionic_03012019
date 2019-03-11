@@ -26888,6 +26888,11 @@ page-question-checkbox .next-prv-div {
   margin: 60px 15px;
 }
 
+page-question-dropdown .scanQR {
+  width: 100%;
+  text-align: center;
+}
+
 page-question-image .next {
   width: 40%;
   float: right;

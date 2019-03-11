@@ -39,6 +39,7 @@ export class SurveyListPage {
 
     this.beneficiary_id = navParams.get('beneficiary_id');
     this.auto_increment_id = navParams.get('auto_increment_id');
+   
     this.user = userData.userData;
     this.sqldatabasegetter.getsureydatalode(this.ccallBack, this);
     this.appGlobal.questionsList = []
