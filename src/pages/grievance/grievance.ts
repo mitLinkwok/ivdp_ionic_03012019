@@ -34,10 +34,6 @@ export class GrievancePage {
   UserId;
   beneficiary_id: string;
   autoincrement_id: string;
-
-
-
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public dataGetterService: DataGetterServiceProvider,
     public loadingCtrl: LoadingController,
@@ -47,34 +43,28 @@ export class GrievancePage {
     public toastCtrl: ToastController,
     public appGlobal: AppGlobalProvider,
     public sqldatabasegetter: DatabaseProvider) {
+
     this.beneficiary_id = navParams.get('beneficiary_id');
     this.autoincrement_id = navParams.get('auto_increment_id');
     this.sqldatabasegetter.getKycsdata(this.beneficiary_id, this.autoincrement_id, this.ccallBack, this);
-   
-
     this.events.subscribe('reload:page-grievance', () => {
       this.loadGrievances(null)
     });
-
-
   }
   dorefresher(ev) {
     setTimeout(() => {
       this.loadGrievances(ev);
-
       ev.complete();
     }, 1000);
   }
 
   ionViewDidEnter() {
     this.loadGrievances(null);
-   // alert("ionViewDidEnter")
-   this.sqldatabasegetter.getKycsdata(this.beneficiary_id, this.autoincrement_id, this.ccallBack, this);
+    this.sqldatabasegetter.getKycsdata(this.beneficiary_id, this.autoincrement_id, this.ccallBack, this);
   }
 
   ionViewDidLoad() {
     this.loadGrievances(null);
-    //alert("ionViewDidLoad")
     console.log('ionViewDidLoad GrievancePage');
   }
   ccallBack(t) {
@@ -83,20 +73,18 @@ export class GrievancePage {
 
 
   loadGrievances(ref) {
-   
+
     if (this.sqldatabasegetter.offlineCasekycs.length > 0) {
       this.grievance_m = [];
-
       for (let i = 0; i <= this.sqldatabasegetter.offlineCasekycs.length; i++) {
         if (this.sqldatabasegetter.offlineCasekycs[i] != undefined) {
           console.log(this.sqldatabasegetter.offlineCasekycs[i]);
-
           this.grievance_m.push(
             this.sqldatabasegetter.offlineCasekycs[i]
           );
         }
       }
-  
+
       if (ref != null) {
         ref.complete();
       }
@@ -105,7 +93,7 @@ export class GrievancePage {
     } else {
       this.grievance_m = [];
       console.log("No data i array")
-  
+
       if (ref != null) {
         ref.complete();
       }

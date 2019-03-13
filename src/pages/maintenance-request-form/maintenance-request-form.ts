@@ -116,8 +116,6 @@ export class MaintenanceRequestFormPage {
     this.assets = [];
   }
   submitMaintenanceRequest(data) {
-    //alert(this.timestamp)
-    // this.sqldatabasegetter.insertMainbeneficiary(data, this.timestamp);
     this.sqldatabasegetter.insertnewbeneficiary(data, this.timestamp);
 
     if (this.sqldatabasegetter.insertMainbeneficiary) {
@@ -132,41 +130,7 @@ export class MaintenanceRequestFormPage {
 
       }
     }
-    // ------------------for-OnlineDAta----------------------------
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Please wait...'
-    // });
-    // loading.present();
-    // this.dataSetterService.createMaintenanceRequest(data).subscribe((data: any) => {
-    //   console.log("Create Maintenance Response", data);
-    //   loading.dismiss();
-
-    //   if (data.success) {
-    //     const toast = this.toastCtrl.create({
-    //       message: data.message,
-    //       duration: 3000
-    //     });
-    //     toast.present();
-    //     if (this.navCtrl.canGoBack) {
-    //       this.navCtrl.pop();
-    //     }
-    //     this.vibration.vibrate(this.appGlobal.vibrationTimings);
-    //   } else {
-    //     const toast = this.toastCtrl.create({
-    //       message: data.errors,
-    //       duration: 3000
-    //     });
-    //     toast.present();
-    //   }
-    // }, error => {
-    //   loading.dismiss();
-    //   console.log(error);
-    //   const toast = this.toastCtrl.create({
-    //     message: this.appGlobal.ServerError,
-    //     duration: 3000
-    //   });
-    //   toast.present();
-    // });
+   
   }
   logForm(form: NgForm) {
     this.submitMaintenanceRequest(form.value);

@@ -77,41 +77,6 @@ export class GrievanceFormPage {
   }
 
   loadGrievanceCategories(ref) {
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Please wait...'
-    // });
-
-    // if (ref === null) {
-    //   loading.present();
-    // }
-    // this.dataGetterService.getGrievanceCategories()
-    //   .subscribe((data: any) => {
-    //     console.log("Grievance Categories Loaded", data);
-
-    //     if (data.success) {
-    //       this.grievance_categories = data.grievanceTypes;
-    //     } else {
-    //       this.grievance_categories = [];
-    //     }
-
-    //     loading.dismiss();
-    //     if (ref != null) {
-    //       ref.complete();
-    //     }
-    //   }, err => {
-    //     console.log(err);
-    //     this.grievance_categories = [];
-    //     const toast = this.toastCtrl.create({
-    //       message: this.appGlobal.ServerError,
-    //       duration: 3000
-    //     });
-    //     toast.present();
-    //     loading.dismiss();
-    //     if (ref != null) {
-    //       ref.complete();
-    //     }
-
-    //   });
   }
 
   ionViewDidEnter() {
@@ -135,55 +100,6 @@ export class GrievanceFormPage {
 
       }
     }
-    //  alert("Create Grievance Request  " + 
-    //  JSON.stringify(d));
-
-
-
-
-
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Please wait...'
-    // });
-
-    // loading.present();
-
-
-    // -------------------------FOR ONLINE------------------------
-    // this.dataSetterService.createGrievance(d)
-    //   .subscribe((data: any) => {
-    //     alert("Create Grievance Response       " + data);
-
-    //     loading.dismiss();
-
-    //     if (data.success) {
-    //       this.events.publish('reload:grievance');
-    //       const toast = this.toastCtrl.create({
-    //         message: data.message,
-    //         duration: 3000
-    //       });
-    //       toast.present();
-    //       if (this.navCtrl.canGoBack) {
-    //         this.navCtrl.pop();
-    //       }
-    //       this.vibration.vibrate(this.appGlobal.vibrationTimings);
-    //     } else {
-    //       const toast = this.toastCtrl.create({
-    //         message: data.errors,
-    //         duration: 3000
-    //       });
-    //       toast.present();
-    //     }
-
-    //   }, err => {
-    //     loading.dismiss();
-    //     alert(JSON.stringify(err));
-    //     const toast = this.toastCtrl.create({
-    //       message: this.appGlobal.ServerError,
-    //       duration: 3000
-    //     });
-    //     toast.present();
-    //   });
   }
 
   getImageFromCamera() {

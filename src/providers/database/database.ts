@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { Storage } from '@ionic/storage';
 
 import { Platform } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
@@ -33,6 +35,7 @@ export class DatabaseProvider {
     public loadingCtrl: LoadingController,
     public events: Events,
     public toastCtrl: ToastController,
+    public storage: Storage
 
 
   ) {
@@ -82,7 +85,7 @@ export class DatabaseProvider {
                 this.appGlobal.insertcountbene = this.appGlobal.insertcountbene + 1;
               }, (error) => {
                 reject(error);
-                 this.appGlobal.actual = this.appGlobal.actual - 1
+                this.appGlobal.actual = this.appGlobal.actual - 1
                 //this.appGlobal.insertcountbene = this.appGlobal.insertcountbene - 1;
                 console.log("ERROR: insertCase" + JSON.stringify(error));
               });
@@ -273,23 +276,17 @@ export class DatabaseProvider {
   }
   // ------------------------------------CLOSE---------------------------------
 
-  // this.dbobject.executeSql("INSERT INTO kycs(server_id,user_id,kyc_person_id,kyc_person_type,kyc_name,kyc_detail,kyc_number,kyc_file,kyc_image,created_at,updated_at,sync_status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-  //       [autoincrement_id, objCase.user_id,autoincrement_id, objCase.kyc_person_type, objCase.kyc_name, objCase.kyc_detail, objCase.kyc_number, objCase.kyc_file, objCase.kyc_image, objCase.created_at, objCase.updated_at, 0])
-
-
-
-
-
-
-
   public insertkycsdata(objCase: any, beneficiary_id: string, autoincrement_id: string) {
     if (beneficiary_id == null && beneficiary_id == undefined) {
-      objCase.id = this.appGlobal.device_id;
-      objCase.kyc_person_id = this.appGlobal.device_id;
+      // objCase.id = this.appGlobal.device_id;
+      objCase.kyc_person_id = autoincrement_id;
+    }
+    else {
+      objCase.kyc_person_id = beneficiary_id;
     }
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO kycs(user_id,kyc_person_id,kyc_person_type,kyc_name,kyc_detail,kyc_number,kyc_file,kyc_image,created_at,updated_at,device_id,sync_status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-        [objCase.user_id, autoincrement_id, objCase.kyc_person_type, objCase.kyc_name, objCase.kyc_detail, objCase.kyc_number, objCase.kyc_file, objCase.kyc_image, objCase.created_at, objCase.updated_at, this.appGlobal.device_id, 0])
+        [objCase.user_id, objCase.kyc_person_id, objCase.kyc_person_type, objCase.kyc_name, objCase.kyc_detail, objCase.kyc_number, objCase.kyc_file, objCase.kyc_image, objCase.created_at, objCase.updated_at, this.appGlobal.device_id, 0])
         .then((data) => {
           resolve(data);
           alert("insert kyc successfully")
@@ -331,6 +328,7 @@ export class DatabaseProvider {
         [objCase.id, this.appGlobal.device_id, objCase.code, objCase.beneficiary_name, objCase.gender, objCase.age, objCase.date_of_birth, objCase.marital_status, objCase.caste, objCase.religion, objCase.primary_occupation, objCase.ownership_of_land, objCase.total_land_holding, objCase.total_family_income_average_monthly, objCase.education_status, objCase.height_in_cms, objCase.Weight_in_kgs, objCase.village_id, objCase.household_id, objCase.family_head_id, objCase.type_of_rationa_card, objCase.family_head_relation, objCase.contact_number, objCase.whatsapp_number, objCase.user_id, timestamp, objCase.updated_at, 0])
         .then((data) => {
           alert("Insert new Beneficiary successfully")
+          this.storage.set('kycCansync', false);
           resolve(data);
           return true
         }, (error) => {
@@ -341,13 +339,19 @@ export class DatabaseProvider {
     });
   }
 
-  public getKycsdata(kyc_person_id: string, autoincrement_id: string, cb, t) {
-    console.log("@@@@@@@@@@@@    " + autoincrement_id + "      kyc_person_id          " + kyc_person_id)
+  public getKycsdata(beneficiary_id: string, autoincrement_id: string, cb, t) {
+    //console.log("@@@@@@@@@@@@    " + autoincrement_id + "      kyc_person_id          " + kyc_person_id)
     let query = 'SELECT * FROM kycs WHERE kyc_person_id = ?';
-    if (kyc_person_id == null && kyc_person_id == undefined) {
-      kyc_person_id = this.appGlobal.device_id;
+
+
+    if (beneficiary_id != null && beneficiary_id != undefined) {
+      // kyc_person_id = this.appGlobal.device_id;
+      autoincrement_id = beneficiary_id;
     }
+
+
     this.offlineCasekycs = [];
+    // this.dbobject.executeSql(query, [autoincrement_id])
     this.dbobject.executeSql(query, [autoincrement_id])
       .then((data) => {
         if (data.rows.length > 0) {
@@ -868,17 +872,42 @@ export class DatabaseProvider {
 
 
   public updatebeneficiarydata(object: any, t) {
+    this.updatekycsbasedonbene(object);
 
     this.dbobject.executeSql(" update beneficiaries SET  code = ?, device_id = ?, server_id=? , sync_status = ? ,age = ?,date_of_birth = ?  WHERE id=?  ",
       [object.code, object.device_id, object.id, 1, object.age, object.date_of_birth, object.client_id])
       .then((data) => {
         console.log("        " + JSON.stringify(data))
-
-
-        t.pending_beneficiaries = 0
+        t.pending_beneficiaries = 0;
+        this.storage.set('kycCansync', true);
       }, (error) => {
         console.log("        " + JSON.stringify(error))
       })
+  }
+
+  updatekycsbasedonbene(object: any) {
+
+    this.dbobject.executeSql(" SELECT * FROM kycs WHERE kyc_person_id=?  ", [object.client_id])
+      .then((data) => {
+        // alert("  server " + data.rows.item().server_id);
+        if (data) {
+          // alert(JSON.stringify(object));
+          //alert("    resua      " + JSON.stringify(data.kyc_person_id))
+          this.dbobject.executeSql(" update kycs SET kyc_person_id = ? WHERE kyc_person_id=? ",
+            [object.id, object.client_id])
+            .then((data) => {
+              console.log("    data    " + JSON.stringify(data));
+
+            }, (error) => {
+              console.log("    error    " + JSON.stringify(error));
+            })
+        }
+
+
+      }, (error) => {
+        console.log("     ***   " + JSON.stringify(error))
+      })
+
 
   }
   pending_answers: any;
@@ -948,7 +977,7 @@ export class DatabaseProvider {
       query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id ';
     }
 
-   
+
     this.dbobject.executeSql(query, {})
       .then((data) => {
         if (data.rows.length > 0) {

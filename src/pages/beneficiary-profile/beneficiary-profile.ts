@@ -30,10 +30,8 @@ export class BeneficiaryProfilePage {
 
   constructor(public navCtrl: NavController, public appGlobal: AppGlobalProvider, public sqldatabasegetter: DatabaseProvider, public navParams: NavParams) {
     this.beneficiary_id = navParams.get('beneficiary_id');
-    // this.beneficiary_code = navParams.get('beneficiary_code');
     this.surveyorID = navParams.get('user_id');
     this.autoincrement_id = navParams.get('auto_increment_id');
-   // alert(  this.beneficiary_id+"          "+ this.surveyorID + "      " + this.autoincrement_id )
     this.sqldatabasegetter.getbeneficiaryforprofile(this.beneficiary_id, this.autoincrement_id);
     this.loadMaintenanceRequests();
   }
@@ -46,7 +44,6 @@ export class BeneficiaryProfilePage {
   }
   loadMaintenanceRequests() {
 
-    //alert("array size " + this.sqldatabasegetter.offlineCase.length)
     if (this.sqldatabasegetter.offlineCase.length > 0) {
       for (let i = 0; i <= this.sqldatabasegetter.offlineCase.length; i++) {
         if (this.sqldatabasegetter.offlineCase[i] != undefined) {
@@ -82,7 +79,7 @@ export class BeneficiaryProfilePage {
       console.log("No data i array ")
     }
   }
- 
+
   updata(form: NgForm) {
     this.sqldatabasegetter.updatabeneficiaryProfile(form.value, this.beneficiary_id, this.autoincrement_id);
   }
@@ -92,13 +89,6 @@ export class BeneficiaryProfilePage {
       auto_increment_id: this.autoincrement_id
     })
   }
-
-  // start_survey() {
-  //   this.navCtrl.push(SurveyListPage, {
-  //     beneficiary_id: this.beneficiary_id,
-  //     auto_increment_id: this.autoincrement_id
-  //   })
-  // }
   isReadonly() { return true; }
 }
 

@@ -89,12 +89,6 @@ export class MaintenanceRequestPage {
   }
 
   loadMaintenanceRequests(reference) {
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Please wait...'
-    // });
-    // if (reference === null) {
-    //   loading.present();
-    // }
     if (this.sqldatabasegetter.offlineCase.length > 0) {
       this.maintenanceRequests = [];
       for (let i = 0; i <= this.sqldatabasegetter.offlineCase.length; i++) {

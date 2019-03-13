@@ -48,6 +48,8 @@ export class HomePage {
     public events: Events,
     public sqldatabasegetter: DatabaseProvider
   ) {
+
+    this.storage.set('kycCansync',true);
     this.totalbeneficiary = this.sqldatabasegetter.total_beneficialy;
     this.totalsurvey = this.sqldatabasegetter.total_surveys;
     this.totalcount_benificiary = this.appGlobal.total;

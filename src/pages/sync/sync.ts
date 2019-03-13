@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { DatabaseProvider } from './../../providers/database/database';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
@@ -34,8 +35,8 @@ export class SyncPage {
 	constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
 		public appGlobal: AppGlobalProvider, public dataGetterService: DataGetterServiceProvider,
 		public dataSetterService: DataSetterProvider, public sqldatabasegetter: DatabaseProvider,
-		public toastCtrl: ToastController, 
-		public db: DBmaneger) {
+		public toastCtrl: ToastController,
+		public db: DBmaneger, public storage: Storage) {
 		this.sqldatabasegetter.syncbeneficiarydata();
 		this.sqldatabasegetter.syncanswersdata();
 		this.sqldatabasegetter.synckycsdata();
@@ -73,7 +74,7 @@ export class SyncPage {
 			if (data[0].original.status) {
 				alert("beneficiry sync done")
 				this.last_syncBeneficiariesTime = new Date().toDateString();
-				
+
 				b_success.push(data)
 				this.appGlobal.benefeciaries == []
 				this.pending_beneficiaries == 0
@@ -107,7 +108,6 @@ export class SyncPage {
 
 			if (data.status) {
 				alert("Answers sync done")
-
 				this.last_syncsurveysanswerTime = new Date().toDateString();
 				b_success.push(data)
 				m.appGlobal.syncanswers = []
@@ -132,28 +132,42 @@ export class SyncPage {
 		}
 	}
 	syncsurveyskycs() {
-		this.presentLoading();
-		let b_success = []
-		let m = this;
-		const js_arr = { 'beneficiary': [], "house_hold": [], "kyc": m.appGlobal.synckycs };
-		m.dataSetterService.syncKycsRequest(js_arr).subscribe((data: any) => {
+		// kycCanSync: Boolean;
+		this.storage.get('kycCansync').then(done => {
+			alert(JSON.stringify(done));
 
-			if (data[1].original.status) {
-				alert("kycs sync done ")
-				this.last_syncsurveyskycs = new Date().toDateString();
-				b_success.push(data)
-				this.appGlobal.synckycs = []
-				this.pending_kycs = 0
-				this.updaterdbkycs(data[1].original.updater, this)
-				this.loading.dismiss();
+			if (done) {
+				alert(JSON.stringify(done));
+				this.presentLoading();
+				let b_success = []
+				let m = this;
+				const js_arr = { 'beneficiary': [], "house_hold": [], "kyc": m.appGlobal.synckycs };
+				m.dataSetterService.syncKycsRequest(js_arr).subscribe((data: any) => {
+					if (data[1].original.status) {
+						alert("kycs sync done ")
+						this.last_syncsurveyskycs = new Date().toDateString();
+						b_success.push(data)
+						this.appGlobal.synckycs = []
+						this.pending_kycs = 0;
+						this.updaterdbkycs(data[1].original.updater, this)
+						this.loading.dismiss();
+					}
+					else {
+						console.log(data.errors);
+						//loading.dismiss();
+					}
+				}, (error) => {
+					alert(JSON.stringify(error))
+				})
 			}
 			else {
-				console.log(data.errors);
-				//loading.dismiss();
+				alert('Frist sync beneficiry');
 			}
-		}, (error) => {
-			alert(JSON.stringify(error))
-		})
+
+		});
+
+
+
 	}
 
 	updaterdbkycs(object: any, t) {

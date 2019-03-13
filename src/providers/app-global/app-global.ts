@@ -25,24 +25,17 @@ export class AppGlobalProvider {
 
   // LOCAL URLS165.227.139.76:8080
   public server = 'Local';
-
-
   private intranetBaseURL = 'http://165.227.139.76:8080/api/v1';
   private surveyBaseURL = 'https://deepaksurveystaging.herokuapp.com/rapidfire/surveys';
   private systemXBaseURL = 'https://system-x.herokuapp.com/api';
 
   // STAGING URLS
-  // public server = 'Staging';
-  // private intranetBaseURL = 'https://intranetstaging.herokuapp.com/api/v1';
+  // private intranetBaseURL = 'http://165.227.139.76/api/v1';
   // private surveyBaseURL = 'https://deepaksurveystaging.herokuapp.com/rapidfire/surveys';
   // private systemXBaseURL = 'https://system-x.herokuapp.com/api';
 
-  // LIVE URLS
-  // public server = 'Live';
-  // private intranetBaseURL = 'https://www.deepak.group/api/v1';
-  // private surveyBaseURL = 'https://deepaksurveys.herokuapp.com/rapidfire/surveys';
-  // private systemXBaseURL = 'https://system-x.herokuapp.com/api';
 
+  
   public getLeaveApplicationsURL = this.systemXBaseURL + '/leave_application_records';
   public pendingLeaveApplicationsURL = this.systemXBaseURL + '/pending_leave_application';
   public leaveApprovalURL = this.systemXBaseURL + '/leave_approval';
@@ -139,7 +132,7 @@ export class AppGlobalProvider {
   public getsuervyrequest = this.intranetBaseURL + '/surveys/getsurvey';
   public gethouseholdrequest = this.intranetBaseURL + '/household';
   public answersrequest = this.intranetBaseURL + '/answer/postanswers';
-  // public answersrequest = "http://165.227.139.76:8080/api/v1/answer";
+  // public answersrequest = "http://165.227.139.76/api/v1/answer";
   public allSurveysURL = this.intranetBaseURL + '/surveys';
   public allGrievancesURL = this.intranetBaseURL + '/kyc';
   public createGrievancesURL = this.intranetBaseURL + '/kyc';
