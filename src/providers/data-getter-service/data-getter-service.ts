@@ -169,7 +169,7 @@ export class DataGetterServiceProvider {
   }
 
   public paggination(page: any) {
-     var url = "http://165.227.139.76:8080/api/v1/beneficiaries?page=" + page;
+     var url = "http://165.227.139.76:8081/api/v1/beneficiaries?page=" + page;
    // var url = "http://165.227.139.76/api/v1/beneficiaries?page=" + page;
     //alert(url)
    
@@ -179,7 +179,7 @@ export class DataGetterServiceProvider {
 
   public paggination_hh(page:any){
     //var url =" http://165.227.139.76/api/v1/household?page="+page;
-     var url =" http://165.227.139.76:8080/api/v1/household?page="+page;
+     var url =" http://165.227.139.76:8081/api/v1/household?page="+page;
     return   this.http.get(url,this.getHTTPOptions())
   }
 

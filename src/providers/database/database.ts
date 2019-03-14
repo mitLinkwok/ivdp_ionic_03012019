@@ -195,7 +195,7 @@ export class DatabaseProvider {
       this.dbobject.executeSql("select server_id from `households` where server_id = ? ", [objCase.id])
         .then((data) => {
           if (data.rows.length == 0 && objCase.id != undefined && objCase.id != null && objCase != undefined) {
-            this.dbobject.executeSql("INSERT INTO `households`(`server_id`,`village_id`,`user_id`,`hh_number`,`faliya_name`,`landmark`) VALUES(?,?,?,?,?,?)", [objCase.id, objCase.village_id, objCase.user_id, objCase.hh_number, objCase.faliya_name, objCase.landmark])
+            this.dbobject.executeSql("INSERT INTO `households`(`server_id`,`village_id`,`user_id`,`hh_number`,`faliya_name`,`landmark`,`qrcode`) VALUES(?,?,?,?,?,?,?)", [objCase.id, objCase.village_id, objCase.user_id, objCase.hh_number, objCase.faliya_name, objCase.landmark, objCase.qrcode])
               .then((data) => {
                 console.log("insert household Successfully")
                 resolve(data);
@@ -972,7 +972,7 @@ export class DatabaseProvider {
   public getdataforgroupsurvey(ev, ca, t) {
     let query = '';
     if (ev != null) {
-      query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id  WHERE households.hh_number LIKE ' + "'" + ev + "'";
+      query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id  WHERE households.qrcode LIKE ' + "'" + ev + "'";
     } else {
       query = 'SELECT beneficiaries.id,beneficiaries.server_id,beneficiaries.beneficiary_name,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id ';
     }
