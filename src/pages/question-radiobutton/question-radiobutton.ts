@@ -26,6 +26,7 @@ export class QuestionRadiobuttonPage {
   question: string
   opctions: any = [];
   is_last: number = 0;
+  filled: number = 0;
   key: string;
   answer: any;
   question_id: string
@@ -35,6 +36,8 @@ export class QuestionRadiobuttonPage {
   auto_increment_id: any = []
   select_radio: string
   Quesion_number: number;
+  rule_json: string;
+  jump: any = []
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
     this.qindex = navParams.get("qindex");
@@ -55,6 +58,12 @@ export class QuestionRadiobuttonPage {
 
     this.question = this.appGlobal.questionsList[this.qindex].text;
     this.key = this.appGlobal.questionsList[this.qindex].server_id;
+    this.rule_json = this.appGlobal.questionsList[this.qindex].rule_json;
+    //if (this.rule_json &&  this.rule_json.length >0  && (JSON.parse(this.rule_json)).jump)
+    //{
+    //  this.jump =  (JSON.parse(this.rule_json));
+    //}
+
     if (this.appGlobal.answers[this.key] != undefined) {
       this.answer = this.appGlobal.answers[this.key];
     }
@@ -69,14 +78,44 @@ export class QuestionRadiobuttonPage {
 
   goToNext(e: any) {
     {
+      if(this.filled == 0)
+      {
+        alert("Please select the answer");
+        return false;
+      }
       this.appGlobal.answers[this.key] = (this.answer);
-      if (this.qindex == this.appGlobal.questionsList.length - 1) {
+      if(this.qindex == this.appGlobal.questionsList.length - 1) {
         this.is_last = 1;
         alert("Last Question");
         return
       }
+      //alert(JSON.stringify(this.appGlobal.questionsList));
+      //alert(this.jump);
       let nq = this.qindex + 1;
       this.appGlobal.Quesion_number++
+      //alert(JSON.parse(this.appGlobal.questionsList[nq].server_id));
+      //alert(this.rule_json);
+      if (this.rule_json != 'null' && this.rule_json != null)
+      {
+        //alert(this.rule_json.length);
+        this.jump = JSON.parse(this.rule_json);
+        if((this.jump['jump']) && Number(this.answer.option_id) == Number(this.jump['jump']['option_id'])){
+          //alert("is jump" + this.jump['jump']['option_id']);
+          while( 1==1 )
+          {
+            if (this.appGlobal.questionsList[nq].server_id == Number(this.jump['jump']['question_id']))
+            {
+              break;
+            }
+            else
+            {
+              nq = nq + 1;
+              this.appGlobal.Quesion_number++;
+            }
+          } 
+        }
+        //alert("In if of jump");
+      }
       this.navCtrl.push(SuervyPage, {
         project_id: this.project_id,
         survey_id: this.survey_id,
@@ -93,7 +132,7 @@ export class QuestionRadiobuttonPage {
   
     this.answer.option_text = item.text;
     this.answer.option_id = item.server_id;
-
+    this.filled = 1;
     // this.select_radio=item
   }
   goToPrev(e: any) {

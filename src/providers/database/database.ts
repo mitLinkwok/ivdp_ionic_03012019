@@ -81,7 +81,7 @@ export class DatabaseProvider {
               [objCase.id, this.appGlobal.device_id, objCase.code, objCase.b_name, objCase.gender, objCase.age, objCase.date_of_birth, objCase.marital_status, objCase.caste, objCase.religion, objCase.primary_occupation, objCase.ownership_of_land, objCase.total_land_holding, objCase.total_family_income_average_monthly, objCase.education_status, objCase.height_in_cms, objCase.Weight_in_kgs, objCase.village_id, objCase.household_id, objCase.family_head_id, objCase.type_of_rationa_card, objCase.family_head_relation, objCase.contact_number, objCase.whatsapp_number, objCase.user_id, objCase.created_at, objCase.updated_at])
               .then((data) => {
                 resolve(data);
-                console.log("INSERTED: insertCase" + JSON.stringify(data));
+                //console.log("INSERTED: insertCase" + JSON.stringify(data));
                 this.appGlobal.insertcountbene = this.appGlobal.insertcountbene + 1;
               }, (error) => {
                 reject(error);
@@ -126,7 +126,7 @@ export class DatabaseProvider {
               [objCase.id, objCase.project_id, objCase.title, objCase.description, objCase.type, objCase.start_date, objCase.created_at, objCase.updated_at])
               .then((data) => {
                 resolve(data);
-                console.log("insert Survey Successfully")
+                //console.log("insert Survey Successfully")
               }, (error) => {
                 reject(error);
                 console.log("ERROR IN GETTING SURVEY: insertCase" + JSON.stringify(error));
@@ -148,7 +148,7 @@ export class DatabaseProvider {
             this.dbobject.executeSql("INSERT INTO `questions`(`server_id`,`survey_id`,`section_id`,`order`,`text`,`type`,`language_json`,`rule_json`,`created_at`,`updated_at`) VALUES (?,?,?,?,?,?,?,?,?,?)",
               [objCase.id, objCase.survey_id, objCase.section_id, objCase.order, objCase.text, objCase.type, objCase.language_json, objCase.rule_json, objCase.created_at, objCase.updated_at])
               .then((data) => {
-                console.log("insert Questions Successfully")
+                //console.log("insert Questions Successfully")
                 resolve(data);
               }, (error) => {
                 reject(error);
@@ -165,7 +165,7 @@ export class DatabaseProvider {
     return new Promise((resolve, reject) => {
       this.dbobject.executeSql("INSERT INTO `villages`( `server_id`,`talukablock_id`,`name`) VALUES(?,?,?)", [objCase.id, objCase.talukablock_id, objCase.name])
         .then((data) => {
-          console.log("insert Questions Successfully")
+          //console.log("insert Questions Successfully")
           resolve(data);
         }, (error) => {
           reject(error);
@@ -179,7 +179,7 @@ export class DatabaseProvider {
       this.dbobject.executeSql("INSERT INTO `options`( `server_id`,`question_id`,`type`,`order`,`text`,`language_json`,`created_at`,`updated_at`,'sync_status') VALUES(?,?,?,?,?,?,?,?,?)", [objCase.id, objCase.question_id, objCase.type, objCase.order, objCase.text, objCase.language_json, objCase.created_at, objCase.updated_at, 0])
         .then((data) => {
 
-          console.log("insert options Successfully")
+         // console.log("insert options Successfully")
           resolve(data);
 
         }, (error) => {
@@ -677,7 +677,7 @@ export class DatabaseProvider {
   }
   showbeneficirybysearch(ev: any, cb, t) {
     let query = '';
-    query = 'SELECT beneficiaries.*,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id WHERE households.hh_number LIKE' + "'" + ev + "'" + ' OR  beneficiary_name LIKE ' + "'" + ev + "%'   order by id desc";
+    query = 'SELECT beneficiaries.*,households.hh_number FROM beneficiaries INNER JOIN households ON  beneficiaries.household_id= households.server_id WHERE households.qrcode LIKE' + "'" + ev + "'" + ' OR households.hh_number LIKE' + "'" + ev + "'" + ' OR  beneficiary_name LIKE ' + "'" + ev + "%'   order by id desc";
     console.log(query)
     this.dbobject.executeSql(query, {})
       .then((data) => {
@@ -787,7 +787,7 @@ export class DatabaseProvider {
 
     this.dbobject.executeSql("select * from  survey", {})
       .then((data) => {
-
+        console.log('Total survey ;-' + data);
         this.total_surveys = data.rows.length;
         cb(t)
       }, (error) => {

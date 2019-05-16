@@ -131,6 +131,9 @@ export class SyncPage {
 			this.sqldatabasegetter.updateanswers(object[i], t);
 		}
 	}
+	receivesurvey(){
+		alert("receive survey");
+	}
 	syncsurveyskycs() {
 		// kycCanSync: Boolean;
 		this.storage.get('kycCansync').then(done => {

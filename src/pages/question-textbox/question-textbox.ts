@@ -35,9 +35,9 @@ export class QuestionTextboxPage {
   survey_id: string
   // beneficiary_id: string
   // auto_increment_id: string
-
+  rule_json: string;
   beneficiary_id: any = []
-
+  rule_validate: string = 'none';
   auto_increment_id: any = []
 
   validatror: any;
@@ -70,18 +70,22 @@ export class QuestionTextboxPage {
   loadQuestions() {
     this.question = this.appGlobal.questionsList[this.qindex].text;
     this.key = this.appGlobal.questionsList[this.qindex].server_id;
+       
+    this.rule_validate =  this.appGlobal.questionsList[this.qindex].type;
+    
     if (this.appGlobal.answers[this.key] != undefined) {
       this.answer = this.appGlobal.answers[this.key];
     }
     else {
       this.answer = {
         beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
-        language_id: 3, option_id: 2, option_text: "", image: "N/A", other_text: "no"
+        language_id: 3, option_id: 1, option_text: "", image: "N/A", other_text: "no"
       };
     }
   }
   goToNext(e: any) {
 
+    
 
     this.appGlobal.answers[this.key] = (this.answer);
     if (this.qindex == this.appGlobal.questionsList.length - 1) {
@@ -89,6 +93,7 @@ export class QuestionTextboxPage {
       alert("Last Question");
       return
     }
+  
 
     let nq = this.qindex + 1;
     this.appGlobal.Quesion_number++

@@ -247,6 +247,8 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
+    //alert(JSON.stringify(this.userdata.userData.first_name));
+
     console.log('ionViewDidLoad ProfilePage');
     if (this.navParams.get('user_id') != undefined)
       this.getUserProfile(this.navParams.get('user_id'));
@@ -272,6 +274,7 @@ export class ProfilePage {
     loading.present();
 
     this.dataGetter.getUserProfile(uid).subscribe((data: any) => {
+      alert(JSON.stringify(data));
       if (data.success) {
         this.profile = data;
         this.showEditBtn = false;

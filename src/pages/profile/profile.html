@@ -36,89 +36,19 @@
     </ion-card>
     <ion-card text-center>
       <ion-card-content>
-        <p *ngIf="profile.name" style="font-size: 2rem;">
-          <b>{{profile.name ? profile.name : ''}}</b>
+        <p *ngIf="profile.first_name" style="font-size: 2rem;">
+          <b>{{profile.first_name ? profile.first_name : ''}}</b>
         </p>
-        <p *ngIf="profile.designation">
-          <b>{{profile.designation ? profile.designation : ''}}</b>
+        <p *ngIf="profile.last_name">
+          <b>{{profile.last_name ? profile.last_name : ''}}</b>
         </p>
         <p *ngIf="profile.department">
           <b>{{profile.department ? profile.department : ''}}</b>
         </p>
-        <hr style="width: 50%"/>
-        <p *ngIf="profile.location">
-          <ion-icon name="pin"></ion-icon>
-          {{profile.location ? profile.location : ''}}
-        </p>
-        <p *ngIf="profile.mobile">
-          <ion-icon name="phone-portrait"></ion-icon>
-          {{profile.mobile ? profile.mobile:''}}
-        </p>
-        <p *ngIf="profile.extension">
-          <ion-icon name="call"></ion-icon>
-          {{profile.extension ? profile.extension : ''}}
-        </p>
+       
       </ion-card-content>
     </ion-card>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-           About Me
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content *ngIf="profile.about_me" >
-        {{profile.about_me}}
-      </ion-card-content>
-      <ion-card-content *ngIf="!profile.about_me">
-        Details Not Updated
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          Experience
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content *ngIf="profile.experience" >
-        {{profile.experience}}
-      </ion-card-content>
-      <ion-card-content *ngIf="!profile.experience">
-        Details Not Updated
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          Skill Set
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content *ngIf="profile.skill_set.length > 0" >
-        <ion-tags-input
-          [(ngModel)]="profile.skill_set"
-          [mode]="'ios'"
-          [readonly]="true">
-        </ion-tags-input>
-      </ion-card-content>
-      <ion-card-content *ngIf="profile.skill_set.length === 0">
-        Details Not Updated
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          Learning and Development
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content *ngIf="profile.learning_and_development" >
-        {{profile.learning_and_development}}
-      </ion-card-content>
-      <ion-card-content *ngIf="!profile.learning_and_development" >
-        Details Not Updated
-      </ion-card-content>
-    </ion-card>
+    
   </div>
 
   <div *ngIf="edit_profile && edit">

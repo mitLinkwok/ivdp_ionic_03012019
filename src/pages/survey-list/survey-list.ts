@@ -118,6 +118,7 @@ export class SurveyListPage {
       });
 
     } else if (type == "Single") {
+      //alert("==========call single start survey===========");
       this.appGlobal.selectedCheckId = [];
       this.appGlobal.selectedCheckbox = [];
       this.appGlobal.groupsurveybeneficiaries=[]

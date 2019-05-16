@@ -65,12 +65,14 @@ export class UserData {
   };
   
   logout(): void {
+    
     this.storage.clear();
     this.hasLoggedIn = false;
     this.previousToken = '';
     this.fcmToken = '';
     this.userData = '';
     this.fcmTokenStatus = false;
+    alert("user data logout");
     // this.storage.remove(this.HAS_LOGGED_IN);
     // this.storage.remove('username');
     this.events.publish('user:logout');
@@ -103,6 +105,7 @@ export class UserData {
 
   setUserData(userData: JSON): void {
     this.userData = userData;
+    //alert (JSON.stringify(userData));
     // this.userData.userprofile = "assets/img/user_image_sample.png"
     this.storage.set('userdata', userData);
     this.events.publish('userdata:changed');
@@ -152,7 +155,7 @@ export class UserData {
 
   getName(): Promise<string> {
     return this.storage.get('userdata').then((value) => {
-      return value.name;
+      return value.first_name;
     });
   };
 

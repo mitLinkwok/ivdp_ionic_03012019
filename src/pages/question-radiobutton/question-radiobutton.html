@@ -15,13 +15,13 @@
 
 <ion-content padding>
   <h1><strong>
-      <p>{{Quesion_number}}. {{question}}</p>
+      <p class="item-text-wrap">{{Quesion_number}}. {{question}}</p>
     </strong>
   </h1>
   <ion-list radio-group>
 
     <ion-item *ngFor="let entry of opctions">
-      <ion-label>{{entry.text}}</ion-label>
+      <ion-label text-wrap>{{entry.text}}</ion-label>
       <ion-radio slot="start" value="{{entry.text}}" (ionSelect)="select(entry)"></ion-radio>
     </ion-item>
 

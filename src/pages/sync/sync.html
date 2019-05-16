@@ -4,7 +4,7 @@
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>Synchronisation</ion-title>
+      <ion-title>Synchronization</ion-title>
     </ion-navbar>
   </ion-header>
   
@@ -30,10 +30,17 @@
         </ion-card-content>
   
         <ion-row>
+            <ion-col>
+                <div class="pull-left">
+                  <button class='big-round-btn'>
+                    <ion-icon name="cloud-download" style="font-size:5em" (click)="receivesurvey()"></ion-icon>
+                  </button>
+                </div>
+              </ion-col>
           <ion-col>
             <div class="pull-right">
               <button class='big-round-btn'>
-                <ion-icon name="sync" style="font-size:5em" (click)='syncBeneficiaries()'></ion-icon>
+                <ion-icon name="cloud-upload" style="font-size:5em" (click)='syncBeneficiaries()'></ion-icon>
               </button>
             </div>
           </ion-col>
@@ -55,10 +62,17 @@
         </ion-card-content>
   
         <ion-row>
+            <ion-col>
+                <div class="pull-left">
+                  <button class='big-round-btn'>
+                    <ion-icon name="cloud-download" style="font-size:5em" (click)="receivesurvey()"></ion-icon>
+                  </button>
+                </div>
+              </ion-col>
           <ion-col>
             <div class="pull-right">
               <button class='big-round-btn'>
-                <ion-icon name="sync" style="font-size:5em" (click)="syncsurveyskycs()"></ion-icon>
+                <ion-icon name="cloud-upload" style="font-size:5em" (click)="syncsurveyskycs()"></ion-icon>
               </button>
             </div>
           </ion-col>
@@ -81,9 +95,16 @@
   
         <ion-row>
           <ion-col>
+            <div class="pull-left">
+              <button class='big-round-btn'>
+                <ion-icon name="cloud-download" style="font-size:5em" (click)="receivesurvey()"></ion-icon>
+              </button>
+            </div>
+          </ion-col>
+          <ion-col>
             <div class="pull-right">
               <button class='big-round-btn'>
-                <ion-icon name="sync" style="font-size:5em" (click)="syncsurveysanswer()"></ion-icon>
+                <ion-icon name="cloud-upload" style="font-size:5em" (click)="syncsurveysanswer()"></ion-icon>
               </button>
             </div>
           </ion-col>

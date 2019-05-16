@@ -1,4 +1,4 @@
-import { QuestionTextboxPage } from './../pages/question-textbox/question-textbox';
+//import { QuestionTextboxPage } from './../pages/question-textbox/question-textbox';
 import { SearchBeneficiryPage } from './../pages/search-beneficiry/search-beneficiry';
 //import { DatabaseProvider } from './../providers/database/database';
 import { UserblockPage } from './../pages/userblock/userblock';
@@ -114,6 +114,8 @@ export class MyApp {
 
     this.userData.getHasLoggedIn().then((hasLoggedIn) => {
       if (hasLoggedIn) {
+        //alert(JSON.stringify(this.userData.userData.first_name));
+        this.username = this.userData.userData.first_name;
         console.log("HASLOGGEDIN TOKEN SEND");
         this.dataSetter.sendNotificationToken();
         this.rootPage = HomePage;
@@ -130,7 +132,7 @@ export class MyApp {
     });
 
     this.events.subscribe('userdata:changed', () => {
-      this.username = this.userData.userData.name;
+      this.username = this.userData.userData.first_name;
       this.userprofile = this.userData.userData.profile;
     });
     // used for an example of ngFor and navigation
@@ -170,10 +172,13 @@ export class MyApp {
 
   initializeFCM() {
     if (this.platform.is('android') || this.platform.is('ios')) {
+      this.fcm.subscribeToTopic('all');
+      
       console.log("CORDOVA DETECTED", this.platform.platforms());
 
       this.fcm.getToken().then((token: any) => {
         console.log("TOKEN:", token);
+        
         if (token !== null) {
           this.userData.setUserFCMToken(token);
         }
@@ -188,6 +193,7 @@ export class MyApp {
       });
 
       this.fcm.onNotification().subscribe(data => {
+        alert("notification received");
         console.log("Notification", data);
         if (data.wasTapped) {
           console.log("Received in background", JSON.stringify(data));
@@ -256,7 +262,7 @@ export class MyApp {
       if (!(pageName instanceof LoginPage) && !(pageName instanceof OfflinePage) && !(pageName instanceof UserblockPage)) {
         //this.updateMenuCounts();
         //this.updateUserProfile();
-        this.username = this.userData.userData.name;
+        this.username = this.userData.userData.first_name;
         this.userprofile = this.userData.userData.profile;
         if (this.userData.userData.new_user) {
           this.nav.setRoot(UserblockPage);
@@ -340,7 +346,7 @@ export class MyApp {
       console.log('Get User Status', data);
       if (data.success) {
         this.userData.setUserData(data);
-        this.username = data.name;
+        //this.username = data.first_name;
         this.userprofile = data.profile;
         console.log("isNewUser", data.new_user);
         if (data.new_user) {
@@ -424,6 +430,8 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      
+     
       this.initAppVersion();
       // this.initBackgroundGeolocation();
       //this.listenToNetworkEvents();
@@ -481,6 +489,7 @@ export class MyApp {
       this.dataSetter.sendNotificationClear();
       this.userData.setUserFCMTokenStatus(false);
       this.userData.logout();
+      
     } else {
       this.nav.setRoot(page.component, params).catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);

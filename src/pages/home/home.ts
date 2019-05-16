@@ -29,7 +29,7 @@ export class HomePage {
   public notifications: any = [];
   totalbeneficiary: any;
   totalcount_benificiary: number = 0;
-  totalsurvey: string = "0";
+  totalsurvey: any = "0";
   totalhousehold: number = 0;
   total_count: string;
   sync_status: string = "Sync is going on ...";
@@ -93,7 +93,13 @@ export class HomePage {
   }
 
   refreshHomepage(ev) {
-    console.log("Home  refreshHomepage")
+    this.totalbeneficiary = this.getTotalcount();
+
+    this.totalsurvey = this.getTotalsurvey();
+    this.getTotalhh();
+    //this.totalhousehold = this.sqldatabasegetter.total_Hh;
+    this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
+    //console.log("Home  refreshHomepage")
     setTimeout(() => {
       console.log('Async operation has ended');
       ev.complete();
@@ -110,7 +116,7 @@ export class HomePage {
     this.synkmsg = setInterval(() => {
 
     this.totalbeneficiary = this.getTotalcount();
-    this.totalsurvey = this.sqldatabasegetter.total_surveys;
+    this.totalsurvey = this.getTotalsurvey();
     this.totalhousehold = this.sqldatabasegetter.total_Hh;
     this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
     // if (this.totalbeneficiary == this.appGlobal.total && this.appGlobal.actual == this.appGlobal.total && this.appGlobal.total_househ == this.totalhousehold) {
@@ -147,11 +153,40 @@ export class HomePage {
   }
 
   getTotalcount() {
+
+    if (this.appGlobal.insertcountbene >0 ){
+      this.appGlobal.actual  = this.appGlobal.insertcountbene;
+    }else {
+
     this.sqldatabasegetter.dbobject.executeSql("select * from beneficiaries", {})
       .then((data) => {
         console.log('bene length ' + data.rows.length)
-       
+       this.appGlobal.actual  = data.rows.length;
+       this.appGlobal.total  = data.rows.length;
         return data.rows.length;
+      }, (error) => {
+        console.log(JSON.stringify(error))
+      })
+    } 
+  }
+  getTotalsurvey() {
+
+    this.sqldatabasegetter.dbobject.executeSql("select * from  survey", {})
+      .then((data) => {
+        this.totalsurvey= data.rows.length;
+      }, (error) => {
+
+        console.log(JSON.stringify(error))
+      })
+  }
+  getTotalhh() {
+
+    
+    this.sqldatabasegetter.dbobject.executeSql("select * from households", {})
+      .then((data) => {
+      //alert(data.rows.length);
+        this.appGlobal.total_househ = data.rows.length;
+       
       }, (error) => {
         console.log(JSON.stringify(error))
       })

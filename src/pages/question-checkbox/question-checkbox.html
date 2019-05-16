@@ -13,12 +13,12 @@
 
 <ion-content padding>
   <h1><strong>
-      <p>{{Quesion_number}}. {{question}}</p>
+      <p class="item-text-wrap">{{Quesion_number}}. {{question}}</p>
     </strong>
   </h1>
   <ion-list>
     <ion-item *ngFor="let entry of options ;let i = index">
-      <ion-label> {{entry.text}}</ion-label>
+      <ion-label text-wrap>{{entry.text}}</ion-label>
 
       <ion-checkbox slot="end" *ngIf="entry.text != ''" [(ngModel)]="entry.isChecked"
         (ionChange)="getChanged(entry.text)"></ion-checkbox>

@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
-
+import {IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import { DBmaneger } from './../../providers/database/Dbmaneger';
-
+import { DatabaseProvider } from './../../providers/database/database';
 
 /**
  * Generated class for the IntroPage page.
@@ -19,8 +18,12 @@ import { DBmaneger } from './../../providers/database/Dbmaneger';
 })
 export class IntroPage {
   public introContent: any = [];
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public db: DBmaneger) {
+  syncount: number = 0;
+  synkmsg: any;
+  loading: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public db: DBmaneger, public loadingCtrl: LoadingController,
+    public sqldatabasegetter: DatabaseProvider
+    ) {
     this.setIntroContent();
     this.db.getbenificialydata()
     this.db.getkycsdata();
@@ -28,7 +31,9 @@ export class IntroPage {
     this.db.gethousehold()
     this.db.getQuestion();
    this.db.getOpections();
-  
+   this.loading = this.loadingCtrl.create({
+    content: 'Sync is going on ... ',	duration: 5000
+  });
 
   }
 
@@ -39,6 +44,29 @@ export class IntroPage {
   ionViewDidLoad() {
     // this.setIntroContent();
     console.log('ionViewDidLoad IntroPage');
+  }
+  ionViewDidEnter(){
+    this.synkmsg = setInterval(() => {
+      this.syncount  =  this.syncount + 1;
+       //console.log("syncount:- "+ this.syncount);
+       if(this.syncount >= 600){
+        this.loading.dismiss();
+        this.stopSyncLoop();
+      }
+      else {
+           this.loading.present();
+      }
+    }, 1000);
+
+  }
+  ionViewWillLeave() {
+    this.stopSyncLoop();
+  }
+
+  
+  stopSyncLoop() {
+    clearInterval(this.synkmsg);
+    this.synkmsg = null;
   }
 
   setIntroContent() {

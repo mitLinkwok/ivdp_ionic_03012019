@@ -79,9 +79,10 @@ export class QuestionDropdownPage {
 
     // this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
     //this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
-
+//alert ('survey type on start :- '+ this.survey_type);
     if (this.survey_type === "Single") {
       if (this.appGlobal.selectedCheckbox.length == 1) {
+  //      alert("checkbox lenth one");
         this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
       } else if (this.appGlobal.selectedCheckbox.length > 1 || this.appGlobal.selectedCheckbox.length < 1) {
         alert("You should select only one beneficiary,Not less or not more ")
@@ -105,6 +106,7 @@ export class QuestionDropdownPage {
     }
   }
 
+  
   getSelectedBen(e, i, a) {
     if (e.isChecked)
     

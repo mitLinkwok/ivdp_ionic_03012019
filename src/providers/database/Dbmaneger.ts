@@ -43,7 +43,7 @@ export class DBmaneger {
 
     public async getbenificialydata() {
 
-
+        console.log("====== getbenificialydata ======");
         if (this.page_status == 0 || this.page_status == 1) {
 
             console.log("page_status  in 1 Api call  " + this.page_status)
@@ -224,6 +224,7 @@ export class DBmaneger {
     }
 
     public async gethousehold() {
+        console.log("====== gethousehold ======");
         if (this.page_status_hh == null && this.page_status_hh == undefined && this.page_status_hh == 0 || this.page_status_hh == 1) {
             await this.dataGetterService.gathouseholsrequest().subscribe((data: any) => {
                 let a = true
@@ -235,7 +236,7 @@ export class DBmaneger {
                     }
                     this.total_pageHH = JSON.stringify(data.meta.last_page);
                     this.appGlobal.total_househ = data.meta.total;
-                    this.doInfiniteHH(null);
+                    //this.doInfiniteHH(null);
                     return this.isqurestatus = true
                 } else {
                     console.log("cannot get questions data for insert");

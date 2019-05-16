@@ -48,6 +48,8 @@ export class SuervyPage {
   auto_increment_id:any=[]
   questionType: string
 
+  TxtqueTypes: string[]=['TextBox-Numeric','TextBox-Date','TextBox-Blank'];
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public storage: Storage,
@@ -62,14 +64,24 @@ export class SuervyPage {
     this.question_id = navParams.get("question_id");
     this.project_id = navParams.get("project_id");
     this.survey_id = navParams.get("survey_id");
+    
+   // alert("==Contructor Survey== qindex :-" + this.qindex + " project_id :- " + this.project_id + " survey_id :- " + this.survey_id + " question_id :- " + this.question_id); 
+    
+    
     if (navParams.get('beneficiary_id') != null && navParams.get('auto_increment_id') != null) {
+     // alert("==beneficiary_id and  auto_increment_id is not null " + navParams.get('beneficiary_id') + " auto_increment_id :- " + navParams.get('auto_increment_id'));
+    
       this.beneficiary_id = navParams.get('beneficiary_id');
       this.auto_increment_id = navParams.get('auto_increment_id');
     } else {
       this.beneficiary_id = JSON.stringify(this.appGlobal.selectedCheckbox);
       this.auto_increment_id = JSON.stringify(this.appGlobal.selectedCheckId)
     }
+
     this.questionType = this.appGlobal.questionsList[this.qindex].type;
+    
+    //alert("==Question Type " + this.appGlobal.questionsList[this.qindex].type);
+     
     if (this.appGlobal.questionsList[this.qindex].type == "CheckBox") {
       this.sqldatabasegetter.getpoction(this.appGlobal.questionsList[this.qindex].server_id);
       this.navCtrl.push(QuestionCheckboxPage, {
@@ -81,7 +93,7 @@ export class SuervyPage {
         auto_increment_id: this.auto_increment_id
       });
     }
-    if (this.appGlobal.questionsList[this.qindex].type == "TextBox") {
+    else if (this.TxtqueTypes.indexOf(this.appGlobal.questionsList[this.qindex].type) != -1) {
       this.navCtrl.push(QuestionTextboxPage, {
         qindex: this.qindex,
         question_id: this.question_id,
@@ -90,8 +102,7 @@ export class SuervyPage {
         beneficiary_id: this.beneficiary_id,
         auto_increment_id: this.auto_increment_id
       });
-    }
-    if (this.appGlobal.questionsList[this.qindex].type == "Radio" || this.appGlobal.questionsList[this.qindex].type == "radio") {
+    }else if (this.appGlobal.questionsList[this.qindex].type == "Radio") {
       this.sqldatabasegetter.getpoction(this.appGlobal.questionsList[this.qindex].server_id);
       this.navCtrl.push(QuestionRadiobuttonPage, {
         qindex: this.qindex,
@@ -101,8 +112,7 @@ export class SuervyPage {
         beneficiary_id: this.beneficiary_id,
         auto_increment_id: this.auto_increment_id
       })
-    }
-    if (this.appGlobal.questionsList[this.qindex].type == "Image" || this.appGlobal.questionsList[this.qindex].type == "image") {
+    }else if(this.appGlobal.questionsList[this.qindex].type == "Image" || this.appGlobal.questionsList[this.qindex].type == "image") {
       this.navCtrl.push(QuestionImagePage, {
         qindex: this.qindex,
         question_id: this.question_id,
@@ -111,6 +121,8 @@ export class SuervyPage {
         beneficiary_id: this.beneficiary_id,
         auto_increment_id: this.auto_increment_id
       });
+    }else{
+      alert("else of question type");
     }
     this.loadQuestion();
   }

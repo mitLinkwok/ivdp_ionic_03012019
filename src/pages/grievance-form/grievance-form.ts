@@ -55,7 +55,7 @@ export class GrievanceFormPage {
     this.SurveyorID = navParams.get('Surveyor');
     this.beneficiary_id = navParams.get('beneficiary_id');
     this.autoincrement_id = navParams.get('auto_increment_id');
-    this.kyc_name=[{ 'id': 1, 'name': 'Aadhar Card front' },{ 'id': 2, 'name': 'Aadhar Card back' },{ 'id': 3, 'name': 'PAN Card' },{ 'id': 4, 'name': 'BPL Card' },{ 'id': 5, 'name': 'Ration Card' },{ 'id': 6, 'name': 'Bank Account' }]
+    this.kyc_name=[{ 'id': 1, 'name': 'Aadhar Card front' },{ 'id': 2, 'name': 'Aadhar Card back' },{ 'id': 3, 'name': 'PAN Card' },{ 'id': 4, 'name': 'BPL Card' },{ 'id': 5, 'name': 'Ration Card' },{ 'id': 6, 'name': 'Soil Health Card' },{ 'id': 7, 'name': 'Bank Account' }]
     //alert("@@@@@@@@@@@@    "  + this.beneficiary_id +"                " + this.autoincrement_id+"                      "+ this.SurveyorID)
     this.initMaintenanceRequest();
     // alert("kycs form " +this.beneficiary_id  + "   AND    "  +"AUTO INCRMENT  " +this.autoincrement_id   )

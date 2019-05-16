@@ -236,5 +236,13 @@
     "variables": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+"
     }
+  },
+  "cordova-plugin-fcm": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-fcm"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }
