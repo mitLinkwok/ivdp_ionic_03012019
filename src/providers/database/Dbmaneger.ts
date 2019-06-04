@@ -15,7 +15,7 @@ import { DataGetterServiceProvider } from "../../providers/data-getter-service/d
 export class DBmaneger {
 
     public isqurestatus: boolean = false;
-    total_datapage:number
+    total_datapage: number
     total_pageHH: any
     page_status = 0;
     page_status_hh = 0;
@@ -43,6 +43,8 @@ export class DBmaneger {
 
     public async getbenificialydata() {
 
+
+
         console.log("====== getbenificialydata ======");
         if (this.page_status == 0 || this.page_status == 1) {
 
@@ -55,9 +57,9 @@ export class DBmaneger {
                         this.db.insertbeneficiarydata(data.data[i]);
                         this.appGlobal.sync_status = "Sync is going on ...."
                     }
-                   // this.total_datapage = JSON.stringify(data.meta.last_page);
-                   this.total_datapage=data.meta.last_page
-                   console.log("page_status  in 1 Api call  total " + this.total_datapage)
+                    // this.total_datapage = JSON.stringify(data.meta.last_page);
+                    this.total_datapage = data.meta.last_page
+                    console.log("page_status  in 1 Api call  total " + this.total_datapage)
                     this.appGlobal.total = data.meta.total;
                     this.doInfinite(null);
                     return this.isqurestatus = true
@@ -81,6 +83,7 @@ export class DBmaneger {
             }
 
         }
+
 
     }
 

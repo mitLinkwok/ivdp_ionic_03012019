@@ -20,9 +20,9 @@
   </h1>
   <ion-list radio-group>
 
-    <ion-item *ngFor="let entry of opctions">
+    <ion-item *ngFor="let entry of opctions;let i=index">
       <ion-label text-wrap>{{entry.text}}</ion-label>
-      <ion-radio slot="start" value="{{entry.text}}" (ionSelect)="select(entry)"></ion-radio>
+      <ion-radio slot="start" value="{{entry.text}}" (ionSelect)="select(entry,i)"></ion-radio>
     </ion-item>
 
   </ion-list>

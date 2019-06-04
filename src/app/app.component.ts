@@ -506,6 +506,7 @@ export class MyApp {
       toast.present();
       if (this.platform.is('android') || this.platform.is('ios')) {
         this.fcm.getToken().then((token: any) => {
+          alert('Token  : ' +  JSON.stringify(token))
           console.log("TOKEN:", token);
           if (token !== null) {
             this.userData.setUserFCMToken(token);

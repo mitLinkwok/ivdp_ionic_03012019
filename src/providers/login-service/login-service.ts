@@ -45,18 +45,18 @@ export class LoginServiceProvider {
         email: username.trim(),
         password: password,
       };
-      console.log(this.appGlobal.loginURL);
-      console.log(body);
-      console.log(this.appGlobal.applicationVersion);
+      alert(this.appGlobal.loginURL);
+      alert('data  ' + JSON.stringify(body));
+
       this.http.post(this.appGlobal.loginURL, body, httpOptions).subscribe(data => {
         loading.dismiss();
-        console.log("Login Resolved");
+        alert("Login Resolved");
         this.vibrationCtrl.vibrate(1000);
         resolve(data);
       }, err => {
         console.log("error!")
-        console.log(Object.keys(err));
-        console.log("Login", err);
+        alert(Object.keys(err));
+        alert("Login" + JSON.stringify(err));
         loading.dismiss();
         const toast = this.toastCtrl.create({
           message: this.appGlobal.ServerError,

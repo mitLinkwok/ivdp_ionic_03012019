@@ -46,19 +46,18 @@ export class QuestionDropdownPage {
     this.survey_type = navParams.get("type");
   }
   ionViewDidLoad() {
-
     console.log('ionViewDidLoad QuestionDropdownPage');
     console.log("@@@    " + this.appGlobal.groupsurveybeneficiaries)
   }
 
- 
+
   ccallBack(t) {
     t.group = t.appGlobal.groupsurveybeneficiaries;
     t.group[0].isChecked = true;
     this.benificiaryfound = true
     this.appGlobal.groupsurveybeneficiaries = []
-
   }
+  
   getChanged(e) {
     if (this.survey_type === "Single") {
       if (e.isChecked === true) {
@@ -79,10 +78,10 @@ export class QuestionDropdownPage {
 
     // this.appGlobal.selectedCheckbox = this.group.map(this.getSelectedBen).filter(this.removeNull);
     //this.appGlobal.selectedCheckId = this.group.map(this.getSelectid).filter(this.removeNull);
-//alert ('survey type on start :- '+ this.survey_type);
+    //alert ('survey type on start :- '+ this.survey_type);
     if (this.survey_type === "Single") {
       if (this.appGlobal.selectedCheckbox.length == 1) {
-  //      alert("checkbox lenth one");
+        //      alert("checkbox lenth one");
         this.sqldatabasegetter.getQuestionsfroloddata(this.survey_id, this.callsurveypage(this.project_id, this.survey_id, this.qId), this);
       } else if (this.appGlobal.selectedCheckbox.length > 1 || this.appGlobal.selectedCheckbox.length < 1) {
         alert("You should select only one beneficiary,Not less or not more ")
@@ -106,11 +105,11 @@ export class QuestionDropdownPage {
     }
   }
 
-  
+
   getSelectedBen(e, i, a) {
     if (e.isChecked)
-    
-    return e.server_id;
+
+      return e.server_id;
   }
   getSelectid(e, i, a) {
     if (e.isChecked)

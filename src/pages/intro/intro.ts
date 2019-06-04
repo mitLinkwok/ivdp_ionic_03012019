@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
-import {HomePage} from '../home/home';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { HomePage } from '../home/home';
 import { DBmaneger } from './../../providers/database/Dbmaneger';
 import { DatabaseProvider } from './../../providers/database/database';
 
@@ -22,18 +22,23 @@ export class IntroPage {
   synkmsg: any;
   loading: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public db: DBmaneger, public loadingCtrl: LoadingController,
-    public sqldatabasegetter: DatabaseProvider
-    ) {
+    public sqldatabasegetter: DatabaseProvider, public platform: Platform
+  ) {
     this.setIntroContent();
-    this.db.getbenificialydata()
-    this.db.getkycsdata();
-    this.db.getsurvey();
-    this.db.gethousehold()
-    this.db.getQuestion();
-   this.db.getOpections();
-   this.loading = this.loadingCtrl.create({
-    content: 'Sync is going on ... ',	duration: 5000
-  });
+
+    if (this.platform.is('cordova') || this.platform.is('ios') || this.platform.is('android')) {
+      this.db.getbenificialydata()
+      this.db.getkycsdata();
+      this.db.getsurvey();
+      this.db.gethousehold()
+      this.db.getQuestion();
+      this.db.getOpections();
+      this.loading = this.loadingCtrl.create({
+        content: 'Sync is going on ... ', duration: 5000
+      });
+    } else {
+      alert('platform is not fount')
+    }
 
   }
 
@@ -45,16 +50,16 @@ export class IntroPage {
     // this.setIntroContent();
     console.log('ionViewDidLoad IntroPage');
   }
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.synkmsg = setInterval(() => {
-      this.syncount  =  this.syncount + 1;
-       //console.log("syncount:- "+ this.syncount);
-       if(this.syncount >= 600){
+      this.syncount = this.syncount + 1;
+      //console.log("syncount:- "+ this.syncount);
+      if (this.syncount >= 600) {
         this.loading.dismiss();
         this.stopSyncLoop();
       }
       else {
-           this.loading.present();
+        this.loading.present();
       }
     }, 1000);
 
@@ -63,7 +68,7 @@ export class IntroPage {
     this.stopSyncLoop();
   }
 
-  
+
   stopSyncLoop() {
     clearInterval(this.synkmsg);
     this.synkmsg = null;
@@ -87,7 +92,7 @@ export class IntroPage {
     ];
 
     for (let i = 0; i < images.length; i++) {
-      this.introContent.push({image: "assets/img/" + images[i].trim(), content: contents[i], title: titles[i]})
+      this.introContent.push({ image: "assets/img/" + images[i].trim(), content: contents[i], title: titles[i] })
     }
   }
 

@@ -23,9 +23,9 @@ export class AppGlobalProvider {
   // private systemXBaseURL = '';
 
 
-  // LOCAL URLS165.227.139.76:8081
+  // LOCAL URLS
   public server = 'Local';
-  private intranetBaseURL = 'http://165.227.139.76:8081/api/v1';
+  private intranetBaseURL = 'http://192.168.43.228:8000/api/v1';
   private surveyBaseURL = 'https://deepaksurveystaging.herokuapp.com/rapidfire/surveys';
   private systemXBaseURL = 'https://system-x.herokuapp.com/api';
 
@@ -147,7 +147,7 @@ export class AppGlobalProvider {
     , "CREATE TABLE kycs(id INTEGER PRIMARY KEY AUTOINCREMENT,server_id INTEGER type UNIQUE,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,kyc_image BLOB,created_at TIMESTAMP,updated_at TIMESTAMP,device_id TEXT,sync_status INTEGER)"
     , "CREATE TABLE `survey` ( id INTEGER PRIMARY KEY AUTOINCREMENT, server_id INTEGER type UNIQUE, `project_id` INTEGER, `title` TEXT, `description` TEXT,`type` TEXT , `start_date` TEXT, `created_at` TEXT, `updated_at` TEXT,`sync_status` INTEGER )"
     , "CREATE TABLE `questions` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER type UNIQUE, `survey_id` INTEGER, `section_id` INTEGER, `order` INTEGER, `text` TEXT, `type` TEXT, `language_json` TEXT, `rule_json` TEXT, `created_at` TEXT, `updated_at` INTEGER ,`sync_status` INTEGER)"
-    , "CREATE TABLE `options` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER type UNIQUE, `question_id` INTEGER, `type` TEXT, `order` INTEGER, `text` TEXT, `language_json` TEXT, `created_at` TEXT, `updated_at` TEXT ,`sync_status` INTEGER)"
+    , "CREATE TABLE `options` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER type UNIQUE, `question_id` INTEGER, `type` TEXT, `order` INTEGER, `text` TEXT, `language_json` TEXT,`rule_json` TEXT,`created_at` TEXT, `updated_at` TEXT ,`sync_status` INTEGER)"
     , "CREATE TABLE `answers` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT,`server_id` INTEGER ,`beneficiarie_id` INTEGER, `survey_id` INTEGER, `question_id` INTEGER, `language_id` INTEGER, `option_id` INTEGER, `option_text` TEXT,`image` BLOB,`other_text` TEXT, `created_at` TEXT, `updated_at` TEXT ,sync_status INTEGER)"
     , "CREATE TABLE Updated_beneficiaries(id INTEGER PRIMARY KEY AUTOINCREMENT,server_id INTEGER,device_id TEXT,code TEXT,beneficiary_name TEXT,gender TEXT,age NUMBER,date_of_birth TEXT,marital_status TEXT,caste TEXT,religion TEXT,primary_occupation TEXT,ownership_of_land TEXT,total_land_holding TEXT,total_family_income_average_monthly NUMBER,education_status TEXT,height_in_cms NUMBER,Weight_in_kgs NUMBER,village_id NUMBER,household_id NUMBER,family_head_id NUMBER,type_of_rationa_card TEXT,family_head_relation TEXT,contact_number NUMBER,whatsapp_number NUMBER,user_id NUMBER,created_at TIMESTAMP,updated_at TIMESTAMP,sync_status INTEGER)"
     , "CREATE TABLE Updated_kycs(id INTEGER PRIMARY KEY AUTOINCREMENT,server_id INTEGER,user_id INTEGER,kyc_person_id INTEGER,kyc_person_type TEXT,kyc_name TEXT,kyc_detail TEXT,kyc_number TEXT,kyc_file TEXT,kyc_image BLOB,created_at TIMESTAMP,updated_at TIMESTAMP sync_status INTEGER)"

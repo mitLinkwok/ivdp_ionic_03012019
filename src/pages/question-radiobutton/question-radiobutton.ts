@@ -38,6 +38,7 @@ export class QuestionRadiobuttonPage {
   Quesion_number: number;
   rule_json: string;
   jump: any = []
+  opctionIndex: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
     this.qindex = navParams.get("qindex");
@@ -70,7 +71,7 @@ export class QuestionRadiobuttonPage {
     else {
       this.answer = {
         beneficiarie_id: this.auto_increment_id, server_id: this.beneficiary_id, survey_id: this.survey_id, question_id: this.key,
-        language_id:3, option_id:"", option_text: "", image: "N/A", other_text: "no"
+        language_id: 3, option_id: "", option_text: "", image: "N/A", other_text: "no"
       };
     }
 
@@ -78,44 +79,44 @@ export class QuestionRadiobuttonPage {
 
   goToNext(e: any) {
     {
-      if(this.filled == 0)
-      {
+      if (this.filled == 0) {
         alert("Please select the answer");
         return false;
       }
       this.appGlobal.answers[this.key] = (this.answer);
-      if(this.qindex == this.appGlobal.questionsList.length - 1) {
+      if (this.qindex == this.appGlobal.questionsList.length - 1) {
         this.is_last = 1;
         alert("Last Question");
         return
       }
-      //alert(JSON.stringify(this.appGlobal.questionsList));
-      //alert(this.jump);
+      // alert(JSON.stringify(this.appGlobal.questionsList));
+      // alert('jump ' + this.jump);
       let nq = this.qindex + 1;
       this.appGlobal.Quesion_number++
-      //alert(JSON.parse(this.appGlobal.questionsList[nq].server_id));
-      //alert(this.rule_json);
-      if (this.rule_json != 'null' && this.rule_json != null)
-      {
-        //alert(this.rule_json.length);
-        this.jump = JSON.parse(this.rule_json);
-        if((this.jump['jump']) && Number(this.answer.option_id) == Number(this.jump['jump']['option_id'])){
-          //alert("is jump" + this.jump['jump']['option_id']);
-          while( 1==1 )
-          {
-            if (this.appGlobal.questionsList[nq].server_id == Number(this.jump['jump']['question_id']))
-            {
+      // alert(JSON.parse(' server id ' + this.appGlobal.questionsList[nq].server_id));
+      alert(JSON.stringify(' WWW   ' + this.opctionIndex + this.appGlobal.options[this.opctionIndex].rule_json));
+
+      // if(this.opctions[this.opctionIndex].rule_json)
+
+      if (this.appGlobal.options[this.opctionIndex].rule_json != 'null' && this.appGlobal.options[this.opctionIndex].rule_json != null && this.appGlobal.options[this.opctionIndex].rule_json.length != 0) {
+        alert(' rul json ' + this.appGlobal.options[this.opctionIndex].rule_json.length);
+        this.jump = JSON.parse(this.appGlobal.options[this.opctionIndex].rule_json);
+        if ((this.jump['jump']) && Number(this.answer.option_id) == Number(this.jump['jump']['option_id'])) {
+          alert("is jump" + this.jump['jump']['option_id']);
+          while (1 == 1) {
+            if (this.appGlobal.questionsList[nq].server_id == Number(this.jump['jump']['question_id'])) {
               break;
             }
-            else
-            {
+            else {
               nq = nq + 1;
               this.appGlobal.Quesion_number++;
             }
-          } 
+          }
         }
+
         //alert("In if of jump");
       }
+
       this.navCtrl.push(SuervyPage, {
         project_id: this.project_id,
         survey_id: this.survey_id,
@@ -124,14 +125,34 @@ export class QuestionRadiobuttonPage {
         auto_increment_id: this.auto_increment_id,
         qindex: (nq)
       });
-
     }
-
   }
-  select(item) {
-  
+  // ------------------------------BY TEJASH----------------------------
+  // if (this.rule_json != 'null' && this.rule_json != null) {
+  //   alert(' rul json ' + this.rule_json.length);
+  //   this.jump = JSON.parse(this.rule_json);
+  //   if ((this.jump['jump']) && Number(this.answer.option_id) == Number(this.jump['jump']['option_id'])) {
+  //     alert("is jump" + this.jump['jump']['option_id']);
+  //     while (1 == 1) {
+  //       if (this.appGlobal.questionsList[nq].server_id == Number(this.jump['jump']['question_id'])) {
+  //         break;
+  //       }
+  //       else {
+  //         nq = nq + 1;
+  //         this.appGlobal.Quesion_number++;
+  //       }
+  //     }
+  //   }
+  //   //alert("In if of jump");
+  // }
+
+
+
+  select(item, i) {
+
     this.answer.option_text = item.text;
     this.answer.option_id = item.server_id;
+    this.opctionIndex = i;
     this.filled = 1;
     // this.select_radio=item
   }

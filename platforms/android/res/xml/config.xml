@@ -3,77 +3,9 @@
     <feature name="CallNumber">
         <param name="android-package" value="com.rohithvaranasi.callnumber.CFCallNumber" />
     </feature>
-    <feature name="File">
-        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
-        <param name="onload" value="true" />
-    </feature>
-    <allow-navigation href="cdvfile:*" />
-    <feature name="CordovaHttpPlugin">
-        <param name="android-package" value="com.synconset.cordovahttp.CordovaHttpPlugin" />
-    </feature>
-    <feature name="AppVersion">
-        <param name="android-package" value="uk.co.whiteoctober.cordova.AppVersion" />
-    </feature>
-    <feature name="Device">
-        <param name="android-package" value="org.apache.cordova.device.Device" />
-    </feature>
-    <feature name="BackgroundMode">
-        <param name="android-package" value="de.appplant.cordova.plugin.background.BackgroundMode" />
-    </feature>
-    <feature name="Calendar">
-        <param name="android-package" value="nl.xservices.plugins.Calendar" />
-    </feature>
-    <feature name="Camera">
-        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
-    </feature>
-    <feature name="CropPlugin">
-        <param name="android-package" value="com.jeduan.crop.CropPlugin" />
-    </feature>
-    <feature name="FCMPlugin">
-        <param name="android-package" value="com.gae.scaffolder.plugin.FCMPlugin" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="FileTransfer">
-        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
-    </feature>
-    <feature name="FilePath">
-        <param name="android-package" value="com.hiddentao.cordova.filepath.FilePath" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="ImagePicker">
-        <param name="android-package" value="com.synconset.ImagePicker" />
-    </feature>
-    <feature name="LocalNotification">
-        <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
-    </feature>
-    <feature name="NetworkStatus">
-        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
-    </feature>
-    <feature name="SplashScreen">
-        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="UniqueDeviceID">
-        <param name="android-package" value="hu.dpal.phonegap.plugins.UniqueDeviceID" />
-    </feature>
     <feature name="Whitelist">
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
-    </feature>
-    <feature name="Toast">
-        <param name="android-package" value="nl.xservices.plugins.Toast" />
-    </feature>
-    <feature name="SQLitePlugin">
-        <param name="android-package" value="io.sqlc.SQLitePlugin" />
-    </feature>
-    <feature name="BarcodeScanner">
-        <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
-    </feature>
-    <feature name="Badge">
-        <param name="android-package" value="de.appplant.cordova.plugin.badge.Badge" />
-    </feature>
-    <feature name="Keyboard">
-        <param name="android-package" onload="true" value="io.ionic.keyboard.IonicKeyboard" />
     </feature>
     <name>DF IVDP</name>
     <description>Deepak Foundation IVDP App</description>
@@ -124,8 +56,6 @@
     <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
     <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     <preference name="loglevel" value="DEBUG" />
-    <preference name="KeepRunning" value="true" />
-    <preference name="AndroidLaunchMode" value="singleInstance" />
     <preference name="ScrollEnabled" value="false" />
     <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />

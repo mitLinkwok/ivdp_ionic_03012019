@@ -173,10 +173,10 @@ export class DatabaseProvider {
         });
     });
   }
-
+  
   public insertoptions(objCase: any) {
     return new Promise((resolve, reject) => {
-      this.dbobject.executeSql("INSERT INTO `options`( `server_id`,`question_id`,`type`,`order`,`text`,`language_json`,`created_at`,`updated_at`,'sync_status') VALUES(?,?,?,?,?,?,?,?,?)", [objCase.id, objCase.question_id, objCase.type, objCase.order, objCase.text, objCase.language_json, objCase.created_at, objCase.updated_at, 0])
+      this.dbobject.executeSql("INSERT INTO `options`( `server_id`,`question_id`,`type`,`order`,`text`,`language_json`,`rule_json`,`created_at`,`updated_at`,'sync_status') VALUES(?,?,?,?,?,?,?,?,?,?)", [objCase.id, objCase.question_id, objCase.type, objCase.order, objCase.text, objCase.language_json,objCase.rule_json, objCase.created_at, objCase.updated_at, 0])
         .then((data) => {
 
          // console.log("insert options Successfully")
@@ -954,7 +954,8 @@ export class DatabaseProvider {
               server_id: data.rows.item(i).server_id,
               question_id: data.rows.item(i).question_id,
               type: data.rows.item(i).type,
-              text: data.rows.item(i).text
+              text: data.rows.item(i).text,
+              rule_json: data.rows.item(i).rule_json,
             })
 
           }
