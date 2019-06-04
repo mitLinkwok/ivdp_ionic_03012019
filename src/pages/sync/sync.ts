@@ -1,7 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { DatabaseProvider } from './../../providers/database/database';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { AppGlobalProvider } from "../../providers/app-global/app-global";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { DataSetterProvider } from "../../providers/data-setter/data-setter";
@@ -36,7 +36,7 @@ export class SyncPage {
 		public appGlobal: AppGlobalProvider, public dataGetterService: DataGetterServiceProvider,
 		public dataSetterService: DataSetterProvider, public sqldatabasegetter: DatabaseProvider,
 		public toastCtrl: ToastController,
-		public db: DBmaneger, public storage: Storage) {
+		public db: DBmaneger, public storage: Storage, public platform: Platform) {
 		this.sqldatabasegetter.syncbeneficiarydata();
 		this.sqldatabasegetter.syncanswersdata();
 		this.sqldatabasegetter.synckycsdata();
@@ -46,7 +46,9 @@ export class SyncPage {
 
 	}
 	dorefresh(ev) {
-		this.datareload(ev)
+		if (this.platform.is('android') || this.platform.is('ios')) {
+			this.datareload(ev)
+		}
 		setTimeout(() => {
 			console.log('Async operation has ended');
 			ev.complete();
@@ -131,7 +133,7 @@ export class SyncPage {
 			this.sqldatabasegetter.updateanswers(object[i], t);
 		}
 	}
-	receivesurvey(){
+	receivesurvey() {
 		alert("receive survey");
 	}
 	syncsurveyskycs() {

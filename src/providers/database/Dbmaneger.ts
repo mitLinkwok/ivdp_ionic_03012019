@@ -42,9 +42,6 @@ export class DBmaneger {
     }
 
     public async getbenificialydata() {
-
-
-
         console.log("====== getbenificialydata ======");
         if (this.page_status == 0 || this.page_status == 1) {
 
@@ -76,15 +73,11 @@ export class DBmaneger {
                 toast.present();
             });
         } else {
-
-
             if (this.page_status != null && this.page_status != undefined && this.page_status <= this.total_datapage) {
                 this.doInfinite(null);
             }
 
         }
-
-
     }
 
     doInfinite(e): Promise<any> {

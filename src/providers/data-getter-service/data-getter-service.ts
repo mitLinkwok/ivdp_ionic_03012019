@@ -163,25 +163,17 @@ export class DataGetterServiceProvider {
   public getAllMaintenanceRequests(data) {
 
     return this.http.get(this.appGlobal.getAllMaintenanceRequests + '?user_id=' + data, this.getHTTPOptions());
-
-
-
   }
 
   public paggination(page: any) {
-    //  var url = "http://165.227.139.76:8081/api/v1/beneficiaries?page=" + page;
-    var url = "http://192.168.43.228:8000/api/v1/beneficiaries?page=" + page;
-    //alert(url)
-
-
+    // var url = "http://192.168.43.228:8000/api/v1/beneficiaries?page=" + page;
+    var url = this.appGlobal.beneficiariesPagination + page;
     return this.http.get(url, this.getHTTPOptions())
   }
 
   public paggination_hh(page: any) {
-    var url = "http://192.168.43.228:8000/api/v1/household?page="+page;
-   // var url = " http://165.227.139.76:8081/api/v1/household?page=" + page;
-
-
+    //var url = "http://192.168.43.228:8000/api/v1/household?page=" + page;
+    var url = this.appGlobal.householdPagination + page;
     return this.http.get(url, this.getHTTPOptions())
   }
 

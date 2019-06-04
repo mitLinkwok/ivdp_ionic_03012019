@@ -35,7 +35,7 @@ export class AppGlobalProvider {
   // private systemXBaseURL = 'https://system-x.herokuapp.com/api';
 
 
-  
+
   public getLeaveApplicationsURL = this.systemXBaseURL + '/leave_application_records';
   public pendingLeaveApplicationsURL = this.systemXBaseURL + '/pending_leave_application';
   public leaveApprovalURL = this.systemXBaseURL + '/leave_approval';
@@ -106,6 +106,8 @@ export class AppGlobalProvider {
   public getMRLocations = this.intranetBaseURL + '/get_locations';
   public getLunchCategories = this.intranetBaseURL + '/get_lunch_categories';
   public canteenFacilityUsage = this.intranetBaseURL + '/record_canteen_usage';
+  public beneficiariesPagination=this.intranetBaseURL + '/beneficiaries?page=';
+  public householdPagination=this.intranetBaseURL+'household?page=';
 
   //rewards and redemption 
   public getMyAwards = this.intranetBaseURL + "/get_user_awards"
@@ -138,8 +140,7 @@ export class AppGlobalProvider {
   public createGrievancesURL = this.intranetBaseURL + '/kyc';
   public getAllMaintenanceRequests = this.intranetBaseURL + '/beneficiaries';
   public getAllMaintenanceRequestspaggination = this.intranetBaseURL + '/beneficiaries?page=';
-  public createMaintenanceRequest = "http://165.227.139.76:8081/api/v1/beneficiaries/postusersbeneficiary"
-
+  public createMaintenanceRequest = this.intranetBaseURL + '/beneficiaries/postusersbeneficiary'
 
   public createtable = [
 

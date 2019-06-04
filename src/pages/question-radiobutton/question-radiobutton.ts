@@ -89,20 +89,11 @@ export class QuestionRadiobuttonPage {
         alert("Last Question");
         return
       }
-      // alert(JSON.stringify(this.appGlobal.questionsList));
-      // alert('jump ' + this.jump);
       let nq = this.qindex + 1;
       this.appGlobal.Quesion_number++
-      // alert(JSON.parse(' server id ' + this.appGlobal.questionsList[nq].server_id));
-      alert(JSON.stringify(' WWW   ' + this.opctionIndex + this.appGlobal.options[this.opctionIndex].rule_json));
-
-      // if(this.opctions[this.opctionIndex].rule_json)
-
       if (this.appGlobal.options[this.opctionIndex].rule_json != 'null' && this.appGlobal.options[this.opctionIndex].rule_json != null && this.appGlobal.options[this.opctionIndex].rule_json.length != 0) {
-        alert(' rul json ' + this.appGlobal.options[this.opctionIndex].rule_json.length);
         this.jump = JSON.parse(this.appGlobal.options[this.opctionIndex].rule_json);
         if ((this.jump['jump']) && Number(this.answer.option_id) == Number(this.jump['jump']['option_id'])) {
-          alert("is jump" + this.jump['jump']['option_id']);
           while (1 == 1) {
             if (this.appGlobal.questionsList[nq].server_id == Number(this.jump['jump']['question_id'])) {
               break;
@@ -113,8 +104,6 @@ export class QuestionRadiobuttonPage {
             }
           }
         }
-
-        //alert("In if of jump");
       }
 
       this.navCtrl.push(SuervyPage, {

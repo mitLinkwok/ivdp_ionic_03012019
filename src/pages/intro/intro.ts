@@ -26,7 +26,7 @@ export class IntroPage {
   ) {
     this.setIntroContent();
 
-    if (this.platform.is('cordova') || this.platform.is('ios') || this.platform.is('android')) {
+    if ( this.platform.is('ios') || this.platform.is('android')) {
       this.db.getbenificialydata()
       this.db.getkycsdata();
       this.db.getsurvey();
@@ -37,7 +37,7 @@ export class IntroPage {
         content: 'Sync is going on ... ', duration: 5000
       });
     } else {
-      alert('platform is not fount')
+      alert('platform is not android OR ios')
     }
 
   }
@@ -47,7 +47,7 @@ export class IntroPage {
   }
 
   ionViewDidLoad() {
-    // this.setIntroContent();
+  
     console.log('ionViewDidLoad IntroPage');
   }
   ionViewDidEnter() {
