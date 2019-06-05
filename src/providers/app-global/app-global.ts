@@ -25,7 +25,7 @@ export class AppGlobalProvider {
 
   // LOCAL URLS
   public server = 'Local';
-  private intranetBaseURL = 'http://192.168.43.228:8000/api/v1';
+  private intranetBaseURL = 'http://165.227.139.76:8081/api/v1';
   private surveyBaseURL = 'https://deepaksurveystaging.herokuapp.com/rapidfire/surveys';
   private systemXBaseURL = 'https://system-x.herokuapp.com/api';
 
