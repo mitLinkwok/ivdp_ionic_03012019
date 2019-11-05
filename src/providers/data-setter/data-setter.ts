@@ -163,14 +163,8 @@ export class DataSetterProvider {
 
   // Maintenance Request
   createMaintenanceRequest(data) {
-   // alert("  ff     " + JSON.stringify(this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions())));
     return this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions())
    
-    // var obsRequest =this.http.post(this.appGlobal.createMaintenanceRequest, data, this.getHTTPOptions())
-    // .catch( (error: any) => {alert ( error.json().error)} );
-
-
-
   }
 
   syncAnswersRequest(data) {

@@ -50,14 +50,12 @@ export class SurveyListPage {
     this.appGlobal.options = []
     this.appGlobal.selectedCheckId = [];
     this.appGlobal.selectedCheckbox = [];
-
   }
 
 
 
   ionViewDidLoad() {
     this.loadSurveys(null);
-
   }
   ccallBack(t) {
     t.loadSurveys(null)

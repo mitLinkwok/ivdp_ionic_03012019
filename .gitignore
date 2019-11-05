@@ -7,7 +7,7 @@
 /.vscode
 
 
-idea/
+.idea/
 .ionic/
 .sourcemaps/
 .sass-cache/

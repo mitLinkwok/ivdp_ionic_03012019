@@ -7,6 +7,7 @@ import { ToastController } from "ionic-angular/components/toast/toast-controller
 import { DataSetterProvider } from "../../providers/data-setter/data-setter";
 import { DataGetterServiceProvider } from "../../providers/data-getter-service/data-getter-service";
 import { DBmaneger } from './../../providers/database/Dbmaneger';
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 // import {Vibration} from "@ionic-native/vibration";
 
@@ -32,6 +33,8 @@ export class SyncPage {
 	last_syncsurveysanswerTime: any
 	last_syncsurveyskycs: any;
 	loading: any
+
+
 	constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
 		public appGlobal: AppGlobalProvider, public dataGetterService: DataGetterServiceProvider,
 		public dataSetterService: DataSetterProvider, public sqldatabasegetter: DatabaseProvider,
@@ -43,7 +46,6 @@ export class SyncPage {
 		this.pending_beneficiaries = this.appGlobal.benefeciaries.length;
 		this.pending_answers = this.appGlobal.syncanswers.length
 		this.pending_kycs = this.appGlobal.synckycs.length
-
 	}
 	dorefresh(ev) {
 		if (this.platform.is('android') || this.platform.is('ios')) {
@@ -66,71 +68,108 @@ export class SyncPage {
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad SyncPage');
 	}
-	syncBeneficiaries() {
-		this.presentLoading();
-		let b_success = []
+	async syncBeneficiaries() {
+		//if (this.appGlobal.benefeciaries.length > 0) {
+		
 		let m = this;
+		//this.presentLoading(m);
+		let b_success = [];
+		this.loading = this.loadingCtrl.create({
+			content: 'please wait while syncing data..'
+		});
+		await this.loading.present()
+
 		const js_arr = { 'beneficiary': m.appGlobal.benefeciaries, "house_hold": [], "kyc": [] };
-		m.dataSetterService.createMaintenanceRequest(js_arr).subscribe((data: any) => {
+		await m.dataSetterService.createMaintenanceRequest(js_arr).subscribe(async (data: any) => {
+			this.loading.dismiss();
 
-			if (data[0].original.status) {
-				alert("beneficiry sync done")
+			if (data[0].original.status || data[0].original.status == "true") {
+				await this.updaterdbbenefiliy(data[0].original.updater, this, this.loading)
 				this.last_syncBeneficiariesTime = new Date().toDateString();
-
 				b_success.push(data)
 				this.appGlobal.benefeciaries == []
-				this.pending_beneficiaries == 0
-				this.updaterdbbenefiliy(data[0].original.updater, this);
-				this.loading.dismiss();
-			}
-			else {
-				console.log("data upload beneficiry  " + data)
+				this.pending_beneficiaries == 0;
 
 			}
+			else if (!data[0].original.status || data[0].original.status == "false") {
+				console.log("data upload beneficiry  " + data)
+				this.loading.dismiss();
+			} else {
+				this.loading.dismiss();
+			}
+
 		}, (error) => {
-			alert(" s   " + JSON.stringify(error))
-		})
+			alert(" Error   " + JSON.stringify(error));
+			this.loading.dismiss();
+		});
+
 
 	}
 
 
-	updaterdbbenefiliy(object: any, t) {
+	async updaterdbbenefiliy(object: any, t, l): Promise<any> {
+
+		l.dismiss();
+
+		if (object.length == 0) {
+			l.dismiss()
+		}
 		for (let i = 0; i < object.length; i++) {
 			this.sqldatabasegetter.updatebeneficiarydata(object[i], t);
+			if (i == object.length) {
+				alert("beneficiry sync done")
+				l.dismiss();
+			}
 		}
+
+
 	}
 
 	syncsurveysanswer() {
-		this.presentLoading();
-		let b_success = []
 		let m = this;
+		let l = this.loadingCtrl.create({
+			content: 'please wait while syncing data..'
+		});
+		l.present();
+
+		let b_success = []
+
 		const js_arr = { "answer": m.appGlobal.syncanswers };
 		//	loading.present();
 		m.dataSetterService.syncAnswersRequest(js_arr).subscribe((data: any) => {
 
+
 			if (data.status) {
-				alert("Answers sync done")
+				l.dismiss();
+				alert("Answers sync done");
+				this.updaterdbanswers(data.updater, this, l);
+
 				this.last_syncsurveysanswerTime = new Date().toDateString();
 				b_success.push(data)
 				m.appGlobal.syncanswers = []
 				m.pending_answers = 0
-				this.updaterdbanswers(data.updater, this)
-				m.loading.dismiss();
 			}
 			else {
 				console.log("error in Answers sync" + data.errors);
-				//loading.dismiss();
+				l.dismiss();
 			}
 		}, (error) => {
 			alert(JSON.stringify(error))
-			//loading.dismiss();
+			l.dismiss();
 		})
 
 	}
 
-	updaterdbanswers(object: any, t) {
+	updaterdbanswers(object: any, t, l) {
+		alert(object.length + '  ans ')
+		if (object.length == 0) {
+			l.dismiss();
+		}
 		for (let i = 0; i < object.length; i++) {
 			this.sqldatabasegetter.updateanswers(object[i], t);
+			if (i == object.length) {
+				l.dismiss();
+			}
 		}
 	}
 	receivesurvey() {
@@ -139,30 +178,35 @@ export class SyncPage {
 	syncsurveyskycs() {
 		// kycCanSync: Boolean;
 		this.storage.get('kycCansync').then(done => {
-			alert(JSON.stringify(done));
-
 			if (done) {
-				alert(JSON.stringify(done));
-				this.presentLoading();
-				let b_success = []
 				let m = this;
+				//this.presentLoading(m);
+				let l = this.loadingCtrl.create({
+					content: 'please wait while syncing data..'
+				});
+				l.present();
+				let b_success = []
 				const js_arr = { 'beneficiary': [], "house_hold": [], "kyc": m.appGlobal.synckycs };
 				m.dataSetterService.syncKycsRequest(js_arr).subscribe((data: any) => {
 					if (data[1].original.status) {
-						alert("kycs sync done ")
+						l.dismiss();
+						alert("kycs sync done ");
+						
+						this.updaterdbkycs(data[1].original.updater, this, l)
+
 						this.last_syncsurveyskycs = new Date().toDateString();
 						b_success.push(data)
 						this.appGlobal.synckycs = []
 						this.pending_kycs = 0;
-						this.updaterdbkycs(data[1].original.updater, this)
-						this.loading.dismiss();
+
 					}
 					else {
 						console.log(data.errors);
-						//loading.dismiss();
+						l.dismiss();
 					}
 				}, (error) => {
-					alert(JSON.stringify(error))
+					alert(JSON.stringify(error));
+					l.dismiss();
 				})
 			}
 			else {
@@ -175,22 +219,29 @@ export class SyncPage {
 
 	}
 
-	updaterdbkycs(object: any, t) {
+	updaterdbkycs(object: any, t, l) {
+		alert(object.length + '  kyc ')
+		if (object.length == 0) {
+			l.dismiss();
+		}
+
 		for (let i = 0; i < object.length; i++) {
 			this.sqldatabasegetter.updatekycsindb(object[i], t);
+			if (i == object.length) {
+				l.dismiss();
+			}
 		}
 	}
 
 
 
-	async presentLoading() {
+	/* presentLoading(m) {
 		this.loading = this.loadingCtrl.create({
-			content: 'Please wait...',
-			duration: 5000
+			content: "Plase wite.."
 		});
 		this.loading.present();
 	}
-
+ */
 
 
 

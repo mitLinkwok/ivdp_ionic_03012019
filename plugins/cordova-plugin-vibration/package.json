@@ -1,28 +1,28 @@
 {
-  "_from": "cordova-plugin-vibration@3.1.0",
-  "_id": "cordova-plugin-vibration@3.1.0",
+  "_from": "cordova-plugin-vibration",
+  "_id": "cordova-plugin-vibration@3.1.1",
   "_inBundle": false,
-  "_integrity": "sha1-Y+V6HecuMYsJRO9yfXxO/xPKLJM=",
+  "_integrity": "sha512-qgv67Rueo4Pydfant3TwnXeFiN9dl+6lKMM6h5jYg9XewiGAGOr8vfWsTvQssC3m3xMKGS1ap3xPNH+BzZ4RMA==",
   "_location": "/cordova-plugin-vibration",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "cordova-plugin-vibration@3.1.0",
+    "raw": "cordova-plugin-vibration",
     "name": "cordova-plugin-vibration",
     "escapedName": "cordova-plugin-vibration",
-    "rawSpec": "3.1.0",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "3.1.0"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-vibration/-/cordova-plugin-vibration-3.1.0.tgz",
-  "_shasum": "63e57a1de72e318b0944ef727d7c4eff13ca2c93",
-  "_spec": "cordova-plugin-vibration@3.1.0",
-  "_where": "/home/linkwok/ionicproject/intranetmobile-1.1.0",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-vibration/-/cordova-plugin-vibration-3.1.1.tgz",
+  "_shasum": "38fcdd9a7675cfb44d86339c1b2cb129017e9e00",
+  "_spec": "cordova-plugin-vibration",
+  "_where": "/home/mit/Documents/Working project/ionic/ivdp_ionic_03012019",
   "author": {
     "name": "Apache Software Foundation"
   },
@@ -76,5 +76,5 @@
     "test": "npm run eslint"
   },
   "types": "./types/index.d.ts",
-  "version": "3.1.0"
+  "version": "3.1.1"
 }

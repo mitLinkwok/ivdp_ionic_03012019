@@ -68,18 +68,18 @@ export class HomePage {
     // this.dataget();
   }
 
- 
+
   ionViewWillLeave() {
     this.stopSyncLoop();
   }
 
-  
+
   stopSyncLoop() {
     clearInterval(this.synkmsg);
     this.synkmsg = null;
   }
   ionViewDidLoad() {
- 
+
 
     this.storage.get('intro-done').then(done => {
       if (!done) {
@@ -112,81 +112,81 @@ export class HomePage {
   // }
 
   loadincontrol() {
-    
+
     this.synkmsg = setInterval(() => {
 
-    this.totalbeneficiary = this.getTotalcount();
-    this.totalsurvey = this.getTotalsurvey();
-    this.totalhousehold = this.sqldatabasegetter.total_Hh;
-    this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
-    // if (this.totalbeneficiary == this.appGlobal.total && this.appGlobal.actual == this.appGlobal.total && this.appGlobal.total_househ == this.totalhousehold) {
+      this.totalbeneficiary = this.getTotalcount();
+      this.totalsurvey = this.getTotalsurvey();
+      this.totalhousehold = this.sqldatabasegetter.total_Hh;
+      this.live_dataLoade = Math.round(this.appGlobal.actual * (100) / this.appGlobal.total);
+      // if (this.totalbeneficiary == this.appGlobal.total && this.appGlobal.actual == this.appGlobal.total && this.appGlobal.total_househ == this.totalhousehold) {
       // console.log("total Beneficiary " + this.totalbeneficiary);
       // console.log("appglobal Beneficiary " + this.appGlobal.total);
-      this.syncount  =  this.syncount + 1;
+      this.syncount = this.syncount + 1;
       //console.log("syncount:- "+ this.syncount);
-      if(this.syncount >= 300){
+      if (this.syncount >= 300) {
         this.loading.dismiss();
         this.stopSyncLoop();
       }
       else {
-           this.loading.present();
+        this.loading.present();
       }
-    // if (this.totalbeneficiary == this.appGlobal.total) {
-      
-    //   this.sync_status = "Sync Done"
-    //   this.loading.dismiss();
-    //   this.stopSyncLoop();
-    // } else {
-    //   this.loading.present();
-    // }
-    this.live_dataLoade = Math.round(this.appGlobal.insertcountbene * (100) / this.appGlobal.total);
-    // console.log(this.appGlobal.insertcountbene + this.appGlobal.total)
-    // if (this.appGlobal.insertcountbene == this.appGlobal.total) {
-    //   this.sync_status = "Sync Done"
-    //   this.loading.dismiss();
-    // } else {
-    //  this.loading.present();
-    // }
+    
+   
+      // if (this.totalbeneficiary == this.appGlobal.total) {
 
-  }, 1000);
+      //   this.sync_status = "Sync Done"
+      //   this.loading.dismiss();
+      //   this.stopSyncLoop();
+      // } else {
+      //   this.loading.present();
+      // }
+      this.live_dataLoade = Math.round(this.appGlobal.insertcountbene * (100) / this.appGlobal.total);
+      // console.log(this.appGlobal.insertcountbene + this.appGlobal.total)
+      // if (this.appGlobal.insertcountbene == this.appGlobal.total) {
+      //   this.sync_status = "Sync Done"
+      //   this.loading.dismiss();
+      // } else {
+      //  this.loading.present();
+      // }
+
+    }, 1000);
 
   }
 
   getTotalcount() {
 
-    if (this.appGlobal.insertcountbene >0 ){
-      this.appGlobal.actual  = this.appGlobal.insertcountbene;
-    }else {
+    if (this.appGlobal.insertcountbene > 0) {
+      this.appGlobal.actual = this.appGlobal.insertcountbene;
+    } else {
 
-    this.sqldatabasegetter.dbobject.executeSql("select * from beneficiaries", {})
-      .then((data) => {
-        console.log('bene length ' + data.rows.length)
-       this.appGlobal.actual  = data.rows.length;
-       this.appGlobal.total  = data.rows.length;
-        return data.rows.length;
-      }, (error) => {
-        console.log(JSON.stringify(error))
-      })
-    } 
+      this.sqldatabasegetter.dbobject.executeSql("select * from beneficiaries", {})
+        .then((data) => {
+          console.log('bene length ' + data.rows.length)
+          this.appGlobal.actual = data.rows.length;
+          this.appGlobal.total = data.rows.length;
+          return data.rows.length;
+        }, (error) => {
+          console.log(JSON.stringify(error))
+        })
+    }
   }
   getTotalsurvey() {
 
     this.sqldatabasegetter.dbobject.executeSql("select * from  survey", {})
       .then((data) => {
-        this.totalsurvey= data.rows.length;
+        this.totalsurvey = data.rows.length;
       }, (error) => {
 
         console.log(JSON.stringify(error))
       })
   }
   getTotalhh() {
-
-    
     this.sqldatabasegetter.dbobject.executeSql("select * from households", {})
       .then((data) => {
-      //alert(data.rows.length);
+        //alert(data.rows.length);
         this.appGlobal.total_househ = data.rows.length;
-       
+
       }, (error) => {
         console.log(JSON.stringify(error))
       })

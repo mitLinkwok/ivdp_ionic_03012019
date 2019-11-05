@@ -43,40 +43,42 @@ export class DBmaneger {
 
     public async getbenificialydata() {
         console.log("====== getbenificialydata ======");
-        if (this.page_status == 0 || this.page_status == 1) {
+        if (this.platform.is('cordova')) {
+            if (this.page_status == 0 || this.page_status == 1) {
 
-            console.log("page_status  in 1 Api call  " + this.page_status)
-            this.dataGetterService.getAllMaintenanceRequests(this.data).subscribe((data: any) => {
-                let a = true
-                if (data.success || a) {
-                    this.appGlobal.actual = data.data.length + this.appGlobal.actual;
-                    for (let i = 0; i <= data.data.length; i++) {
-                        this.db.insertbeneficiarydata(data.data[i]);
-                        this.appGlobal.sync_status = "Sync is going on ...."
+                console.log("page_status  in 1 Api call  " + this.page_status)
+                await this.dataGetterService.getAllbeneficiary(this.data).subscribe((data: any) => {
+                    let a = true
+                    if (data.success || a) {
+                        this.appGlobal.actual = data.data.length + this.appGlobal.actual;
+                        for (let i = 0; i <= data.data.length; i++) {
+                            this.db.insertbeneficiarydata(data.data[i]);
+                            this.appGlobal.sync_status = "Sync is going on ...."
+                        }
+                        // this.total_datapage = JSON.stringify(data.meta.last_page);
+                        this.total_datapage = data.meta.last_page
+                        console.log("page_status  in 1 Api call  total " + this.total_datapage)
+                        this.appGlobal.total = data.meta.total;
+                        this.doInfinite(null);
+                        return this.isqurestatus = true
+                    } else {
+                        console.log("cannot get beneficiary  data for insert");
                     }
-                    // this.total_datapage = JSON.stringify(data.meta.last_page);
-                    this.total_datapage = data.meta.last_page
-                    console.log("page_status  in 1 Api call  total " + this.total_datapage)
-                    this.appGlobal.total = data.meta.total;
-                    this.doInfinite(null);
-                    return this.isqurestatus = true
-                } else {
-                    console.log("cannot get beneficiary  data for insert");
-                }
-                return this.isqurestatus = false
-            }, error => {
-                console.log(JSON.stringify(error))
-                const toast = this.toastCtrl.create({
-                    message: this.appGlobal.ServerError,
-                    duration: 3000
+                    return this.isqurestatus = false
+                }, error => {
+                    console.log(JSON.stringify(error))
+                    const toast = this.toastCtrl.create({
+                        message: this.appGlobal.ServerError,
+                        duration: 3000
+                    });
+                    toast.present();
                 });
-                toast.present();
-            });
-        } else {
-            if (this.page_status != null && this.page_status != undefined && this.page_status <= this.total_datapage) {
-                this.doInfinite(null);
-            }
+            } else {
+                if (this.page_status != null && this.page_status != undefined && this.page_status <= this.total_datapage) {
+                    this.doInfinite(null);
+                }
 
+            }
         }
     }
 
@@ -116,57 +118,61 @@ export class DBmaneger {
 
 
     public async getkycsdata() {
-        await this.dataGetterService.getGrievances()
-            .subscribe((data: any) => {
-                let a = true
-                if (data.success || a) {
-                    for (let i = 0; i <= data.data.length; i++) {
-                        let object = data.data[i]
-                        console.log("dadaobject ##### " + object);
-                        this.db.insertkycsdatafromapi(data.data[i]);
+        if (this.platform.is('cordova')) {
+
+            await this.dataGetterService.getGrievances()
+                .subscribe((data: any) => {
+                    let a = true
+                    if (data.success || a) {
+                        for (let i = 0; i <= data.data.length; i++) {
+                            let object = data.data[i]
+                            console.log("dadaobject ##### " + object);
+                            this.db.insertkycsdatafromapi(data.data[i]);
+                        }
+                        return this.isqurestatus = true
+                    } else {
+                        console.log("cannot get kycs data for insert");
                     }
-                    return this.isqurestatus = true
-                } else {
-                    console.log("cannot get kycs data for insert");
-                }
-                return this.isqurestatus = false
-                // this.db.getbeneficiarydata();
-            }, err => {
-                console.log(err);
-                const toast = this.toastCtrl.create({
-                    message: this.appGlobal.ServerError,
-                    duration: 3000
+                    return this.isqurestatus = false
+                    // this.db.getbeneficiarydata();
+                }, err => {
+                    console.log(err);
+                    const toast = this.toastCtrl.create({
+                        message: this.appGlobal.ServerError,
+                        duration: 3000
+                    });
+                    toast.present();
                 });
-                toast.present();
-            });
+        }
     }
 
     public async getsurvey() {
-        await this.dataGetterService.getSurveys()
-            .subscribe((data: any) => {
+        if (this.platform.is('cordova')) {
+            await this.dataGetterService.getSurveys()
+                .subscribe((data: any) => {
 
-                let a = true
-                if (data.success || a) {
-                    for (let i = 0; i <= data.data.length; i++) {
-                        let object = data.data[i]
-                        console.log("dadaobject ##### " + object);
-                        this.db.insertsurveydata(data.data[i]);
+                    let a = true
+                    if (data.success || a) {
+                        for (let i = 0; i <= data.data.length; i++) {
+                            let object = data.data[i]
+                            console.log("dadaobject ##### " + object);
+                            this.db.insertsurveydata(data.data[i]);
+                        }
+                        return this.isqurestatus = true
+                    } else {
+                        console.log("cannot get survey data for insert");
                     }
-                    return this.isqurestatus = true
-                } else {
-                    console.log("cannot get survey data for insert");
-                }
-                return this.isqurestatus = false
-                // this.db.getbeneficiarydata();
-            }, err => {
-                console.log(err);
-                const toast = this.toastCtrl.create({
-                    message: this.appGlobal.ServerError,
-                    duration: 3000
+                    return this.isqurestatus = false
+                    // this.db.getbeneficiarydata();
+                }, err => {
+                    console.log(err);
+                    const toast = this.toastCtrl.create({
+                        message: this.appGlobal.ServerError,
+                        duration: 3000
+                    });
+                    toast.present();
                 });
-                toast.present();
-            });
-
+        }
     }
     public async getQuestion() {
         await this.dataSetterService.gatquestionrequest().subscribe((data: any) => {

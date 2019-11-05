@@ -1,19 +1,19 @@
 {
-  "_from": "cordova-plugin-image-picker@1.1.3",
+  "_from": "cordova-plugin-image-picker",
   "_id": "cordova-plugin-image-picker@1.1.3",
   "_inBundle": false,
   "_integrity": "sha1-OGIBXZjC4kg5mZFFlGLh44E3gXE=",
   "_location": "/cordova-plugin-image-picker",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "cordova-plugin-image-picker@1.1.3",
+    "raw": "cordova-plugin-image-picker",
     "name": "cordova-plugin-image-picker",
     "escapedName": "cordova-plugin-image-picker",
-    "rawSpec": "1.1.3",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "1.1.3"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
@@ -21,8 +21,8 @@
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-image-picker/-/cordova-plugin-image-picker-1.1.3.tgz",
   "_shasum": "3862015d98c2e248399991459462e1e381378171",
-  "_spec": "cordova-plugin-image-picker@1.1.3",
-  "_where": "/home/linkwok/ionicproject/intranetmobile-1.1.0",
+  "_spec": "cordova-plugin-image-picker",
+  "_where": "/home/mit/Documents/Working project/ionic/ivdp_ionic_03012019",
   "author": {
     "name": "Wymsee"
   },

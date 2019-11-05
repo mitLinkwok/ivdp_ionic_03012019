@@ -122,6 +122,5 @@
       "proxyUrl": "http://127.0.0.1:3000/api/v1/change_service_request_state"
     }
   ],
-  "id": "353659e3",
-  "app_id": ""
+  "id": "353659e3"
 }

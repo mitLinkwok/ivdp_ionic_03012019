@@ -37,7 +37,7 @@ export class QuestionCheckboxPage {
   auto_increment_id: any = []
   cbChecked: string[];
   selectedCheckbox: any;
-  Quesion_number:number;
+  Quesion_number: number;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public appGlobal: AppGlobalProvider, public toastCtrl: ToastController, public sqldatabasegetter: DatabaseProvider) {
@@ -51,16 +51,14 @@ export class QuestionCheckboxPage {
     this.options = this.appGlobal.options;
     this.cbChecked = [];
     this.selectedCheckbox = {};
-    this.Quesion_number=this.appGlobal.Quesion_number;
+    this.Quesion_number = this.appGlobal.Quesion_number;
     this.loadQuestions()
-   
-  
   }
 
   ionViewDidLoad() {
-
     console.log('ionViewDidLoad QuestionCheckboxPage');
   }
+  
   loadQuestions() {
     this.question = this.appGlobal.questionsList[this.qindex].text;
     this.key = this.appGlobal.questionsList[this.qindex].server_id;
@@ -119,7 +117,7 @@ export class QuestionCheckboxPage {
     let key = Object.keys(data);
     for (let i = 0; i <= key.length; i++) {
       if (this.appGlobal.answers[key[i]] != undefined) {
-       
+
         this.sqldatabasegetter.insertAnswer(this.appGlobal.answers[key[i]])
       }
       if (i == key.length) {
@@ -162,12 +160,7 @@ export class QuestionCheckboxPage {
 
 
   getChanged(e) {
-    console.log("Selected Checkbox:" + JSON.stringify(this.selectedCheckbox));
-    console.log("Selected Checkbox:" + JSON.stringify(this.options));
     this.selectedCheckbox = this.options.map(this.getSelectedBen).filter(this.removeNull);
-    console.log("Selected Checkbox:" + JSON.stringify(this.selectedCheckbox));
-
-    console.log("Final String :" + JSON.stringify(this.selectedCheckbox).replace(/\[|\]|"|"/g, ""))
     this.answer.option_text = JSON.stringify(this.selectedCheckbox).replace(/\[|\]|"|"/g, "");
   }
 

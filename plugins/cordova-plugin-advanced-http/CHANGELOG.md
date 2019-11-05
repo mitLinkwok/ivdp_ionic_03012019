@@ -1,5 +1,88 @@
 # Changelog
 
+## 2.2.0
+
+- Feature #239: add enumeration style object for error codes
+- Feature #253: add support for response type "json"
+- Feature #127: add multiple file upload (thanks SDA SE Open Industry Solutions and nilswitschel)
+
+## 2.1.1
+
+- Fixed #224: response type "arraybuffer" and "blob" not working on browser platform
+
+## 2.1.0
+
+- Feature #216: Support for response type `arraybuffer`
+- Feature #171: Support for response type `blob`
+- Feature #205: Add preference for configuring OKHTTP version (thanks RougeCiel)
+
+## 2.0.11
+
+- Fixed #221: headers not set on Android when request fails due to non-success status code
+
+## 2.0.10
+
+- Fixed #218: headers are used as params on browser platform
+
+## 2.0.9
+
+- Fixed #204: broken support for cordova-android  < 7.0
+
+- :warning: **Deprecation**: Deprecated "disableRedirect" in favor of "setFollowRedirect"
+
+## 2.0.8
+
+- Fixed #198: cookie header is always passed even if there is no cookie
+- Fixed #201: browser implementation is broken due to broken dependency
+- Fixed #197: iOS crashes when multiple request are done simultaneously (reverted a8e3637)
+- Fixed #189: error code mappings are not precise
+- Fixed #200: compatibility with Java 6 is broken due to string switch on Android
+
+- :warning: **Deprecation**: Deprecated "setSSLCertMode" in favor of "setServerTrustMode"
+
+## 2.0.7
+
+- Fixed #195: URLs are double-encoded on Android
+
+## 2.0.6
+
+- Fixed #187: setSSLCertMode with "default" throws an error on Android
+- Fixed #115: HTTP connections are not kept alive on iOS (thanks MorpheusDe97)
+
+## 2.0.5
+
+- Fixed #185: need more detailed SSL error message
+
+## 2.0.4
+
+- Fixed #179: sending empty string with utf8 serializer throws an exception
+
+## 2.0.3
+
+- Fixed #172: plugin does not respect user installed CA certs on Android
+
+#### Important information
+We've changed a default behavior on Android. User installed CA certs are respected now.
+If you don't want this for your needs, you can switch back to old behavior by setting SSL cert mode to `legacy`.
+
+## 2.0.2
+
+- Fixed #142: Plugin affected by REDoS Issue of tough-cookie
+- Fixed #157: Arguments are double URL-encoded on "downloadFile" (thanks TheZopo)
+- Fixed #164: Arguments are double URL-encoded on "head" (thanks ath0mas)
+
+## 2.0.1
+
+- Fixed #136: Content-Type header non-overwritable on browser platform
+
+## 2.0.0
+
+- Feature #103: implement HTTP SSL cert modes
+
+- :warning: **Breaking Change**: Removed AngularJS (v1) integration service
+- :warning: **Breaking Change**: Removed "enableSSLPinning" and "acceptAllCerts", use "setSSLCertMode" instead
+- :warning: **Breaking Change**: Certificates must be placed in "www/certificates" folder
+
 ## 1.11.1
 
 - Fixed #92: headers not deserialized on platform "browser"

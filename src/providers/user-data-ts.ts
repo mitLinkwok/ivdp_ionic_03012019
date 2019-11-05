@@ -189,19 +189,6 @@ export class UserData {
     });
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   isValid(username?:string,password?:string,email?:string){
     console.log("username",username);
     console.log("password",password);

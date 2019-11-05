@@ -1,8 +1,5 @@
 #import "TextResponseSerializer.h"
 
-NSString * const AFNetworkingOperationFailingURLResponseBodyKey = @"com.alamofire.serialization.response.error.body";
-NSStringEncoding const SupportedEncodings[6] = { NSUTF8StringEncoding, NSWindowsCP1252StringEncoding, NSISOLatin1StringEncoding, NSISOLatin2StringEncoding, NSASCIIStringEncoding, NSUnicodeStringEncoding };
-
 static NSError * AFErrorWithUnderlyingError(NSError *error, NSError *underlyingError) {
   if (!error) {
     return underlyingError;
@@ -55,9 +52,14 @@ static BOOL AFErrorOrUnderlyingErrorHasCodeInDomain(NSError *error, NSInteger co
     nsEncoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
   }
 
-  for (int i = 0; i < sizeof(SupportedEncodings) / sizeof(NSStringEncoding) && !decoded; ++i) {
-    if (cfEncoding == kCFStringEncodingInvalidId || nsEncoding == SupportedEncodings[i]) {
-      decoded = [[NSString alloc] initWithData:rawResponseData encoding:SupportedEncodings[i]];
+  NSStringEncoding supportedEncodings[6] = {
+    NSUTF8StringEncoding, NSWindowsCP1252StringEncoding, NSISOLatin1StringEncoding,
+    NSISOLatin2StringEncoding, NSASCIIStringEncoding, NSUnicodeStringEncoding
+  };
+
+  for (int i = 0; i < sizeof(supportedEncodings) / sizeof(NSStringEncoding) && !decoded; ++i) {
+    if (cfEncoding == kCFStringEncodingInvalidId || nsEncoding == supportedEncodings[i]) {
+      decoded = [[NSString alloc] initWithData:rawResponseData encoding:supportedEncodings[i]];
     }
   }
 
@@ -94,7 +96,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCodeInDomain(NSError *error, NSInteger co
         NSURLErrorFailingURLErrorKey:[response URL],
         AFNetworkingOperationFailingURLResponseErrorKey: response,
         AFNetworkingOperationFailingURLResponseDataErrorKey: data,
-        AFNetworkingOperationFailingURLResponseBodyKey: @"Could not decode response data due to invalid or unknown charset encoding",
+        AFNetworkingOperationFailingURLResponseBodyErrorKey: @"Could not decode response data due to invalid or unknown charset encoding",
       } mutableCopy];
 
       validationError = AFErrorWithUnderlyingError([NSError errorWithDomain:AFURLResponseSerializationErrorDomain code:NSURLErrorBadServerResponse userInfo:mutableUserInfo], validationError);
@@ -108,7 +110,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCodeInDomain(NSError *error, NSInteger co
 
       if (data) {
         mutableUserInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] = data;
-        mutableUserInfo[AFNetworkingOperationFailingURLResponseBodyKey] = *decoded;
+        mutableUserInfo[AFNetworkingOperationFailingURLResponseBodyErrorKey] = *decoded;
       }
 
       validationError = AFErrorWithUnderlyingError([NSError errorWithDomain:AFURLResponseSerializationErrorDomain code:NSURLErrorBadServerResponse userInfo:mutableUserInfo], validationError);

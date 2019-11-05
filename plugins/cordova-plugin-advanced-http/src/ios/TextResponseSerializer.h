@@ -5,6 +5,4 @@
 
 + (instancetype)serializer;
 
-FOUNDATION_EXPORT NSString * const AFNetworkingOperationFailingURLResponseBodyKey;
-
 @end

@@ -1,19 +1,19 @@
 {
-  "_from": "cordova-plugin-badge@0.8.8",
+  "_from": "cordova-plugin-badge",
   "_id": "cordova-plugin-badge@0.8.8",
   "_inBundle": false,
   "_integrity": "sha512-RhIBtd5xhD/iLnxjt35jvOae28oNW/wtMZBOmQR3Rf0y4wirvA1bpAZEhBoFqL+rZGhsd6ddOdQXdex1T0DRyQ==",
   "_location": "/cordova-plugin-badge",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "cordova-plugin-badge@0.8.8",
+    "raw": "cordova-plugin-badge",
     "name": "cordova-plugin-badge",
     "escapedName": "cordova-plugin-badge",
-    "rawSpec": "0.8.8",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "0.8.8"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
@@ -21,8 +21,8 @@
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-badge/-/cordova-plugin-badge-0.8.8.tgz",
   "_shasum": "0924018699b48f92dd3b33615452737582144c96",
-  "_spec": "cordova-plugin-badge@0.8.8",
-  "_where": "/home/linkwok/ionicproject/intranetmobile-1.1.0",
+  "_spec": "cordova-plugin-badge",
+  "_where": "/home/mit/Documents/Working project/ionic/ivdp_ionic_03012019",
   "author": {
     "name": "Sebastián Katzer"
   },

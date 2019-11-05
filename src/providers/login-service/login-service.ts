@@ -29,7 +29,7 @@ export class LoginServiceProvider {
   }
 
   doLogin(username: string, password: string) {
-    console.log(this.http.get("http://google.com"));
+    
     return new Promise(resolve => {
       let loading = this.loadingCtrl.create({
         content: 'Please wait...'
@@ -53,10 +53,11 @@ export class LoginServiceProvider {
         // alert("Login Resolved");
         this.vibrationCtrl.vibrate(1000);
         resolve(data);
-      }, err => {
-        console.log("error!")
+      }, (err:any) => {
+        alert( JSON.stringify(err))
+        console.log("error  ########       !   ", JSON.stringify(err)  )
         // alert(Object.keys(err));
-        // alert("Login" + JSON.stringify(err));
+         console.log("Login" + JSON.stringify(err));
         loading.dismiss();
         const toast = this.toastCtrl.create({
           message: this.appGlobal.ServerError,

@@ -26,7 +26,7 @@ export class IntroPage {
   ) {
     this.setIntroContent();
 
-    if ( this.platform.is('ios') || this.platform.is('android')) {
+    if ( this.platform.is('ios') || this.platform.is('android')|| this.platform.is('cordova')) {
       this.db.getbenificialydata()
       this.db.getkycsdata();
       this.db.getsurvey();

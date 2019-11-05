@@ -13,7 +13,7 @@ cordova plugin add cordova-plugin-ionic-keyboard --save
 
 ## Preferences
 
-### KeyboardResize
+### KeyboardResize (for iOS only)
 
 > Boolean (true by default)
 
@@ -25,7 +25,7 @@ cordova plugin add cordova-plugin-ionic-keyboard --save
 <preference name="KeyboardResize" value="true" />
 ```
 
-### KeyboardResizeMode
+### KeyboardResizeMode (for iOS only)
 
 > String ('native' by default)
 
@@ -39,10 +39,50 @@ cordova plugin add cordova-plugin-ionic-keyboard --save
 <preference name="KeyboardResizeMode" value="native" />
 ```
 
+### KeyboardStyle (for iOS only)
+
+> String ('light' by default)
+
+#### Possible values
+
+- `light`
+- `dark`
+
+```xml
+<preference name="KeyboardStyle" value="dark" />
+```
+
+### HideKeyboardFormAccessoryBar (for iOS only)
+
+> Boolean (true by default)
+
+#### Possible values
+- `true`: hides the keyboard accessory bar.
+- `false`: shows the keyboard accessory bar.
+
+```xml
+<preference name="HideKeyboardFormAccessoryBar" value="false" />
+```
+
+### resizeOnFullScreen (for Android only)
+
+There is an Android bug that prevents the keyboard from resizing the WebView when the app is in full screen (i.e. if StatusBar plugin is used to hide the StatusBar). This setting, if set to true, add a workaround that resizes the WebView even when the app is in full screen.
+
+> Boolean (false by default)
+
+#### Possible values
+- `false`: doesn't resize the WebView when the app is in full screen.
+- `true`: resizes the WebView when the app is in full screen.
+
+
+```xml
+<preference name="resizeOnFullScreen" value="true" />
+```
+
 
 ## Methods
 
-### Keyboard.hideFormAccessoryBar
+### Keyboard.hideFormAccessoryBar (for iOS only)
 
 > Hide the keyboard toolbar.
 
@@ -52,7 +92,7 @@ Set to true to hide the additional toolbar that is on top of the keyboard. This 
 Keyboard.hideFormAccessoryBar(value, successCallback);
 ```
 
-##### Quick Example
+#### Quick Example
 
 ```js
 Keyboard.hideFormAccessoryBar(true);
@@ -70,8 +110,7 @@ Call this method to hide the keyboard
 Keyboard.hide();
 ```
 
-
-### Keyboard.show
+### Keyboard.show (for Android only)
 
 > Show the keyboard
 
@@ -80,6 +119,39 @@ Call this method to show the keyboard.
 ```js
 Keyboard.show();
 ```
+
+### Keyboard.setResizeMode (for iOS only)
+
+> Programmatically set the resize mode
+
+Call the method with parameter to set the resize mode.
+
+```js
+// Possible values are the same as for 'KeyboardResizeMode' preference
+Keyboard.setResizeMode('native');
+Keyboard.setResizeMode('body');
+Keyboard.setResizeMode('ionic');
+```
+
+### Keyboard.setKeyboardStyle (for iOS only)
+
+> Programmatically set the keyboard style
+
+```js
+// Possible values are the same as for 'KeyboardStyle' preference
+Keyboard.setKeyboardStyle('light'); // <- default
+Keyboard.setKeyboardStyle('dark');
+```
+
+### Keyboard.disableScroll (for iOS only)
+
+> Programmatically enable or disable the WebView scroll
+
+```js
+Keyboard.disableScroll(true); // <- default
+Keyboard.disableScroll(false);
+```
+
 
 ## Properties
 
@@ -137,7 +209,7 @@ window.addEventListener('keyboardWillShow', (event) => {
 
 ### keyboardWillHide
 
-> This event is fired when the keyboard is fully closed.
+> This event fires before keyboard will be closed.
 
 Attach handler to this event to be able to receive notification when keyboard is about to be closed.
 

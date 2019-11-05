@@ -7,14 +7,18 @@
     "files": {}
   },
   "installed_plugins": {
-    "call-number": {
-      "PACKAGE_NAME": "com.linkwok.dfivdp"
-    },
     "cordova-android-support-gradle-release": {
       "ANDROID_SUPPORT_VERSION": "27.+",
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
     "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.linkwok.dfivdp"
+    },
+    "cordova-sqlite-storage": {
       "PACKAGE_NAME": "com.linkwok.dfivdp"
     }
   },

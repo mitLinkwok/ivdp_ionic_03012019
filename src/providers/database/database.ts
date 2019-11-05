@@ -41,7 +41,7 @@ export class DatabaseProvider {
   ) {
 
 
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') || this.platform.is('android')) {
       this.database.create({
         name: DATABASENAME,
         location: "default"
@@ -173,13 +173,13 @@ export class DatabaseProvider {
         });
     });
   }
-  
+
   public insertoptions(objCase: any) {
     return new Promise((resolve, reject) => {
-      this.dbobject.executeSql("INSERT INTO `options`( `server_id`,`question_id`,`type`,`order`,`text`,`language_json`,`rule_json`,`created_at`,`updated_at`,'sync_status') VALUES(?,?,?,?,?,?,?,?,?,?)", [objCase.id, objCase.question_id, objCase.type, objCase.order, objCase.text, objCase.language_json,objCase.rule_json, objCase.created_at, objCase.updated_at, 0])
+      this.dbobject.executeSql("INSERT INTO `options`( `server_id`,`question_id`,`type`,`order`,`text`,`language_json`,`rule_json`,`created_at`,`updated_at`,'sync_status') VALUES(?,?,?,?,?,?,?,?,?,?)", [objCase.id, objCase.question_id, objCase.type, objCase.order, objCase.text, objCase.language_json, objCase.rule_json, objCase.created_at, objCase.updated_at, 0])
         .then((data) => {
 
-         // console.log("insert options Successfully")
+          // console.log("insert options Successfully")
           resolve(data);
 
         }, (error) => {
@@ -1006,16 +1006,6 @@ export class DatabaseProvider {
       })
 
   }
-
-
-
-
-
-
-
-
-
-
 
 }
 

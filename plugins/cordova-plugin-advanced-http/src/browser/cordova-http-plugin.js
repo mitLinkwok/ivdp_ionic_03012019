@@ -1,7 +1,7 @@
 var pluginId = module.id.slice(0, module.id.lastIndexOf('.'));
 
 var cordovaProxy = require('cordova/exec/proxy');
-var helpers = require(pluginId + '.helpers');
+var jsUtil = require(pluginId + '.js-util');
 
 function serializeJsonData(data) {
   try {
@@ -29,7 +29,7 @@ function serializeParams(params) {
   if (params === null) return '';
 
   return Object.keys(params).map(function(key) {
-    if (helpers.getTypeOf(params[key]) === 'Array') {
+    if (jsUtil.getTypeOf(params[key]) === 'Array') {
       return serializeArray(key, params[key]);
     }
 
@@ -52,11 +52,19 @@ function deserializeResponseHeaders(headers) {
   return headerMap;
 }
 
+function getResponseData(xhr) {
+  if (xhr.responseType !== 'text' || jsUtil.getTypeOf(xhr.responseText) !== 'String') {
+    return xhr.response;
+  }
+
+  return xhr.responseText;
+}
+
 function createXhrSuccessObject(xhr) {
   return {
     url: xhr.responseURL,
     status: xhr.status,
-    data: helpers.getTypeOf(xhr.responseText) === 'String' ? xhr.responseText : xhr.response,
+    data: getResponseData(xhr),
     headers: deserializeResponseHeaders(xhr.getAllResponseHeaders())
   };
 }
@@ -65,7 +73,7 @@ function createXhrFailureObject(xhr) {
   var obj = {};
 
   obj.headers = xhr.getAllResponseHeaders();
-  obj.error = helpers.getTypeOf(xhr.responseText) === 'String' ? xhr.responseText : xhr.response;
+  obj.error = getResponseData(xhr);
   obj.error = obj.error || 'advanced-http: please check browser console for error messages';
 
   if (xhr.responseURL) obj.url = xhr.responseURL;
@@ -74,21 +82,50 @@ function createXhrFailureObject(xhr) {
   return obj;
 }
 
+function getHeaderValue(headers, headerName) {
+  let result = null;
+
+  Object.keys(headers).forEach(function(key) {
+    if (key.toLowerCase() === headerName.toLowerCase()) {
+      result = headers[key];
+    }
+  });
+
+  return result;
+}
+
+function setDefaultContentType(headers, contentType) {
+  if (getHeaderValue(headers, 'Content-Type') === null) {
+    headers['Content-Type'] = contentType;
+  }
+}
+
 function setHeaders(xhr, headers) {
   Object.keys(headers).forEach(function(key) {
-    if (key === 'Cookie') return;
+    if (key.toLowerCase() === 'cookie') return;
 
     xhr.setRequestHeader(key, headers[key]);
   });
 }
 
 function sendRequest(method, withData, opts, success, failure) {
-  var data = withData ? opts[1] : null;
-  var params = withData ? null : serializeParams(opts[1]);
-  var serializer = withData ? opts[2] : null;
-  var headers = withData ? opts[3] : opts[2];
-  var timeout = withData ? opts[4] : opts[3];
-  var url = params ? opts[0] + '?' + params : opts[0];
+  var data, serializer, headers, timeout, followRedirect, responseType;
+  var url = opts[0];
+
+  if (withData) {
+    data = opts[1];
+    serializer = opts[2];
+    headers = opts[3];
+    timeout = opts[4];
+    followRedirect = opts[5];
+    responseType = opts[6];
+  } else {
+    headers = opts[1];
+    timeout = opts[2];
+    followRedirect = opts[3];
+    responseType = opts[4];
+
+  }
 
   var processedData = null;
   var xhr = new XMLHttpRequest();
@@ -99,9 +136,13 @@ function sendRequest(method, withData, opts, success, failure) {
     return failure('advanced-http: custom cookies not supported on browser platform');
   }
 
+  if (!followRedirect) {
+    return failure('advanced-http: disabling follow redirect not supported on browser platform');
+  }
+
   switch (serializer) {
     case 'json':
-      xhr.setRequestHeader('Content-Type', 'application/json; charset=utf8');
+      setDefaultContentType(headers, 'application/json; charset=utf8');
       processedData = serializeJsonData(data);
 
       if (processedData === null) {
@@ -111,17 +152,18 @@ function sendRequest(method, withData, opts, success, failure) {
       break;
 
     case 'utf8':
-      xhr.setRequestHeader('Content-Type', 'text/plain; charset=utf8');
+      setDefaultContentType(headers, 'text/plain; charset=utf8');
       processedData = data.text;
       break;
 
     case 'urlencoded':
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      setDefaultContentType(headers, 'application/x-www-form-urlencoded');
       processedData = serializeParams(data);
       break;
   }
 
   xhr.timeout = timeout * 1000;
+  xhr.responseType = responseType;
   setHeaders(xhr, headers);
 
   xhr.onerror = xhr.ontimeout = function () {
@@ -142,11 +184,17 @@ function sendRequest(method, withData, opts, success, failure) {
 }
 
 var browserInterface = {
-  post: function (success, failure, opts) {
-    return sendRequest('post', true, opts, success, failure);
-  },
   get: function (success, failure, opts) {
     return sendRequest('get', false, opts, success, failure);
+  },
+  head: function (success, failure, opts) {
+    return sendRequest('head', false, opts, success, failure);
+  },
+  delete: function (success, failure, opts) {
+    return sendRequest('delete', false, opts, success, failure);
+  },
+  post: function (success, failure, opts) {
+    return sendRequest('post', true, opts, success, failure);
   },
   put: function (success, failure, opts) {
     return sendRequest('put', true, opts, success, failure);
@@ -154,26 +202,20 @@ var browserInterface = {
   patch: function (success, failure, opts) {
     return sendRequest('patch', true, opts, success, failure);
   },
-  delete: function (success, failure, opts) {
-    return sendRequest('delete', false, opts, success, failure);
-  },
-  head: function (success, failure, opts) {
-    return sendRequest('head', false, opts, success, failure);
-  },
   uploadFile: function (success, failure, opts) {
     return failure('advanced-http: function "uploadFile" not supported on browser platform');
+  },
+  uploadFiles: function (success, failure, opts) {
+    return failure('advanced-http: function "uploadFiles" not supported on browser platform');
   },
   downloadFile: function (success, failure, opts) {
     return failure('advanced-http: function "downloadFile" not supported on browser platform');
   },
-  enableSSLPinning: function (success, failure, opts) {
-    return failure('advanced-http: function "enableSSLPinning" not supported on browser platform');
+  setServerTrustMode: function (success, failure, opts) {
+    return failure('advanced-http: function "setServerTrustMode" not supported on browser platform');
   },
-  acceptAllCerts: function (success, failure, opts) {
-    return failure('advanced-http: function "acceptAllCerts" not supported on browser platform');
-  },
-  disableRedirect: function (success, failure, opts) {
-    return failure('advanced-http: function "disableRedirect" not supported on browser platform');
+  setClientAuthMode: function (success, failure, opts) {
+    return failure('advanced-http: function "setClientAuthMode" not supported on browser platform');
   }
 };
 

@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-background-mode",
-  "_id": "cordova-plugin-background-mode@0.7.2",
+  "_id": "cordova-plugin-background-mode@0.7.3",
   "_inBundle": false,
-  "_integrity": "sha1-6vVjnAZahyMbPs91em4osQHQMy8=",
+  "_integrity": "sha512-LsU1v7EgTUROaks+tcQ8TnMzVUcU/TwjDVwj2O/4e4aI2q2ldLGsiZorqKqfqvwh2HoIssmY73OwJk91hQi62w==",
   "_location": "/cordova-plugin-background-mode",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-background-mode/-/cordova-plugin-background-mode-0.7.2.tgz",
-  "_shasum": "eaf5639c065a87231b3ecf757a6e28b101d0332f",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-background-mode/-/cordova-plugin-background-mode-0.7.3.tgz",
+  "_shasum": "066f92c99f403b3ed3d6fb91f281a0a7ccbc84ba",
   "_spec": "cordova-plugin-background-mode",
-  "_where": "/home/linkwok/Documents/ivdp",
+  "_where": "/home/mit/Documents/Working project/ionic/ivdp_ionic_03012019",
   "author": {
     "name": "Sebastián Katzer"
   },
@@ -30,30 +30,40 @@
     "url": "https://github.com/katzer/cordova-plugin-background-mode/issues"
   },
   "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-background-mode",
+    "platforms": [
+      "ios",
+      "android",
+      "browser"
+    ]
+  },
   "deprecated": false,
-  "description": "Prevent app from going to sleep in background.",
+  "description": "Prevent apps from going to sleep in background.",
   "engines": [
     {
       "name": "cordova",
-      "version": ">=6.0.0"
+      "version": ">=3.0.0"
+    },
+    {
+      "name": "android-sdk",
+      "version": ">=16"
     }
   ],
   "homepage": "https://github.com/katzer/cordova-plugin-background-mode#readme",
   "keywords": [
     "appplant",
     "background",
-    "cordova",
-    "ecosystem:cordova"
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android",
+    "cordova-browser"
   ],
   "license": "Apache 2.0",
   "name": "cordova-plugin-background-mode",
-  "platforms": [
-    "ios",
-    "android"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/katzer/cordova-plugin-background-mode.git"
   },
-  "version": "0.7.2"
+  "version": "0.7.3"
 }

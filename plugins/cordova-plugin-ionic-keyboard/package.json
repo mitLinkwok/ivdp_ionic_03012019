@@ -1,28 +1,28 @@
 {
-  "_from": "cordova-plugin-ionic-keyboard@2.1.3",
-  "_id": "cordova-plugin-ionic-keyboard@2.1.3",
+  "_from": "cordova-plugin-ionic-keyboard",
+  "_id": "cordova-plugin-ionic-keyboard@2.2.0",
   "_inBundle": false,
-  "_integrity": "sha512-6ucQ6FdlLdBm8kJfFnzozmBTjru/0xekHP/dAhjoCZggkGRlgs8TsUJFkxa/bV+qi7Dlo50JjmpE4UMWAO+aOQ==",
+  "_integrity": "sha512-yDUG+9ieKVRitq5mGlNxjaZh/MgEhFFIgTIPhqSbUaQ8UuZbawy5mhJAVClqY97q8/rcQtL6dCDa7x2sEtCLcA==",
   "_location": "/cordova-plugin-ionic-keyboard",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "cordova-plugin-ionic-keyboard@2.1.3",
+    "raw": "cordova-plugin-ionic-keyboard",
     "name": "cordova-plugin-ionic-keyboard",
     "escapedName": "cordova-plugin-ionic-keyboard",
-    "rawSpec": "2.1.3",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "2.1.3"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-ionic-keyboard/-/cordova-plugin-ionic-keyboard-2.1.3.tgz",
-  "_shasum": "6b050d5b7cb4393d5758b55f45a46372f25178fe",
-  "_spec": "cordova-plugin-ionic-keyboard@2.1.3",
-  "_where": "/home/linkwok/ionicproject/intranetmobile-1.1.0",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-ionic-keyboard/-/cordova-plugin-ionic-keyboard-2.2.0.tgz",
+  "_shasum": "53ba9ccd5e765165446a094cfe042a2ddd87d81d",
+  "_spec": "cordova-plugin-ionic-keyboard",
+  "_where": "/home/mit/Documents/Working project/ionic/ivdp_ionic_03012019",
   "author": {
     "name": "Apache Software Foundation"
   },
@@ -33,7 +33,7 @@
   "deprecated": false,
   "description": "Ionic Keyboard Plugin",
   "devDependencies": {
-    "np": "^2.16.0",
+    "np": "^5.0.3",
     "sync-cordova-xml": "^0.4.0"
   },
   "homepage": "https://github.com/ionic-team/cordova-plugin-ionic-keyboard#readme",
@@ -55,5 +55,5 @@
     "sync_plugin_xml": "sync-cordova-xml package.json plugin.xml --output=plugin.xml",
     "version": "npm run sync_plugin_xml && git add plugin.xml"
   },
-  "version": "2.1.3"
+  "version": "2.2.0"
 }

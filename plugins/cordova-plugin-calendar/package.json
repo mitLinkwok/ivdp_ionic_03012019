@@ -1,28 +1,28 @@
 {
-  "_from": "cordova-plugin-calendar@5.1.3",
-  "_id": "cordova-plugin-calendar@5.1.3",
+  "_from": "cordova-plugin-calendar@5.1.5",
+  "_id": "cordova-plugin-calendar@5.1.5",
   "_inBundle": false,
-  "_integrity": "sha512-PvcEC6Kltke3+Vs0nQEJb4bkkXLf9Mdf28hs5fup0sZ+qWuxMSoxRSUzBdLUgAEGSRFvCY5AMTkfJm4Qe2EbpA==",
+  "_integrity": "sha512-Qrz+Yo3ifpCsi0CWfLFrnP37Tgp3jxDmtNKILhU+f3g2EsbWwLc7VsKq8zCrxJihGr/vKpEoSFtWZGpEM3zobQ==",
   "_location": "/cordova-plugin-calendar",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "cordova-plugin-calendar@5.1.3",
+    "raw": "cordova-plugin-calendar@5.1.5",
     "name": "cordova-plugin-calendar",
     "escapedName": "cordova-plugin-calendar",
-    "rawSpec": "5.1.3",
+    "rawSpec": "5.1.5",
     "saveSpec": null,
-    "fetchSpec": "5.1.3"
+    "fetchSpec": "5.1.5"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-calendar/-/cordova-plugin-calendar-5.1.3.tgz",
-  "_shasum": "242576c55b6f1c6f9a37d40e2c2dafc3fd13833d",
-  "_spec": "cordova-plugin-calendar@5.1.3",
-  "_where": "/home/linkwok/ionicproject/intranetmobile-1.1.0",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-calendar/-/cordova-plugin-calendar-5.1.5.tgz",
+  "_shasum": "a3fc334eec01731a3b0e4c05eae9db99aa3c3653",
+  "_spec": "cordova-plugin-calendar@5.1.5",
+  "_where": "/home/mit/Documents/Working project/ionic/ivdp_ionic_03012019",
   "author": {
     "name": "Eddy Verbruggen",
     "email": "eddyverbruggen@gmail.com",
@@ -63,5 +63,5 @@
     "type": "git",
     "url": "git+https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git"
   },
-  "version": "5.1.3"
+  "version": "5.1.5"
 }

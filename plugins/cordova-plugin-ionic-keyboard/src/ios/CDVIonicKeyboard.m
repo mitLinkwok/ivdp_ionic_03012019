@@ -35,14 +35,19 @@ typedef enum : NSUInteger {
 
 @interface CDVIonicKeyboard () <UIScrollViewDelegate>
 
-@property (nonatomic, readwrite, assign) BOOL keyboardIsVisible;
+@property (readwrite, assign, nonatomic) BOOL disableScroll;
+@property (readwrite, assign, nonatomic) BOOL hideFormAccessoryBar;
+@property (readwrite, assign, nonatomic) BOOL keyboardIsVisible;
 @property (nonatomic, readwrite) ResizePolicy keyboardResizes;
+@property (readwrite, assign, nonatomic) NSString* keyboardStyle;
 @property (nonatomic, readwrite) BOOL isWK;
 @property (nonatomic, readwrite) int paddingBottom;
 
 @end
 
 @implementation CDVIonicKeyboard
+
+NSTimer *hideTimer;
 
 - (id)settingForKey:(NSString *)key
 {
@@ -51,9 +56,19 @@ typedef enum : NSUInteger {
 
 #pragma mark Initialize
 
+NSString* UIClassString;
+NSString* WKClassString;
+NSString* UITraitsClassString;
+
 - (void)pluginInitialize
 {
+    UIClassString = [@[@"UI", @"Web", @"Browser", @"View"] componentsJoinedByString:@""];
+    WKClassString = [@[@"WK", @"Content", @"View"] componentsJoinedByString:@""];
+    UITraitsClassString = [@[@"UI", @"Text", @"Input", @"Traits"] componentsJoinedByString:@""];
+
     NSDictionary *settings = self.commandDelegate.settings;
+
+    self.disableScroll = ![settings cordovaBoolSettingForKey:@"ScrollEnabled" defaultValue:NO];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name: UIApplicationDidChangeStatusBarFrameNotification object:nil];
 
@@ -72,9 +87,18 @@ typedef enum : NSUInteger {
                 self.keyboardResizes = ResizeBody;
             }
         }
-        NSLog(@"CDVIonicKeyboard: resize mode %d", self.keyboardResizes);
+        NSLog(@"CDVIonicKeyboard: resize mode %lu", (unsigned long)self.keyboardResizes);
     }
     self.hideFormAccessoryBar = [settings cordovaBoolSettingForKey:@"HideKeyboardFormAccessoryBar" defaultValue:YES];
+
+    NSString *keyboardStyle = [settings cordovaSettingForKey:@"KeyboardStyle"];
+    if (keyboardStyle) {
+        [self setKeyboardStyle:keyboardStyle];
+    }
+
+    if ([settings cordovaBoolSettingForKey:@"KeyboardAppearanceDark" defaultValue:NO]) {
+        [self setKeyboardStyle:@"dark"];
+    }
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 
@@ -117,19 +141,28 @@ typedef enum : NSUInteger {
         [self setKeyboardHeight:0 delay:0.01];
         [self resetScrollView];
     }
+    hideTimer = [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(fireOnHiding) userInfo:nil repeats:NO];
+}
+
+- (void)fireOnHiding {
     [self.commandDelegate evalJs:@"Keyboard.fireOnHiding();"];
 }
 
 - (void)onKeyboardWillShow:(NSNotification *)note
 {
+    if (hideTimer != nil) {
+        [hideTimer invalidate];
+    }
     CGRect rect = [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     double height = rect.size.height;
 
     if (self.isWK) {
         double duration = [[note.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-        [self setKeyboardHeight:height delay:duration/2.0];
+        [self setKeyboardHeight:height delay:duration+0.2];
         [self resetScrollView];
     }
+    
+    [self setKeyboardStyle:self.keyboardStyle];
 
     NSString *js = [NSString stringWithFormat:@"Keyboard.fireOnShowing(%d);", (int)height];
     [self.commandDelegate evalJs:js];
@@ -219,6 +252,43 @@ typedef enum : NSUInteger {
     [self resetScrollView];
 }
 
+#pragma mark Keyboard Style
+
+ - (void)setKeyboardStyle:(NSString*)style
+{
+    IMP newImp = [style isEqualToString:@"dark"] ? imp_implementationWithBlock(^(id _s) {
+        return UIKeyboardAppearanceDark;
+    }) : imp_implementationWithBlock(^(id _s) {
+        return UIKeyboardAppearanceLight;
+    });
+    
+    if (self.isWK) {
+        for (NSString* classString in @[WKClassString, UITraitsClassString]) {
+            Class c = NSClassFromString(classString);
+            Method m = class_getInstanceMethod(c, @selector(keyboardAppearance));
+            
+            if (m != NULL) {
+                method_setImplementation(m, newImp);
+            } else {
+                class_addMethod(c, @selector(keyboardAppearance), newImp, "l@:");
+            }
+        }
+    }
+    else {
+        for (NSString* classString in @[UIClassString, UITraitsClassString]) {
+            Class c = NSClassFromString(classString);
+            Method m = class_getInstanceMethod(c, @selector(keyboardAppearance));
+            
+            if (m != NULL) {
+                method_setImplementation(m, newImp);
+            } else {
+                class_addMethod(c, @selector(keyboardAppearance), newImp, "l@:");
+            }
+        }
+    }
+
+    _keyboardStyle = style;
+}
 
 #pragma mark HideFormAccessoryBar
 
@@ -230,9 +300,6 @@ static IMP WKOriginalImp;
     if (hideFormAccessoryBar == _hideFormAccessoryBar) {
         return;
     }
-
-    NSString* UIClassString = [@[@"UI", @"Web", @"Browser", @"View"] componentsJoinedByString:@""];
-    NSString* WKClassString = [@[@"WK", @"Content", @"View"] componentsJoinedByString:@""];
 
     Method UIMethod = class_getInstanceMethod(NSClassFromString(UIClassString), @selector(inputAccessoryView));
     Method WKMethod = class_getInstanceMethod(NSClassFromString(WKClassString), @selector(inputAccessoryView));
@@ -255,6 +322,26 @@ static IMP WKOriginalImp;
     _hideFormAccessoryBar = hideFormAccessoryBar;
 }
 
+#pragma mark scroll
+
+- (void)setDisableScroll:(BOOL)disableScroll {
+    if (disableScroll == _disableScroll) {
+        return;
+    }
+    if (disableScroll) {
+        self.webView.scrollView.scrollEnabled = NO;
+        self.webView.scrollView.delegate = self;
+    }
+    else {
+        self.webView.scrollView.scrollEnabled = YES;
+        self.webView.scrollView.delegate = nil;
+    }
+    _disableScroll = disableScroll;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [scrollView setContentOffset: CGPointZero];
+}
 
 #pragma mark Plugin interface
 
@@ -278,7 +365,7 @@ static IMP WKOriginalImp;
     [self.webView endEditing:YES];
 }
 
--(void)setResizeMode:(CDVInvokedUrlCommand *)command
+- (void)setResizeMode:(CDVInvokedUrlCommand *)command
 {
     NSString * mode = [command.arguments objectAtIndex:0];
     if ([mode isEqualToString:@"ionic"]) {
@@ -292,6 +379,27 @@ static IMP WKOriginalImp;
     }
 }
 
+- (void)keyboardStyle:(CDVInvokedUrlCommand*)command
+{
+    id value = [command.arguments objectAtIndex:0];
+    if ([value isKindOfClass:[NSString class]]) {
+        value = [(NSString*)value lowercaseString];
+    } else {
+        value = @"light";
+    }
+
+     self.keyboardStyle = value;
+}
+
+- (void)disableScroll:(CDVInvokedUrlCommand*)command {
+    if (!command.arguments || ![command.arguments count]){
+        return;
+    }
+    id value = [command.arguments objectAtIndex:0];
+    if (value != [NSNull null]) {
+        self.disableScroll = [value boolValue];
+    }
+}
 
 #pragma mark dealloc
 

@@ -85,6 +85,7 @@ export class MyApp {
 
   rootPage: any;
   applicationVersion: any;
+  applicationVersion_ivdp='0.0.1'
   username: any;
   userprofile: any;
   lastBack: any;
@@ -173,12 +174,12 @@ export class MyApp {
   initializeFCM() {
     if (this.platform.is('android') || this.platform.is('ios')) {
       this.fcm.subscribeToTopic('all');
-      
+
       console.log("CORDOVA DETECTED", this.platform.platforms());
 
       this.fcm.getToken().then((token: any) => {
         console.log("TOKEN:", token);
-        
+
         if (token !== null) {
           this.userData.setUserFCMToken(token);
         }
@@ -360,9 +361,9 @@ export class MyApp {
 
   listenToNetworkEvents() {
     console.log("listenToNetworkEvents");
-
-    this.network.onDisconnect().subscribe(() => {
+    this.network.onDisconnect().subscribe((data) => {
       console.log('network was disconnected :-(');
+      alert('isOnline   :-  ' + data + '   :-    '+ this.appGlobal.isOnline)
       console.log("onDisconnect", this.appGlobal.isOnline);
       if (this.appGlobal.isOnline) {
         this.appGlobal.isOnline = false;
@@ -430,11 +431,11 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      
-     
+
+
       this.initAppVersion();
       // this.initBackgroundGeolocation();
-      //this.listenToNetworkEvents();
+      this.listenToNetworkEvents();
       this.initializeFCM();
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -489,7 +490,7 @@ export class MyApp {
       this.dataSetter.sendNotificationClear();
       this.userData.setUserFCMTokenStatus(false);
       this.userData.logout();
-      
+
     } else {
       this.nav.setRoot(page.component, params).catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);
@@ -506,7 +507,7 @@ export class MyApp {
       toast.present();
       if (this.platform.is('android') || this.platform.is('ios')) {
         this.fcm.getToken().then((token: any) => {
-          alert('Token  : ' +  JSON.stringify(token))
+          alert('Token  : ' + JSON.stringify(token))
           console.log("TOKEN:", token);
           if (token !== null) {
             this.userData.setUserFCMToken(token);

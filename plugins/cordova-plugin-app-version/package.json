@@ -1,19 +1,19 @@
 {
-  "_from": "cordova-plugin-app-version@0.1.9",
+  "_from": "cordova-plugin-app-version",
   "_id": "cordova-plugin-app-version@0.1.9",
   "_inBundle": false,
   "_integrity": "sha1-nbBgeGMzenEEiTAuX1CpBPFEm9s=",
   "_location": "/cordova-plugin-app-version",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "cordova-plugin-app-version@0.1.9",
+    "raw": "cordova-plugin-app-version",
     "name": "cordova-plugin-app-version",
     "escapedName": "cordova-plugin-app-version",
-    "rawSpec": "0.1.9",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "0.1.9"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
@@ -21,8 +21,8 @@
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-app-version/-/cordova-plugin-app-version-0.1.9.tgz",
   "_shasum": "9db0607863337a710489302e5f50a904f1449bdb",
-  "_spec": "cordova-plugin-app-version@0.1.9",
-  "_where": "/home/linkwok/ionicproject/intranetmobile-1.1.0",
+  "_spec": "cordova-plugin-app-version",
+  "_where": "/home/mit/Documents/Working project/ionic/ivdp_ionic_03012019",
   "author": {
     "name": "whiteoctober"
   },

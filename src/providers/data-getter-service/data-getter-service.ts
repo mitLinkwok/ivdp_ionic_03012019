@@ -160,8 +160,7 @@ export class DataGetterServiceProvider {
     return this.http.get(this.appGlobal.getMaintenanceAssets, this.getHTTPOptions());
   }
 
-  public getAllMaintenanceRequests(data) {
-
+  public getAllbeneficiary(data) {
     return this.http.get(this.appGlobal.getAllMaintenanceRequests + '?user_id=' + data, this.getHTTPOptions());
   }
 

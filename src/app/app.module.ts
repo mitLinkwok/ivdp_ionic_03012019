@@ -190,10 +190,6 @@ export function createTranslateLoader(http: HttpClient) {
     SuervyPageModule,
     SyncPageModule,
     BeneficiaryProfilePageModule,
-   
-
-
-
   ],
 
   bootstrap: [IonicApp],

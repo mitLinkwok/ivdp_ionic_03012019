@@ -1,3 +1,4 @@
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { DatabaseProvider } from './../../providers/database/database';
 import { SurveyListPage } from './../survey-list/survey-list';
 import { SuervyPage } from './../suervy/suervy';
@@ -6,7 +7,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppGlobalProvider } from "../../providers/app-global/app-global";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { elementAt } from 'rxjs/operator/elementAt';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+
 
 
 
